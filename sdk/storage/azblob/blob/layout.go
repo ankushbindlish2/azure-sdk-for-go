@@ -67,6 +67,9 @@ func getLayout(state layoutState, pager *runtime.Pager[GetLayoutResponse]) (layo
 	return layout{layoutRanges: layoutRanges, contentLength: contentLength, eTag: eTag}, time.Now().Add(9 * time.Minute), nil
 }
 
+// getIdealEndpoint returns the endpoint to download the blob at the given offset based on the layout.
+// It considers the first range containing the offset. If the chunk isn't fully available, the service still returns
+// correct data.
 func (l layout) getIdealEndpoint(offset int64) string {
 	if len(l.layoutRanges) == 0 {
 		return ""
