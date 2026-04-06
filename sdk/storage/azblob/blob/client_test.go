@@ -3982,6 +3982,9 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
 	sessionBlobClient := sessionContClient.NewBlobClient(blobName)
 
+	_, err = sessionBlobClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
 	resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)
 

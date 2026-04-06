@@ -173,12 +173,6 @@ func canUseSession(req *http.Request) (containerName string, ok bool) {
 		return "", false
 	}
 
-	// If there's a 'comp' query param, it's not a Get Blob request
-	// (e.g., comp=tags, comp=properties)
-	if u.Query().Get("comp") != "" {
-		return "", false
-	}
-
 	// Path format: /<container>/<blob>
 	path := strings.TrimPrefix(u.Path, "/")
 	if path == "" {
