@@ -27,7 +27,7 @@ func TestGetIdealEndpoint_EmptyLayoutRanges(t *testing.T) {
 		layoutRanges:  []layoutRange{},
 		contentLength: 100,
 	}
-	result := getIdealEndpoint(50, l)
+	result := l.getIdealEndpoint(50)
 	require.Equal(t, "", result)
 }
 
@@ -40,13 +40,13 @@ func TestGetIdealEndpoint_SingleRange(t *testing.T) {
 	}
 
 	// Offset at start
-	require.Equal(t, "endpoint1", getIdealEndpoint(0, l))
+	require.Equal(t, "endpoint1", l.getIdealEndpoint(0))
 
 	// Offset in middle
-	require.Equal(t, "endpoint1", getIdealEndpoint(50, l))
+	require.Equal(t, "endpoint1", l.getIdealEndpoint(50))
 
 	// Offset at end
-	require.Equal(t, "endpoint1", getIdealEndpoint(100, l))
+	require.Equal(t, "endpoint1", l.getIdealEndpoint(100))
 }
 
 func TestGetIdealEndpoint_MultipleRanges(t *testing.T) {
@@ -60,19 +60,19 @@ func TestGetIdealEndpoint_MultipleRanges(t *testing.T) {
 	}
 
 	// Offset in first range
-	require.Equal(t, "endpoint1", getIdealEndpoint(0, l))
-	require.Equal(t, "endpoint1", getIdealEndpoint(50, l))
-	require.Equal(t, "endpoint1", getIdealEndpoint(99, l))
+	require.Equal(t, "endpoint1", l.getIdealEndpoint(0))
+	require.Equal(t, "endpoint1", l.getIdealEndpoint(50))
+	require.Equal(t, "endpoint1", l.getIdealEndpoint(99))
 
 	// Offset in second range
-	require.Equal(t, "endpoint2", getIdealEndpoint(100, l))
-	require.Equal(t, "endpoint2", getIdealEndpoint(150, l))
-	require.Equal(t, "endpoint2", getIdealEndpoint(199, l))
+	require.Equal(t, "endpoint2", l.getIdealEndpoint(100))
+	require.Equal(t, "endpoint2", l.getIdealEndpoint(150))
+	require.Equal(t, "endpoint2", l.getIdealEndpoint(199))
 
 	// Offset in third range
-	require.Equal(t, "endpoint3", getIdealEndpoint(200, l))
-	require.Equal(t, "endpoint3", getIdealEndpoint(250, l))
-	require.Equal(t, "endpoint3", getIdealEndpoint(299, l))
+	require.Equal(t, "endpoint3", l.getIdealEndpoint(200))
+	require.Equal(t, "endpoint3", l.getIdealEndpoint(250))
+	require.Equal(t, "endpoint3", l.getIdealEndpoint(299))
 }
 
 func TestGetIdealEndpoint_BinarySearchBoundary(t *testing.T) {
@@ -91,12 +91,12 @@ func TestGetIdealEndpoint_BinarySearchBoundary(t *testing.T) {
 	}
 
 	// Test boundaries at each range
-	require.Equal(t, "ep0", getIdealEndpoint(0, l))
-	require.Equal(t, "ep0", getIdealEndpoint(9, l))
-	require.Equal(t, "ep1", getIdealEndpoint(10, l))
-	require.Equal(t, "ep3", getIdealEndpoint(35, l))
-	require.Equal(t, "ep6", getIdealEndpoint(65, l))
-	require.Equal(t, "ep6", getIdealEndpoint(69, l))
+	require.Equal(t, "ep0", l.getIdealEndpoint(0))
+	require.Equal(t, "ep0", l.getIdealEndpoint(9))
+	require.Equal(t, "ep1", l.getIdealEndpoint(10))
+	require.Equal(t, "ep3", l.getIdealEndpoint(35))
+	require.Equal(t, "ep6", l.getIdealEndpoint(65))
+	require.Equal(t, "ep6", l.getIdealEndpoint(69))
 }
 
 func TestGetIdealEndpoint_SameEndpointDifferentRanges(t *testing.T) {
@@ -109,9 +109,9 @@ func TestGetIdealEndpoint_SameEndpointDifferentRanges(t *testing.T) {
 		contentLength: 150,
 	}
 
-	require.Equal(t, "endpointA", getIdealEndpoint(25, l))
-	require.Equal(t, "endpointB", getIdealEndpoint(75, l))
-	require.Equal(t, "endpointA", getIdealEndpoint(125, l))
+	require.Equal(t, "endpointA", l.getIdealEndpoint(25))
+	require.Equal(t, "endpointB", l.getIdealEndpoint(75))
+	require.Equal(t, "endpointA", l.getIdealEndpoint(125))
 }
 
 func TestGetLayout_SinglePageWithLayout(t *testing.T) {

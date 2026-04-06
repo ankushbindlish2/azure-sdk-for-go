@@ -67,7 +67,7 @@ func getLayout(state layoutState, pager *runtime.Pager[GetLayoutResponse]) (layo
 	return layout{layoutRanges: layoutRanges, contentLength: contentLength, eTag: eTag}, time.Now().Add(9 * time.Minute), nil
 }
 
-func getIdealEndpoint(offset int64, l layout) string {
+func (l layout) getIdealEndpoint(offset int64) string {
 	if len(l.layoutRanges) == 0 {
 		return ""
 	}

@@ -429,7 +429,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
 			// Fetch ideal endpoint for this chunk from layout
 			if useLayout {
-				endpoint := getIdealEndpoint(chunkStart+o.Range.Offset, l)
+				endpoint := l.getIdealEndpoint(chunkStart + o.Range.Offset)
 				if endpoint != "" {
 					ctx = shared.WithLayoutEndpoint(ctx, endpoint)
 				}
