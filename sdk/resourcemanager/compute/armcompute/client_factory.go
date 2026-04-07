@@ -19,7 +19,8 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -209,38 +210,6 @@ func (c *ClientFactory) NewGalleryImagesClient() *GalleryImagesClient {
 	}
 }
 
-// NewGalleryInVMAccessControlProfileVersionsClient creates a new instance of GalleryInVMAccessControlProfileVersionsClient.
-func (c *ClientFactory) NewGalleryInVMAccessControlProfileVersionsClient() *GalleryInVMAccessControlProfileVersionsClient {
-	return &GalleryInVMAccessControlProfileVersionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewGalleryInVMAccessControlProfilesClient creates a new instance of GalleryInVMAccessControlProfilesClient.
-func (c *ClientFactory) NewGalleryInVMAccessControlProfilesClient() *GalleryInVMAccessControlProfilesClient {
-	return &GalleryInVMAccessControlProfilesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewGalleryScriptVersionsClient creates a new instance of GalleryScriptVersionsClient.
-func (c *ClientFactory) NewGalleryScriptVersionsClient() *GalleryScriptVersionsClient {
-	return &GalleryScriptVersionsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewGalleryScriptsClient creates a new instance of GalleryScriptsClient.
-func (c *ClientFactory) NewGalleryScriptsClient() *GalleryScriptsClient {
-	return &GalleryScriptsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewGallerySharingProfileClient creates a new instance of GallerySharingProfileClient.
 func (c *ClientFactory) NewGallerySharingProfileClient() *GallerySharingProfileClient {
 	return &GallerySharingProfileClient{
@@ -339,14 +308,6 @@ func (c *ClientFactory) NewSharedGalleryImagesClient() *SharedGalleryImagesClien
 // NewSnapshotsClient creates a new instance of SnapshotsClient.
 func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	return &SnapshotsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewSoftDeletedResourceClient creates a new instance of SoftDeletedResourceClient.
-func (c *ClientFactory) NewSoftDeletedResourceClient() *SoftDeletedResourceClient {
-	return &SoftDeletedResourceClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

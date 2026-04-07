@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -301,16 +301,10 @@ func (c *CapacityReservationGroupsServerTransport) dispatchNewListBySubscription
 			return nil, err
 		}
 		expandParam := getOptional(armcompute.ExpandTypesForGetCapacityReservationGroups(expandUnescaped))
-		resourceIDsOnlyUnescaped, err := url.QueryUnescape(qp.Get("resourceIdsOnly"))
-		if err != nil {
-			return nil, err
-		}
-		resourceIDsOnlyParam := getOptional(armcompute.ResourceIDOptionsForGetCapacityReservationGroups(resourceIDsOnlyUnescaped))
 		var options *armcompute.CapacityReservationGroupsClientListBySubscriptionOptions
-		if expandParam != nil || resourceIDsOnlyParam != nil {
+		if expandParam != nil {
 			options = &armcompute.CapacityReservationGroupsClientListBySubscriptionOptions{
-				Expand:          expandParam,
-				ResourceIDsOnly: resourceIDsOnlyParam,
+				Expand: expandParam,
 			}
 		}
 		resp := c.srv.NewListBySubscriptionPager(options)

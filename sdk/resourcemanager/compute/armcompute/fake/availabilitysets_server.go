@@ -13,23 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 )
 
 // AvailabilitySetsServer is a fake server for instances of the armcompute.AvailabilitySetsClient type.
 type AvailabilitySetsServer struct {
-	// CancelMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet
-	// HTTP status codes to indicate success: http.StatusNoContent
-	CancelMigrationToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
-
-	// BeginConvertToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginConvertToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (resp azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
-
 	// CreateOrUpdate is the fake for method AvailabilitySetsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.AvailabilitySet, options *armcompute.AvailabilitySetsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -54,17 +45,9 @@ type AvailabilitySetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcompute.AvailabilitySetsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse])
 
-	// StartMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.StartMigrationToVirtualMachineScaleSet
-	// HTTP status codes to indicate success: http.StatusNoContent
-	StartMigrationToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.MigrateToVirtualMachineScaleSetInput, options *armcompute.AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method AvailabilitySetsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.AvailabilitySetUpdate, options *armcompute.AvailabilitySetsClientUpdateOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientUpdateResponse], errResp azfake.ErrorResponder)
-
-	// ValidateMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.ValidateMigrationToVirtualMachineScaleSet
-	// HTTP status codes to indicate success: http.StatusNoContent
-	ValidateMigrationToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.MigrateToVirtualMachineScaleSetInput, options *armcompute.AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAvailabilitySetsServerTransport creates a new instance of AvailabilitySetsServerTransport with the provided implementation.
@@ -72,22 +55,20 @@ type AvailabilitySetsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAvailabilitySetsServerTransport(srv *AvailabilitySetsServer) *AvailabilitySetsServerTransport {
 	return &AvailabilitySetsServerTransport{
-		srv:                                  srv,
-		beginConvertToVirtualMachineScaleSet: newTracker[azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]](),
-		newListPager:                         newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]](),
-		newListAvailableSizesPager:           newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]](),
-		newListBySubscriptionPager:           newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]](),
+		srv:                        srv,
+		newListPager:               newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]](),
+		newListAvailableSizesPager: newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]](),
 	}
 }
 
 // AvailabilitySetsServerTransport connects instances of armcompute.AvailabilitySetsClient to instances of AvailabilitySetsServer.
 // Don't use this type directly, use NewAvailabilitySetsServerTransport instead.
 type AvailabilitySetsServerTransport struct {
-	srv                                  *AvailabilitySetsServer
-	beginConvertToVirtualMachineScaleSet *tracker[azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]]
-	newListPager                         *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]]
-	newListAvailableSizesPager           *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]]
-	newListBySubscriptionPager           *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]]
+	srv                        *AvailabilitySetsServer
+	newListPager               *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]]
+	newListAvailableSizesPager *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AvailabilitySetsServerTransport.
@@ -113,10 +94,6 @@ func (a *AvailabilitySetsServerTransport) dispatchToMethodFake(req *http.Request
 		}
 		if !intercepted {
 			switch method {
-			case "AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet":
-				res.resp, res.err = a.dispatchCancelMigrationToVirtualMachineScaleSet(req)
-			case "AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet":
-				res.resp, res.err = a.dispatchBeginConvertToVirtualMachineScaleSet(req)
 			case "AvailabilitySetsClient.CreateOrUpdate":
 				res.resp, res.err = a.dispatchCreateOrUpdate(req)
 			case "AvailabilitySetsClient.Delete":
@@ -129,12 +106,8 @@ func (a *AvailabilitySetsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = a.dispatchNewListAvailableSizesPager(req)
 			case "AvailabilitySetsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AvailabilitySetsClient.StartMigrationToVirtualMachineScaleSet":
-				res.resp, res.err = a.dispatchStartMigrationToVirtualMachineScaleSet(req)
 			case "AvailabilitySetsClient.Update":
 				res.resp, res.err = a.dispatchUpdate(req)
-			case "AvailabilitySetsClient.ValidateMigrationToVirtualMachineScaleSet":
-				res.resp, res.err = a.dispatchValidateMigrationToVirtualMachineScaleSet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -152,93 +125,6 @@ func (a *AvailabilitySetsServerTransport) dispatchToMethodFake(req *http.Request
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (a *AvailabilitySetsServerTransport) dispatchCancelMigrationToVirtualMachineScaleSet(req *http.Request) (*http.Response, error) {
-	if a.srv.CancelMigrationToVirtualMachineScaleSet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelMigrationToVirtualMachineScaleSet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancelMigrationToVirtualMachineScaleSet`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CancelMigrationToVirtualMachineScaleSet(req.Context(), resourceGroupNameParam, availabilitySetNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AvailabilitySetsServerTransport) dispatchBeginConvertToVirtualMachineScaleSet(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginConvertToVirtualMachineScaleSet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginConvertToVirtualMachineScaleSet not implemented")}
-	}
-	beginConvertToVirtualMachineScaleSet := a.beginConvertToVirtualMachineScaleSet.get(req)
-	if beginConvertToVirtualMachineScaleSet == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/convertToVirtualMachineScaleSet`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.ConvertToVirtualMachineScaleSetInput](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armcompute.AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armcompute.AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions{
-				Parameters: &body,
-			}
-		}
-		respr, errRespr := a.srv.BeginConvertToVirtualMachineScaleSet(req.Context(), resourceGroupNameParam, availabilitySetNameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginConvertToVirtualMachineScaleSet = &respr
-		a.beginConvertToVirtualMachineScaleSet.add(req, beginConvertToVirtualMachineScaleSet)
-	}
-
-	resp, err := server.PollerResponderNext(beginConvertToVirtualMachineScaleSet, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		a.beginConvertToVirtualMachineScaleSet.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginConvertToVirtualMachineScaleSet) {
-		a.beginConvertToVirtualMachineScaleSet.remove(req)
-	}
-
-	return resp, nil
 }
 
 func (a *AvailabilitySetsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -404,9 +290,6 @@ func (a *AvailabilitySetsServerTransport) dispatchNewListAvailableSizesPager(req
 		resp := a.srv.NewListAvailableSizesPager(resourceGroupNameParam, availabilitySetNameParam, nil)
 		newListAvailableSizesPager = &resp
 		a.newListAvailableSizesPager.add(req, newListAvailableSizesPager)
-		server.PagerResponderInjectNextLinks(newListAvailableSizesPager, req, func(page *armcompute.AvailabilitySetsClientListAvailableSizesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
 	}
 	resp, err := server.PagerResponderNext(newListAvailableSizesPager, req)
 	if err != nil {
@@ -467,43 +350,6 @@ func (a *AvailabilitySetsServerTransport) dispatchNewListBySubscriptionPager(req
 	return resp, nil
 }
 
-func (a *AvailabilitySetsServerTransport) dispatchStartMigrationToVirtualMachineScaleSet(req *http.Request) (*http.Response, error) {
-	if a.srv.StartMigrationToVirtualMachineScaleSet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method StartMigrationToVirtualMachineScaleSet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startMigrationToVirtualMachineScaleSet`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcompute.MigrateToVirtualMachineScaleSetInput](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.StartMigrationToVirtualMachineScaleSet(req.Context(), resourceGroupNameParam, availabilitySetNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *AvailabilitySetsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
@@ -535,43 +381,6 @@ func (a *AvailabilitySetsServerTransport) dispatchUpdate(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AvailabilitySet, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AvailabilitySetsServerTransport) dispatchValidateMigrationToVirtualMachineScaleSet(req *http.Request) (*http.Response, error) {
-	if a.srv.ValidateMigrationToVirtualMachineScaleSet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ValidateMigrationToVirtualMachineScaleSet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/availabilitySets/(?P<availabilitySetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateMigrationToVirtualMachineScaleSet`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcompute.MigrateToVirtualMachineScaleSetInput](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	availabilitySetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("availabilitySetName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.ValidateMigrationToVirtualMachineScaleSet(req.Context(), resourceGroupNameParam, availabilitySetNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}

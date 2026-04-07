@@ -11,8 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -105,9 +104,6 @@ func (v *VirtualMachineSizesServerTransport) dispatchNewListPager(req *http.Requ
 		resp := v.srv.NewListPager(locationParam, nil)
 		newListPager = &resp
 		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcompute.VirtualMachineSizesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
 	}
 	resp, err := server.PagerResponderNext(newListPager, req)
 	if err != nil {

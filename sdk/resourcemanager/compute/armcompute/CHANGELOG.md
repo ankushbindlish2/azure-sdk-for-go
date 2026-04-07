@@ -1,5 +1,288 @@
 # Release History
 
+## 8.0.0 (2026-04-07)
+### Breaking Changes
+
+- Type of `OperationValue.Display` has been changed from `*OperationDisplay` to `*OperationValueDisplay`
+- Type of `OperationValue.Origin` has been changed from `*Origin` to `*string`
+- Type of `SecurityPostureReference.ExcludeExtensions` has been changed from `[]*string` to `[]*VirtualMachineExtension`
+- `ConfidentialVMEncryptionTypeNonPersistedTPM` from enum `ConfidentialVMEncryptionType` has been removed
+- `DiffDiskPlacementNvmeDisk` from enum `DiffDiskPlacement` has been removed
+- `DiskCreateOptionCopyFromSanSnapshot` from enum `DiskCreateOption` has been removed
+- `DiskCreateOptionTypesCopy`, `DiskCreateOptionTypesRestore` from enum `DiskCreateOptionTypes` has been removed
+- `DiskSecurityTypesConfidentialVMNonPersistedTPM` from enum `DiskSecurityTypes` has been removed
+- `InstanceViewTypesResiliencyView` from enum `InstanceViewTypes` has been removed
+- `NetworkAPIVersionTwoThousandTwentyTwo1101` from enum `NetworkAPIVersion` has been removed
+- `OrchestrationServiceNamesAutomaticZoneRebalancing` from enum `OrchestrationServiceNames` has been removed
+- `ReplicationStatusTypesUefiSettings` from enum `ReplicationStatusTypes` has been removed
+- `SecurityEncryptionTypesNonPersistedTPM` from enum `SecurityEncryptionTypes` has been removed
+- `StorageAccountTypePremiumV2LRS` from enum `StorageAccountType` has been removed
+- Enum `AccessControlRulesMode` has been removed
+- Enum `ActionType` has been removed
+- Enum `AllocationStrategy` has been removed
+- Enum `AvailabilityPolicyDiskDelay` has been removed
+- Enum `CreatedByType` has been removed
+- Enum `DomainNameLabelScopeTypes` has been removed
+- Enum `EndpointAccess` has been removed
+- Enum `EndpointTypes` has been removed
+- Enum `FileFormat` has been removed
+- Enum `GalleryApplicationScriptRebootBehavior` has been removed
+- Enum `GalleryScriptParameterType` has been removed
+- Enum `HighSpeedInterconnectPlacement` has been removed
+- Enum `Mode` has been removed
+- Enum `Modes` has been removed
+- Enum `NetworkInterfaceAuxiliaryMode` has been removed
+- Enum `NetworkInterfaceAuxiliarySKU` has been removed
+- Enum `OrchestrationServiceOperationStatus` has been removed
+- Enum `Origin` has been removed
+- Enum `ProvisionedBandwidthCopyOption` has been removed
+- Enum `RebalanceBehavior` has been removed
+- Enum `RebalanceStrategy` has been removed
+- Enum `ReservationType` has been removed
+- Enum `ResilientVMDeletionStatus` has been removed
+- Enum `ResourceIDOptionsForGetCapacityReservationGroups` has been removed
+- Enum `SSHEncryptionTypes` has been removed
+- Enum `ScriptShellTypes` has been removed
+- Enum `SnapshotAccessState` has been removed
+- Enum `SoftDeletedArtifactTypes` has been removed
+- Enum `StorageAccountStrategy` has been removed
+- Enum `SupportedSecurityOption` has been removed
+- Enum `UefiKeyType` has been removed
+- Enum `UefiSignatureTemplateName` has been removed
+- Enum `ValidationStatus` has been removed
+- Enum `ZonalPlatformFaultDomainAlignMode` has been removed
+- Enum `ZonePlacementPolicyType` has been removed
+- Function `*AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet` has been removed
+- Function `*AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet` has been removed
+- Function `*AvailabilitySetsClient.StartMigrationToVirtualMachineScaleSet` has been removed
+- Function `*AvailabilitySetsClient.ValidateMigrationToVirtualMachineScaleSet` has been removed
+- Function `*ClientFactory.NewGalleryInVMAccessControlProfileVersionsClient` has been removed
+- Function `*ClientFactory.NewGalleryInVMAccessControlProfilesClient` has been removed
+- Function `*ClientFactory.NewGalleryScriptVersionsClient` has been removed
+- Function `*ClientFactory.NewGalleryScriptsClient` has been removed
+- Function `*ClientFactory.NewSoftDeletedResourceClient` has been removed
+- Function `*DedicatedHostsClient.BeginRedeploy` has been removed
+- Function `NewGalleryInVMAccessControlProfileVersionsClient` has been removed
+- Function `*GalleryInVMAccessControlProfileVersionsClient.BeginCreateOrUpdate` has been removed
+- Function `*GalleryInVMAccessControlProfileVersionsClient.BeginDelete` has been removed
+- Function `*GalleryInVMAccessControlProfileVersionsClient.Get` has been removed
+- Function `*GalleryInVMAccessControlProfileVersionsClient.NewListByGalleryInVMAccessControlProfilePager` has been removed
+- Function `*GalleryInVMAccessControlProfileVersionsClient.BeginUpdate` has been removed
+- Function `NewGalleryInVMAccessControlProfilesClient` has been removed
+- Function `*GalleryInVMAccessControlProfilesClient.BeginCreateOrUpdate` has been removed
+- Function `*GalleryInVMAccessControlProfilesClient.BeginDelete` has been removed
+- Function `*GalleryInVMAccessControlProfilesClient.Get` has been removed
+- Function `*GalleryInVMAccessControlProfilesClient.NewListByGalleryPager` has been removed
+- Function `*GalleryInVMAccessControlProfilesClient.BeginUpdate` has been removed
+- Function `NewGalleryScriptVersionsClient` has been removed
+- Function `*GalleryScriptVersionsClient.BeginCreateOrUpdate` has been removed
+- Function `*GalleryScriptVersionsClient.BeginDelete` has been removed
+- Function `*GalleryScriptVersionsClient.Get` has been removed
+- Function `*GalleryScriptVersionsClient.NewListByGalleryScriptPager` has been removed
+- Function `*GalleryScriptVersionsClient.BeginUpdate` has been removed
+- Function `NewGalleryScriptsClient` has been removed
+- Function `*GalleryScriptsClient.BeginCreateOrUpdate` has been removed
+- Function `*GalleryScriptsClient.BeginDelete` has been removed
+- Function `*GalleryScriptsClient.Get` has been removed
+- Function `*GalleryScriptsClient.NewListByGalleryPager` has been removed
+- Function `*GalleryScriptsClient.BeginUpdate` has been removed
+- Function `PossibleModeValues` has been removed
+- Function `NewSoftDeletedResourceClient` has been removed
+- Function `*SoftDeletedResourceClient.NewListByArtifactNamePager` has been removed
+- Function `*VirtualMachineImagesClient.ListWithProperties` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade` has been removed
+- Function `*VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks` has been removed
+- Function `*VirtualMachineScaleSetsClient.BeginApproveRollingUpgrade` has been removed
+- Function `*VirtualMachineScaleSetsClient.BeginScaleOut` has been removed
+- Function `*VirtualMachinesClient.BeginAttachDetachDataDisks` has been removed
+- Function `*VirtualMachinesClient.BeginMigrateToVMScaleSet` has been removed
+- Struct `AccessControlRules` has been removed
+- Struct `AccessControlRulesIdentity` has been removed
+- Struct `AccessControlRulesPrivilege` has been removed
+- Struct `AccessControlRulesRole` has been removed
+- Struct `AccessControlRulesRoleAssignment` has been removed
+- Struct `AdditionalReplicaSet` has been removed
+- Struct `AllInstancesDown` has been removed
+- Struct `AttachDetachDataDisksRequest` has been removed
+- Struct `AutomaticZoneRebalancingPolicy` has been removed
+- Struct `AvailabilityPolicy` has been removed
+- Struct `CommunityGalleryMetadata` has been removed
+- Struct `CommunityGalleryProperties` has been removed
+- Struct `ConvertToVirtualMachineScaleSetInput` has been removed
+- Struct `DataDisksToAttach` has been removed
+- Struct `DataDisksToDetach` has been removed
+- Struct `DefaultVirtualMachineScaleSetInfo` has been removed
+- Struct `EncryptionIdentity` has been removed
+- Struct `EventGridAndResourceGraph` has been removed
+- Struct `ExecutedValidation` has been removed
+- Struct `GalleryIdentity` has been removed
+- Struct `GalleryImageVersionUefiSettings` has been removed
+- Struct `GalleryInVMAccessControlProfile` has been removed
+- Struct `GalleryInVMAccessControlProfileList` has been removed
+- Struct `GalleryInVMAccessControlProfileProperties` has been removed
+- Struct `GalleryInVMAccessControlProfileUpdate` has been removed
+- Struct `GalleryInVMAccessControlProfileVersion` has been removed
+- Struct `GalleryInVMAccessControlProfileVersionList` has been removed
+- Struct `GalleryInVMAccessControlProfileVersionProperties` has been removed
+- Struct `GalleryInVMAccessControlProfileVersionUpdate` has been removed
+- Struct `GalleryScript` has been removed
+- Struct `GalleryScriptList` has been removed
+- Struct `GalleryScriptParameter` has been removed
+- Struct `GalleryScriptProperties` has been removed
+- Struct `GalleryScriptUpdate` has been removed
+- Struct `GalleryScriptVersion` has been removed
+- Struct `GalleryScriptVersionList` has been removed
+- Struct `GalleryScriptVersionProperties` has been removed
+- Struct `GalleryScriptVersionPublishingProfile` has been removed
+- Struct `GalleryScriptVersionSafetyProfile` has been removed
+- Struct `GalleryScriptVersionUpdate` has been removed
+- Struct `GallerySoftDeletedResource` has been removed
+- Struct `GallerySoftDeletedResourceList` has been removed
+- Struct `GallerySoftDeletedResourceProperties` has been removed
+- Struct `HostEndpointSettings` has been removed
+- Struct `ImageVersionSecurityProfile` has been removed
+- Struct `MaxInstancePercentPerZonePolicy` has been removed
+- Struct `MigrateToVirtualMachineScaleSetInput` has been removed
+- Struct `MigrateVMToVirtualMachineScaleSetInput` has been removed
+- Struct `OperationDisplay` has been removed
+- Struct `Placement` has been removed
+- Struct `PlatformAttribute` has been removed
+- Struct `ProxyAgentSettings` has been removed
+- Struct `ResiliencyPolicy` has been removed
+- Struct `ResilientVMCreationPolicy` has been removed
+- Struct `ResilientVMDeletionPolicy` has been removed
+- Struct `ResourceSharingProfile` has been removed
+- Struct `SKUProfile` has been removed
+- Struct `SKUProfileVMSize` has been removed
+- Struct `SSHGenerateKeyPairInputParameters` has been removed
+- Struct `ScheduleProfile` has been removed
+- Struct `ScheduledEventsAdditionalPublishingTargets` has been removed
+- Struct `ScheduledEventsPolicy` has been removed
+- Struct `ScriptSource` has been removed
+- Struct `SecurityPostureReferenceUpdate` has been removed
+- Struct `SharedGalleryProperties` has been removed
+- Struct `UefiKey` has been removed
+- Struct `UefiKeySignatures` has been removed
+- Struct `UserInitiatedReboot` has been removed
+- Struct `UserInitiatedRedeploy` has been removed
+- Struct `VMScaleSetScaleOutInput` has been removed
+- Struct `VMScaleSetScaleOutInputProperties` has been removed
+- Struct `ValidationsProfile` has been removed
+- Struct `VirtualMachineScaleSetMigrationInfo` has been removed
+- Struct `ZoneAllocationPolicy` has been removed
+- Field `SecurityMetadataAccessSAS` of struct `AccessURI` has been removed
+- Field `EnableFips1403Encryption` of struct `AdditionalCapabilities` has been removed
+- Field `OSRollingUpgradeDeferral` of struct `AutomaticOSUpgradePolicy` has been removed
+- Field `SystemData` of struct `AvailabilitySet` has been removed
+- Field `ScheduledEventsPolicy`, `VirtualMachineScaleSetMigrationInfo` of struct `AvailabilitySetProperties` has been removed
+- Field `SystemData` of struct `CapacityReservation` has been removed
+- Field `SystemData` of struct `CapacityReservationGroup` has been removed
+- Field `SharedSubscriptionIDs` of struct `CapacityReservationGroupInstanceView` has been removed
+- Field `ReservationType`, `SharingProfile` of struct `CapacityReservationGroupProperties` has been removed
+- Field `ResourceIDsOnly` of struct `CapacityReservationGroupsClientListBySubscriptionOptions` has been removed
+- Field `ScheduleProfile` of struct `CapacityReservationProperties` has been removed
+- Field `IsBootstrapCertificate` of struct `CloudServiceVaultCertificate` has been removed
+- Field `Properties` of struct `CommunityGallery` has been removed
+- Field `ArtifactTags`, `Disclaimer` of struct `CommunityGalleryImageProperties` has been removed
+- Field `ArtifactTags`, `Disclaimer` of struct `CommunityGalleryImageVersionProperties` has been removed
+- Field `ElasticSanResourceID`, `InstantAccessDurationMinutes`, `ProvisionedBandwidthCopySpeed`, `SecurityMetadataURI` of struct `CreationData` has been removed
+- Field `SourceResource` of struct `DataDisk` has been removed
+- Field `SystemData` of struct `DedicatedHost` has been removed
+- Field `SystemData` of struct `DedicatedHostGroup` has been removed
+- Field `NextLink` of struct `DedicatedHostSizeListResult` has been removed
+- Field `SystemData` of struct `Disk` has been removed
+- Field `SystemData` of struct `DiskAccess` has been removed
+- Field `SystemData` of struct `DiskEncryptionSet` has been removed
+- Field `AvailabilityPolicy`, `LastOwnershipUpdateTime` of struct `DiskProperties` has been removed
+- Field `SystemData` of struct `DiskRestorePoint` has been removed
+- Field `SnapshotAccessState` of struct `DiskRestorePointInstanceView` has been removed
+- Field `LogicalSectorSize` of struct `DiskRestorePointProperties` has been removed
+- Field `AvailabilityPolicy` of struct `DiskUpdateProperties` has been removed
+- Field `Identity`, `SystemData` of struct `Gallery` has been removed
+- Field `SystemData` of struct `GalleryApplication` has been removed
+- Field `SystemData` of struct `GalleryApplicationVersion` has been removed
+- Field `StorageAccountStrategy` of struct `GalleryApplicationVersionPublishingProfile` has been removed
+- Field `VirtualMachineID` of struct `GalleryArtifactVersionFullSource` has been removed
+- Field `SystemData` of struct `GalleryImage` has been removed
+- Field `StartsAtVersion` of struct `GalleryImageFeature` has been removed
+- Field `AllowUpdateImage` of struct `GalleryImageProperties` has been removed
+- Field `SystemData` of struct `GalleryImageVersion` has been removed
+- Field `Restore`, `SecurityProfile`, `ValidationsProfile` of struct `GalleryImageVersionProperties` has been removed
+- Field `StorageAccountStrategy` of struct `GalleryImageVersionPublishingProfile` has been removed
+- Field `BlockDeletionBeforeEndOfLife` of struct `GalleryImageVersionSafetyProfile` has been removed
+- Field `SecurityProfile` of struct `GalleryList` has been removed
+- Field `Identity` of struct `GalleryUpdate` has been removed
+- Field `FileFormat` of struct `GrantAccessData` has been removed
+- Field `SystemData` of struct `Image` has been removed
+- Field `NextLink` of struct `OperationListResult` has been removed
+- Field `ActionType`, `IsDataAction` of struct `OperationValue` has been removed
+- Field `LastStatusChangeTime`, `LatestOperationStatus` of struct `OrchestrationServiceSummary` has been removed
+- Field `SystemData` of struct `PrivateEndpointConnection` has been removed
+- Field `SystemData` of struct `ProximityPlacementGroup` has been removed
+- Field `SystemData` of struct `RestorePoint` has been removed
+- Field `SystemData` of struct `RestorePointCollection` has been removed
+- Field `InstantAccess` of struct `RestorePointCollectionProperties` has been removed
+- Field `InstantAccessDurationMinutes` of struct `RestorePointProperties` has been removed
+- Field `DiskControllerType` of struct `RestorePointSourceVMStorageProfile` has been removed
+- Field `SystemData` of struct `RollingUpgradeStatusInfo` has been removed
+- Field `SystemData` of struct `SSHPublicKeyResource` has been removed
+- Field `Parameters` of struct `SSHPublicKeysClientGenerateKeyPairOptions` has been removed
+- Field `PrioritizeUnhealthyVMs` of struct `ScaleInPolicy` has been removed
+- Field `IsOverridable` of struct `SecurityPostureReference` has been removed
+- Field `EncryptionIdentity`, `ProxyAgentSettings` of struct `SecurityProfile` has been removed
+- Field `Properties` of struct `SharedGallery` has been removed
+- Field `ArtifactTags` of struct `SharedGalleryImageProperties` has been removed
+- Field `ArtifactTags` of struct `SharedGalleryImageVersionProperties` has been removed
+- Field `SystemData` of struct `Snapshot` has been removed
+- Field `SnapshotAccessState` of struct `SnapshotProperties` has been removed
+- Field `SnapshotAccessState` of struct `SnapshotUpdateProperties` has been removed
+- Field `AlignRegionalDisksToVMZone` of struct `StorageProfile` has been removed
+- Field `SupportedSecurityOption` of struct `SupportedCapabilities` has been removed
+- Field `CreatedBy`, `CreatedByType`, `LastModifiedBy`, `LastModifiedByType` of struct `SystemData` has been removed
+- Field `AdditionalReplicaSets` of struct `TargetRegion` has been removed
+- Field `ScriptBehaviorAfterReboot` of struct `UserArtifactSettings` has been removed
+- Field `Etag`, `ManagedBy`, `Placement`, `SystemData` of struct `VirtualMachine` has been removed
+- Field `SystemData` of struct `VirtualMachineExtension` has been removed
+- Field `SystemData` of struct `VirtualMachineExtensionImage` has been removed
+- Field `IsVMInStandbyPool` of struct `VirtualMachineInstanceView` has been removed
+- Field `Tags` of struct `VirtualMachineNetworkInterfaceConfiguration` has been removed
+- Field `AuxiliaryMode`, `AuxiliarySKU` of struct `VirtualMachineNetworkInterfaceConfigurationProperties` has been removed
+- Field `ScheduledEventsPolicy` of struct `VirtualMachineProperties` has been removed
+- Field `Tags` of struct `VirtualMachinePublicIPAddressConfiguration` has been removed
+- Field `DomainNameLabelScope` of struct `VirtualMachinePublicIPAddressDNSSettingsConfiguration` has been removed
+- Field `SystemData` of struct `VirtualMachineRunCommand` has been removed
+- Field `GalleryScriptReferenceID`, `ScriptShell` of struct `VirtualMachineRunCommandScriptSource` has been removed
+- Field `Etag`, `Placement`, `SystemData` of struct `VirtualMachineScaleSet` has been removed
+- Field `Tags` of struct `VirtualMachineScaleSetNetworkConfiguration` has been removed
+- Field `AuxiliaryMode`, `AuxiliarySKU` of struct `VirtualMachineScaleSetNetworkConfigurationProperties` has been removed
+- Field `HighSpeedInterconnectPlacement`, `ResiliencyPolicy`, `SKUProfile`, `ScheduledEventsPolicy`, `ZonalPlatformFaultDomainAlignMode` of struct `VirtualMachineScaleSetProperties` has been removed
+- Field `Tags` of struct `VirtualMachineScaleSetPublicIPAddressConfiguration` has been removed
+- Field `DomainNameLabelScope` of struct `VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings` has been removed
+- Field `ForceUpdateOSDiskForEphemeral` of struct `VirtualMachineScaleSetReimageParameters` has been removed
+- Field `Zones` of struct `VirtualMachineScaleSetUpdate` has been removed
+- Field `Tags` of struct `VirtualMachineScaleSetUpdateNetworkConfiguration` has been removed
+- Field `AuxiliaryMode`, `AuxiliarySKU` of struct `VirtualMachineScaleSetUpdateNetworkConfigurationProperties` has been removed
+- Field `DiffDiskSettings` of struct `VirtualMachineScaleSetUpdateOSDisk` has been removed
+- Field `ResiliencyPolicy`, `SKUProfile`, `ZonalPlatformFaultDomainAlignMode` of struct `VirtualMachineScaleSetUpdateProperties` has been removed
+- Field `Tags` of struct `VirtualMachineScaleSetUpdatePublicIPAddressConfiguration` has been removed
+- Field `SecurityPostureReference` of struct `VirtualMachineScaleSetUpdateVMProfile` has been removed
+- Field `Etag`, `SystemData` of struct `VirtualMachineScaleSetVM` has been removed
+- Field `TimeCreated` of struct `VirtualMachineScaleSetVMProfile` has been removed
+- Field `ResilientVMDeletionStatus`, `TimeCreated` of struct `VirtualMachineScaleSetVMProperties` has been removed
+- Field `ForceUpdateOSDiskForEphemeral` of struct `VirtualMachineScaleSetVMReimageParameters` has been removed
+- Field `IfMatch`, `IfNoneMatch` of struct `VirtualMachineScaleSetVMsClientBeginUpdateOptions` has been removed
+- Field `IfMatch`, `IfNoneMatch` of struct `VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions` has been removed
+- Field `IfMatch`, `IfNoneMatch` of struct `VirtualMachineScaleSetsClientBeginUpdateOptions` has been removed
+- Field `NextLink` of struct `VirtualMachineSizeListResult` has been removed
+- Field `IfMatch`, `IfNoneMatch` of struct `VirtualMachinesClientBeginCreateOrUpdateOptions` has been removed
+- Field `IfMatch`, `IfNoneMatch` of struct `VirtualMachinesClientBeginUpdateOptions` has been removed
+- Field `PatchNameMasksToExclude`, `PatchNameMasksToInclude` of struct `WindowsParameters` has been removed
+
+### Features Added
+
+- New struct `OperationValueDisplay`
+
+
 ## 7.3.0 (2026-01-23)
 ### Features Added
 

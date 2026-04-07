@@ -25,7 +25,8 @@ type CommunityGalleryImageVersionsClient struct {
 }
 
 // NewCommunityGalleryImageVersionsClient creates a new instance of CommunityGalleryImageVersionsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCommunityGalleryImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommunityGalleryImageVersionsClient, error) {
@@ -43,8 +44,8 @@ func NewCommunityGalleryImageVersionsClient(subscriptionID string, credential az
 // Get - Get a community gallery image version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-03
-//   - location - The name of Azure region.
+// Generated from API version 2022-03-03
+//   - location - Resource location.
 //   - publicGalleryName - The public name of the community gallery.
 //   - galleryImageName - The name of the community gallery image definition.
 //   - galleryImageVersionName - The name of the community gallery image version. Needs to follow semantic version name pattern:
@@ -102,7 +103,7 @@ func (client *CommunityGalleryImageVersionsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-03")
+	reqQP.Set("api-version", "2022-03-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,8 +120,8 @@ func (client *CommunityGalleryImageVersionsClient) getHandleResponse(resp *http.
 
 // NewListPager - List community gallery image versions inside an image.
 //
-// Generated from API version 2025-03-03
-//   - location - The name of Azure region.
+// Generated from API version 2022-03-03
+//   - location - Resource location.
 //   - publicGalleryName - The public name of the community gallery.
 //   - galleryImageName - The name of the community gallery image definition.
 //   - options - CommunityGalleryImageVersionsClientListOptions contains the optional parameters for the CommunityGalleryImageVersionsClient.NewListPager
@@ -172,7 +173,7 @@ func (client *CommunityGalleryImageVersionsClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-03")
+	reqQP.Set("api-version", "2022-03-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

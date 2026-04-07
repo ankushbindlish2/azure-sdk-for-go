@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -23,14 +23,6 @@ import (
 
 // VirtualMachineScaleSetVMsServer is a fake server for instances of the armcompute.VirtualMachineScaleSetVMsClient type.
 type VirtualMachineScaleSetVMsServer struct {
-	// BeginApproveRollingUpgrade is the fake for method VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginApproveRollingUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginApproveRollingUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse], errResp azfake.ErrorResponder)
-
-	// BeginAttachDetachDataDisks is the fake for method VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginAttachDetachDataDisks func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters armcompute.AttachDetachDataDisksRequest, options *armcompute.VirtualMachineScaleSetVMsClientBeginAttachDetachDataDisksOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse], errResp azfake.ErrorResponder)
-
 	// BeginDeallocate is the fake for method VirtualMachineScaleSetVMsClient.BeginDeallocate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeallocate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginDeallocateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse], errResp azfake.ErrorResponder)
@@ -101,42 +93,38 @@ type VirtualMachineScaleSetVMsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineScaleSetVMsServerTransport(srv *VirtualMachineScaleSetVMsServer) *VirtualMachineScaleSetVMsServerTransport {
 	return &VirtualMachineScaleSetVMsServerTransport{
-		srv:                        srv,
-		beginApproveRollingUpgrade: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse]](),
-		beginAttachDetachDataDisks: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse]](),
-		beginDeallocate:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]](),
-		beginDelete:                newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]](),
-		beginPerformMaintenance:    newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]](),
-		beginPowerOff:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]](),
-		beginRedeploy:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]](),
-		beginReimage:               newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]](),
-		beginReimageAll:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]](),
-		beginRestart:               newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]](),
-		beginRunCommand:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]](),
-		beginStart:                 newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]](),
-		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]](),
+		srv:                     srv,
+		beginDeallocate:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]](),
+		beginDelete:             newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]](),
+		newListPager:            newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]](),
+		beginPerformMaintenance: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]](),
+		beginPowerOff:           newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]](),
+		beginRedeploy:           newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]](),
+		beginReimage:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]](),
+		beginReimageAll:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]](),
+		beginRestart:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]](),
+		beginRunCommand:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]](),
+		beginStart:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]](),
+		beginUpdate:             newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]](),
 	}
 }
 
 // VirtualMachineScaleSetVMsServerTransport connects instances of armcompute.VirtualMachineScaleSetVMsClient to instances of VirtualMachineScaleSetVMsServer.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMsServerTransport instead.
 type VirtualMachineScaleSetVMsServerTransport struct {
-	srv                        *VirtualMachineScaleSetVMsServer
-	beginApproveRollingUpgrade *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse]]
-	beginAttachDetachDataDisks *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse]]
-	beginDeallocate            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]]
-	beginDelete                *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]]
-	beginPerformMaintenance    *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]]
-	beginPowerOff              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]]
-	beginRedeploy              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]]
-	beginReimage               *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]]
-	beginReimageAll            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]]
-	beginRestart               *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]]
-	beginRunCommand            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]]
-	beginStart                 *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]]
-	beginUpdate                *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]]
+	srv                     *VirtualMachineScaleSetVMsServer
+	beginDeallocate         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]]
+	beginDelete             *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]]
+	newListPager            *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]]
+	beginPerformMaintenance *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]]
+	beginPowerOff           *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]]
+	beginRedeploy           *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]]
+	beginReimage            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]]
+	beginReimageAll         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]]
+	beginRestart            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]]
+	beginRunCommand         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]]
+	beginStart              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]]
+	beginUpdate             *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetVMsServerTransport.
@@ -162,10 +150,6 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchToMethodFake(req *htt
 		}
 		if !intercepted {
 			switch method {
-			case "VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade":
-				res.resp, res.err = v.dispatchBeginApproveRollingUpgrade(req)
-			case "VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks":
-				res.resp, res.err = v.dispatchBeginAttachDetachDataDisks(req)
 			case "VirtualMachineScaleSetVMsClient.BeginDeallocate":
 				res.resp, res.err = v.dispatchBeginDeallocate(req)
 			case "VirtualMachineScaleSetVMsClient.BeginDelete":
@@ -215,106 +199,6 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchToMethodFake(req *htt
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginApproveRollingUpgrade(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginApproveRollingUpgrade == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginApproveRollingUpgrade not implemented")}
-	}
-	beginApproveRollingUpgrade := v.beginApproveRollingUpgrade.get(req)
-	if beginApproveRollingUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/approveRollingUpgrade`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		instanceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginApproveRollingUpgrade(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginApproveRollingUpgrade = &respr
-		v.beginApproveRollingUpgrade.add(req, beginApproveRollingUpgrade)
-	}
-
-	resp, err := server.PollerResponderNext(beginApproveRollingUpgrade, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		v.beginApproveRollingUpgrade.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginApproveRollingUpgrade) {
-		v.beginApproveRollingUpgrade.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginAttachDetachDataDisks(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginAttachDetachDataDisks == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginAttachDetachDataDisks not implemented")}
-	}
-	beginAttachDetachDataDisks := v.beginAttachDetachDataDisks.get(req)
-	if beginAttachDetachDataDisks == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/attachDetachDataDisks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.AttachDetachDataDisksRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		instanceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("instanceId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginAttachDetachDataDisks(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginAttachDetachDataDisks = &respr
-		v.beginAttachDetachDataDisks.add(req, beginAttachDetachDataDisks)
-	}
-
-	resp, err := server.PollerResponderNext(beginAttachDetachDataDisks, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginAttachDetachDataDisks.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginAttachDetachDataDisks) {
-		v.beginAttachDetachDataDisks.remove(req)
-	}
-
-	return resp, nil
 }
 
 func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginDeallocate(req *http.Request) (*http.Response, error) {
@@ -585,7 +469,7 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginPerformMaintenan
 	}
 	beginPerformMaintenance := v.beginPerformMaintenance.get(req)
 	if beginPerformMaintenance == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/performMaintenance`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/performMaintenance`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -633,7 +517,7 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginPowerOff(req *ht
 	}
 	beginPowerOff := v.beginPowerOff.get(req)
 	if beginPowerOff == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/powerOff`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/poweroff`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -696,7 +580,7 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRedeploy(req *ht
 	}
 	beginRedeploy := v.beginRedeploy.get(req)
 	if beginRedeploy == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/redeploy`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/redeploy`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -850,7 +734,7 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRestart(req *htt
 	}
 	beginRestart := v.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -896,7 +780,7 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchRetrieveBootDiagnosti
 	if v.srv.RetrieveBootDiagnosticsData == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RetrieveBootDiagnosticsData not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveBootDiagnosticsData`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveBootDiagnosticsData`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -956,7 +840,7 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginRunCommand(req *
 	}
 	beginRunCommand := v.beginRunCommand.get(req)
 	if beginRunCommand == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runCommand`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1045,7 +929,7 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginStart(req *http.
 	}
 	beginStart := v.beginStart.get(req)
 	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualmachines/(?P<instanceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -1115,16 +999,7 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginUpdate(req *http
 		if err != nil {
 			return nil, err
 		}
-		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
-		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
-		var options *armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions
-		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
-			}
-		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, body, options)
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

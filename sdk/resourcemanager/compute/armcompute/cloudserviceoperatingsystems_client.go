@@ -25,7 +25,8 @@ type CloudServiceOperatingSystemsClient struct {
 }
 
 // NewCloudServiceOperatingSystemsClient creates a new instance of CloudServiceOperatingSystemsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServiceOperatingSystemsClient, error) {
@@ -44,7 +45,7 @@ func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azc
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-04
+// Generated from API version 2022-09-04
 //   - location - Name of the location that the OS family pertains to.
 //   - osFamilyName - Name of the OS family.
 //   - options - CloudServiceOperatingSystemsClientGetOSFamilyOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSFamily
@@ -91,7 +92,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -110,7 +111,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleResponse(resp
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-04
+// Generated from API version 2022-09-04
 //   - location - Name of the location that the OS version pertains to.
 //   - osVersionName - Name of the OS version.
 //   - options - CloudServiceOperatingSystemsClientGetOSVersionOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSVersion
@@ -157,7 +158,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -176,7 +177,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(res
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS Families. Do this till nextLink is null to fetch all the OS Families.
 //
-// Generated from API version 2024-11-04
+// Generated from API version 2022-09-04
 //   - location - Name of the location that the OS families pertain to.
 //   - options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.NewListOSFamiliesPager
 //     method.
@@ -219,7 +220,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,7 +239,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(r
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS versions. Do this till nextLink is null to fetch all the OS versions.
 //
-// Generated from API version 2024-11-04
+// Generated from API version 2022-09-04
 //   - location - Name of the location that the OS versions pertain to.
 //   - options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.NewListOSVersionsPager
 //     method.
@@ -281,7 +282,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSVersionsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

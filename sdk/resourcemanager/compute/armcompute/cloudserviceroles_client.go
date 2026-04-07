@@ -25,7 +25,8 @@ type CloudServiceRolesClient struct {
 }
 
 // NewCloudServiceRolesClient creates a new instance of CloudServiceRolesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCloudServiceRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudServiceRolesClient, error) {
@@ -43,7 +44,7 @@ func NewCloudServiceRolesClient(subscriptionID string, credential azcore.TokenCr
 // Get - Gets a role from a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-04
+// Generated from API version 2022-09-04
 //   - roleName - Name of the role.
 //   - resourceGroupName - Name of the resource group.
 //   - cloudServiceName - Name of the cloud service.
@@ -94,7 +95,7 @@ func (client *CloudServiceRolesClient) getCreateRequest(ctx context.Context, rol
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +113,7 @@ func (client *CloudServiceRolesClient) getHandleResponse(resp *http.Response) (C
 // NewListPager - Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page
 // of roles. Do this till nextLink is null to fetch all the roles.
 //
-// Generated from API version 2024-11-04
+// Generated from API version 2022-09-04
 //   - resourceGroupName - Name of the resource group.
 //   - cloudServiceName - Name of the cloud service.
 //   - options - CloudServiceRolesClientListOptions contains the optional parameters for the CloudServiceRolesClient.NewListPager
@@ -160,7 +161,7 @@ func (client *CloudServiceRolesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-04")
+	reqQP.Set("api-version", "2022-09-04")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -5,22 +5,6 @@
 
 package armcompute
 
-// AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions contains the optional parameters for the AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet
-// method.
-type AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions struct {
-	// Parameters supplied to the migrate operation on the availability set.
-	Parameters *ConvertToVirtualMachineScaleSetInput
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions contains the optional parameters for the AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet
-// method.
-type AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions struct {
-	// placeholder for future optional parameters
-}
-
 // AvailabilitySetsClientCreateOrUpdateOptions contains the optional parameters for the AvailabilitySetsClient.CreateOrUpdate
 // method.
 type AvailabilitySetsClientCreateOrUpdateOptions struct {
@@ -55,20 +39,8 @@ type AvailabilitySetsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions contains the optional parameters for the AvailabilitySetsClient.StartMigrationToVirtualMachineScaleSet
-// method.
-type AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions struct {
-	// placeholder for future optional parameters
-}
-
 // AvailabilitySetsClientUpdateOptions contains the optional parameters for the AvailabilitySetsClient.Update method.
 type AvailabilitySetsClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions contains the optional parameters for the AvailabilitySetsClient.ValidateMigrationToVirtualMachineScaleSet
-// method.
-type AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -109,13 +81,6 @@ type CapacityReservationGroupsClientListBySubscriptionOptions struct {
 	// VM Instance or both resource Ids which are associated to capacity
 	// reservation group in the response.
 	Expand *ExpandTypesForGetCapacityReservationGroups
-
-	// The query option to fetch Capacity Reservation Group Resource Ids.
-	// 'CreatedInSubscription' enables fetching Resource Ids for all capacity reservation group resources created in the subscription.
-	// 'SharedWithSubscription' enables fetching Resource Ids for all capacity reservation group resources shared with the subscription.
-	// 'All' enables fetching Resource Ids for all capacity reservation group resources shared with the subscription and created
-	// in the subscription.
-	ResourceIDsOnly *ResourceIDOptionsForGetCapacityReservationGroups
 }
 
 // CapacityReservationGroupsClientUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.Update
@@ -428,12 +393,6 @@ type DedicatedHostsClientBeginCreateOrUpdateOptions struct {
 
 // DedicatedHostsClientBeginDeleteOptions contains the optional parameters for the DedicatedHostsClient.BeginDelete method.
 type DedicatedHostsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DedicatedHostsClientBeginRedeployOptions contains the optional parameters for the DedicatedHostsClient.BeginRedeploy method.
-type DedicatedHostsClientBeginRedeployOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -818,134 +777,6 @@ type GalleryImagesClientListByGalleryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GalleryInVMAccessControlProfileVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryInVMAccessControlProfileVersionsClient.BeginCreateOrUpdate
-// method.
-type GalleryInVMAccessControlProfileVersionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryInVMAccessControlProfileVersionsClientBeginDeleteOptions contains the optional parameters for the GalleryInVMAccessControlProfileVersionsClient.BeginDelete
-// method.
-type GalleryInVMAccessControlProfileVersionsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryInVMAccessControlProfileVersionsClientBeginUpdateOptions contains the optional parameters for the GalleryInVMAccessControlProfileVersionsClient.BeginUpdate
-// method.
-type GalleryInVMAccessControlProfileVersionsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryInVMAccessControlProfileVersionsClientGetOptions contains the optional parameters for the GalleryInVMAccessControlProfileVersionsClient.Get
-// method.
-type GalleryInVMAccessControlProfileVersionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileOptions contains the optional parameters
-// for the GalleryInVMAccessControlProfileVersionsClient.NewListByGalleryInVMAccessControlProfilePager method.
-type GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GalleryInVMAccessControlProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.BeginCreateOrUpdate
-// method.
-type GalleryInVMAccessControlProfilesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryInVMAccessControlProfilesClientBeginDeleteOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.BeginDelete
-// method.
-type GalleryInVMAccessControlProfilesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryInVMAccessControlProfilesClientBeginUpdateOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.BeginUpdate
-// method.
-type GalleryInVMAccessControlProfilesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryInVMAccessControlProfilesClientGetOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.Get
-// method.
-type GalleryInVMAccessControlProfilesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GalleryInVMAccessControlProfilesClientListByGalleryOptions contains the optional parameters for the GalleryInVMAccessControlProfilesClient.NewListByGalleryPager
-// method.
-type GalleryInVMAccessControlProfilesClientListByGalleryOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GalleryScriptVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryScriptVersionsClient.BeginCreateOrUpdate
-// method.
-type GalleryScriptVersionsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryScriptVersionsClientBeginDeleteOptions contains the optional parameters for the GalleryScriptVersionsClient.BeginDelete
-// method.
-type GalleryScriptVersionsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryScriptVersionsClientBeginUpdateOptions contains the optional parameters for the GalleryScriptVersionsClient.BeginUpdate
-// method.
-type GalleryScriptVersionsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryScriptVersionsClientGetOptions contains the optional parameters for the GalleryScriptVersionsClient.Get method.
-type GalleryScriptVersionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GalleryScriptVersionsClientListByGalleryScriptOptions contains the optional parameters for the GalleryScriptVersionsClient.NewListByGalleryScriptPager
-// method.
-type GalleryScriptVersionsClientListByGalleryScriptOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GalleryScriptsClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryScriptsClient.BeginCreateOrUpdate
-// method.
-type GalleryScriptsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryScriptsClientBeginDeleteOptions contains the optional parameters for the GalleryScriptsClient.BeginDelete method.
-type GalleryScriptsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryScriptsClientBeginUpdateOptions contains the optional parameters for the GalleryScriptsClient.BeginUpdate method.
-type GalleryScriptsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// GalleryScriptsClientGetOptions contains the optional parameters for the GalleryScriptsClient.Get method.
-type GalleryScriptsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GalleryScriptsClientListByGalleryOptions contains the optional parameters for the GalleryScriptsClient.NewListByGalleryPager
-// method.
-type GalleryScriptsClientListByGalleryOptions struct {
-	// placeholder for future optional parameters
-}
-
 // GallerySharingProfileClientBeginUpdateOptions contains the optional parameters for the GallerySharingProfileClient.BeginUpdate
 // method.
 type GallerySharingProfileClientBeginUpdateOptions struct {
@@ -1122,8 +953,7 @@ type SSHPublicKeysClientDeleteOptions struct {
 // SSHPublicKeysClientGenerateKeyPairOptions contains the optional parameters for the SSHPublicKeysClient.GenerateKeyPair
 // method.
 type SSHPublicKeysClientGenerateKeyPairOptions struct {
-	// Parameters supplied to generate the SSH public key.
-	Parameters *SSHGenerateKeyPairInputParameters
+	// placeholder for future optional parameters
 }
 
 // SSHPublicKeysClientGetOptions contains the optional parameters for the SSHPublicKeysClient.Get method.
@@ -1230,12 +1060,6 @@ type SnapshotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SoftDeletedResourceClientListByArtifactNameOptions contains the optional parameters for the SoftDeletedResourceClient.NewListByArtifactNamePager
-// method.
-type SoftDeletedResourceClientListByArtifactNameOptions struct {
-	// placeholder for future optional parameters
-}
-
 // UsageClientListOptions contains the optional parameters for the UsageClient.NewListPager method.
 type UsageClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1331,13 +1155,6 @@ type VirtualMachineImagesClientListPublishersOptions struct {
 // method.
 type VirtualMachineImagesClientListSKUsOptions struct {
 	// placeholder for future optional parameters
-}
-
-// VirtualMachineImagesClientListWithPropertiesOptions contains the optional parameters for the VirtualMachineImagesClient.ListWithProperties
-// method.
-type VirtualMachineImagesClientListWithPropertiesOptions struct {
-	Orderby *string
-	Top     *int32
 }
 
 // VirtualMachineImagesEdgeZoneClientGetOptions contains the optional parameters for the VirtualMachineImagesEdgeZoneClient.Get
@@ -1555,20 +1372,6 @@ type VirtualMachineScaleSetVMRunCommandsClientListOptions struct {
 	Expand *string
 }
 
-// VirtualMachineScaleSetVMsClientBeginApproveRollingUpgradeOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade
-// method.
-type VirtualMachineScaleSetVMsClientBeginApproveRollingUpgradeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// VirtualMachineScaleSetVMsClientBeginAttachDetachDataDisksOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks
-// method.
-type VirtualMachineScaleSetVMsClientBeginAttachDetachDataDisksOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // VirtualMachineScaleSetVMsClientBeginDeallocateOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginDeallocate
 // method.
 type VirtualMachineScaleSetVMsClientBeginDeallocateOptions struct {
@@ -1652,14 +1455,6 @@ type VirtualMachineScaleSetVMsClientBeginStartOptions struct {
 // VirtualMachineScaleSetVMsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginUpdate
 // method.
 type VirtualMachineScaleSetVMsClientBeginUpdateOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -1707,27 +1502,9 @@ type VirtualMachineScaleSetVMsClientSimulateEvictionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachineScaleSetsClientBeginApproveRollingUpgradeOptions contains the optional parameters for the VirtualMachineScaleSetsClient.BeginApproveRollingUpgrade
-// method.
-type VirtualMachineScaleSetsClientBeginApproveRollingUpgradeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-
-	// A list of virtual machine instance IDs from the VM scale set.
-	VMInstanceIDs *VirtualMachineScaleSetVMInstanceIDs
-}
-
 // VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineScaleSetsClient.BeginCreateOrUpdate
 // method.
 type VirtualMachineScaleSetsClientBeginCreateOrUpdateOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -1837,13 +1614,6 @@ type VirtualMachineScaleSetsClientBeginRestartOptions struct {
 	VMInstanceIDs *VirtualMachineScaleSetVMInstanceIDs
 }
 
-// VirtualMachineScaleSetsClientBeginScaleOutOptions contains the optional parameters for the VirtualMachineScaleSetsClient.BeginScaleOut
-// method.
-type VirtualMachineScaleSetsClientBeginScaleOutOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // VirtualMachineScaleSetsClientBeginSetOrchestrationServiceStateOptions contains the optional parameters for the VirtualMachineScaleSetsClient.BeginSetOrchestrationServiceState
 // method.
 type VirtualMachineScaleSetsClientBeginSetOrchestrationServiceStateOptions struct {
@@ -1871,14 +1641,6 @@ type VirtualMachineScaleSetsClientBeginUpdateInstancesOptions struct {
 // VirtualMachineScaleSetsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineScaleSetsClient.BeginUpdate
 // method.
 type VirtualMachineScaleSetsClientBeginUpdateOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -1954,13 +1716,6 @@ type VirtualMachinesClientBeginAssessPatchesOptions struct {
 	ResumeToken string
 }
 
-// VirtualMachinesClientBeginAttachDetachDataDisksOptions contains the optional parameters for the VirtualMachinesClient.BeginAttachDetachDataDisks
-// method.
-type VirtualMachinesClientBeginAttachDetachDataDisksOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // VirtualMachinesClientBeginCaptureOptions contains the optional parameters for the VirtualMachinesClient.BeginCapture method.
 type VirtualMachinesClientBeginCaptureOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -1977,14 +1732,6 @@ type VirtualMachinesClientBeginConvertToManagedDisksOptions struct {
 // VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
 // method.
 type VirtualMachinesClientBeginCreateOrUpdateOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -1992,7 +1739,7 @@ type VirtualMachinesClientBeginCreateOrUpdateOptions struct {
 // VirtualMachinesClientBeginDeallocateOptions contains the optional parameters for the VirtualMachinesClient.BeginDeallocate
 // method.
 type VirtualMachinesClientBeginDeallocateOptions struct {
-	// Optional parameter to hibernate a virtual machine.
+	// Optional parameter to hibernate a virtual machine. (Feature in Preview)
 	Hibernate *bool
 
 	// Resumes the long-running operation from the provided token.
@@ -2011,16 +1758,6 @@ type VirtualMachinesClientBeginDeleteOptions struct {
 // VirtualMachinesClientBeginInstallPatchesOptions contains the optional parameters for the VirtualMachinesClient.BeginInstallPatches
 // method.
 type VirtualMachinesClientBeginInstallPatchesOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// VirtualMachinesClientBeginMigrateToVMScaleSetOptions contains the optional parameters for the VirtualMachinesClient.BeginMigrateToVMScaleSet
-// method.
-type VirtualMachinesClientBeginMigrateToVMScaleSetOptions struct {
-	// Parameters supplied to the Migrate Virtual Machine operation.
-	Parameters *MigrateVMToVirtualMachineScaleSetInput
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -2086,14 +1823,6 @@ type VirtualMachinesClientBeginStartOptions struct {
 
 // VirtualMachinesClientBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate method.
 type VirtualMachinesClientBeginUpdateOptions struct {
-	// The ETag of the transformation. Omit this value to always overwrite the current resource. Specify the last-seen ETag value
-	// to prevent accidentally overwriting concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will result
-	// in error from server as they are not supported.
-	IfNoneMatch *string
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

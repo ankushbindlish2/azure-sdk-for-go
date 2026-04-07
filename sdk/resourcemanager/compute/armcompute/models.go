@@ -43,69 +43,6 @@ type APIErrorBase struct {
 	Target *string
 }
 
-// AccessControlRules - This is the Access Control Rules specification for an inVMAccessControlProfile version.
-type AccessControlRules struct {
-	// A list of identities.
-	Identities []*AccessControlRulesIdentity
-
-	// A list of privileges.
-	Privileges []*AccessControlRulesPrivilege
-
-	// A list of role assignments.
-	RoleAssignments []*AccessControlRulesRoleAssignment
-
-	// A list of roles.
-	Roles []*AccessControlRulesRole
-}
-
-// AccessControlRulesIdentity - The properties of an Access Control Rule Identity.
-type AccessControlRulesIdentity struct {
-	// REQUIRED; The name of the identity.
-	Name *string
-
-	// The path to the executable.
-	ExePath *string
-
-	// The groupName corresponding to this identity.
-	GroupName *string
-
-	// The process name of the executable.
-	ProcessName *string
-
-	// The username corresponding to this identity.
-	UserName *string
-}
-
-// AccessControlRulesPrivilege - The properties of an Access Control Rule Privilege.
-type AccessControlRulesPrivilege struct {
-	// REQUIRED; The name of the privilege.
-	Name *string
-
-	// REQUIRED; The HTTP path corresponding to the privilege.
-	Path *string
-
-	// The query parameters to match in the path.
-	QueryParameters map[string]*string
-}
-
-// AccessControlRulesRole - The properties of an Access Control Rule Role.
-type AccessControlRulesRole struct {
-	// REQUIRED; The name of the role.
-	Name *string
-
-	// REQUIRED; A list of privileges needed by this role.
-	Privileges []*string
-}
-
-// AccessControlRulesRoleAssignment - The properties of an Access Control Rule RoleAssignment.
-type AccessControlRulesRoleAssignment struct {
-	// REQUIRED; A list of identities that can access the privileges defined by the role.
-	Identities []*string
-
-	// REQUIRED; The name of the role.
-	Role *string
-}
-
 // AccessURI - A disk access SAS uri.
 type AccessURI struct {
 	// READ-ONLY; A SAS uri for accessing a disk.
@@ -113,17 +50,10 @@ type AccessURI struct {
 
 	// READ-ONLY; A SAS uri for accessing a VM guest state.
 	SecurityDataAccessSAS *string
-
-	// READ-ONLY; A SAS uri for accessing a VM metadata.
-	SecurityMetadataAccessSAS *string
 }
 
 // AdditionalCapabilities - Enables or disables a capability on the virtual machine or virtual machine scale set.
 type AdditionalCapabilities struct {
-	// The flag enables the usage of FIPS 140-3 compliant cryptography on the protectedSettings of an extension. Learn more at:
-	// https://aka.ms/linuxagentfipssupport.
-	EnableFips1403Encryption *bool
-
 	// The flag that enables or disables hibernation capability on the VM.
 	HibernationEnabled *bool
 
@@ -131,15 +61,6 @@ type AdditionalCapabilities struct {
 	// type on the VM or VMSS. Managed disks with storage account type UltraSSDLRS can
 	// be added to a virtual machine or virtual machine scale set only if this property is enabled.
 	UltraSSDEnabled *bool
-}
-
-// AdditionalReplicaSet - Describes the additional replica set information.
-type AdditionalReplicaSet struct {
-	// The number of direct drive replicas of the Image Version to be created.This Property is updatable
-	RegionalReplicaCount *int32
-
-	// Specifies the storage account type to be used to create the direct drive replicas
-	StorageAccountType *StorageAccountType
 }
 
 // AdditionalUnattendContent - Specifies additional XML formatted information that can be included in the Unattend.xml file,
@@ -163,12 +84,6 @@ type AdditionalUnattendContent struct {
 	SettingName *SettingNames
 }
 
-// AllInstancesDown - Specifies if Scheduled Events should be auto-approved when all instances are down.
-type AllInstancesDown struct {
-	// Specifies if Scheduled Events should be auto-approved when all instances are down. its default value is true
-	AutomaticallyApprove *bool
-}
-
 // AlternativeOption - Describes the alternative option specified by the Publisher for this image when this image is deprecated.
 type AlternativeOption struct {
 	// Describes the type of the alternative option.
@@ -185,15 +100,6 @@ type ApplicationProfile struct {
 	GalleryApplications []*VMGalleryApplication
 }
 
-// AttachDetachDataDisksRequest - Specifies the input for attaching and detaching a list of managed data disks.
-type AttachDetachDataDisksRequest struct {
-	// The list of managed data disks to be attached.
-	DataDisksToAttach []*DataDisksToAttach
-
-	// The list of managed data disks to be detached.
-	DataDisksToDetach []*DataDisksToDetach
-}
-
 // AutomaticOSUpgradePolicy - The configuration parameters used for performing automatic OS upgrade.
 type AutomaticOSUpgradePolicy struct {
 	// Whether OS image rollback feature should be disabled. Default value is false.
@@ -205,11 +111,6 @@ type AutomaticOSUpgradePolicy struct {
 	// [https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet]
 	// is automatically set to false and cannot be set to true.
 	EnableAutomaticOSUpgrade *bool
-
-	// Indicates whether Auto OS Upgrade should undergo deferral. Deferred OS upgrades will send advanced notifications on a per-VM
-	// basis that an OS upgrade from rolling upgrades is incoming, via the IMDS
-	// tag 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved via an ApproveRollingUpgrade call.
-	OSRollingUpgradeDeferral *bool
 
 	// Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Default value is false. Auto OS Upgrade
 	// will fallback to the default policy if no policy is defined on the VMSS.
@@ -239,27 +140,6 @@ type AutomaticRepairsPolicy struct {
 	RepairAction *RepairAction
 }
 
-// AutomaticZoneRebalancingPolicy - The configuration parameters used while performing automatic AZ balancing.
-type AutomaticZoneRebalancingPolicy struct {
-	// Specifies whether Automatic AZ Balancing should be enabled on the virtual machine scale set. The default value is false.
-	Enabled *bool
-
-	// Type of rebalance behavior that will be used for recreating virtual machines in the scale set across availability zones.
-	// Default and only supported value for now is CreateBeforeDelete.
-	RebalanceBehavior *RebalanceBehavior
-
-	// Type of rebalance strategy that will be used for rebalancing virtual machines in the scale set across availability zones.
-	// Default and only supported value for now is Recreate.
-	RebalanceStrategy *RebalanceStrategy
-}
-
-// AvailabilityPolicy - In the case of an availability or connectivity issue with the data disk, specify the behavior of your
-// VM
-type AvailabilityPolicy struct {
-	// Determines on how to handle disks with slow I/O.
-	ActionOnDiskDelay *AvailabilityPolicyDiskDelay
-}
-
 // AvailabilitySet - Specifies information about the availability set that the virtual machine should be assigned to. Virtual
 // machines specified in the same availability set are allocated to different nodes to maximize
 // availability. For more information about availability sets, see Availability sets overview [https://docs.microsoft.com/azure/virtual-machines/availability-set-overview].
@@ -268,7 +148,7 @@ type AvailabilityPolicy struct {
 // Currently, a VM can only be added to an
 // availability set at creation time. An existing VM cannot be added to an availability set.
 type AvailabilitySet struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The instance view of a resource.
@@ -279,25 +159,22 @@ type AvailabilitySet struct {
 	// machines with unmanaged disks. Default value is 'Classic'.
 	SKU *SKU
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 // AvailabilitySetListResult - The List Availability Set operation response.
 type AvailabilitySetListResult struct {
-	// REQUIRED; The list of availability sets.
+	// REQUIRED; The list of availability sets
 	Value []*AvailabilitySet
 
 	// The URI to fetch the next page of AvailabilitySets. Call ListNext() with this URI to fetch the next page of AvailabilitySets.
@@ -316,18 +193,11 @@ type AvailabilitySetProperties struct {
 	// 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
-	// Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the
-	// availability set.
-	ScheduledEventsPolicy *ScheduledEventsPolicy
-
 	// A list of references to all virtual machines in the availability set.
 	VirtualMachines []*SubResource
 
 	// READ-ONLY; The resource status information.
 	Statuses []*InstanceViewStatus
-
-	// READ-ONLY; Describes the migration properties on the Availability Set.
-	VirtualMachineScaleSetMigrationInfo *VirtualMachineScaleSetMigrationInfo
 }
 
 // AvailabilitySetUpdate - Specifies information about the availability set that the virtual machine should be assigned to.
@@ -420,37 +290,34 @@ type BootDiagnosticsInstanceView struct {
 
 // CapacityReservation - Specifies information about the capacity reservation.
 type CapacityReservation struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
-	// REQUIRED; SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. For
-	// Block capacity reservations, sku.capacity can only accept values 1, 2, 4, 8, 16, 32, 64.
-	// Currently VM Skus with the capability called 'CapacityReservationSupported' set to true are supported. When 'CapacityReservationSupported'
-	// is true, the SKU capability also specifies the
-	// 'SupportedCapacityReservationTypes', which lists the types of capacity reservations (such as Targeted or Block) that the
-	// SKU supports. Refer to List Microsoft.Compute SKUs in a region
-	// (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
+	// REQUIRED; SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. Currently
+	// VM Skus with the capability called 'CapacityReservationSupported' set to true are
+	// supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list)
+	// for supported values.
 	SKU *SKU
 
 	// Properties of the Capacity reservation.
 	Properties *CapacityReservationProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// The availability zones.
+	// Availability Zone to use for this capacity reservation. The zone has to be single value and also should be part for the
+	// list of zones specified during the capacity reservation group creation. The zone
+	// can be assigned only during creation. If not provided, the reservation supports only non-zonal deployments. If provided,
+	// enforces VM/VMSS using this capacity reservation to be in same zone.
 	Zones []*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -458,43 +325,38 @@ type CapacityReservation struct {
 // be assigned to. Currently, a capacity reservation can only be added to a capacity reservation group at
 // creation time. An existing capacity reservation cannot be added or moved to another capacity reservation group.
 type CapacityReservationGroup struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// capacity reservation group Properties.
 	Properties *CapacityReservationGroupProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// The availability zones.
+	// Availability Zones to use for this capacity reservation group. The zones can be assigned only during creation. If not provided,
+	// the group supports only regional resources in the region. If provided,
+	// enforces each capacity reservation in the group to be in one of the zones.
 	Zones []*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 type CapacityReservationGroupInstanceView struct {
 	// READ-ONLY; List of instance view of the capacity reservations under the capacity reservation group.
 	CapacityReservations []*CapacityReservationInstanceViewWithName
-
-	// READ-ONLY; List of the subscriptions that the capacity reservation group is shared with. Note: Minimum api-version: 2023-09-01.
-	// Please refer to https://aka.ms/computereservationsharing for more details.
-	SharedSubscriptionIDs []*SubResourceReadOnly
 }
 
 // CapacityReservationGroupListResult - The List capacity reservation group with resource group response.
 type CapacityReservationGroupListResult struct {
-	// REQUIRED; The list of capacity reservation groups.
+	// REQUIRED; The list of capacity reservation groups
 	Value []*CapacityReservationGroup
 
 	// The URI to fetch the next page of capacity reservation groups. Call ListNext() with this URI to fetch the next page of
@@ -504,18 +366,6 @@ type CapacityReservationGroupListResult struct {
 
 // CapacityReservationGroupProperties - capacity reservation group Properties.
 type CapacityReservationGroupProperties struct {
-	// Indicates the type of capacity reservation. Allowed values are 'Block' for block capacity reservations and 'Targeted' for
-	// reservations that enable a VM to consume a specific capacity reservation when
-	// a capacity reservation group is provided. The reservation type is immutable and cannot be changed after it is assigned.
-	ReservationType *ReservationType
-
-	// Specifies the settings to enable sharing across subscriptions for the capacity reservation group resource. The capacity
-	// reservation group resource can generally be shared across subscriptions
-	// belonging to a single Azure AAD tenant or across AAD tenants if there is a trust relationship established between the tenants.
-	// Block capacity reservation does not support sharing across subscriptions.
-	// Note: Minimum api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
-	SharingProfile *ResourceSharingProfile
-
 	// READ-ONLY; A list of all capacity reservation resource ids that belong to capacity reservation group.
 	CapacityReservations []*SubResourceReadOnly
 
@@ -562,7 +412,7 @@ type CapacityReservationInstanceViewWithName struct {
 
 // CapacityReservationListResult - The list capacity reservation operation response.
 type CapacityReservationListResult struct {
-	// REQUIRED; The list of capacity reservations.
+	// REQUIRED; The list of capacity reservations
 	Value []*CapacityReservation
 
 	// The URI to fetch the next page of capacity reservations. Call ListNext() with this URI to fetch the next page of capacity
@@ -580,13 +430,6 @@ type CapacityReservationProfile struct {
 
 // CapacityReservationProperties - Properties of the Capacity reservation.
 type CapacityReservationProperties struct {
-	// Defines the schedule for Block-type capacity reservations. Specifies the schedule during which capacity reservation is
-	// active and VM or VMSS resource can be allocated using reservation. This property
-	// is required and only supported when the capacity reservation group type is 'Block'. The scheduleProfile, start, and end
-	// fields are immutable after creation. Minimum API version: 2025-04-01. Please
-	// refer to https://aka.ms/blockcapacityreservation for more details.
-	ScheduleProfile *ScheduleProfile
-
 	// READ-ONLY; The Capacity reservation instance view.
 	InstanceView *CapacityReservationInstanceView
 
@@ -612,19 +455,15 @@ type CapacityReservationProperties struct {
 	VirtualMachinesAssociated []*SubResourceReadOnly
 }
 
-// CapacityReservationUpdate - Specifies information about the capacity reservation. sku.capacity cannot be updated for Block
-// Capacity Reservation. Tags can be update for all Capacity Reservation Types.
+// CapacityReservationUpdate - Specifies information about the capacity reservation. Only tags and sku.capacity can be updated.
 type CapacityReservationUpdate struct {
 	// Properties of the Capacity reservation.
 	Properties *CapacityReservationProperties
 
 	// SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. Currently VM
 	// Skus with the capability called 'CapacityReservationSupported' set to true are
-	// supported. When 'CapacityReservationSupported' is true, the SKU capability also specifies the 'SupportedCapacityReservationTypes',
-	// which lists the types of capacity reservations (such as Targeted or
-	// Block) that the SKU supports. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list)
-	// for supported values. Note: The SKU name and capacity
-	// cannot be updated for Block capacity reservations.
+	// supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list)
+	// for supported values.
 	SKU *SKU
 
 	// Resource tags
@@ -649,6 +488,9 @@ type CloudService struct {
 	// Cloud service properties
 	Properties *CloudServiceProperties
 
+	// The system meta data relating to this resource.
+	SystemData *SystemData
+
 	// Resource tags.
 	Tags map[string]*string
 
@@ -661,9 +503,6 @@ type CloudService struct {
 
 	// READ-ONLY; Resource name.
 	Name *string
-
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
 	Type *string
@@ -913,10 +752,6 @@ type CloudServiceVaultAndSecretReference struct {
 type CloudServiceVaultCertificate struct {
 	// This is the URL of a certificate that has been uploaded to Key Vault as a secret.
 	CertificateURL *string
-
-	// Flag indicating if the certificate provided is a bootstrap certificate to be used by the Key Vault Extension to fetch the
-	// remaining certificates.
-	IsBootstrapCertificate *bool
 }
 
 // CloudServiceVaultSecretGroup - Describes a set of certificates which are all in the same Key Vault.
@@ -932,9 +767,6 @@ type CloudServiceVaultSecretGroup struct {
 type CommunityGallery struct {
 	// The identifier information of community gallery.
 	Identifier *CommunityGalleryIdentifier
-
-	// Describes the properties of a community gallery.
-	Properties *CommunityGalleryProperties
 
 	// READ-ONLY; Resource location
 	Location *string
@@ -987,7 +819,8 @@ type CommunityGalleryImageList struct {
 	// REQUIRED; A list of community gallery images.
 	Value []*CommunityGalleryImage
 
-	// The link to the next page of items
+	// The uri to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of community
+	// gallery images.
 	NextLink *string
 }
 
@@ -1001,26 +834,23 @@ type CommunityGalleryImageProperties struct {
 	OSState *OperatingSystemStateTypes
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
-	// managed image. Possible values are: Windows, Linux.
+	// managed image.
+	// Possible values are:
+	// Windows
+	// Linux
 	OSType *OperatingSystemTypes
 
 	// The architecture of the image. Applicable to OS disks only.
 	Architecture *Architecture
 
-	// The artifact tags of a community gallery resource.
-	ArtifactTags map[string]*string
-
 	// Describes the disallowed disk types.
 	Disallowed *Disallowed
-
-	// The disclaimer for a community gallery resource.
-	Disclaimer *string
 
 	// The end of life date of the gallery image definition. This property can be used for decommissioning purposes. This property
 	// is updatable.
 	EndOfLifeDate *time.Time
 
-	// The end-user license agreement for the current community gallery image.
+	// End-user license agreement for the current community gallery image.
 	Eula *string
 
 	// A list of gallery image features.
@@ -1029,7 +859,7 @@ type CommunityGalleryImageProperties struct {
 	// The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
 	HyperVGeneration *HyperVGeneration
 
-	// Privacy statement URI for the current community gallery image.
+	// Privacy statement uri for the current community gallery image.
 	PrivacyStatementURI *string
 
 	// Describes the gallery image definition purchase plan. This is used by marketplace images.
@@ -1062,19 +892,13 @@ type CommunityGalleryImageVersionList struct {
 	// REQUIRED; A list of community gallery image versions.
 	Value []*CommunityGalleryImageVersion
 
-	// The URI to fetch the next page of community gallery image versions. Call ListNext() with this to fetch the next page of
+	// The uri to fetch the next page of community gallery image versions. Call ListNext() with this to fetch the next page of
 	// community gallery image versions.
 	NextLink *string
 }
 
 // CommunityGalleryImageVersionProperties - Describes the properties of a gallery image version.
 type CommunityGalleryImageVersionProperties struct {
-	// The artifact tags of a community gallery resource.
-	ArtifactTags map[string]*string
-
-	// The disclaimer for a community gallery resource.
-	Disclaimer *string
-
 	// The end of life date of the gallery image version Definition. This property can be used for decommissioning purposes. This
 	// property is updatable.
 	EndOfLifeDate *time.Time
@@ -1111,42 +935,6 @@ type CommunityGalleryInfo struct {
 	PublicNames []*string
 }
 
-// CommunityGalleryMetadata - The metadata of community gallery.
-type CommunityGalleryMetadata struct {
-	// REQUIRED; A list of public names the gallery has.
-	PublicNames []*string
-
-	// REQUIRED; The publisher email id of this community gallery.
-	PublisherContact *string
-
-	// The end-user license agreement for this community gallery.
-	Eula *string
-
-	// The link for the privacy statement of this community gallery from the gallery publisher.
-	PrivacyStatementURI *string
-
-	// The publisher URI of this community gallery.
-	PublisherURI *string
-}
-
-// CommunityGalleryProperties - Describes the properties of a community gallery.
-type CommunityGalleryProperties struct {
-	// The artifact tags of a community gallery resource.
-	ArtifactTags map[string]*string
-
-	// The metadata of community gallery.
-	CommunityMetadata *CommunityGalleryMetadata
-
-	// The disclaimer for a community gallery resource.
-	Disclaimer *string
-}
-
-// ConvertToVirtualMachineScaleSetInput - Describes the Virtual Machine Scale Set to convert from Availability Set.
-type ConvertToVirtualMachineScaleSetInput struct {
-	// Specifies information about the Virtual Machine Scale Set that the Availability Set should be converted to.
-	VirtualMachineScaleSetName *string
-}
-
 // CopyCompletionError - Indicates the error details if the background copy of a resource created via the CopyStart operation
 // fails.
 type CopyCompletionError struct {
@@ -1162,9 +950,6 @@ type CreationData struct {
 	// REQUIRED; This enumerates the possible sources of a disk's creation.
 	CreateOption *DiskCreateOption
 
-	// Required if createOption is CopyFromSanSnapshot. This is the ARM id of the source elastic san volume snapshot.
-	ElasticSanResourceID *string
-
 	// Required if creating from a Gallery Image. The id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference
 	// will be the ARM id of the shared galley image version from which to create a
 	// disk.
@@ -1172,10 +957,6 @@ type CreationData struct {
 
 	// Disk source information for PIR or user images.
 	ImageReference *ImageDiskReference
-
-	// For snapshots created from Premium SSD v2 or Ultra disk, this property determines the time in minutes the snapshot is retained
-	// for instant access to enable faster restore.
-	InstantAccessDurationMinutes *int64
 
 	// Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. 4096 is the default.
 	LogicalSectorSize *int32
@@ -1185,14 +966,8 @@ type CreationData struct {
 	// disabled after enabled.
 	PerformancePlus *bool
 
-	// If this field is set on a snapshot and createOption is CopyStart, the snapshot will be copied at a quicker speed.
-	ProvisionedBandwidthCopySpeed *ProvisionedBandwidthCopyOption
-
 	// If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
 	SecurityDataURI *string
-
-	// If createOption is ImportSecure, this is the URI of a blob to be imported into VM metadata for Confidential VM.
-	SecurityMetadataURI *string
 
 	// If createOption is Copy, this is the ARM id of the source snapshot or disk.
 	SourceResourceID *string
@@ -1215,13 +990,11 @@ type CreationData struct {
 
 // DataDisk - Describes a data disk.
 type DataDisk struct {
-	// REQUIRED; Specifies how the virtual machine disk should be created. Possible values are Attach: This value is used when
-	// you are using a specialized disk to create the virtual machine. FromImage: This value is
-	// used when you are using an image to create the virtual machine data disk. If you are using a platform image, you should
-	// also use the imageReference element described above. If you are using a
-	// marketplace image, you should also use the plan element previously described. Empty: This value is used when creating an
-	// empty data disk. Copy: This value is used to create a data disk from a snapshot
-	// or another disk. Restore: This value is used to create a data disk from a disk restore point.
+	// REQUIRED; Specifies how the virtual machine should be created. Possible values are: Attach. This value is used when you
+	// are using a specialized disk to create the virtual machine. FromImage. This value is used
+	// when you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference
+	// element described above. If you are using a marketplace image, you
+	// should also use the plan element previously described.
 	CreateOption *DiskCreateOptionTypes
 
 	// REQUIRED; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
@@ -1242,15 +1015,10 @@ type DataDisk struct {
 	// applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected
 	// failure from the virtual machine and the disk is still not released then
 	// use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed
-	// when using this detach behavior. This feature is still in preview. To
-	// force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+	// when using this detach behavior. This feature is still in preview mode and is
+	// not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
+	// detachOption: 'ForceDetach'.
 	DetachOption *DiskDetachOptionTypes
-
-	// Specifies the Read-Write IOPS for the managed disk when StorageAccountType is UltraSSD_LRS.
-	DiskIOPSReadWrite *int64
-
-	// Specifies the bandwidth in MB per second for the managed disk when StorageAccountType is UltraSSD_LRS.
-	DiskMBpsReadWrite *int64
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
 	// virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3
@@ -1268,9 +1036,6 @@ type DataDisk struct {
 	// The disk name.
 	Name *string
 
-	// The source resource identifier. It can be a snapshot, or disk restore point from which to create a disk.
-	SourceResource *APIEntityReference
-
 	// Specifies whether the data disk is in process of detachment from the VirtualMachine/VirtualMachineScaleset
 	ToBeDetached *bool
 
@@ -1279,6 +1044,16 @@ type DataDisk struct {
 
 	// Specifies whether writeAccelerator should be enabled or disabled on the disk.
 	WriteAcceleratorEnabled *bool
+
+	// READ-ONLY; Specifies the Read-Write IOPS for the managed disk when StorageAccountType is UltraSSD_LRS. Returned only for
+	// VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine
+	// Scale Set.
+	DiskIOPSReadWrite *int64
+
+	// READ-ONLY; Specifies the bandwidth in MB per second for the managed disk when StorageAccountType is UltraSSD_LRS. Returned
+	// only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the
+	// VirtualMachine Scale Set.
+	DiskMBpsReadWrite *int64
 }
 
 // DataDiskImage - Contains the data disk images information.
@@ -1299,44 +1074,9 @@ type DataDiskImageEncryption struct {
 	DiskEncryptionSetID *string
 }
 
-// DataDisksToAttach - Describes the data disk to be attached.
-type DataDisksToAttach struct {
-	// REQUIRED; ID of the managed data disk.
-	DiskID *string
-
-	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The defaulting behavior is: None for
-	// Standard storage. ReadOnly for Premium storage.
-	Caching *CachingTypes
-
-	// Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: Delete. If this value
-	// is used, the data disk is deleted when VM is deleted. Detach. If this value is
-	// used, the data disk is retained after VM is deleted. The default value is set to Detach.
-	DeleteOption *DiskDeleteOptionTypes
-
-	// Specifies the customer managed disk encryption set resource id for the managed disk.
-	DiskEncryptionSet *DiskEncryptionSetParameters
-
-	// The logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be
-	// unique for each data disk attached to a VM. If not specified, lun would be auto
-	// assigned.
-	Lun *int32
-
-	// Specifies whether writeAccelerator should be enabled or disabled on the disk.
-	WriteAcceleratorEnabled *bool
-}
-
-// DataDisksToDetach - Describes the data disk to be detached.
-type DataDisksToDetach struct {
-	// REQUIRED; ID of the managed data disk.
-	DiskID *string
-
-	// Supported options available for Detach of a disk from a VM. Refer to DetachOption object reference for more details.
-	DetachOption *DiskDetachOptionTypes
-}
-
 // DedicatedHost - Specifies information about the Dedicated host.
 type DedicatedHost struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// REQUIRED; SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List Microsoft.Compute
@@ -1346,19 +1086,16 @@ type DedicatedHost struct {
 	// Properties of the dedicated host.
 	Properties *DedicatedHostProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -1382,28 +1119,27 @@ type DedicatedHostAvailableCapacity struct {
 // Currently, a dedicated host can only be added to a dedicated host group at creation time. An
 // existing dedicated host cannot be added to another dedicated host group.
 type DedicatedHostGroup struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Dedicated Host Group Properties.
 	Properties *DedicatedHostGroupProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// The availability zones.
+	// Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation.
+	// If not provided, the group supports all zones in the region. If provided,
+	// enforces each host in the group to be in the same zone.
 	Zones []*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -1414,7 +1150,7 @@ type DedicatedHostGroupInstanceView struct {
 
 // DedicatedHostGroupListResult - The List Dedicated Host Group with resource group response.
 type DedicatedHostGroupListResult struct {
-	// REQUIRED; The list of dedicated host groups.
+	// REQUIRED; The list of dedicated host groups
 	Value []*DedicatedHostGroup
 
 	// The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI to fetch the next page of Dedicated
@@ -1502,7 +1238,7 @@ type DedicatedHostInstanceViewWithName struct {
 
 // DedicatedHostListResult - The list dedicated host operation response.
 type DedicatedHostListResult struct {
-	// REQUIRED; The list of dedicated hosts.
+	// REQUIRED; The list of dedicated hosts
 	Value []*DedicatedHost
 
 	// The URI to fetch the next page of dedicated hosts. Call ListNext() with this URI to fetch the next page of dedicated hosts.
@@ -1544,9 +1280,6 @@ type DedicatedHostProperties struct {
 
 // DedicatedHostSizeListResult - The List Dedicated Host sizes operation response.
 type DedicatedHostSizeListResult struct {
-	// The link to the next page of items.
-	NextLink *string
-
 	// The list of dedicated host sizes.
 	Value []*string
 }
@@ -1566,18 +1299,6 @@ type DedicatedHostUpdate struct {
 	Tags map[string]*string
 }
 
-// DefaultVirtualMachineScaleSetInfo - Indicates the target Virtual Machine ScaleSet properties upon triggering a seamless
-// migration without downtime of the VMs via the ConvertToVirtualMachineScaleSet API.
-type DefaultVirtualMachineScaleSetInfo struct {
-	// READ-ONLY; Indicates if the the maximum capacity of the default migrated Virtual Machine Scale Set after its migration
-	// will be constrained to a limited number of VMs.
-	ConstrainedMaximumCapacity *bool
-
-	// READ-ONLY; The default Virtual Machine ScaleSet Uri that the Availability Set will be moved to upon triggering a seamless
-	// migration via the ConvertToVirtualMachineScaleSet API.
-	DefaultVirtualMachineScaleSet *SubResource
-}
-
 // DiagnosticsProfile - Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
 type DiagnosticsProfile struct {
 	// Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. NOTE:
@@ -1593,12 +1314,11 @@ type DiffDiskSettings struct {
 	// Specifies the ephemeral disk settings for operating system disk.
 	Option *DiffDiskOptions
 
-	// Specifies the ephemeral disk placement for operating system disk. Possible values are: CacheDisk, ResourceDisk, NvmeDisk.
-	// The defaulting behavior is: CacheDisk if one is configured for the VM size
-	// otherwise ResourceDisk or NvmeDisk is used. Refer to the VM size documentation for Windows VM at https://docs.microsoft.com/azure/virtual-machines/windows/sizes
+	// Specifies the ephemeral disk placement for operating system disk. Possible values are: CacheDisk, ResourceDisk. The defaulting
+	// behavior is: CacheDisk if one is configured for the VM size otherwise
+	// ResourceDisk is used. Refer to the VM size documentation for Windows VM at https://docs.microsoft.com/azure/virtual-machines/windows/sizes
 	// and Linux VM at
-	// https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk. Minimum api-version
-	// for NvmeDisk: 2024-03-01.
+	// https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
 	Placement *DiffDiskPlacement
 }
 
@@ -1616,7 +1336,7 @@ type DisallowedConfiguration struct {
 
 // Disk resource.
 type Disk struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The extended location where the disk will be created. Extended location cannot be changed.
@@ -1628,13 +1348,13 @@ type Disk struct {
 	// The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, StandardSSDZRS, or PremiumV2_LRS.
 	SKU *DiskSKU
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
 	// The Logical zone list for Disk.
 	Zones []*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
 	// READ-ONLY; A relative URI containing the ID of the VM that has the disk attached.
@@ -1644,47 +1364,42 @@ type Disk struct {
 	// a value greater than one for disks to allow attaching them to multiple VMs.
 	ManagedByExtended []*string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 // DiskAccess - disk access resource.
 type DiskAccess struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The extended location where the disk access will be created. Extended location cannot be changed.
 	ExtendedLocation *ExtendedLocation
 	Properties       *DiskAccessProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 // DiskAccessList - The List disk access operation response.
 type DiskAccessList struct {
-	// REQUIRED; The DiskAccess items on this page
+	// REQUIRED; A list of disk access resources.
 	Value []*DiskAccess
 
-	// The link to the next page of items
+	// The uri to fetch the next page of disk access resources. Call ListNext() with this to fetch the next page of disk access
+	// resources.
 	NextLink *string
 }
 
@@ -1708,7 +1423,7 @@ type DiskAccessUpdate struct {
 
 // DiskEncryptionSet - disk encryption set resource.
 type DiskEncryptionSet struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The managed identity for the disk encryption set. It should be given permission on the key vault before it can be used
@@ -1716,28 +1431,26 @@ type DiskEncryptionSet struct {
 	Identity   *EncryptionSetIdentity
 	Properties *EncryptionSetProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 // DiskEncryptionSetList - The List disk encryption set operation response.
 type DiskEncryptionSetList struct {
-	// REQUIRED; The DiskEncryptionSet items on this page
+	// REQUIRED; A list of disk encryption sets.
 	Value []*DiskEncryptionSet
 
-	// The link to the next page of items
+	// The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk encryption
+	// sets.
 	NextLink *string
 }
 
@@ -1805,10 +1518,10 @@ type DiskInstanceView struct {
 
 // DiskList - The List Disks operation response.
 type DiskList struct {
-	// REQUIRED; The Disk items on this page
+	// REQUIRED; A list of disks.
 	Value []*Disk
 
-	// The link to the next page of items
+	// The uri to fetch the next page of disks. Call ListNext() with this to fetch the next page of disks.
 	NextLink *string
 }
 
@@ -1816,9 +1529,6 @@ type DiskList struct {
 type DiskProperties struct {
 	// REQUIRED; Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData
-
-	// Determines how platform treats disk failures
-	AvailabilityPolicy *AvailabilityPolicy
 
 	// Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default.
 	// Does not apply to Ultra disks.
@@ -1908,11 +1618,6 @@ type DiskProperties struct {
 	// READ-ONLY; The state of the disk.
 	DiskState *DiskState
 
-	// READ-ONLY; The UTC time when the ownership state of the disk was last changed i.e., the time the disk was last attached
-	// or detached from a VM or the time when the VM to which the disk was attached was
-	// deallocated or started.
-	LastOwnershipUpdateTime *time.Time
-
 	// READ-ONLY; Properties of the disk for which update is pending.
 	PropertyUpdatesInProgress *PropertyUpdatesInProgress
 
@@ -1951,16 +1656,13 @@ type DiskRestorePoint struct {
 	// Properties of an incremental disk restore point
 	Properties *DiskRestorePointProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -1984,17 +1686,15 @@ type DiskRestorePointInstanceView struct {
 
 	// The disk restore point replication status information.
 	ReplicationStatus *DiskRestorePointReplicationStatus
-
-	// The state of snapshot which determines the access availability of the snapshot.
-	SnapshotAccessState *SnapshotAccessState
 }
 
 // DiskRestorePointList - The List Disk Restore Points operation response.
 type DiskRestorePointList struct {
-	// REQUIRED; The DiskRestorePoint items on this page
+	// REQUIRED; A list of disk restore points.
 	Value []*DiskRestorePoint
 
-	// The link to the next page of items
+	// The uri to fetch the next page of disk restore points. Call ListNext() with this to fetch the next page of disk restore
+	// points.
 	NextLink *string
 }
 
@@ -2032,10 +1732,6 @@ type DiskRestorePointProperties struct {
 
 	// READ-ONLY; id of the backing snapshot's MIS family
 	FamilyID *string
-
-	// READ-ONLY; Logical sector size in bytes for disk restore points of UltraSSDLRS and PremiumV2LRS disks. Supported values
-	// are 512 and 4096. 4096 is the default.
-	LogicalSectorSize *int32
 
 	// READ-ONLY; The Operating System type.
 	OSType *OperatingSystemTypes
@@ -2098,9 +1794,6 @@ type DiskUpdate struct {
 
 // DiskUpdateProperties - Disk resource update properties.
 type DiskUpdateProperties struct {
-	// Determines how platform treats disk failures
-	AvailabilityPolicy *AvailabilityPolicy
-
 	// Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default.
 	// Does not apply to Ultra disks.
 	BurstingEnabled *bool
@@ -2181,12 +1874,6 @@ type Encryption struct {
 
 	// The type of key used to encrypt the data of the disk.
 	Type *EncryptionType
-}
-
-// EncryptionIdentity - Specifies the Managed Identity used by ADE to get access token for keyvault operations.
-type EncryptionIdentity struct {
-	// Specifies ARM Resource ID of one of the user identities associated with the VM.
-	UserAssignedIdentityResourceID *string
 }
 
 // EncryptionImages - Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the
@@ -2277,30 +1964,6 @@ type EncryptionSettingsElement struct {
 	KeyEncryptionKey *KeyVaultAndKeyReference
 }
 
-// EventGridAndResourceGraph - Specifies eventGridAndResourceGraph related Scheduled Event related configurations.
-type EventGridAndResourceGraph struct {
-	// Specifies if event grid and resource graph is enabled for Scheduled event related configurations.
-	Enable *bool
-
-	// Specifies the api-version to determine which Scheduled Events configuration schema version will be delivered.
-	ScheduledEventsAPIVersion *string
-}
-
-// ExecutedValidation - This is the executed Validation.
-type ExecutedValidation struct {
-	// This property specifies the starting timestamp.
-	ExecutionTime *time.Time
-
-	// This property specifies the type of image version validation.
-	Type *string
-
-	// This property specifies the valid version of the validation.
-	Version *string
-
-	// READ-ONLY; This property specifies the status of the validationProfile of the image version.
-	Status *ValidationStatus
-}
-
 // ExtendedLocation - The complex type of the extended location.
 type ExtendedLocation struct {
 	// The name of the extended location.
@@ -2321,52 +1984,43 @@ type Extension struct {
 
 // Gallery - Specifies information about the Shared Image Gallery that you want to create or update.
 type Gallery struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
-
-	// The identity of the gallery, if configured.
-	Identity *GalleryIdentity
 
 	// Describes the properties of a Shared Image Gallery.
 	Properties *GalleryProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 // GalleryApplication - Specifies information about the gallery Application Definition that you want to create or update.
 type GalleryApplication struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Describes the properties of a gallery Application Definition.
 	Properties *GalleryApplicationProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -2406,17 +2060,20 @@ type GalleryApplicationCustomActionParameter struct {
 
 // GalleryApplicationList - The List Gallery Applications operation response.
 type GalleryApplicationList struct {
-	// REQUIRED; The GalleryApplication items on this page
+	// REQUIRED; A list of Gallery Applications.
 	Value []*GalleryApplication
 
-	// The link to the next page of items
+	// The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this to fetch
+	// the next page of gallery Application Definitions.
 	NextLink *string
 }
 
 // GalleryApplicationProperties - Describes the properties of a gallery Application Definition.
 type GalleryApplicationProperties struct {
-	// REQUIRED; This property allows you to specify the supported type of the OS that application is built for. Possible values
-	// are: Windows, Linux.
+	// REQUIRED; This property allows you to specify the supported type of the OS that application is built for.
+	// Possible values are:
+	// Windows
+	// Linux
 	SupportedOSType *OperatingSystemTypes
 
 	// A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.
@@ -2459,25 +2116,22 @@ type GalleryApplicationUpdate struct {
 
 // GalleryApplicationVersion - Specifies information about the gallery Application Version that you want to create or update.
 type GalleryApplicationVersion struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Describes the properties of a gallery image version.
 	Properties *GalleryApplicationVersionProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -2539,13 +2193,7 @@ type GalleryApplicationVersionPublishingProfile struct {
 	// VM or VM scale set.
 	Settings *UserArtifactSettings
 
-	// Specifies the strategy to be used when selecting the storage account type. Cannot be specified along with storageAccountType,
-	// but can be overridden per region by specifying
-	// targetRegions[].storageAccountType. This property is not updatable.
-	StorageAccountStrategy *StorageAccountStrategy
-
-	// Specifies the storage account type to be used to store the image. Cannot be specified along with storageAccountStrategy.
-	// This property is not updatable.
+	// Specifies the storage account type to be used to store the image. This property is not updatable.
 	StorageAccountType *StorageAccountType
 
 	// The target extended locations where the Image Version is going to be replicated to. This property is updatable.
@@ -2587,12 +2235,8 @@ type GalleryArtifactVersionFullSource struct {
 	// The resource Id of the source Community Gallery Image. Only required when using Community Gallery Image as a source.
 	CommunityGalleryImageID *string
 
-	// The id of the gallery artifact version source.
+	// The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user image or storage account resource.
 	ID *string
-
-	// The resource Id of the source virtual machine. Only required when capturing a virtual machine to source this Gallery Image
-	// Version.
-	VirtualMachineID *string
 }
 
 // GalleryDataDiskImage - This is the data disk image.
@@ -2614,7 +2258,7 @@ type GalleryDataDiskImage struct {
 
 // GalleryDiskImageSource - The source for the disk image.
 type GalleryDiskImageSource struct {
-	// The id of the gallery artifact version source.
+	// The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user image or storage account resource.
 	ID *string
 
 	// The Storage Account Id that contains the vhd blob being used as a source for this artifact version.
@@ -2638,46 +2282,24 @@ type GalleryIdentifier struct {
 	UniqueName *string
 }
 
-// GalleryIdentity - Identity for the virtual machine.
-type GalleryIdentity struct {
-	// The type of identity used for the gallery. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
-	// identity and a set of user assigned identities. The type 'None' will remove all
-	// identities from the gallery.
-	Type *ResourceIdentityType
-
-	// The list of user identities associated with the gallery. The user identity dictionary key references will be ARM resource
-	// ids in the form:
-	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue
-
-	// READ-ONLY; The principal id of the gallery identity. This property will only be provided for a system assigned identity.
-	PrincipalID *string
-
-	// READ-ONLY; The AAD tenant id of the gallery identity. This property will only be provided for a system assigned identity.
-	TenantID *string
-}
-
 // GalleryImage - Specifies information about the gallery image definition that you want to create or update.
 type GalleryImage struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Describes the properties of a gallery image definition.
 	Properties *GalleryImageProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -2685,9 +2307,6 @@ type GalleryImage struct {
 type GalleryImageFeature struct {
 	// The name of the gallery image feature.
 	Name *string
-
-	// The minimum gallery image version which supports this feature.
-	StartsAtVersion *string
 
 	// The value of the gallery image feature.
 	Value *string
@@ -2725,11 +2344,11 @@ type GalleryImageProperties struct {
 	OSState *OperatingSystemStateTypes
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
-	// managed image. Possible values are: Windows, Linux.
+	// managed image.
+	// Possible values are:
+	// Windows
+	// Linux
 	OSType *OperatingSystemTypes
-
-	// Optional. Must be set to true if the gallery image features are being updated.
-	AllowUpdateImage *bool
 
 	// The architecture of the image. Applicable to OS disks only.
 	Architecture *Architecture
@@ -2789,25 +2408,22 @@ type GalleryImageUpdate struct {
 
 // GalleryImageVersion - Specifies information about the gallery image version that you want to create or update.
 type GalleryImageVersion struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Describes the properties of a gallery image version.
 	Properties *GalleryImageVersionProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -2829,23 +2445,14 @@ type GalleryImageVersionProperties struct {
 	// The publishing profile of a gallery image Version.
 	PublishingProfile *GalleryImageVersionPublishingProfile
 
-	// Indicates if this is a soft-delete resource restoration request.
-	Restore *bool
-
 	// This is the safety profile of the Gallery Image Version.
 	SafetyProfile *GalleryImageVersionSafetyProfile
-
-	// The security profile of a gallery image version
-	SecurityProfile *ImageVersionSecurityProfile
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *GalleryProvisioningState
 
 	// READ-ONLY; This is the replication status of the gallery image version.
 	ReplicationStatus *ReplicationStatus
-
-	// READ-ONLY; This is the validations profile of a Gallery Image Version.
-	ValidationsProfile *ValidationsProfile
 }
 
 // GalleryImageVersionPublishingProfile - The publishing profile of a gallery image Version.
@@ -2864,13 +2471,7 @@ type GalleryImageVersionPublishingProfile struct {
 	// Optional parameter which specifies the mode to be used for replication. This property is not updatable.
 	ReplicationMode *ReplicationMode
 
-	// Specifies the strategy to be used when selecting the storage account type. Cannot be specified along with storageAccountType,
-	// but can be overridden per region by specifying
-	// targetRegions[].storageAccountType. This property is not updatable.
-	StorageAccountStrategy *StorageAccountStrategy
-
-	// Specifies the storage account type to be used to store the image. Cannot be specified along with storageAccountStrategy.
-	// This property is not updatable.
+	// Specifies the storage account type to be used to store the image. This property is not updatable.
 	StorageAccountType *StorageAccountType
 
 	// The target extended locations where the Image Version is going to be replicated to. This property is updatable.
@@ -2887,9 +2488,6 @@ type GalleryImageVersionPublishingProfile struct {
 type GalleryImageVersionSafetyProfile struct {
 	// Indicates whether or not removing this Gallery Image Version from replicated regions is allowed.
 	AllowDeletionOfReplicatedLocations *bool
-
-	// Indicates whether or not the deletion is blocked for this Gallery Image Version if its End Of Life has not expired.
-	BlockDeletionBeforeEndOfLife *bool
 
 	// READ-ONLY; A list of Policy Violations that have been reported for this Gallery Image Version.
 	PolicyViolations []*PolicyViolation
@@ -2910,171 +2508,10 @@ type GalleryImageVersionStorageProfile struct {
 	Source *GalleryArtifactVersionFullSource
 }
 
-// GalleryImageVersionUefiSettings - Contains UEFI settings for the image version.
-type GalleryImageVersionUefiSettings struct {
-	// Additional UEFI key signatures that will be added to the image in addition to the signature templates
-	AdditionalSignatures *UefiKeySignatures
-
-	// The name of the template(s) that contains default UEFI key signatures that will be added to the image.
-	SignatureTemplateNames []*UefiSignatureTemplateName
-}
-
 // GalleryImageVersionUpdate - Specifies information about the gallery image version that you want to update.
 type GalleryImageVersionUpdate struct {
 	// Describes the properties of a gallery image version.
 	Properties *GalleryImageVersionProperties
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// GalleryInVMAccessControlProfile - Specifies information about the gallery inVMAccessControlProfile that you want to create
-// or update.
-type GalleryInVMAccessControlProfile struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Describes the properties of a gallery inVMAccessControlProfile.
-	Properties *GalleryInVMAccessControlProfileProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// GalleryInVMAccessControlProfileList - The List Gallery InVMAccessControlProfiles operation response.
-type GalleryInVMAccessControlProfileList struct {
-	// REQUIRED; The GalleryInVMAccessControlProfile items on this page
-	Value []*GalleryInVMAccessControlProfile
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// GalleryInVMAccessControlProfileProperties - Describes the properties of a gallery inVMAccessControlProfile.
-type GalleryInVMAccessControlProfileProperties struct {
-	// REQUIRED; This property allows you to specify the Endpoint type for which this profile is defining the access control for.
-	// Possible values are: 'WireServer' or 'IMDS'
-	ApplicableHostEndpoint *EndpointTypes
-
-	// REQUIRED; This property allows you to specify the OS type of the VMs/VMSS for which this profile can be used against. Possible
-	// values are: 'Windows' or 'Linux'
-	OSType *OperatingSystemTypes
-
-	// The description of this gallery inVMAccessControlProfile resources. This property is updatable.
-	Description *string
-
-	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *GalleryProvisioningState
-}
-
-// GalleryInVMAccessControlProfileUpdate - Specifies information about the gallery inVMAccessControlProfile that you want
-// to update.
-type GalleryInVMAccessControlProfileUpdate struct {
-	// Describes the properties of a gallery inVMAccessControlProfile.
-	Properties *GalleryInVMAccessControlProfileProperties
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// GalleryInVMAccessControlProfileVersion - Specifies information about the gallery inVMAccessControlProfile version that
-// you want to create or update.
-type GalleryInVMAccessControlProfileVersion struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Describes the properties of an inVMAccessControlProfile version.
-	Properties *GalleryInVMAccessControlProfileVersionProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// GalleryInVMAccessControlProfileVersionList - The List Gallery InVMAccessControlProfile Versions operation response.
-type GalleryInVMAccessControlProfileVersionList struct {
-	// REQUIRED; The GalleryInVMAccessControlProfileVersion items on this page
-	Value []*GalleryInVMAccessControlProfileVersion
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// GalleryInVMAccessControlProfileVersionProperties - Describes the properties of an inVMAccessControlProfile version.
-type GalleryInVMAccessControlProfileVersionProperties struct {
-	// REQUIRED; This property allows you to specify if the requests will be allowed to access the host endpoints. Possible values
-	// are: 'Allow', 'Deny'.
-	DefaultAccess *EndpointAccess
-
-	// REQUIRED; This property allows you to specify whether the access control rules are in Audit mode, in Enforce mode or Disabled.
-	// Possible values are: 'Audit', 'Enforce' or 'Disabled'.
-	Mode *AccessControlRulesMode
-
-	// If set to true, Virtual Machines deployed from the latest version of the Resource Profile won't use this Profile version.
-	ExcludeFromLatest *bool
-
-	// This is the Access Control Rules specification for an inVMAccessControlProfile version.
-	Rules *AccessControlRules
-
-	// The target regions where the Resource Profile version is going to be replicated to. This property is updatable.
-	TargetLocations []*TargetRegion
-
-	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *GalleryProvisioningState
-
-	// READ-ONLY; The timestamp for when the Resource Profile Version is published.
-	PublishedDate *time.Time
-
-	// READ-ONLY; This is the replication status of the gallery image version.
-	ReplicationStatus *ReplicationStatus
-}
-
-// GalleryInVMAccessControlProfileVersionUpdate - Specifies information about the gallery inVMAccessControlProfile version
-// that you want to update.
-type GalleryInVMAccessControlProfileVersionUpdate struct {
-	// Describes the properties of an inVMAccessControlProfile version.
-	Properties *GalleryInVMAccessControlProfileVersionProperties
 
 	// Resource tags
 	Tags map[string]*string
@@ -3096,9 +2533,6 @@ type GalleryList struct {
 
 	// The uri to fetch the next page of galleries. Call ListNext() with this to fetch the next page of galleries.
 	NextLink *string
-
-	// The security profile of a gallery image version
-	SecurityProfile *ImageVersionSecurityProfile
 }
 
 // GalleryOSDiskImage - This is the OS disk image.
@@ -3134,265 +2568,6 @@ type GalleryProperties struct {
 	SharingStatus *SharingStatus
 }
 
-// GalleryScript - Specifies information about the gallery Script Definition that you want to create or update.
-type GalleryScript struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Describes the properties of a gallery Script Definition.
-	Properties *GalleryScriptProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// GalleryScriptList - The List Gallery Script operation response.
-type GalleryScriptList struct {
-	// REQUIRED; The GalleryScript items on this page
-	Value []*GalleryScript
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// GalleryScriptParameter - The definition of a parameter that can be passed to a script of a Gallery Script Version.
-type GalleryScriptParameter struct {
-	// REQUIRED; The name of the parameter.
-	Name *string
-
-	// The default value of the parameter, only applies to string types.
-	DefaultValue *string
-
-	// A description to help users understand what this parameter means
-	Description *string
-
-	// A list of permissible values. Only applicable values are from 'enum' values defined in 'GalleryScriptParameter'.
-	EnumValues []*string
-
-	// The minimum value of parameter.
-	MaxValue *string
-
-	// The minimum value of parameter.
-	MinValue *string
-
-	// Indicates whether this parameter must be passed.
-	Required *bool
-
-	// Specifies the type of the Gallery Script parameter. Possible values are: String, Int, Double, Boolean, Enum
-	Type *GalleryScriptParameterType
-}
-
-// GalleryScriptProperties - Describes the properties of a gallery script definition.
-type GalleryScriptProperties struct {
-	// REQUIRED; This property allows you to specify the supported type of the OS that application is built for. Possible values
-	// are: Windows, Linux.
-	SupportedOSType *OperatingSystemTypes
-
-	// The description of this gallery script definition resource. This property is updatable.
-	Description *string
-
-	// The end of life date of the gallery Script Definition. This property can be used for decommissioning purposes. This property
-	// is updatable.
-	EndOfLifeDate *time.Time
-
-	// The Eula agreement (End User License Agreement) for the gallery Script Definition.
-	Eula *string
-
-	// The privacy statement uri.
-	PrivacyStatementURI *string
-
-	// The release note uri.
-	ReleaseNoteURI *string
-
-	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *GalleryProvisioningState
-}
-
-// GalleryScriptUpdate - Specifies information about the gallery Script Definition that you want to update.
-type GalleryScriptUpdate struct {
-	// Gallery script definition properties to update.
-	Properties *GalleryScriptProperties
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// GalleryScriptVersion - Concrete tracked resource types can be created by aliasing this type using a specific property type.
-type GalleryScriptVersion struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Describes the properties of a gallery Script Version.
-	Properties *GalleryScriptVersionProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// GalleryScriptVersionList - Paged collection of GalleryScriptVersion items
-type GalleryScriptVersionList struct {
-	// REQUIRED; The GalleryScriptVersion items on this page
-	Value []*GalleryScriptVersion
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// GalleryScriptVersionProperties - Describes the properties of a gallery script version.
-type GalleryScriptVersionProperties struct {
-	// REQUIRED; The publishing profile of a gallery image version.
-	PublishingProfile *GalleryScriptVersionPublishingProfile
-
-	// The safety profile of the Gallery Script Version.
-	SafetyProfile *GalleryScriptVersionSafetyProfile
-
-	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *GalleryProvisioningState
-
-	// READ-ONLY; This is the replication status of the gallery image version.
-	ReplicationStatus *ReplicationStatus
-}
-
-// GalleryScriptVersionPublishingProfile - The publishing profile of a gallery image version.
-type GalleryScriptVersionPublishingProfile struct {
-	// REQUIRED; The source script from which the Script Version is going to be created.
-	Source *ScriptSource
-
-	// The end of life date of the gallery image version. This property can be used for decommissioning purposes. This property
-	// is updatable.
-	EndOfLifeDate *time.Time
-
-	// If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
-	ExcludeFromLatest *bool
-
-	// The number of replicas of the Image Version to be created per region. This property would take effect for a region when
-	// regionalReplicaCount is not specified. This property is updatable.
-	ReplicaCount *int32
-
-	// Optional parameter which specifies the mode to be used for replication. This property is not updatable.
-	ReplicationMode *ReplicationMode
-
-	// Specifies the strategy to be used when selecting the storage account type. Cannot be specified along with storageAccountType,
-	// but can be overridden per region by specifying
-	// targetRegions[].storageAccountType. This property is not updatable.
-	StorageAccountStrategy *StorageAccountStrategy
-
-	// Specifies the storage account type to be used to store the image. Cannot be specified along with storageAccountStrategy.
-	// This property is not updatable.
-	StorageAccountType *StorageAccountType
-
-	// The target extended locations where the Image Version is going to be replicated to. This property is updatable.
-	TargetExtendedLocations []*GalleryTargetExtendedLocation
-
-	// The target regions where the Image Version is going to be replicated to. This property is updatable.
-	TargetRegions []*TargetRegion
-
-	// READ-ONLY; The timestamp for when the gallery image version is published.
-	PublishedDate *time.Time
-}
-
-// GalleryScriptVersionSafetyProfile - The safety profile of the Gallery Script Version.
-type GalleryScriptVersionSafetyProfile struct {
-	// Indicates whether or not removing this Gallery Image Version from replicated regions is allowed.
-	AllowDeletionOfReplicatedLocations *bool
-}
-
-// GalleryScriptVersionUpdate - Specifies information about the gallery Script Version that you want to update.
-type GalleryScriptVersionUpdate struct {
-	// Gallery script version properties to update.
-	Properties *GalleryScriptVersionProperties
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
-}
-
-// GallerySoftDeletedResource - The details information of soft-deleted resource.
-type GallerySoftDeletedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Describes the properties of a soft-deleted resource.
-	Properties *GallerySoftDeletedResourceProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// GallerySoftDeletedResourceList - The List Soft-deleted Resources operation response.
-type GallerySoftDeletedResourceList struct {
-	// REQUIRED; The GallerySoftDeletedResource items on this page
-	Value []*GallerySoftDeletedResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// GallerySoftDeletedResourceProperties - Describes the properties of a soft-deleted resource.
-type GallerySoftDeletedResourceProperties struct {
-	// arm id of the soft-deleted resource
-	ResourceArmID *string
-
-	// artifact type of the soft-deleted resource
-	SoftDeletedArtifactType *SoftDeletedArtifactTypes
-
-	// The timestamp for when the resource is soft-deleted. In dateTime offset format.
-	SoftDeletedTime *string
-}
-
 type GalleryTargetExtendedLocation struct {
 	// Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery artifact.
 	Encryption *EncryptionImages
@@ -3412,9 +2587,6 @@ type GalleryTargetExtendedLocation struct {
 
 // GalleryUpdate - Specifies information about the Shared Image Gallery that you want to update.
 type GalleryUpdate struct {
-	// The identity of the gallery, if configured.
-	Identity *GalleryIdentity
-
 	// Describes the properties of a Shared Image Gallery.
 	Properties *GalleryProperties
 
@@ -3433,14 +2605,11 @@ type GalleryUpdate struct {
 
 // GrantAccessData - Data used for requesting a SAS.
 type GrantAccessData struct {
-	// REQUIRED; The Access Level, accepted values include None, Read, Write.
+	// REQUIRED
 	Access *AccessLevel
 
 	// REQUIRED; Time duration in seconds until the SAS access expires.
 	DurationInSeconds *int32
-
-	// Used to specify the file format when making request for SAS on a VHDX file format snapshot
-	FileFormat *FileFormat
 
 	// Set this flag to true to get additional SAS for VM guest state
 	GetSecureVMGuestStateSAS *bool
@@ -3464,24 +2633,11 @@ type HardwareProfile struct {
 	VMSizeProperties *VMSizeProperties
 }
 
-// HostEndpointSettings - Specifies particular host endpoint settings.
-type HostEndpointSettings struct {
-	// Specifies the InVMAccessControlProfileVersion resource id in the format of
-	// /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/inVMAccessControlProfiles/{profile}/versions/{version}
-	InVMAccessControlProfileReferenceID *string
-
-	// Specifies the execution mode. In Audit mode, the system acts as if it is enforcing the access control policy, including
-	// emitting access denial entries in the logs but it does not actually deny any
-	// requests to host endpoints. In Enforce mode, the system will enforce the access control and it is the recommended mode
-	// of operation.
-	Mode *Modes
-}
-
 // Image - The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual
 // machine. If SourceImage is provided, the destination virtual hard drive must not
 // exist.
 type Image struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The extended location of the Image.
@@ -3490,19 +2646,16 @@ type Image struct {
 	// Describes the properties of an Image.
 	Properties *ImageProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -3567,7 +2720,7 @@ type ImageDiskReference struct {
 
 // ImageListResult - The List Image operation response.
 type ImageListResult struct {
-	// REQUIRED; The list of Images
+	// REQUIRED; The list of Images.
 	Value []*Image
 
 	// The uri to fetch the next page of Images. Call ListNext() with this to fetch the next page of Images.
@@ -3700,12 +2853,6 @@ type ImageUpdate struct {
 
 	// Resource tags
 	Tags map[string]*string
-}
-
-// ImageVersionSecurityProfile - The security profile of a gallery image version
-type ImageVersionSecurityProfile struct {
-	// Contains UEFI settings for the image version.
-	UefiSettings *GalleryImageVersionUefiSettings
 }
 
 // InnerError - Inner error details.
@@ -4009,36 +3156,6 @@ type ManagedDiskParameters struct {
 	StorageAccountType *StorageAccountTypes
 }
 
-// MaxInstancePercentPerZonePolicy - The configuration parameters used to limit the number of virtual machines per availability
-// zone in the virtual machine scale set.
-type MaxInstancePercentPerZonePolicy struct {
-	// Specifies whether maxInstancePercentPerZonePolicy should be enabled on the virtual machine scale set.
-	Enabled *bool
-
-	// Limit on the number of instances in each zone as a percentage of the total capacity of the virtual machine scale set.
-	Value *int32
-}
-
-// MigrateToVirtualMachineScaleSetInput - Describes the Virtual Machine Scale Set to migrate from Availability Set.
-type MigrateToVirtualMachineScaleSetInput struct {
-	// REQUIRED; Specifies information about the Virtual Machine Scale Set that the Availability Set should be migrated to. Minimum
-	// api‐version: 2024‐11‐01.
-	VirtualMachineScaleSetFlexible *SubResource
-}
-
-// MigrateVMToVirtualMachineScaleSetInput - The input of virtual machine migration from Availability Set to Flexible Virtual
-// Machine Scale Set.
-type MigrateVMToVirtualMachineScaleSetInput struct {
-	// The target compute fault domain of VM migration to Flexible Virtual Machine Scale Set.
-	TargetFaultDomain *int32
-
-	// The target Virtual Machine size of VM migration to Flexible Virtual Machine Scale Set.
-	TargetVMSize *string
-
-	// The target zone of VM migration to Flexible Virtual Machine Scale Set.
-	TargetZone *string
-}
-
 // NetworkInterfaceReference - Describes a network interface reference.
 type NetworkInterfaceReference struct {
 	// Resource Id
@@ -4073,11 +3190,11 @@ type NetworkProfile struct {
 // disks, see About disks and VHDs for Azure virtual machines
 // [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
 type OSDisk struct {
-	// REQUIRED; Specifies how the virtual machine disk should be created. Possible values are Attach: This value is used when
-	// you are using a specialized disk to create the virtual machine. FromImage: This value is
-	// used when you are using an image to create the virtual machine. If you are using a platform image, you should also use
-	// the imageReference element described above. If you are using a marketplace image,
-	// you should also use the plan element previously described.
+	// REQUIRED; Specifies how the virtual machine should be created. Possible values are: Attach. This value is used when you
+	// are using a specialized disk to create the virtual machine. FromImage. This value is used
+	// when you are using an image to create the virtual machine. If you are using a platform image, you should also use the imageReference
+	// element described above. If you are using a marketplace image, you
+	// should also use the plan element previously described.
 	CreateOption *DiskCreateOptionTypes
 
 	// Specifies the caching requirements. Possible values are: None, ReadOnly, ReadWrite. The defaulting behavior is: None for
@@ -4359,53 +3476,37 @@ type OSVersionPropertiesBase struct {
 	Version *string
 }
 
-// OperationDisplay - Localized display information for this particular operation.
-type OperationDisplay struct {
-	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string
-
-	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
-	// Machine", "Restart Virtual Machine".
-	Operation *string
-
-	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
-	// Compute".
-	Provider *string
-
-	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
-	// Schedule Collections".
-	Resource *string
-}
-
-// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
-// get the next set of results.
+// OperationListResult - The List Compute Operation operation response.
 type OperationListResult struct {
-	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string
-
-	// READ-ONLY; List of operations supported by the resource provider
+	// READ-ONLY; The list of compute operations
 	Value []*OperationValue
 }
 
-// OperationValue - Details of a REST API operation, returned from the Resource Provider Operations API
+// OperationValue - Describes the properties of a Compute Operation value.
 type OperationValue struct {
-	// Localized display information for this particular operation.
-	Display *OperationDisplay
+	// Describes the properties of a Compute Operation Value Display.
+	Display *OperationValueDisplay
 
-	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
-	// operations.
-	IsDataAction *bool
-
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-	// "Microsoft.Compute/virtualMachines/capture/action"
+	// READ-ONLY; The name of the compute operation.
 	Name *string
 
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-	// value is "user,system"
-	Origin *Origin
+	// READ-ONLY; The origin of the compute operation.
+	Origin *string
+}
+
+// OperationValueDisplay - Describes the properties of a Compute Operation Value Display.
+type OperationValueDisplay struct {
+	// READ-ONLY; The description of the operation.
+	Description *string
+
+	// READ-ONLY; The display name of the compute operation.
+	Operation *string
+
+	// READ-ONLY; The resource provider for the operation.
+	Provider *string
+
+	// READ-ONLY; The display name of the resource the operation applies to.
+	Resource *string
 }
 
 // OrchestrationServiceStateInput - The input for OrchestrationServiceState
@@ -4419,12 +3520,6 @@ type OrchestrationServiceStateInput struct {
 
 // OrchestrationServiceSummary - Summary for an orchestration service of a virtual machine scale set.
 type OrchestrationServiceSummary struct {
-	// READ-ONLY; The last UTC time when the operation status changed. Minimum API version for this property is 2025-04-01.
-	LastStatusChangeTime *time.Time
-
-	// READ-ONLY; The latest operation status of the service. Minimum API version for this property is 2025-04-01.
-	LatestOperationStatus *OrchestrationServiceOperationStatus
-
 	// READ-ONLY; The name of the service.
 	ServiceName *OrchestrationServiceNames
 
@@ -4481,26 +3576,6 @@ type PatchSettings struct {
 	PatchMode *WindowsVMGuestPatchMode
 }
 
-// Placement - Describes the user-defined constraints for resource hardware placement.
-type Placement struct {
-	// This property supplements the 'zonePlacementPolicy' property. If 'zonePlacementPolicy' is set to 'Any'/'Auto', availability
-	// zone selected by the system must not be present in the list of availability
-	// zones passed with 'excludeZones'. If 'excludeZones' is not provided, all availability zones in region will be considered
-	// for selection.
-	ExcludeZones []*string
-
-	// This property supplements the 'zonePlacementPolicy' property. If 'zonePlacementPolicy' is set to 'Any'/'Auto', availability
-	// zone selected by the system must be present in the list of availability
-	// zones passed with 'includeZones'. If 'includeZones' is not provided, all availability zones in region will be considered
-	// for selection.
-	IncludeZones []*string
-
-	// Specifies the policy for resource's placement in availability zone. Possible values are: Any (used for Virtual Machines),
-	// Auto (used for Virtual Machine Scale Sets) - An availability zone will be
-	// automatically picked by system as part of resource creation.
-	ZonePlacementPolicy *ZonePlacementPolicyType
-}
-
 // Plan - Specifies information about the marketplace image used to create the virtual machine. This element is only used
 // for marketplace images. Before you can use a marketplace image from an API, you must
 // enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click
@@ -4518,15 +3593,6 @@ type Plan struct {
 
 	// The publisher ID.
 	Publisher *string
-}
-
-// PlatformAttribute - This is the platform attribute of the image version.
-type PlatformAttribute struct {
-	// READ-ONLY; This property specifies the name of the platformAttribute. It is read-only.
-	Name *string
-
-	// READ-ONLY; This property specifies the value of the corresponding name property. It is read-only.
-	Value *string
 }
 
 // PolicyViolation - A policy violation reported against a gallery artifact.
@@ -4562,26 +3628,23 @@ type PrivateEndpointConnection struct {
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; private endpoint connection Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; private endpoint connection name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; private endpoint connection type
 	Type *string
 }
 
 // PrivateEndpointConnectionListResult - A list of private link resources
 type PrivateEndpointConnectionListResult struct {
-	// REQUIRED; The PrivateEndpointConnection items on this page
-	Value []*PrivateEndpointConnection
-
-	// The link to the next page of items
+	// The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
 	NextLink *string
+
+	// Array of private endpoint connections
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
@@ -4650,34 +3713,32 @@ type PropertyUpdatesInProgress struct {
 
 // ProximityPlacementGroup - Specifies information about the proximity placement group.
 type ProximityPlacementGroup struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Describes the properties of a Proximity Placement Group.
 	Properties *ProximityPlacementGroupProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// The availability zones.
+	// Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the
+	// proximity placement group can be created.
 	Zones []*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 // ProximityPlacementGroupListResult - The List Proximity Placement Group operation response.
 type ProximityPlacementGroupListResult struct {
-	// REQUIRED; The list of proximity placement groups.
+	// REQUIRED; The list of proximity placement groups
 	Value []*ProximityPlacementGroup
 
 	// The URI to fetch the next page of proximity placement groups.
@@ -4716,32 +3777,6 @@ type ProximityPlacementGroupPropertiesIntent struct {
 type ProximityPlacementGroupUpdate struct {
 	// Resource tags
 	Tags map[string]*string
-}
-
-// ProxyAgentSettings - Specifies ProxyAgent settings for the virtual machine or virtual machine scale set. Minimum api-version:
-// 2023-09-01.
-type ProxyAgentSettings struct {
-	// Specify whether to implicitly install the ProxyAgent Extension. This option is currently applicable only for Linux Os.
-	AddProxyAgentExtension *bool
-
-	// Specifies whether ProxyAgent feature should be enabled on the virtual machine or virtual machine scale set.
-	Enabled *bool
-
-	// Specifies the IMDS endpoint settings while creating the virtual machine or virtual machine scale set. Minimum api-version:
-	// 2024-03-01.
-	Imds *HostEndpointSettings
-
-	// Increase the value of this property allows users to reset the key used for securing communication channel between guest
-	// and host.
-	KeyIncarnationID *int32
-
-	// Specifies the mode that ProxyAgent will execute on. Warning: this property has been deprecated, please specify 'mode' under
-	// particular hostendpoint setting.
-	Mode *Mode
-
-	// Specifies the Wire Server endpoint settings while creating the virtual machine or virtual machine scale set. Minimum api-version:
-	// 2024-03-01.
-	WireServer *HostEndpointSettings
 }
 
 // PublicIPAddressSKU - Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
@@ -4849,33 +3884,6 @@ type RequestRateByIntervalInput struct {
 
 	// Group query result by User Agent.
 	GroupByUserAgent *bool
-}
-
-// ResiliencyPolicy - Describes an resiliency policy - AutomaticZoneRebalancingPolicy, ResilientVMCreationPolicy and/or ResilientVMDeletionPolicy.
-type ResiliencyPolicy struct {
-	// The configuration parameters used while performing automatic AZ balancing.
-	AutomaticZoneRebalancingPolicy *AutomaticZoneRebalancingPolicy
-
-	// The configuration parameters used while performing resilient VM creation.
-	ResilientVMCreationPolicy *ResilientVMCreationPolicy
-
-	// The configuration parameters used while performing resilient VM deletion.
-	ResilientVMDeletionPolicy *ResilientVMDeletionPolicy
-
-	// The configuration parameters used while performing zone allocation.
-	ZoneAllocationPolicy *ZoneAllocationPolicy
-}
-
-// ResilientVMCreationPolicy - The configuration parameters used while performing resilient VM creation.
-type ResilientVMCreationPolicy struct {
-	// Specifies whether resilient VM creation should be enabled on the virtual machine scale set. The default value is false.
-	Enabled *bool
-}
-
-// ResilientVMDeletionPolicy - The configuration parameters used while performing resilient VM deletion.
-type ResilientVMDeletionPolicy struct {
-	// Specifies whether resilient VM deletion should be enabled on the virtual machine scale set. The default value is false.
-	Enabled *bool
 }
 
 // ResourceInstanceViewStatus - Instance view status.
@@ -5040,18 +4048,11 @@ type ResourceSKUZoneDetails struct {
 
 // ResourceSKUsResult - The List Resource Skus operation response.
 type ResourceSKUsResult struct {
-	// REQUIRED; The ResourceSku items on this page
+	// REQUIRED; The list of skus available for the subscription.
 	Value []*ResourceSKU
 
-	// The link to the next page of items
+	// The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource Skus
 	NextLink *string
-}
-
-type ResourceSharingProfile struct {
-	// Specifies an array of subscription resource IDs that capacity reservation group is shared with. Block Capacity Reservations
-	// does not support sharing across subscriptions. Note: Minimum api-version:
-	// 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
-	SubscriptionIDs []*SubResource
 }
 
 // ResourceURIList - The List resources which are encrypted with the disk encryption set.
@@ -5068,59 +4069,48 @@ type RestorePoint struct {
 	// The restore point properties.
 	Properties *RestorePointProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 // RestorePointCollection - Create or update Restore Point collection parameters.
 type RestorePointCollection struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The restore point collection properties.
 	Properties *RestorePointCollectionProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
 // RestorePointCollectionListResult - The List restore point collection operation response.
 type RestorePointCollectionListResult struct {
-	// REQUIRED; Gets the list of restore point collections.
-	Value []*RestorePointCollection
-
-	// The uri to fetch the next page of RestorePointCollections. Call ListNext() with this to fetch the next page of RestorePointCollections.
+	// The uri to fetch the next page of RestorePointCollections. Call ListNext() with this to fetch the next page of RestorePointCollections
 	NextLink *string
+
+	// Gets the list of restore point collections.
+	Value []*RestorePointCollection
 }
 
 // RestorePointCollectionProperties - The restore point collection properties.
 type RestorePointCollectionProperties struct {
-	// This property determines whether instant access snapshot is enabled for restore points created under this restore point
-	// collection for Premium SSD v2 or Ultra disk. Instant access snapshot for Premium
-	// SSD v2 or Ultra disk is instantaneously available for restoring disk with fast restore performance.
-	InstantAccess *bool
-
 	// The properties of the source resource that this restore point collection is created from.
 	Source *RestorePointCollectionSourceProperties
 
@@ -5184,10 +4174,6 @@ type RestorePointProperties struct {
 	// List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified, all disks
 	// will be included.
 	ExcludeDisks []*APIEntityReference
-
-	// This property determines the time in minutes the snapshot is retained as instant access for restoring Premium SSD v2 or
-	// Ultra disk with fast restore performance in this restore point.
-	InstantAccessDurationMinutes *int32
 
 	// Gets the details of the VM captured at the time of the restore point creation.
 	SourceMetadata *RestorePointSourceMetadata
@@ -5298,9 +4284,6 @@ type RestorePointSourceVMStorageProfile struct {
 
 	// Gets the OS disk of the VM captured at the time of the restore point creation.
 	OSDisk *RestorePointSourceVMOSDisk
-
-	// READ-ONLY; Gets the disk controller type of the VM captured at the time of the restore point creation.
-	DiskControllerType *DiskControllerTypes
 }
 
 // RetrieveBootDiagnosticsDataResult - The SAS URIs of the console screenshot and serial log blobs.
@@ -5467,25 +4450,22 @@ type RollingUpgradeRunningStatus struct {
 
 // RollingUpgradeStatusInfo - The status of the latest virtual machine scale set rolling upgrade.
 type RollingUpgradeStatusInfo struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The status of the latest virtual machine scale set rolling upgrade.
 	Properties *RollingUpgradeStatusInfoProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -5548,9 +4528,7 @@ type RunCommandDocumentBase struct {
 
 // RunCommandInput - Capture Virtual Machine parameters.
 type RunCommandInput struct {
-	// REQUIRED; Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed at https://aka.ms/RunCommandManagedLinux#available-commands,
-	// Windows at
-	// https://aka.ms/RunCommandManagedWindows#available-commands.
+	// REQUIRED; The run command id.
 	CommandID *string
 
 	// The run command parameters.
@@ -5631,36 +4609,10 @@ type SKU struct {
 	Tier *string
 }
 
-// SKUProfile - Specifies the sku profile for the virtual machine scale set. With this property the customer is able to specify
-// a list of VM sizes and an allocation strategy.
-type SKUProfile struct {
-	// Specifies the allocation strategy for the virtual machine scale set based on which the VMs will be allocated.
-	AllocationStrategy *AllocationStrategy
-
-	// Specifies the VM sizes for the virtual machine scale set.
-	VMSizes []*SKUProfileVMSize
-}
-
-// SKUProfileVMSize - Specifies the VM Size.
-type SKUProfileVMSize struct {
-	// Specifies the name of the VM Size.
-	Name *string
-
-	// Specifies the rank (a.k.a priority) associated with the VM Size.
-	Rank *int32
-}
-
 // SSHConfiguration - SSH configuration for Linux based VMs running on Azure
 type SSHConfiguration struct {
 	// The list of SSH public keys used to authenticate with linux based VMs.
 	PublicKeys []*SSHPublicKey
-}
-
-// SSHGenerateKeyPairInputParameters - Parameters for GenerateSshKeyPair.
-type SSHGenerateKeyPairInputParameters struct {
-	// The encryption type of the SSH keys to be generated. See SshEncryptionTypes for possible set of values. If not provided,
-	// will default to RSA
-	EncryptionType *SSHEncryptionTypes
 }
 
 // SSHPublicKey - Contains information about SSH certificate public key and the path on the Linux VM where the public key
@@ -5692,25 +4644,22 @@ type SSHPublicKeyGenerateKeyPairResult struct {
 
 // SSHPublicKeyResource - Specifies information about the SSH public key.
 type SSHPublicKeyResource struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Properties of the SSH public key.
 	Properties *SSHPublicKeyResourceProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -5734,7 +4683,7 @@ type SSHPublicKeyUpdateResource struct {
 
 // SSHPublicKeysGroupListResult - The list SSH public keys operation response.
 type SSHPublicKeysGroupListResult struct {
-	// REQUIRED; The list of SSH public keys.
+	// REQUIRED; The list of SSH public keys
 	Value []*SSHPublicKeyResource
 
 	// The URI to fetch the next page of SSH public keys. Call ListNext() with this URI to fetch the next page of SSH public keys.
@@ -5746,10 +4695,6 @@ type ScaleInPolicy struct {
 	// This property allows you to specify if virtual machines chosen for removal have to be force deleted when a virtual machine
 	// scale set is being scaled-in.(Feature in Preview)
 	ForceDeletion *bool
-
-	// This property allows you to prioritize the deletion of unhealthy and inactive VMs when a virtual machine scale set is being
-	// scaled-in.(Feature in Preview)
-	PrioritizeUnhealthyVMs *bool
 
 	// The rules to be followed when scaling-in a virtual machine scale set.
 	// Possible values are:
@@ -5767,42 +4712,6 @@ type ScaleInPolicy struct {
 	Rules []*VirtualMachineScaleSetScaleInRules
 }
 
-// ScheduleProfile - Defines the schedule for Block-type capacity reservations. Specifies the schedule during which capacity
-// reservation is active and VM or VMSS resource can be allocated using reservation. This property
-// is required and only supported when the capacity reservation group type is 'Block'. The scheduleProfile, start, and end
-// fields are immutable after creation. Minimum API version: 2025-04-01. Please
-// refer to https://aka.ms/blockcapacityreservation for more details.
-type ScheduleProfile struct {
-	// The required end date for block capacity reservations. Must be after the start date, with a duration of either 1–14 whole
-	// days or 3–26 whole weeks. Example: 2025-06-28.
-	End *string
-
-	// The required start date for block capacity reservations. Must be today or within 56 days in the future. For same-day scheduling,
-	// requests must be submitted before 11:30 AM UTC. Example: 2025-06-27.
-	Start *string
-}
-
-type ScheduledEventsAdditionalPublishingTargets struct {
-	// The configuration parameters used while creating eventGridAndResourceGraph Scheduled Event setting.
-	EventGridAndResourceGraph *EventGridAndResourceGraph
-}
-
-// ScheduledEventsPolicy - Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related
-// configurations.
-type ScheduledEventsPolicy struct {
-	// The configuration parameters used while creating AllInstancesDown scheduled event setting creation.
-	AllInstancesDown *AllInstancesDown
-
-	// The configuration parameters used while publishing scheduledEventsAdditionalPublishingTargets.
-	ScheduledEventsAdditionalPublishingTargets *ScheduledEventsAdditionalPublishingTargets
-
-	// The configuration parameters used while creating userInitiatedReboot scheduled event setting creation.
-	UserInitiatedReboot *UserInitiatedReboot
-
-	// The configuration parameters used while creating userInitiatedRedeploy scheduled event setting creation.
-	UserInitiatedRedeploy *UserInitiatedRedeploy
-}
-
 type ScheduledEventsProfile struct {
 	// Specifies OS Image Scheduled Event related configurations.
 	OSImageNotificationProfile *OSImageNotificationProfile
@@ -5811,38 +4720,14 @@ type ScheduledEventsProfile struct {
 	TerminateNotificationProfile *TerminateNotificationProfile
 }
 
-// ScriptSource - The source script from which the Script Version is going to be created.
-type ScriptSource struct {
-	// REQUIRED; Required. The link of the source script, it must be a readable storage blob with SAS URI or publicly accessible
-	// URI or managed identity enabled.
-	ScriptLink *string
-
-	// Optional. Any input parameters that needs to passed to the script and are accessed within the script for its execution.
-	Parameters []*GalleryScriptParameter
-}
-
-// SecurityPostureReference - Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
+// SecurityPostureReference - Specifies the security posture to be used for all virtual machines in the scale set. Minimum
+// api-version: 2023-03-01
 type SecurityPostureReference struct {
-	// REQUIRED; The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest
+	// List of virtual machine extensions to exclude when applying the Security Posture.
+	ExcludeExtensions []*VirtualMachineExtension
+
+	// The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest
 	ID *string
-
-	// The list of virtual machine extension names to exclude when applying the security posture.
-	ExcludeExtensions []*string
-
-	// Whether the security posture can be overridden by the user.
-	IsOverridable *bool
-}
-
-// SecurityPostureReferenceUpdate - Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
-type SecurityPostureReferenceUpdate struct {
-	// The list of virtual machine extension names to exclude when applying the security posture.
-	ExcludeExtensions []*string
-
-	// The security posture reference id in the form of /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|latest
-	ID *string
-
-	// Whether the security posture can be overridden by the user.
-	IsOverridable *bool
 }
 
 // SecurityProfile - Specifies the Security profile settings for the virtual machine or virtual machine scale set.
@@ -5852,12 +4737,6 @@ type SecurityProfile struct {
 	// including Resource/Temp disk at host itself. The default behavior is: The Encryption at host will be disabled unless this
 	// property is set to true for the resource.
 	EncryptionAtHost *bool
-
-	// Specifies the Managed Identity used by ADE to get access token for keyvault operations.
-	EncryptionIdentity *EncryptionIdentity
-
-	// Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
-	ProxyAgentSettings *ProxyAgentSettings
 
 	// Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings. The
 	// default behavior is: UefiSettings will not be enabled unless this property is
@@ -5886,9 +4765,6 @@ type ShareInfoElement struct {
 type SharedGallery struct {
 	// The identifier information of shared gallery.
 	Identifier *SharedGalleryIdentifier
-
-	// Specifies the properties of a shared gallery
-	Properties *SharedGalleryProperties
 
 	// READ-ONLY; Resource location
 	Location *string
@@ -5952,14 +4828,14 @@ type SharedGalleryImageProperties struct {
 	OSState *OperatingSystemStateTypes
 
 	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
-	// managed image. Possible values are: Windows, Linux.
+	// managed image.
+	// Possible values are:
+	// Windows
+	// Linux
 	OSType *OperatingSystemTypes
 
 	// The architecture of the image. Applicable to OS disks only.
 	Architecture *Architecture
-
-	// The artifact tags of a shared gallery resource.
-	ArtifactTags map[string]*string
 
 	// Describes the disallowed disk types.
 	Disallowed *Disallowed
@@ -6004,18 +4880,16 @@ type SharedGalleryImageVersion struct {
 
 // SharedGalleryImageVersionList - The List Shared Gallery Image versions operation response.
 type SharedGalleryImageVersionList struct {
-	// REQUIRED; The SharedGalleryImageVersion items on this page
+	// REQUIRED; A list of shared gallery images versions.
 	Value []*SharedGalleryImageVersion
 
-	// The link to the next page of items
+	// The uri to fetch the next page of shared gallery image versions. Call ListNext() with this to fetch the next page of shared
+	// gallery image versions.
 	NextLink *string
 }
 
 // SharedGalleryImageVersionProperties - Describes the properties of a gallery image version.
 type SharedGalleryImageVersionProperties struct {
-	// The artifact tags of a shared gallery resource.
-	ArtifactTags map[string]*string
-
 	// The end of life date of the gallery image version Definition. This property can be used for decommissioning purposes. This
 	// property is updatable.
 	EndOfLifeDate *time.Time
@@ -6058,18 +4932,16 @@ type SharedGalleryOSDiskImage struct {
 	DiskSizeGB *int32
 }
 
-// SharedGalleryProperties - Specifies the properties of a shared gallery
-type SharedGalleryProperties struct {
-	// READ-ONLY; The artifact tags of a shared gallery resource.
-	ArtifactTags map[string]*string
-}
-
 // SharingProfile - Profile for gallery sharing to subscription or tenant
 type SharingProfile struct {
 	// Information of community gallery if current gallery is shared to community.
 	CommunityGalleryInfo *CommunityGalleryInfo
 
-	// This property allows you to specify the permission of sharing gallery. Possible values are: Private, Groups, Community.
+	// This property allows you to specify the permission of sharing gallery.
+	// Possible values are:
+	// Private
+	// Groups
+	// Community
 	Permissions *GallerySharingPermissionTypes
 
 	// READ-ONLY; A list of sharing profile groups.
@@ -6081,7 +4953,10 @@ type SharingProfileGroup struct {
 	// A list of subscription/tenant ids the gallery is aimed to be shared to.
 	IDs []*string
 
-	// This property allows you to specify the type of sharing group. Possible values are: Subscriptions, AADTenants.
+	// This property allows you to specify the type of sharing group.
+	// Possible values are:
+	// Subscriptions
+	// AADTenants
 	Type *SharingProfileGroupTypes
 }
 
@@ -6096,8 +4971,11 @@ type SharingStatus struct {
 
 // SharingUpdate - Specifies information about the gallery sharing profile update.
 type SharingUpdate struct {
-	// REQUIRED; This property allows you to specify the operation type of gallery sharing update. Possible values are: Add, Remove,
-	// Reset.
+	// REQUIRED; This property allows you to specify the operation type of gallery sharing update.
+	// Possible values are:
+	// Add
+	// Remove
+	// Reset
 	OperationType *SharingUpdateOperationTypes
 
 	// A list of sharing profile groups.
@@ -6106,7 +4984,7 @@ type SharingUpdate struct {
 
 // Snapshot resource.
 type Snapshot struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The extended location where the snapshot will be created. Extended location cannot be changed.
@@ -6120,22 +4998,19 @@ type Snapshot struct {
 	// previous snapshot
 	SKU *SnapshotSKU
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
 	// READ-ONLY; Unused. Always Null.
 	ManagedBy *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -6144,7 +5019,7 @@ type SnapshotList struct {
 	// REQUIRED; A list of snapshots.
 	Value []*Snapshot
 
-	// The link to the next page of items
+	// The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
 	NextLink *string
 }
 
@@ -6217,9 +5092,6 @@ type SnapshotProperties struct {
 	// READ-ONLY; The disk provisioning state.
 	ProvisioningState *string
 
-	// READ-ONLY; The state of snapshot which determines the access availability of the snapshot.
-	SnapshotAccessState *SnapshotAccessState
-
 	// READ-ONLY; The time when the snapshot was created.
 	TimeCreated *time.Time
 
@@ -6285,9 +5157,6 @@ type SnapshotUpdateProperties struct {
 
 	// Indicates the OS on a snapshot supports hibernation.
 	SupportsHibernation *bool
-
-	// READ-ONLY; The state of snapshot which determines the access availability of the snapshot.
-	SnapshotAccessState *SnapshotAccessState
 }
 
 // SoftDeletePolicy - Contains information about the soft deletion policy of the gallery.
@@ -6325,11 +5194,6 @@ type StatusCodeCount struct {
 
 // StorageProfile - Specifies the storage settings for the virtual machine disks.
 type StorageProfile struct {
-	// Specifies whether the regional disks should be aligned/moved to the VM zone. This is applicable only for VMs with placement
-	// property set. Please note that this change is irreversible. Minimum
-	// api-version: 2024-11-01.
-	AlignRegionalDisksToVMZone *bool
-
 	// Specifies the parameters that are used to add a data disk to a virtual machine. For more information about disks, see About
 	// disks and VHDs for Azure virtual machines
 	// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
@@ -6382,39 +5246,23 @@ type SupportedCapabilities struct {
 
 	// The disk controllers that an OS disk supports. If set it can be SCSI or SCSI, NVME or NVME, SCSI.
 	DiskControllerTypes *string
-
-	// Refers to the security capability of the disk supported to create a Trusted launch or Confidential VM
-	SupportedSecurityOption *SupportedSecurityOption
 }
 
-// SystemData - Metadata pertaining to creation and last modification of the resource.
+// SystemData - The system meta data relating to this resource.
 type SystemData struct {
-	// The timestamp of resource creation (UTC).
+	// READ-ONLY; Specifies the time in UTC at which the Cloud Service (extended support) resource was created.
+	// Minimum api-version: 2022-04-04.
 	CreatedAt *time.Time
 
-	// The identity that created the resource.
-	CreatedBy *string
-
-	// The type of identity that created the resource.
-	CreatedByType *CreatedByType
-
-	// The timestamp of resource last modification (UTC)
+	// READ-ONLY; Specifies the time in UTC at which the Cloud Service (extended support) resource was last modified.
+	// Minimum api-version: 2022-04-04.
 	LastModifiedAt *time.Time
-
-	// The identity that last modified the resource.
-	LastModifiedBy *string
-
-	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType
 }
 
 // TargetRegion - Describes the target region information.
 type TargetRegion struct {
 	// REQUIRED; The name of the region.
 	Name *string
-
-	// List of storage sku with replica count to create direct drive replicas.
-	AdditionalReplicaSets []*AdditionalReplicaSet
 
 	// Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery artifact.
 	Encryption *EncryptionImages
@@ -6464,30 +5312,6 @@ type ThrottledRequestsInput struct {
 
 	// Group query result by User Agent.
 	GroupByUserAgent *bool
-}
-
-// UefiKey - A UEFI key signature.
-type UefiKey struct {
-	// The type of key signature.
-	Type *UefiKeyType
-
-	// The value of the key signature.
-	Value []*string
-}
-
-// UefiKeySignatures - Additional UEFI key signatures that will be added to the image in addition to the signature templates
-type UefiKeySignatures struct {
-	// The database of UEFI keys for this image version.
-	Db []*UefiKey
-
-	// The database of revoked UEFI keys for this image version.
-	Dbx []*UefiKey
-
-	// The Key Encryption Keys of this image version.
-	Kek []*UefiKey
-
-	// The Platform Key of this image version.
-	Pk *UefiKey
 }
 
 // UefiSettings - Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Minimum
@@ -6628,9 +5452,6 @@ type UserArtifactSettings struct {
 	// Optional. The name to assign the downloaded package file on the VM. This is limited to 4096 characters. If not specified,
 	// the package file will be named the same as the Gallery Application name.
 	PackageFileName *string
-
-	// Optional. The action to be taken with regards to install/update/remove of the gallery application in the event of a reboot.
-	ScriptBehaviorAfterReboot *GalleryApplicationScriptRebootBehavior
 }
 
 // UserArtifactSource - The source image from which the Image Version is going to be created.
@@ -6650,18 +5471,6 @@ type UserAssignedIdentitiesValue struct {
 	PrincipalID *string
 }
 
-// UserInitiatedReboot - Specifies Reboot related Scheduled Event related configurations.
-type UserInitiatedReboot struct {
-	// Specifies Reboot Scheduled Event related configurations.
-	AutomaticallyApprove *bool
-}
-
-// UserInitiatedRedeploy - Specifies Redeploy related Scheduled Event related configurations.
-type UserInitiatedRedeploy struct {
-	// Specifies Redeploy Scheduled Event related configurations.
-	AutomaticallyApprove *bool
-}
-
 // VMDiskSecurityProfile - Specifies the security profile settings for the managed disk. Note: It can only be set for Confidential
 // VMs.
 type VMDiskSecurityProfile struct {
@@ -6670,9 +5479,8 @@ type VMDiskSecurityProfile struct {
 	DiskEncryptionSet *DiskEncryptionSetParameters
 
 	// Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption of the managed disk
-	// along with VMGuestState blob, VMGuestStateOnly for encryption of just the
-	// VMGuestState blob, and NonPersistedTPM for not persisting firmware state in the VMGuestState blob.. Note: It can be set
-	// for only Confidential VMs.
+	// along with VMGuestState blob, and VMGuestStateOnly for encryption of just the
+	// VMGuestState blob. Note: It can be set for only Confidential VMs.
 	SecurityEncryptionType *SecurityEncryptionTypes
 }
 
@@ -6715,21 +5523,6 @@ type VMScaleSetConvertToSinglePlacementGroupInput struct {
 	ActivePlacementGroupID *string
 }
 
-// VMScaleSetScaleOutInput - The input for ScaleOut
-type VMScaleSetScaleOutInput struct {
-	// REQUIRED; Specifies the number of virtual machines in the scale set.
-	Capacity *int64
-
-	// The input properties for ScaleOut
-	Properties *VMScaleSetScaleOutInputProperties
-}
-
-// VMScaleSetScaleOutInputProperties - The input properties for ScaleOut
-type VMScaleSetScaleOutInputProperties struct {
-	// The zone in which the scale out is requested for the virtual machine scale set.
-	Zone *string
-}
-
 // VMSizeProperties - Specifies VM Size Property settings on the virtual machine.
 type VMSizeProperties struct {
 	// Specifies the number of vCPUs available for the VM. When this property is not specified in the request body the default
@@ -6742,17 +5535,6 @@ type VMSizeProperties struct {
 	// List all available virtual machine sizes in a region [https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list].
 	// Setting this property to 1 also means that hyper-threading is disabled.
 	VCPUsPerCore *int32
-}
-
-// ValidationsProfile - This is the validations profile of a Gallery Image Version.
-type ValidationsProfile struct {
-	ExecutedValidations []*ExecutedValidation
-
-	// This specifies the pub, offer, sku and version of the image version metadata
-	PlatformAttributes []*PlatformAttribute
-
-	// The published time of the image version
-	ValidationEtag *string
 }
 
 // VaultCertificate - Describes a single certificate reference in a Key Vault, and where the certificate should reside on
@@ -6799,7 +5581,7 @@ type VirtualHardDisk struct {
 
 // VirtualMachine - Describes a Virtual Machine.
 type VirtualMachine struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The extended location of the Virtual Machine.
@@ -6807,10 +5589,6 @@ type VirtualMachine struct {
 
 	// The identity of the virtual machine, if configured.
 	Identity *VirtualMachineIdentity
-
-	// Placement section specifies the user-defined constraints for virtual machine hardware placement. This property cannot be
-	// changed once VM is provisioned. Minimum api-version: 2024-11-01.
-	Placement *Placement
 
 	// Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace
 	// images. Before you can use a marketplace image from an API, you must
@@ -6822,33 +5600,22 @@ type VirtualMachine struct {
 	// Describes the properties of a Virtual Machine.
 	Properties *VirtualMachineProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// The availability zones.
+	// The virtual machine zones.
 	Zones []*string
 
-	// READ-ONLY; Etag is property returned in Create/Update/Get response of the VM, so that customer can supply it in the header
-	// to ensure optimistic updates.
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; ManagedBy is set to Virtual Machine Scale Set(VMSS) flex ARM resourceID, if the VM is part of the VMSS. This
-	// property is used by platform for internal resource group delete optimization.
-	ManagedBy *string
-
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The virtual machine child extension resources.
 	Resources []*VirtualMachineExtension
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -6927,25 +5694,22 @@ type VirtualMachineCaptureResult struct {
 
 // VirtualMachineExtension - Describes a Virtual Machine Extension.
 type VirtualMachineExtension struct {
-	// REQUIRED; The geo-location where the resource lives
+	// Resource location
 	Location *string
 
 	// Describes the properties of a Virtual Machine Extension.
 	Properties *VirtualMachineExtensionProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -6963,25 +5727,22 @@ type VirtualMachineExtensionHandlerInstanceView struct {
 
 // VirtualMachineExtensionImage - Describes a Virtual Machine Extension Image.
 type VirtualMachineExtensionImage struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Describes the properties of a Virtual Machine Extension Image.
 	Properties *VirtualMachineExtensionImageProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -7195,9 +5956,7 @@ type VirtualMachineImageProperties struct {
 
 	// Describes automatic OS upgrade properties on the image.
 	AutomaticOSUpgradeProperties *AutomaticOSUpgradeProperties
-
-	// The list of data disk images information.
-	DataDiskImages []*DataDiskImage
+	DataDiskImages               []*DataDiskImage
 
 	// Specifies disallowed configuration for the VirtualMachine created from the image
 	Disallowed *DisallowedConfiguration
@@ -7345,9 +6104,6 @@ type VirtualMachineInstanceView struct {
 	// placement enabled. Minimum api-version: 2020-06-01.
 	AssignedHost *string
 
-	// READ-ONLY; [Preview Feature] Specifies whether the VM is currently in or out of the Standby Pool.
-	IsVMInStandbyPool *bool
-
 	// READ-ONLY; The health status for the VM.
 	VMHealth *VirtualMachineHealthStatus
 }
@@ -7368,21 +6124,12 @@ type VirtualMachineNetworkInterfaceConfiguration struct {
 
 	// Describes a virtual machine network profile's IP configuration.
 	Properties *VirtualMachineNetworkInterfaceConfigurationProperties
-
-	// Resource tags applied to the networkInterface address created by this NetworkInterfaceConfiguration
-	Tags map[string]*string
 }
 
 // VirtualMachineNetworkInterfaceConfigurationProperties - Describes a virtual machine network profile's IP configuration.
 type VirtualMachineNetworkInterfaceConfigurationProperties struct {
 	// REQUIRED; Specifies the IP configurations of the network interface.
 	IPConfigurations []*VirtualMachineNetworkInterfaceIPConfiguration
-
-	// Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
-	AuxiliaryMode *NetworkInterfaceAuxiliaryMode
-
-	// Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
-	AuxiliarySKU *NetworkInterfaceAuxiliarySKU
 
 	// The dns settings to be applied on the network interfaces.
 	DNSSettings *VirtualMachineNetworkInterfaceDNSSettingsConfiguration
@@ -7550,10 +6297,6 @@ type VirtualMachineProperties struct {
 	// 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
-	// Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations for the
-	// virtual machine.
-	ScheduledEventsPolicy *ScheduledEventsPolicy
-
 	// Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile
 
@@ -7598,9 +6341,6 @@ type VirtualMachinePublicIPAddressConfiguration struct {
 
 	// Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
 	SKU *PublicIPAddressSKU
-
-	// Resource tags applied to the publicIP address created by this PublicIPAddressConfiguration
-	Tags map[string]*string
 }
 
 // VirtualMachinePublicIPAddressConfigurationProperties - Describes a virtual machines IP Configuration's PublicIPAddress
@@ -7634,11 +6374,6 @@ type VirtualMachinePublicIPAddressDNSSettingsConfiguration struct {
 	// REQUIRED; The Domain name label prefix of the PublicIPAddress resources that will be created. The generated name label
 	// is the concatenation of the domain name label and vm network profile unique ID.
 	DomainNameLabel *string
-
-	// The Domain name label scope of the PublicIPAddress resources that will be created. The generated name label is the concatenation
-	// of the hashed domain name label with policy according to the domain
-	// name label scope and vm network profile unique ID.
-	DomainNameLabelScope *DomainNameLabelScopeTypes
 }
 
 // VirtualMachineReimageParameters - Parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will always be
@@ -7658,25 +6393,22 @@ type VirtualMachineReimageParameters struct {
 
 // VirtualMachineRunCommand - Describes a Virtual Machine run command.
 type VirtualMachineRunCommand struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// Describes the properties of a Virtual Machine run command.
 	Properties *VirtualMachineRunCommandProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -7773,25 +6505,14 @@ type VirtualMachineRunCommandProperties struct {
 	ProvisioningState *string
 }
 
-// VirtualMachineRunCommandScriptSource - Describes the script sources for run command. Use only one of these script sources:
-// script, scriptUri, commandId, galleryScriptReferenceId.
+// VirtualMachineRunCommandScriptSource - Describes the script sources for run command. Use only one of script, scriptUri,
+// commandId.
 type VirtualMachineRunCommandScriptSource struct {
-	// Specifies a commandId of predefined built-in script. Command IDs available for Linux are listed at https://aka.ms/RunCommandManagedLinux#available-commands,
-	// Windows at
-	// https://aka.ms/RunCommandManagedWindows#available-commands.
+	// Specifies a commandId of predefined built-in script.
 	CommandID *string
-
-	// The resource ID of a Gallery Script version that needs to be executed. Example ID looks like
-	// /subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts/{scriptName}/versions/{version}.
-	GalleryScriptReferenceID *string
 
 	// Specifies the script content to be executed on the VM.
 	Script *string
-
-	// Optional. Specify which shell to use for running the script. These values must match those expected by the extension. Currently
-	// supported only for Windows VMs, script uses Powershell 7 when specified.
-	// Powershell 7 must be already installed on the machine to use Powershell7 parameter value.
-	ScriptShell *ScriptShellTypes
 
 	// Specifies the script download location. It can be either SAS URI of an Azure storage blob with read access or public URI.
 	ScriptURI *string
@@ -7815,7 +6536,7 @@ type VirtualMachineRunCommandUpdate struct {
 
 // VirtualMachineRunCommandsListResult - The List run command operation response
 type VirtualMachineRunCommandsListResult struct {
-	// REQUIRED; The list of run commands.
+	// REQUIRED; The list of run commands
 	Value []*VirtualMachineRunCommand
 
 	// The uri to fetch the next page of run commands.
@@ -7824,7 +6545,7 @@ type VirtualMachineRunCommandsListResult struct {
 
 // VirtualMachineScaleSet - Describes a Virtual Machine Scale Set.
 type VirtualMachineScaleSet struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The extended location of the Virtual Machine Scale Set.
@@ -7832,10 +6553,6 @@ type VirtualMachineScaleSet struct {
 
 	// The identity of the virtual machine scale set, if configured.
 	Identity *VirtualMachineScaleSetIdentity
-
-	// Placement section specifies the user-defined constraints for virtual machine scale set hardware placement. This property
-	// cannot be changed once VMSS is provisioned. Minimum api-version: 2025-04-01.
-	Placement *Placement
 
 	// Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace
 	// images. Before you can use a marketplace image from an API, you must
@@ -7850,26 +6567,19 @@ type VirtualMachineScaleSet struct {
 	// The virtual machine scale set sku.
 	SKU *SKU
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// The availability zones.
+	// The virtual machine scale set zones. NOTE: Availability zones can only be set when you create the scale set
 	Zones []*string
 
-	// READ-ONLY; Etag is property returned in Create/Update/Get response of the VMSS, so that customer can supply it in the header
-	// to ensure optimistic updates
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 }
 
@@ -7919,7 +6629,7 @@ type VirtualMachineScaleSetDataDisk struct {
 
 // VirtualMachineScaleSetExtension - Describes a Virtual Machine Scale Set Extension.
 type VirtualMachineScaleSetExtension struct {
-	// Resource name
+	// The name of the extension.
 	Name *string
 
 	// Describes the properties of a Virtual Machine Scale Set Extension.
@@ -8167,17 +6877,6 @@ type VirtualMachineScaleSetManagedDiskParameters struct {
 	StorageAccountType *StorageAccountTypes
 }
 
-// VirtualMachineScaleSetMigrationInfo - Describes the Availability Set properties related to migration to Flexible Virtual
-// Machine Scale Set.
-type VirtualMachineScaleSetMigrationInfo struct {
-	// READ-ONLY; Indicates the target Virtual Machine ScaleSet properties upon triggering a seamless migration without downtime
-	// of the VMs via the ConvertToVirtualMachineScaleSet API.
-	DefaultVirtualMachineScaleSetInfo *DefaultVirtualMachineScaleSetInfo
-
-	// READ-ONLY; Specifies the Virtual Machine Scale Set that the Availability Set is migrated to.
-	MigrateToVirtualMachineScaleSet *SubResource
-}
-
 // VirtualMachineScaleSetNetworkConfiguration - Describes a virtual machine scale set network profile's network configurations.
 type VirtualMachineScaleSetNetworkConfiguration struct {
 	// REQUIRED; The network configuration name.
@@ -8185,9 +6884,6 @@ type VirtualMachineScaleSetNetworkConfiguration struct {
 
 	// Describes a virtual machine scale set network profile's IP configuration.
 	Properties *VirtualMachineScaleSetNetworkConfigurationProperties
-
-	// Resource tags applied to the networkInterface address created by this NetworkInterfaceConfiguration
-	Tags map[string]*string
 }
 
 // VirtualMachineScaleSetNetworkConfigurationDNSSettings - Describes a virtual machines scale sets network configuration's
@@ -8201,12 +6897,6 @@ type VirtualMachineScaleSetNetworkConfigurationDNSSettings struct {
 type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 	// REQUIRED; Specifies the IP configurations of the network interface.
 	IPConfigurations []*VirtualMachineScaleSetIPConfiguration
-
-	// Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
-	AuxiliaryMode *NetworkInterfaceAuxiliaryMode
-
-	// Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
-	AuxiliarySKU *NetworkInterfaceAuxiliarySKU
 
 	// The dns settings to be applied on the network interfaces.
 	DNSSettings *VirtualMachineScaleSetNetworkConfigurationDNSSettings
@@ -8376,9 +7066,6 @@ type VirtualMachineScaleSetProperties struct {
 	// overprovisioned VMs.
 	DoNotRunExtensionsOnOverprovisionedVMs *bool
 
-	// Specifies the high speed interconnect placement for the virtual machine scale set.
-	HighSpeedInterconnectPlacement *HighSpeedInterconnectPlacement
-
 	// Specifies information about the dedicated host group that the virtual machine scale set resides in. Minimum api-version:
 	// 2020-06-01.
 	HostGroup *SubResource
@@ -8399,17 +7086,8 @@ type VirtualMachineScaleSetProperties struct {
 	// api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
-	// Policy for Resiliency
-	ResiliencyPolicy *ResiliencyPolicy
-
-	// Specifies the sku profile for the virtual machine scale set.
-	SKUProfile *SKUProfile
-
 	// Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
 	ScaleInPolicy *ScaleInPolicy
-
-	// The ScheduledEventsPolicy.
-	ScheduledEventsPolicy *ScheduledEventsPolicy
 
 	// When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup
 	// is true, it may be modified to false. However, if singlePlacementGroup
@@ -8424,9 +7102,6 @@ type VirtualMachineScaleSetProperties struct {
 
 	// The virtual machine profile.
 	VirtualMachineProfile *VirtualMachineScaleSetVMProfile
-
-	// Specifies the align mode between Virtual Machine Scale Set compute and storage Fault Domain count.
-	ZonalPlatformFaultDomainAlignMode *ZonalPlatformFaultDomainAlignMode
 
 	// Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. zoneBalance property
 	// can only be set if the zones property of the scale set contains more than
@@ -8454,9 +7129,6 @@ type VirtualMachineScaleSetPublicIPAddressConfiguration struct {
 
 	// Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
 	SKU *PublicIPAddressSKU
-
-	// Resource tags applied to the publicIP address created by this PublicIPAddressConfiguration
-	Tags map[string]*string
 }
 
 // VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings - Describes a virtual machines scale sets network configuration's
@@ -8465,11 +7137,6 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings struct {
 	// REQUIRED; The Domain name label.The concatenation of the domain name label and vm index will be the domain name labels
 	// of the PublicIPAddress resources that will be created
 	DomainNameLabel *string
-
-	// The Domain name label scope.The concatenation of the hashed domain name label that generated according to the policy from
-	// domain name label scope and vm index will be the domain name labels of the
-	// PublicIPAddress resources that will be created
-	DomainNameLabelScope *DomainNameLabelScopeTypes
 }
 
 // VirtualMachineScaleSetPublicIPAddressConfigurationProperties - Describes a virtual machines scale set IP Configuration's
@@ -8500,9 +7167,6 @@ type VirtualMachineScaleSetReimageParameters struct {
 	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
 	// is reimaged to the existing version of OS Disk.
 	ExactVersion *string
-
-	// Parameter to force update ephemeral OS disk for a virtual machine scale set VM
-	ForceUpdateOSDiskForEphemeral *bool
 
 	// The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation
 	// being performed on all virtual machines in the virtual machine scale set.
@@ -8548,9 +7212,7 @@ type VirtualMachineScaleSetStorageProfile struct {
 	// Specifies the parameters that are used to add data disks to the virtual machines in the scale set. For more information
 	// about disks, see About disks and VHDs for Azure virtual machines
 	// [https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview].
-	DataDisks []*VirtualMachineScaleSetDataDisk
-
-	// Specifies the disk controller type configured for the virtual machines in the scale set. Minimum api-version: 2022-08-01
+	DataDisks          []*VirtualMachineScaleSetDataDisk
 	DiskControllerType *string
 
 	// Specifies information about the image to use. You can specify information about platform images, marketplace images, or
@@ -8580,9 +7242,6 @@ type VirtualMachineScaleSetUpdate struct {
 
 	// Resource tags
 	Tags map[string]*string
-
-	// The virtual machine scale set zones.
-	Zones []*string
 }
 
 // VirtualMachineScaleSetUpdateIPConfiguration - Describes a virtual machine scale set network profile's IP configuration.
@@ -8633,20 +7292,11 @@ type VirtualMachineScaleSetUpdateNetworkConfiguration struct {
 	// Describes a virtual machine scale set updatable network profile's IP configuration.Use this object for updating network
 	// profile's IP Configuration.
 	Properties *VirtualMachineScaleSetUpdateNetworkConfigurationProperties
-
-	// Resource tags applied to the networkInterface address created by this NetworkInterfaceConfiguration
-	Tags map[string]*string
 }
 
 // VirtualMachineScaleSetUpdateNetworkConfigurationProperties - Describes a virtual machine scale set updatable network profile's
 // IP configuration.Use this object for updating network profile's IP Configuration.
 type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
-	// Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
-	AuxiliaryMode *NetworkInterfaceAuxiliaryMode
-
-	// Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
-	AuxiliarySKU *NetworkInterfaceAuxiliarySKU
-
 	// The dns settings to be applied on the network interfaces.
 	DNSSettings *VirtualMachineScaleSetNetworkConfigurationDNSSettings
 
@@ -8704,9 +7354,6 @@ type VirtualMachineScaleSetUpdateOSDisk struct {
 	// The default value is set to Delete. For an Ephemeral OS Disk, the default value is set to Delete. User cannot change the
 	// delete option for Ephemeral OS Disk.
 	DeleteOption *DiskDeleteOptionTypes
-
-	// Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
-	DiffDiskSettings *DiffDiskSettings
 
 	// Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a
 	// virtual machine image.
@@ -8768,12 +7415,6 @@ type VirtualMachineScaleSetUpdateProperties struct {
 	// Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource
 
-	// Policy for Resiliency
-	ResiliencyPolicy *ResiliencyPolicy
-
-	// Specifies the sku profile for the virtual machine scale set.
-	SKUProfile *SKUProfile
-
 	// Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
 	ScaleInPolicy *ScaleInPolicy
 
@@ -8790,9 +7431,6 @@ type VirtualMachineScaleSetUpdateProperties struct {
 
 	// The virtual machine profile.
 	VirtualMachineProfile *VirtualMachineScaleSetUpdateVMProfile
-
-	// Specifies the align mode between Virtual Machine Scale Set compute and storage Fault Domain count.
-	ZonalPlatformFaultDomainAlignMode *ZonalPlatformFaultDomainAlignMode
 }
 
 // VirtualMachineScaleSetUpdatePublicIPAddressConfiguration - Describes a virtual machines scale set IP Configuration's PublicIPAddress
@@ -8803,9 +7441,6 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfiguration struct {
 
 	// Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration
 	Properties *VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties
-
-	// Resource tags applied to the publicIP address created by this PublicIPAddressConfiguration
-	Tags map[string]*string
 }
 
 // VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties - Describes a virtual machines scale set IP Configuration's
@@ -8827,11 +7462,7 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties struct {
 // VirtualMachineScaleSetUpdateStorageProfile - Describes a virtual machine scale set storage profile.
 type VirtualMachineScaleSetUpdateStorageProfile struct {
 	// The data disks.
-	DataDisks []*VirtualMachineScaleSetDataDisk
-
-	// Specifies the disk controller type configured for the virtual machines in the scale set. Note: You need to deallocate the
-	// virtual machines in the scale set before updating its disk controller type
-	// based on the upgrade mode configured for the scale set. Minimum api-version: 2022-08-01
+	DataDisks          []*VirtualMachineScaleSetDataDisk
 	DiskControllerType *string
 
 	// The image reference.
@@ -8867,9 +7498,6 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 	// Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile
 
-	// The virtual machine scale set security posture reference.
-	SecurityPostureReference *SecurityPostureReferenceUpdate
-
 	// The virtual machine scale set Security profile
 	SecurityProfile *SecurityProfile
 
@@ -8883,7 +7511,7 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 
 // VirtualMachineScaleSetVM - Describes a virtual machine scale set virtual machine.
 type VirtualMachineScaleSetVM struct {
-	// REQUIRED; The geo-location where the resource lives
+	// REQUIRED; Resource location
 	Location *string
 
 	// The identity of the virtual machine, if configured.
@@ -8899,20 +7527,16 @@ type VirtualMachineScaleSetVM struct {
 	// Describes the properties of a virtual machine scale set virtual machine.
 	Properties *VirtualMachineScaleSetVMProperties
 
-	// Resource tags.
+	// Resource tags
 	Tags map[string]*string
 
-	// READ-ONLY; Etag is property returned in Update/Get response of the VMSS VM, so that customer can supply it in the header
-	// to ensure optimistic updates.
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Resource Id
 	ID *string
 
 	// READ-ONLY; The virtual machine instance ID.
 	InstanceID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; Resource name
 	Name *string
 
 	// READ-ONLY; The virtual machine child extension resources.
@@ -8921,10 +7545,7 @@ type VirtualMachineScaleSetVM struct {
 	// READ-ONLY; The virtual machine SKU.
 	SKU *SKU
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; Resource type
 	Type *string
 
 	// READ-ONLY; The virtual machine zones.
@@ -8942,7 +7563,7 @@ type VirtualMachineScaleSetVMExtension struct {
 	// READ-ONLY; Resource Id
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the extension.
 	Name *string
 
 	// READ-ONLY; Resource type
@@ -9058,7 +7679,7 @@ type VirtualMachineScaleSetVMListResult struct {
 	Value []*VirtualMachineScaleSetVM
 
 	// The uri to fetch the next page of Virtual Machine Scale Set VMs. Call ListNext() with this to fetch the next page of VMSS
-	// VMs.
+	// VMs
 	NextLink *string
 }
 
@@ -9117,7 +7738,7 @@ type VirtualMachineScaleSetVMProfile struct {
 	// Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile
 
-	// Specifies the security posture to be used in the scale set. Minimum api-version: 2023-03-01
+	// Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version: 2023-03-01
 	SecurityPostureReference *SecurityPostureReference
 
 	// Specifies the Security related profile settings for the virtual machines in the scale set.
@@ -9133,11 +7754,6 @@ type VirtualMachineScaleSetVMProfile struct {
 	// UserData for the virtual machines in the scale set, which must be base-64 encoded. Customer should not pass any secrets
 	// in here. Minimum api-version: 2021-03-01.
 	UserData *string
-
-	// READ-ONLY; Specifies the time in which this VM profile for the Virtual Machine Scale Set was created. This value will be
-	// added to VMSS Flex VM tags when creating/updating the VMSS VM Profile. Minimum API version
-	// for this property is 2023-09-01.
-	TimeCreated *time.Time
 }
 
 // VirtualMachineScaleSetVMProperties - Describes the properties of a virtual machine scale set virtual machine.
@@ -9186,17 +7802,14 @@ type VirtualMachineScaleSetVMProperties struct {
 	// Specifies the protection policy of the virtual machine.
 	ProtectionPolicy *VirtualMachineScaleSetVMProtectionPolicy
 
-	// Specifies the resilient VM deletion status for the virtual machine.
-	ResilientVMDeletionStatus *ResilientVMDeletionStatus
-
 	// Specifies the Security related profile settings for the virtual machine.
 	SecurityProfile *SecurityProfile
 
 	// Specifies the storage settings for the virtual machine disks.
 	StorageProfile *StorageProfile
 
-	// UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum api-version:
-	// 2021-03-01
+	// UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here.
+	// Minimum api-version: 2021-03-01
 	UserData *string
 
 	// READ-ONLY; The virtual machine instance view.
@@ -9211,9 +7824,6 @@ type VirtualMachineScaleSetVMProperties struct {
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string
-
-	// READ-ONLY; Specifies the time at which the Virtual Machine resource was created. Minimum api-version: 2021-11-01.
-	TimeCreated *time.Time
 
 	// READ-ONLY; Azure VM unique ID.
 	VMID *string
@@ -9234,9 +7844,6 @@ type VirtualMachineScaleSetVMReimageParameters struct {
 	// Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the OS disk
 	// is reimaged to the existing version of OS Disk.
 	ExactVersion *string
-
-	// Parameter to force update ephemeral OS disk for a virtual machine scale set VM
-	ForceUpdateOSDiskForEphemeral *bool
 
 	// Specifies information required for reimaging the non-ephemeral OS disk.
 	OSProfile *OSProfileProvisioningData
@@ -9271,9 +7878,6 @@ type VirtualMachineSize struct {
 
 // VirtualMachineSizeListResult - The List Virtual Machine operation response.
 type VirtualMachineSizeListResult struct {
-	// The link to the next page of items.
-	NextLink *string
-
 	// The list of virtual machine sizes.
 	Value []*VirtualMachineSize
 }
@@ -9382,6 +7986,9 @@ type WindowsConfiguration struct {
 	// reprovisioning.
 	EnableAutomaticUpdates *bool
 
+	// Indicates whether VMAgent Platform Updates is enabled for the Windows virtual machine. Default value is false.
+	EnableVMAgentPlatformUpdates *bool
+
 	// [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
 	PatchSettings *PatchSettings
 
@@ -9398,9 +8005,6 @@ type WindowsConfiguration struct {
 
 	// Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell.
 	WinRM *WinRMConfiguration
-
-	// READ-ONLY; Indicates whether VMAgent Platform Updates are enabled for the Windows Virtual Machine.
-	EnableVMAgentPlatformUpdates *bool
 }
 
 // WindowsParameters - Input for InstallPatches on a Windows VM, as directly received by the API
@@ -9419,16 +8023,6 @@ type WindowsParameters struct {
 
 	// This is used to install patches that were published on or before this given max published date.
 	MaxPatchPublishDate *time.Time
-
-	// This is used to exclude patches that match the given patch name masks. Alphanumeric strings and wildcard expressions consisting
-	// of * and ? are only supported as input values in the list. Null, empty
-	// and only whitespaces strings as inputs values are not supported.
-	PatchNameMasksToExclude []*string
-
-	// This is used to include patches that match the given patch name masks. Alphanumeric strings and wildcard expressions consisting
-	// of * and ? are only supported as input values in the list. Null, empty
-	// and only whitespaces strings as inputs values are not supported.
-	PatchNameMasksToInclude []*string
 }
 
 // WindowsVMGuestPatchAutomaticByPlatformSettings - Specifies additional settings to be applied when patch mode AutomaticByPlatform
@@ -9439,15 +8033,4 @@ type WindowsVMGuestPatchAutomaticByPlatformSettings struct {
 
 	// Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
 	RebootSetting *WindowsVMGuestPatchAutomaticByPlatformRebootSetting
-}
-
-// ZoneAllocationPolicy - The configuration parameters for zone allocation of a virtual machine scale set.
-type ZoneAllocationPolicy struct {
-	// The configuration parameters used to limit the number of virtual machines per availability zone in the virtual machine
-	// scale set.
-	MaxInstancePercentPerZonePolicy *MaxInstancePercentPerZonePolicy
-
-	// The maximum number of availability zones to use if the ZonePlacementPolicy is 'Auto'. If not specified, all availability
-	// zones will be used.
-	MaxZoneCount *int32
 }

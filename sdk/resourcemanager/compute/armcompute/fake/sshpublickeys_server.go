@@ -13,10 +13,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 )
 
@@ -206,10 +205,6 @@ func (s *SSHPublicKeysServerTransport) dispatchGenerateKeyPair(req *http.Request
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcompute.SSHGenerateKeyPairInputParameters](req)
-	if err != nil {
-		return nil, err
-	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -218,13 +213,7 @@ func (s *SSHPublicKeysServerTransport) dispatchGenerateKeyPair(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	var options *armcompute.SSHPublicKeysClientGenerateKeyPairOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armcompute.SSHPublicKeysClientGenerateKeyPairOptions{
-			Parameters: &body,
-		}
-	}
-	respr, errRespr := s.srv.GenerateKeyPair(req.Context(), resourceGroupNameParam, sshPublicKeyNameParam, options)
+	respr, errRespr := s.srv.GenerateKeyPair(req.Context(), resourceGroupNameParam, sshPublicKeyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

@@ -82,18 +82,6 @@ type ServerFactory struct {
 	// GalleryImagesServer contains the fakes for client GalleryImagesClient
 	GalleryImagesServer GalleryImagesServer
 
-	// GalleryInVMAccessControlProfileVersionsServer contains the fakes for client GalleryInVMAccessControlProfileVersionsClient
-	GalleryInVMAccessControlProfileVersionsServer GalleryInVMAccessControlProfileVersionsServer
-
-	// GalleryInVMAccessControlProfilesServer contains the fakes for client GalleryInVMAccessControlProfilesClient
-	GalleryInVMAccessControlProfilesServer GalleryInVMAccessControlProfilesServer
-
-	// GalleryScriptVersionsServer contains the fakes for client GalleryScriptVersionsClient
-	GalleryScriptVersionsServer GalleryScriptVersionsServer
-
-	// GalleryScriptsServer contains the fakes for client GalleryScriptsClient
-	GalleryScriptsServer GalleryScriptsServer
-
 	// GallerySharingProfileServer contains the fakes for client GallerySharingProfileClient
 	GallerySharingProfileServer GallerySharingProfileServer
 
@@ -132,9 +120,6 @@ type ServerFactory struct {
 
 	// SnapshotsServer contains the fakes for client SnapshotsClient
 	SnapshotsServer SnapshotsServer
-
-	// SoftDeletedResourceServer contains the fakes for client SoftDeletedResourceClient
-	SoftDeletedResourceServer SoftDeletedResourceServer
 
 	// UsageServer contains the fakes for client UsageClient
 	UsageServer UsageServer
@@ -191,62 +176,57 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcompute.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                             *ServerFactory
-	trMu                                            sync.Mutex
-	trAvailabilitySetsServer                        *AvailabilitySetsServerTransport
-	trCapacityReservationGroupsServer               *CapacityReservationGroupsServerTransport
-	trCapacityReservationsServer                    *CapacityReservationsServerTransport
-	trCloudServiceOperatingSystemsServer            *CloudServiceOperatingSystemsServerTransport
-	trCloudServiceRoleInstancesServer               *CloudServiceRoleInstancesServerTransport
-	trCloudServiceRolesServer                       *CloudServiceRolesServerTransport
-	trCloudServicesServer                           *CloudServicesServerTransport
-	trCloudServicesUpdateDomainServer               *CloudServicesUpdateDomainServerTransport
-	trCommunityGalleriesServer                      *CommunityGalleriesServerTransport
-	trCommunityGalleryImageVersionsServer           *CommunityGalleryImageVersionsServerTransport
-	trCommunityGalleryImagesServer                  *CommunityGalleryImagesServerTransport
-	trDedicatedHostGroupsServer                     *DedicatedHostGroupsServerTransport
-	trDedicatedHostsServer                          *DedicatedHostsServerTransport
-	trDiskAccessesServer                            *DiskAccessesServerTransport
-	trDiskEncryptionSetsServer                      *DiskEncryptionSetsServerTransport
-	trDiskRestorePointServer                        *DiskRestorePointServerTransport
-	trDisksServer                                   *DisksServerTransport
-	trGalleriesServer                               *GalleriesServerTransport
-	trGalleryApplicationVersionsServer              *GalleryApplicationVersionsServerTransport
-	trGalleryApplicationsServer                     *GalleryApplicationsServerTransport
-	trGalleryImageVersionsServer                    *GalleryImageVersionsServerTransport
-	trGalleryImagesServer                           *GalleryImagesServerTransport
-	trGalleryInVMAccessControlProfileVersionsServer *GalleryInVMAccessControlProfileVersionsServerTransport
-	trGalleryInVMAccessControlProfilesServer        *GalleryInVMAccessControlProfilesServerTransport
-	trGalleryScriptVersionsServer                   *GalleryScriptVersionsServerTransport
-	trGalleryScriptsServer                          *GalleryScriptsServerTransport
-	trGallerySharingProfileServer                   *GallerySharingProfileServerTransport
-	trImagesServer                                  *ImagesServerTransport
-	trLogAnalyticsServer                            *LogAnalyticsServerTransport
-	trOperationsServer                              *OperationsServerTransport
-	trProximityPlacementGroupsServer                *ProximityPlacementGroupsServerTransport
-	trResourceSKUsServer                            *ResourceSKUsServerTransport
-	trRestorePointCollectionsServer                 *RestorePointCollectionsServerTransport
-	trRestorePointsServer                           *RestorePointsServerTransport
-	trSSHPublicKeysServer                           *SSHPublicKeysServerTransport
-	trSharedGalleriesServer                         *SharedGalleriesServerTransport
-	trSharedGalleryImageVersionsServer              *SharedGalleryImageVersionsServerTransport
-	trSharedGalleryImagesServer                     *SharedGalleryImagesServerTransport
-	trSnapshotsServer                               *SnapshotsServerTransport
-	trSoftDeletedResourceServer                     *SoftDeletedResourceServerTransport
-	trUsageServer                                   *UsageServerTransport
-	trVirtualMachineExtensionImagesServer           *VirtualMachineExtensionImagesServerTransport
-	trVirtualMachineExtensionsServer                *VirtualMachineExtensionsServerTransport
-	trVirtualMachineImagesServer                    *VirtualMachineImagesServerTransport
-	trVirtualMachineImagesEdgeZoneServer            *VirtualMachineImagesEdgeZoneServerTransport
-	trVirtualMachineRunCommandsServer               *VirtualMachineRunCommandsServerTransport
-	trVirtualMachineScaleSetExtensionsServer        *VirtualMachineScaleSetExtensionsServerTransport
-	trVirtualMachineScaleSetRollingUpgradesServer   *VirtualMachineScaleSetRollingUpgradesServerTransport
-	trVirtualMachineScaleSetVMExtensionsServer      *VirtualMachineScaleSetVMExtensionsServerTransport
-	trVirtualMachineScaleSetVMRunCommandsServer     *VirtualMachineScaleSetVMRunCommandsServerTransport
-	trVirtualMachineScaleSetVMsServer               *VirtualMachineScaleSetVMsServerTransport
-	trVirtualMachineScaleSetsServer                 *VirtualMachineScaleSetsServerTransport
-	trVirtualMachineSizesServer                     *VirtualMachineSizesServerTransport
-	trVirtualMachinesServer                         *VirtualMachinesServerTransport
+	srv                                           *ServerFactory
+	trMu                                          sync.Mutex
+	trAvailabilitySetsServer                      *AvailabilitySetsServerTransport
+	trCapacityReservationGroupsServer             *CapacityReservationGroupsServerTransport
+	trCapacityReservationsServer                  *CapacityReservationsServerTransport
+	trCloudServiceOperatingSystemsServer          *CloudServiceOperatingSystemsServerTransport
+	trCloudServiceRoleInstancesServer             *CloudServiceRoleInstancesServerTransport
+	trCloudServiceRolesServer                     *CloudServiceRolesServerTransport
+	trCloudServicesServer                         *CloudServicesServerTransport
+	trCloudServicesUpdateDomainServer             *CloudServicesUpdateDomainServerTransport
+	trCommunityGalleriesServer                    *CommunityGalleriesServerTransport
+	trCommunityGalleryImageVersionsServer         *CommunityGalleryImageVersionsServerTransport
+	trCommunityGalleryImagesServer                *CommunityGalleryImagesServerTransport
+	trDedicatedHostGroupsServer                   *DedicatedHostGroupsServerTransport
+	trDedicatedHostsServer                        *DedicatedHostsServerTransport
+	trDiskAccessesServer                          *DiskAccessesServerTransport
+	trDiskEncryptionSetsServer                    *DiskEncryptionSetsServerTransport
+	trDiskRestorePointServer                      *DiskRestorePointServerTransport
+	trDisksServer                                 *DisksServerTransport
+	trGalleriesServer                             *GalleriesServerTransport
+	trGalleryApplicationVersionsServer            *GalleryApplicationVersionsServerTransport
+	trGalleryApplicationsServer                   *GalleryApplicationsServerTransport
+	trGalleryImageVersionsServer                  *GalleryImageVersionsServerTransport
+	trGalleryImagesServer                         *GalleryImagesServerTransport
+	trGallerySharingProfileServer                 *GallerySharingProfileServerTransport
+	trImagesServer                                *ImagesServerTransport
+	trLogAnalyticsServer                          *LogAnalyticsServerTransport
+	trOperationsServer                            *OperationsServerTransport
+	trProximityPlacementGroupsServer              *ProximityPlacementGroupsServerTransport
+	trResourceSKUsServer                          *ResourceSKUsServerTransport
+	trRestorePointCollectionsServer               *RestorePointCollectionsServerTransport
+	trRestorePointsServer                         *RestorePointsServerTransport
+	trSSHPublicKeysServer                         *SSHPublicKeysServerTransport
+	trSharedGalleriesServer                       *SharedGalleriesServerTransport
+	trSharedGalleryImageVersionsServer            *SharedGalleryImageVersionsServerTransport
+	trSharedGalleryImagesServer                   *SharedGalleryImagesServerTransport
+	trSnapshotsServer                             *SnapshotsServerTransport
+	trUsageServer                                 *UsageServerTransport
+	trVirtualMachineExtensionImagesServer         *VirtualMachineExtensionImagesServerTransport
+	trVirtualMachineExtensionsServer              *VirtualMachineExtensionsServerTransport
+	trVirtualMachineImagesServer                  *VirtualMachineImagesServerTransport
+	trVirtualMachineImagesEdgeZoneServer          *VirtualMachineImagesEdgeZoneServerTransport
+	trVirtualMachineRunCommandsServer             *VirtualMachineRunCommandsServerTransport
+	trVirtualMachineScaleSetExtensionsServer      *VirtualMachineScaleSetExtensionsServerTransport
+	trVirtualMachineScaleSetRollingUpgradesServer *VirtualMachineScaleSetRollingUpgradesServerTransport
+	trVirtualMachineScaleSetVMExtensionsServer    *VirtualMachineScaleSetVMExtensionsServerTransport
+	trVirtualMachineScaleSetVMRunCommandsServer   *VirtualMachineScaleSetVMRunCommandsServerTransport
+	trVirtualMachineScaleSetVMsServer             *VirtualMachineScaleSetVMsServerTransport
+	trVirtualMachineScaleSetsServer               *VirtualMachineScaleSetsServerTransport
+	trVirtualMachineSizesServer                   *VirtualMachineSizesServerTransport
+	trVirtualMachinesServer                       *VirtualMachinesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -366,26 +346,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGalleryImagesServerTransport(&s.srv.GalleryImagesServer)
 		})
 		resp, err = s.trGalleryImagesServer.Do(req)
-	case "GalleryInVMAccessControlProfileVersionsClient":
-		initServer(s, &s.trGalleryInVMAccessControlProfileVersionsServer, func() *GalleryInVMAccessControlProfileVersionsServerTransport {
-			return NewGalleryInVMAccessControlProfileVersionsServerTransport(&s.srv.GalleryInVMAccessControlProfileVersionsServer)
-		})
-		resp, err = s.trGalleryInVMAccessControlProfileVersionsServer.Do(req)
-	case "GalleryInVMAccessControlProfilesClient":
-		initServer(s, &s.trGalleryInVMAccessControlProfilesServer, func() *GalleryInVMAccessControlProfilesServerTransport {
-			return NewGalleryInVMAccessControlProfilesServerTransport(&s.srv.GalleryInVMAccessControlProfilesServer)
-		})
-		resp, err = s.trGalleryInVMAccessControlProfilesServer.Do(req)
-	case "GalleryScriptVersionsClient":
-		initServer(s, &s.trGalleryScriptVersionsServer, func() *GalleryScriptVersionsServerTransport {
-			return NewGalleryScriptVersionsServerTransport(&s.srv.GalleryScriptVersionsServer)
-		})
-		resp, err = s.trGalleryScriptVersionsServer.Do(req)
-	case "GalleryScriptsClient":
-		initServer(s, &s.trGalleryScriptsServer, func() *GalleryScriptsServerTransport {
-			return NewGalleryScriptsServerTransport(&s.srv.GalleryScriptsServer)
-		})
-		resp, err = s.trGalleryScriptsServer.Do(req)
 	case "GallerySharingProfileClient":
 		initServer(s, &s.trGallerySharingProfileServer, func() *GallerySharingProfileServerTransport {
 			return NewGallerySharingProfileServerTransport(&s.srv.GallerySharingProfileServer)
@@ -441,11 +401,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SnapshotsClient":
 		initServer(s, &s.trSnapshotsServer, func() *SnapshotsServerTransport { return NewSnapshotsServerTransport(&s.srv.SnapshotsServer) })
 		resp, err = s.trSnapshotsServer.Do(req)
-	case "SoftDeletedResourceClient":
-		initServer(s, &s.trSoftDeletedResourceServer, func() *SoftDeletedResourceServerTransport {
-			return NewSoftDeletedResourceServerTransport(&s.srv.SoftDeletedResourceServer)
-		})
-		resp, err = s.trSoftDeletedResourceServer.Do(req)
 	case "UsageClient":
 		initServer(s, &s.trUsageServer, func() *UsageServerTransport { return NewUsageServerTransport(&s.srv.UsageServer) })
 		resp, err = s.trUsageServer.Do(req)
