@@ -18,20 +18,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
-const SessionExpiring = "session_expiring"
-const SessionRevoking = "session_revoking"
+const sessionExpiring = "session_expiring"
+const sessionRevoking = "session_revoking"
+const sessionUnavailable = "SessionOperationsTemporarilyUnavailable"
 
-type SessionCredentials = generated.SessionCredentials
+type sessionCredentials = generated.SessionCredentials
 
-type SessionPolicy struct {
+type sessionPolicy struct {
 	bearerTokenPolicy policy.Policy
 	opts              SessionOptions
-	provider          SessionProvider
+	provider          sessionProvider
 	refreshMu         sync.Mutex
 }
 
 func NewSessionPolicy(opts SessionOptions, bearerTokenPolicy policy.Policy, oauthServiceClient *generated.ServiceClient) (policy.Policy, error) {
-	var provider SessionProvider
+	var provider sessionProvider
 	switch opts.Mode {
 	case SessionModeSingleContainer:
 		if opts.AccountName == "" {
@@ -40,32 +41,32 @@ func NewSessionPolicy(opts SessionOptions, bearerTokenPolicy policy.Policy, oaut
 		if opts.ContainerName == "" {
 			return nil, errors.New("container name is required for singlecontainer mode")
 		}
-		provider = NewSingleContainerProvider(oauthServiceClient, opts.ContainerName)
+		provider = newSingleContainerProvider(oauthServiceClient, opts.ContainerName)
 	default:
 		return nil, fmt.Errorf("unsupported session mode %v", opts.Mode)
 	}
 
-	return &SessionPolicy{
+	return &sessionPolicy{
 		bearerTokenPolicy: bearerTokenPolicy,
 		opts:              opts,
 		provider:          provider,
 	}, nil
 }
 
-func (p *SessionPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (p *sessionPolicy) Do(req *policy.Request) (*http.Response, error) {
 	containerName, ok := canUseSession(req.Raw())
 	if !ok {
 		return p.bearerTokenPolicy.Do(req)
 	}
 
 	resp, err := p.doWithSession(req, containerName)
-	if err != nil && errors.Is(err, ErrFallbackToBearer) {
+	if err != nil && errors.Is(err, errFallbackToBearer) {
 		return p.bearerTokenPolicy.Do(req)
 	}
 	return resp, err
 }
 
-func (p *SessionPolicy) doWithSession(req *policy.Request, containerName string) (*http.Response, error) {
+func (p *sessionPolicy) doWithSession(req *policy.Request, containerName string) (*http.Response, error) {
 	sessionCreds, err := p.provider.GetSessionCredentials(req.Raw().Context(), containerName)
 	if err != nil {
 		return nil, err
@@ -80,9 +81,9 @@ func (p *SessionPolicy) doWithSession(req *policy.Request, containerName string)
 	return p.handleSessionError(req, resp, err, containerName)
 }
 
-func (p *SessionPolicy) handleSessionRefresh(resp *http.Response, containerName string) {
+func (p *sessionPolicy) handleSessionRefresh(resp *http.Response, containerName string) {
 	authInfo := getHeader(shared.HeaderXmsAuthInfo, resp.Header)
-	if strings.Contains(authInfo, SessionExpiring) || strings.Contains(authInfo, SessionRevoking) {
+	if strings.Contains(authInfo, sessionExpiring) || strings.Contains(authInfo, sessionRevoking) {
 		// Use TryLock to ensure only one goroutine attempts refresh at a time
 		if !p.refreshMu.TryLock() {
 			return
@@ -96,7 +97,7 @@ func (p *SessionPolicy) handleSessionRefresh(resp *http.Response, containerName 
 	}
 }
 
-func (p *SessionPolicy) handleSessionError(req *policy.Request, resp *http.Response, err error, containerName string) (*http.Response, error) {
+func (p *sessionPolicy) handleSessionError(req *policy.Request, resp *http.Response, err error, containerName string) (*http.Response, error) {
 	var respErr *azcore.ResponseError
 	if !errors.As(err, &respErr) {
 		return resp, err
@@ -106,8 +107,8 @@ func (p *SessionPolicy) handleSessionError(req *policy.Request, resp *http.Respo
 		return nil, err
 	}
 
-	if resp.StatusCode == http.StatusServiceUnavailable && respErr.ErrorCode == "SessionOperationsTemporarilyUnavailable" {
-		return nil, ErrFallbackToBearer
+	if resp.StatusCode == http.StatusServiceUnavailable && respErr.ErrorCode == sessionUnavailable {
+		return nil, errFallbackToBearer
 	}
 
 	if resp.StatusCode == http.StatusUnauthorized {
@@ -117,19 +118,19 @@ func (p *SessionPolicy) handleSessionError(req *policy.Request, resp *http.Respo
 	return resp, err
 }
 
-func (p *SessionPolicy) retryWithNewSession(req *policy.Request, containerName string) (*http.Response, error) {
+func (p *sessionPolicy) retryWithNewSession(req *policy.Request, containerName string) (*http.Response, error) {
 	p.provider.ExpireSessionCredentials(containerName)
 	sessionCreds, err := p.provider.GetSessionCredentials(req.Raw().Context(), containerName)
 	if err != nil {
-		if errors.Is(err, ErrFallbackToBearer) {
-			return nil, ErrFallbackToBearer
+		if errors.Is(err, errFallbackToBearer) {
+			return nil, errFallbackToBearer
 		}
 		return nil, err
 	}
 	return p.applySessionReq(req, sessionCreds)
 }
 
-func (p *SessionPolicy) applySessionReq(req *policy.Request, sessionCreds SessionCredentials) (*http.Response, error) {
+func (p *sessionPolicy) applySessionReq(req *policy.Request, sessionCreds sessionCredentials) (*http.Response, error) {
 	var key, token string
 	if sessionCreds.SessionKey != nil {
 		key = *sessionCreds.SessionKey

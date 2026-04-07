@@ -17,7 +17,8 @@ import (
 // SessionMode contains the possible values for session-based authentication modes.
 type SessionMode = exported.SessionMode
 
-const ( // SessionModeDefault is the default mode where sessions are disabled.
+const (
+	// SessionModeDefault is the default mode where sessions are disabled.
 	SessionModeDefault SessionMode = exported.SessionModeDefault
 	// SessionModeOff explicitly disables session-based authentication.
 	SessionModeOff SessionMode = exported.SessionModeOff

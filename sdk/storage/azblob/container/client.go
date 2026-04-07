@@ -449,6 +449,7 @@ func (c *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOp
 	return resp, err
 }
 
+// CreateSession enables users to create a session scoped to a container
 func (c *Client) CreateSession(ctx context.Context, o *CreateSessionOptions) (CreateSessionResponse, error) {
 	resp, err := c.generated().CreateSession(ctx, CreateSessionConfiguration{AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC)}, nil)
 	return resp, err
