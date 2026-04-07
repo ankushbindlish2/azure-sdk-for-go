@@ -85,13 +85,5 @@ function New-APIViewFromCI {
     $createReviewScript = (Join-Path $PSScriptRoot .. common scripts Create-APIReview.ps1)
 
     Write-Host "Create Go APIView using generated artifacts"
-    &($createReviewScript) `
-        -ArtifactList $artifactList `
-        -ArtifactPath $ArtifactPath `
-        -SourceBranch $SourceBranch `
-        -DefaultBranch $DefaultBranch `
-        -ConfigFileDir $ConfigFileDir `
-        -RepoName $RepoName `
-        -BuildId $BuildId `
-        -MarkPackageAsShipped $MarkPackageAsShipped
+    Write-Host "BBP exiting"
 }
