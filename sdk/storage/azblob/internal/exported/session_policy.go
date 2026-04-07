@@ -173,6 +173,11 @@ func canUseSession(req *http.Request) (containerName string, ok bool) {
 		return "", false
 	}
 
+	// Session auth is not supported for requests with comp query parameter
+	if u.Query().Get("comp") != "" {
+		return "", false
+	}
+
 	// Path format: /<container>/<blob>
 	path := strings.TrimPrefix(u.Path, "/")
 	if path == "" {

@@ -278,3 +278,51 @@ func GetStatusCode(err error) int {
 
 	return respErr.StatusCode
 }
+
+// GetServiceURL returns the blob service URL from a container or blob URL.
+// For example, "https://account.blob.core.windows.net/container/blob" returns
+// "https://account.blob.core.windows.net/", and for IP-style endpoints like
+// "https://127.0.0.1:10000/account/container" returns "https://127.0.0.1:10000/account/".
+// Query parameters (e.g. SAS tokens) are preserved in the returned URL.
+func GetServiceURL(storageURL string) (string, error) {
+	// Parse the URL to extract its components
+	u, err := url.Parse(storageURL)
+	if err != nil {
+		return "", err
+	}
+
+	if IsIPEndpointStyle(u.Host) {
+		// IP-style URLs (e.g., Azurite emulator) have the format:
+		// scheme://IP:port/accountName/container/blob...
+		// We need to keep the first path segment (account name) to form the service URL.
+		path := u.Path
+		// Remove leading slash if present
+		if len(path) > 0 && path[0] == '/' {
+			path = path[1:]
+		}
+
+		// Find the end of the account name (first slash after removing leading slash)
+		accountEndIndex := strings.Index(path, "/")
+		if accountEndIndex == -1 {
+			// No slash found; path contains account name only (e.g., "/devstoreaccount1")
+			if path == "" {
+				return "", errors.New("IP-style endpoint URL is missing the account name path segment")
+			}
+			// Use the entire path as the account name
+			u.Path = "/" + path + "/"
+		} else {
+			// Extract just the account name portion
+			u.Path = "/" + path[:accountEndIndex] + "/"
+		}
+		// Clear RawPath to let URL.String() recompute it from Path
+		u.RawPath = ""
+		return u.String(), nil
+	}
+
+	// Standard-style URLs have the format:
+	// scheme://account.blob.core.windows.net/container/blob...
+	// The service URL is just the scheme and host with a trailing slash.
+	u.Path = "/"
+	u.RawPath = ""
+	return u.String(), nil
+}

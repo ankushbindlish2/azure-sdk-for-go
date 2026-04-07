@@ -29,51 +29,39 @@ import (
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions base.ClientOptions
 
+// SessionMode contains the possible values for session-based authentication modes.
+type SessionMode = base.SessionMode
+
+const (
+	// SessionModeDefault is the default mode where sessions are disabled.
+	SessionModeDefault SessionMode = base.SessionModeDefault
+	// SessionModeOff explicitly disables session-based authentication.
+	SessionModeOff SessionMode = base.SessionModeOff
+	// SessionModeSingleContainer enables session-based authentication for a single container.
+	SessionModeSingleContainer SessionMode = base.SessionModeSingleContainer
+)
+
+// PossibleSessionModeValues returns a slice of possible values for SessionMode.
+func PossibleSessionModeValues() []SessionMode {
+	return base.PossibleSessionModeValues()
+}
+
+// SessionOptions contains the optional parameters for session-based authentication.
+type SessionOptions = base.SessionOptions
+
 // Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type Client base.Client[generated.ServiceClient]
-
-func NewClientWithSession(serviceURL string, cred azcore.TokenCredential, sessionOpts SessionOptions, options *ClientOptions) (*Client, error) {
-	// Client to get the session token and handle session token refresh
-	oauthClient, err := NewClient(serviceURL, cred, options)
-	if err != nil {
-		return nil, err
-	}
-	if sessionOpts.Mode == exported.SessionModeOff {
-		return oauthClient, nil
-	}
-
-	audience := base.GetAudience((*base.ClientOptions)(options))
-	conOptions := shared.GetClientOptions(options)
-	// policy to fall back on
-	oAuthPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	sessionPolicy, err := exported.NewSessionPolicy(sessionOpts, oAuthPolicy, oauthClient.generated())
-	if err != nil {
-		return nil, err
-	}
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{sessionPolicy}}
-
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
-	if err != nil {
-		return nil, err
-	}
-	return (*Client)(base.NewServiceClient(serviceURL, azClient, &cred, (*base.ClientOptions)(conOptions))), nil
-}
 
 // NewClient creates an instance of Client with the specified values.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	audience := base.GetAudience((*base.ClientOptions)(options))
-	conOptions := shared.GetClientOptions(options)
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
-
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(serviceURL, cred, (*base.ClientOptions)(options))
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewServiceClient(serviceURL, azClient, &cred, (*base.ClientOptions)(conOptions))), nil
+	return (*Client)(base.NewServiceClient(serviceURL, azClient, &cred, (*base.ClientOptions)(options))), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.

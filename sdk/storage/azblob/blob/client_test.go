@@ -3938,15 +3938,12 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	//proxyURL, err := url.Parse("http://127.0.0.1:8888")
-	//_require.NoError(err)
-	//
-	//transport := &http.Transport{
-	//	Proxy: http.ProxyURL(proxyURL),
-	//}
-	//
-	//options := &service.ClientOptions{}
-	//options.Transport = &http.Client{Transport: transport}
+	proxyURL, err := url.Parse("http://127.0.0.1:8888")
+	_require.NoError(err)
+
+	transport := &http.Transport{
+		Proxy: http.ProxyURL(proxyURL),
+	}
 
 	// Create service client with TokenCredential
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
@@ -3973,17 +3970,19 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	_require.NoError(err)
 
 	// Create blob client with TokenCredential
-	sessionSvcClient, err := service.NewClientWithSession(serviceURL, cred, service.SessionOptions{
-		Mode:          "singlecontainer",
-		ContainerName: containerName,
-		AccountName:   accountName,
-	}, nil)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: &http.Client{Transport: transport},
+		},
+		SessionOptions: service.SessionOptions{
+			Mode:          service.SessionModeSingleContainer,
+			ContainerName: containerName,
+			AccountName:   accountName,
+		},
+	})
 	_require.NoError(err)
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
 	sessionBlobClient := sessionContClient.NewBlobClient(blobName)
-
-	_, err = sessionBlobClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
 
 	resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)

@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
@@ -40,7 +42,8 @@ type ClientOptions struct {
 	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
 	Audience string
 
-	// SessionOptions
+	// SessionOptions configures session-based authentication behavior.
+	// Only has an effect when credential is of type TokenCredential.
 	SessionOptions SessionOptions
 }
 
@@ -77,6 +80,43 @@ func GetAudience(clOpts *ClientOptions) string {
 	} else {
 		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
 	}
+}
+
+func GetAzClient(storageURL string, cred azcore.TokenCredential, options *ClientOptions) (*azcore.Client, error) {
+	audience := GetAudience(options)
+	conOptions := shared.GetClientOptions(options)
+	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
+	oauthPlOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	oauthAzClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, oauthPlOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	if options == nil || options.SessionOptions.Mode == SessionModeOff {
+		return oauthAzClient, nil
+	}
+	oAuthServiceClient, err := getServiceClient(storageURL, oauthAzClient, &cred, conOptions)
+	if err != nil {
+		return nil, err
+	}
+	sessionPolicy, err := exported.NewSessionPolicy(options.SessionOptions, authPolicy, oAuthServiceClient)
+	if err != nil {
+		return nil, err
+	}
+
+	sessionPlOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{sessionPolicy}}
+	sessionAzClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, sessionPlOpts, &conOptions.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return sessionAzClient, nil
+}
+
+func getServiceClient(storageURL string, azClient *azcore.Client, cred any, conOptions *ClientOptions) (*generated.ServiceClient, error) {
+	serviceURL, err := shared.GetServiceURL(storageURL)
+	if err != nil {
+		return nil, err
+	}
+	return InnerClient(NewServiceClient(serviceURL, azClient, &cred, conOptions)), nil
 }
 
 func NewClient[T any](inner *T) *Client[T] {
