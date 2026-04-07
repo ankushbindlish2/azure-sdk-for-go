@@ -1,0 +1,4 @@
+directory: specification/authorization/resource-manager/Microsoft.Authorization/Authorization
+commit: 7e4136aa2c869201fa2dff1579d52ee1c794e073
+repo: i-specs
+additionalDirectories: 
