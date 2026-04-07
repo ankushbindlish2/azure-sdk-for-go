@@ -24,8 +24,6 @@
 - Struct `RoleEligibilityScheduleRequestFilter` has been removed
 - Struct `ValidationResponse` has been removed
 - Struct `ValidationResponseErrorInfo` has been removed
-- Field `AlertOperationResult` of struct `AlertsClientRefreshAllResponse` has been removed
-- Field `AlertOperationResult` of struct `AlertsClientRefreshResponse` has been removed
 
 ### Features Added
 
@@ -43,7 +41,6 @@
 - New function `*DenyAssignmentsClient.CreateOrUpdate(ctx context.Context, scope string, denyAssignmentID string, parameters DenyAssignment, options *DenyAssignmentsClientCreateOrUpdateOptions) (DenyAssignmentsClientCreateOrUpdateResponse, error)`
 - New function `*DenyAssignmentsClient.Delete(ctx context.Context, scope string, denyAssignmentID string, options *DenyAssignmentsClientDeleteOptions) (DenyAssignmentsClientDeleteResponse, error)`
 - New function `*RoleManagementPolicyPimOnlyModeRule.GetRoleManagementPolicyRule() *RoleManagementPolicyRule`
-- New struct `ArmAcceptedLroResponse`
 - New struct `AttributeNamespace`
 - New struct `AttributeNamespaceCreateRequest`
 - New struct `DenyAssignmentPrincipal`
@@ -60,7 +57,6 @@
 - New field `SystemData` in struct `AlertConfiguration`
 - New field `SystemData` in struct `AlertDefinition`
 - New field `SystemData` in struct `AlertIncident`
-- New anonymous field `ArmAcceptedLroResponse` in struct `AlertsClientRefreshAllResponse`
 - New field `SystemData` in struct `DenyAssignment`
 - New field `DenyAssignmentEffect` in struct `DenyAssignmentProperties`
 - New field `SystemData` in struct `RoleAssignment`
