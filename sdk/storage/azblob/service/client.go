@@ -46,7 +46,6 @@ func NewClientWithSession(serviceURL string, cred azcore.TokenCredential, sessio
 	conOptions := shared.GetClientOptions(options)
 	// policy to fall back on
 	oAuthPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-
 	sessionPolicy, err := exported.NewSessionPolicy(sessionOpts, oAuthPolicy, oauthClient.generated())
 	if err != nil {
 		return nil, err

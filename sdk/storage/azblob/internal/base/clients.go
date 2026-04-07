@@ -4,12 +4,32 @@
 package base
 
 import (
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"strings"
 )
+
+// SessionMode contains the possible values for session-based authentication modes.
+type SessionMode = exported.SessionMode
+
+const ( // SessionModeDefault is the default mode where sessions are disabled.
+	SessionModeDefault SessionMode = exported.SessionModeDefault
+	// SessionModeOff explicitly disables session-based authentication.
+	SessionModeOff SessionMode = exported.SessionModeOff
+	// SessionModeSingleContainer enables session-based authentication for a single container.
+	SessionModeSingleContainer SessionMode = exported.SessionModeSingleContainer
+)
+
+// PossibleSessionModeValues returns a slice of possible values for SessionMode.
+func PossibleSessionModeValues() []SessionMode {
+	return exported.PossibleSessionModeValues()
+}
+
+// SessionOptions contains the optional parameters for session-based authentication.
+type SessionOptions = exported.SessionOptions
 
 // ClientOptions contains the optional parameters when creating a Client.
 type ClientOptions struct {
@@ -19,6 +39,9 @@ type ClientOptions struct {
 	// Only has an effect when credential is of type TokenCredential. The value could be
 	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
 	Audience string
+
+	// SessionOptions
+	SessionOptions SessionOptions
 }
 
 type Client[T any] struct {

@@ -13,7 +13,23 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+// SessionMode contains the possible values for session-based authentication modes.
 type SessionMode = exported.SessionMode
+
+const ( // SessionModeDefault is the default mode where sessions are disabled.
+	SessionModeDefault SessionMode = exported.SessionModeDefault
+	// SessionModeOff explicitly disables session-based authentication.
+	SessionModeOff SessionMode = exported.SessionModeOff
+	// SessionModeSingleContainer enables session-based authentication for a single container.
+	SessionModeSingleContainer SessionMode = exported.SessionModeSingleContainer
+)
+
+// PossibleSessionModeValues returns a slice of possible values for SessionMode.
+func PossibleSessionModeValues() []SessionMode {
+	return exported.PossibleSessionModeValues()
+}
+
+// SessionOptions contains the optional parameters for session-based authentication.
 type SessionOptions = exported.SessionOptions
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
