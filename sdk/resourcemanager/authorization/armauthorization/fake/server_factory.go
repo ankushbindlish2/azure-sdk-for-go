@@ -16,52 +16,147 @@ import (
 
 // ServerFactory is a fake server for instances of the armauthorization.ClientFactory type.
 type ServerFactory struct {
-	AccessReviewDefaultSettingsServer                          AccessReviewDefaultSettingsServer
-	AccessReviewHistoryDefinitionServer                        AccessReviewHistoryDefinitionServer
-	AccessReviewHistoryDefinitionInstanceServer                AccessReviewHistoryDefinitionInstanceServer
-	AccessReviewHistoryDefinitionInstancesServer               AccessReviewHistoryDefinitionInstancesServer
-	AccessReviewHistoryDefinitionsServer                       AccessReviewHistoryDefinitionsServer
-	AccessReviewInstanceServer                                 AccessReviewInstanceServer
-	AccessReviewInstanceContactedReviewersServer               AccessReviewInstanceContactedReviewersServer
-	AccessReviewInstanceDecisionsServer                        AccessReviewInstanceDecisionsServer
-	AccessReviewInstanceMyDecisionsServer                      AccessReviewInstanceMyDecisionsServer
-	AccessReviewInstancesAssignedForMyApprovalServer           AccessReviewInstancesAssignedForMyApprovalServer
-	AccessReviewInstancesServer                                AccessReviewInstancesServer
+	// AccessReviewDefaultSettingsServer contains the fakes for client AccessReviewDefaultSettingsClient
+	AccessReviewDefaultSettingsServer AccessReviewDefaultSettingsServer
+
+	// AccessReviewHistoryDefinitionServer contains the fakes for client AccessReviewHistoryDefinitionClient
+	AccessReviewHistoryDefinitionServer AccessReviewHistoryDefinitionServer
+
+	// AccessReviewHistoryDefinitionInstanceServer contains the fakes for client AccessReviewHistoryDefinitionInstanceClient
+	AccessReviewHistoryDefinitionInstanceServer AccessReviewHistoryDefinitionInstanceServer
+
+	// AccessReviewHistoryDefinitionInstancesServer contains the fakes for client AccessReviewHistoryDefinitionInstancesClient
+	AccessReviewHistoryDefinitionInstancesServer AccessReviewHistoryDefinitionInstancesServer
+
+	// AccessReviewHistoryDefinitionsServer contains the fakes for client AccessReviewHistoryDefinitionsClient
+	AccessReviewHistoryDefinitionsServer AccessReviewHistoryDefinitionsServer
+
+	// AccessReviewInstanceServer contains the fakes for client AccessReviewInstanceClient
+	AccessReviewInstanceServer AccessReviewInstanceServer
+
+	// AccessReviewInstanceContactedReviewersServer contains the fakes for client AccessReviewInstanceContactedReviewersClient
+	AccessReviewInstanceContactedReviewersServer AccessReviewInstanceContactedReviewersServer
+
+	// AccessReviewInstanceDecisionsServer contains the fakes for client AccessReviewInstanceDecisionsClient
+	AccessReviewInstanceDecisionsServer AccessReviewInstanceDecisionsServer
+
+	// AccessReviewInstanceMyDecisionsServer contains the fakes for client AccessReviewInstanceMyDecisionsClient
+	AccessReviewInstanceMyDecisionsServer AccessReviewInstanceMyDecisionsServer
+
+	// AccessReviewInstancesAssignedForMyApprovalServer contains the fakes for client AccessReviewInstancesAssignedForMyApprovalClient
+	AccessReviewInstancesAssignedForMyApprovalServer AccessReviewInstancesAssignedForMyApprovalServer
+
+	// AccessReviewInstancesServer contains the fakes for client AccessReviewInstancesClient
+	AccessReviewInstancesServer AccessReviewInstancesServer
+
+	// AccessReviewScheduleDefinitionsAssignedForMyApprovalServer contains the fakes for client AccessReviewScheduleDefinitionsAssignedForMyApprovalClient
 	AccessReviewScheduleDefinitionsAssignedForMyApprovalServer AccessReviewScheduleDefinitionsAssignedForMyApprovalServer
-	AccessReviewScheduleDefinitionsServer                      AccessReviewScheduleDefinitionsServer
-	AlertConfigurationsServer                                  AlertConfigurationsServer
-	AlertDefinitionsServer                                     AlertDefinitionsServer
-	AlertIncidentsServer                                       AlertIncidentsServer
-	AlertOperationServer                                       AlertOperationServer
-	AlertsServer                                               AlertsServer
-	ClassicAdministratorsServer                                ClassicAdministratorsServer
-	DenyAssignmentsServer                                      DenyAssignmentsServer
-	EligibleChildResourcesServer                               EligibleChildResourcesServer
-	GlobalAdministratorServer                                  GlobalAdministratorServer
-	OperationsServer                                           OperationsServer
-	PermissionsServer                                          PermissionsServer
-	ProviderOperationsMetadataServer                           ProviderOperationsMetadataServer
-	RoleAssignmentScheduleInstancesServer                      RoleAssignmentScheduleInstancesServer
-	RoleAssignmentScheduleRequestsServer                       RoleAssignmentScheduleRequestsServer
-	RoleAssignmentSchedulesServer                              RoleAssignmentSchedulesServer
-	RoleAssignmentsServer                                      RoleAssignmentsServer
-	RoleDefinitionsServer                                      RoleDefinitionsServer
-	RoleEligibilityScheduleInstancesServer                     RoleEligibilityScheduleInstancesServer
-	RoleEligibilityScheduleRequestsServer                      RoleEligibilityScheduleRequestsServer
-	RoleEligibilitySchedulesServer                             RoleEligibilitySchedulesServer
-	RoleManagementPoliciesServer                               RoleManagementPoliciesServer
-	RoleManagementPolicyAssignmentsServer                      RoleManagementPolicyAssignmentsServer
-	ScopeAccessReviewDefaultSettingsServer                     ScopeAccessReviewDefaultSettingsServer
-	ScopeAccessReviewHistoryDefinitionServer                   ScopeAccessReviewHistoryDefinitionServer
-	ScopeAccessReviewHistoryDefinitionInstanceServer           ScopeAccessReviewHistoryDefinitionInstanceServer
-	ScopeAccessReviewHistoryDefinitionInstancesServer          ScopeAccessReviewHistoryDefinitionInstancesServer
-	ScopeAccessReviewHistoryDefinitionsServer                  ScopeAccessReviewHistoryDefinitionsServer
-	ScopeAccessReviewInstanceServer                            ScopeAccessReviewInstanceServer
-	ScopeAccessReviewInstanceContactedReviewersServer          ScopeAccessReviewInstanceContactedReviewersServer
-	ScopeAccessReviewInstanceDecisionsServer                   ScopeAccessReviewInstanceDecisionsServer
-	ScopeAccessReviewInstancesServer                           ScopeAccessReviewInstancesServer
-	ScopeAccessReviewScheduleDefinitionsServer                 ScopeAccessReviewScheduleDefinitionsServer
-	TenantLevelAccessReviewInstanceContactedReviewersServer    TenantLevelAccessReviewInstanceContactedReviewersServer
+
+	// AccessReviewScheduleDefinitionsServer contains the fakes for client AccessReviewScheduleDefinitionsClient
+	AccessReviewScheduleDefinitionsServer AccessReviewScheduleDefinitionsServer
+
+	// AlertConfigurationsServer contains the fakes for client AlertConfigurationsClient
+	AlertConfigurationsServer AlertConfigurationsServer
+
+	// AlertDefinitionsServer contains the fakes for client AlertDefinitionsClient
+	AlertDefinitionsServer AlertDefinitionsServer
+
+	// AlertIncidentsServer contains the fakes for client AlertIncidentsClient
+	AlertIncidentsServer AlertIncidentsServer
+
+	// AlertOperationServer contains the fakes for client AlertOperationClient
+	AlertOperationServer AlertOperationServer
+
+	// AlertsServer contains the fakes for client AlertsClient
+	AlertsServer AlertsServer
+
+	// AttributeNamespacesServer contains the fakes for client AttributeNamespacesClient
+	AttributeNamespacesServer AttributeNamespacesServer
+
+	// ClassicAdministratorsServer contains the fakes for client ClassicAdministratorsClient
+	ClassicAdministratorsServer ClassicAdministratorsServer
+
+	// DenyAssignmentsServer contains the fakes for client DenyAssignmentsClient
+	DenyAssignmentsServer DenyAssignmentsServer
+
+	// EligibleChildResourcesServer contains the fakes for client EligibleChildResourcesClient
+	EligibleChildResourcesServer EligibleChildResourcesServer
+
+	// GlobalAdministratorServer contains the fakes for client GlobalAdministratorClient
+	GlobalAdministratorServer GlobalAdministratorServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PermissionsServer contains the fakes for client PermissionsClient
+	PermissionsServer PermissionsServer
+
+	// ProviderOperationsMetadataServer contains the fakes for client ProviderOperationsMetadataClient
+	ProviderOperationsMetadataServer ProviderOperationsMetadataServer
+
+	// RoleAssignmentScheduleInstancesServer contains the fakes for client RoleAssignmentScheduleInstancesClient
+	RoleAssignmentScheduleInstancesServer RoleAssignmentScheduleInstancesServer
+
+	// RoleAssignmentScheduleRequestsServer contains the fakes for client RoleAssignmentScheduleRequestsClient
+	RoleAssignmentScheduleRequestsServer RoleAssignmentScheduleRequestsServer
+
+	// RoleAssignmentSchedulesServer contains the fakes for client RoleAssignmentSchedulesClient
+	RoleAssignmentSchedulesServer RoleAssignmentSchedulesServer
+
+	// RoleAssignmentsServer contains the fakes for client RoleAssignmentsClient
+	RoleAssignmentsServer RoleAssignmentsServer
+
+	// RoleDefinitionsServer contains the fakes for client RoleDefinitionsClient
+	RoleDefinitionsServer RoleDefinitionsServer
+
+	// RoleEligibilityScheduleInstancesServer contains the fakes for client RoleEligibilityScheduleInstancesClient
+	RoleEligibilityScheduleInstancesServer RoleEligibilityScheduleInstancesServer
+
+	// RoleEligibilityScheduleRequestsServer contains the fakes for client RoleEligibilityScheduleRequestsClient
+	RoleEligibilityScheduleRequestsServer RoleEligibilityScheduleRequestsServer
+
+	// RoleEligibilitySchedulesServer contains the fakes for client RoleEligibilitySchedulesClient
+	RoleEligibilitySchedulesServer RoleEligibilitySchedulesServer
+
+	// RoleManagementPoliciesServer contains the fakes for client RoleManagementPoliciesClient
+	RoleManagementPoliciesServer RoleManagementPoliciesServer
+
+	// RoleManagementPolicyAssignmentsServer contains the fakes for client RoleManagementPolicyAssignmentsClient
+	RoleManagementPolicyAssignmentsServer RoleManagementPolicyAssignmentsServer
+
+	// ScopeAccessReviewDefaultSettingsServer contains the fakes for client ScopeAccessReviewDefaultSettingsClient
+	ScopeAccessReviewDefaultSettingsServer ScopeAccessReviewDefaultSettingsServer
+
+	// ScopeAccessReviewHistoryDefinitionServer contains the fakes for client ScopeAccessReviewHistoryDefinitionClient
+	ScopeAccessReviewHistoryDefinitionServer ScopeAccessReviewHistoryDefinitionServer
+
+	// ScopeAccessReviewHistoryDefinitionInstanceServer contains the fakes for client ScopeAccessReviewHistoryDefinitionInstanceClient
+	ScopeAccessReviewHistoryDefinitionInstanceServer ScopeAccessReviewHistoryDefinitionInstanceServer
+
+	// ScopeAccessReviewHistoryDefinitionInstancesServer contains the fakes for client ScopeAccessReviewHistoryDefinitionInstancesClient
+	ScopeAccessReviewHistoryDefinitionInstancesServer ScopeAccessReviewHistoryDefinitionInstancesServer
+
+	// ScopeAccessReviewHistoryDefinitionsServer contains the fakes for client ScopeAccessReviewHistoryDefinitionsClient
+	ScopeAccessReviewHistoryDefinitionsServer ScopeAccessReviewHistoryDefinitionsServer
+
+	// ScopeAccessReviewInstanceServer contains the fakes for client ScopeAccessReviewInstanceClient
+	ScopeAccessReviewInstanceServer ScopeAccessReviewInstanceServer
+
+	// ScopeAccessReviewInstanceContactedReviewersServer contains the fakes for client ScopeAccessReviewInstanceContactedReviewersClient
+	ScopeAccessReviewInstanceContactedReviewersServer ScopeAccessReviewInstanceContactedReviewersServer
+
+	// ScopeAccessReviewInstanceDecisionsServer contains the fakes for client ScopeAccessReviewInstanceDecisionsClient
+	ScopeAccessReviewInstanceDecisionsServer ScopeAccessReviewInstanceDecisionsServer
+
+	// ScopeAccessReviewInstancesServer contains the fakes for client ScopeAccessReviewInstancesClient
+	ScopeAccessReviewInstancesServer ScopeAccessReviewInstancesServer
+
+	// ScopeAccessReviewScheduleDefinitionsServer contains the fakes for client ScopeAccessReviewScheduleDefinitionsClient
+	ScopeAccessReviewScheduleDefinitionsServer ScopeAccessReviewScheduleDefinitionsServer
+
+	// TenantLevelAccessReviewInstanceContactedReviewersServer contains the fakes for client TenantLevelAccessReviewInstanceContactedReviewersClient
+	TenantLevelAccessReviewInstanceContactedReviewersServer TenantLevelAccessReviewInstanceContactedReviewersServer
+
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -76,54 +171,55 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armauthorization.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                                          *ServerFactory
-	trMu                                                         sync.Mutex
-	trAccessReviewDefaultSettingsServer                          *AccessReviewDefaultSettingsServerTransport
-	trAccessReviewHistoryDefinitionServer                        *AccessReviewHistoryDefinitionServerTransport
-	trAccessReviewHistoryDefinitionInstanceServer                *AccessReviewHistoryDefinitionInstanceServerTransport
-	trAccessReviewHistoryDefinitionInstancesServer               *AccessReviewHistoryDefinitionInstancesServerTransport
-	trAccessReviewHistoryDefinitionsServer                       *AccessReviewHistoryDefinitionsServerTransport
-	trAccessReviewInstanceServer                                 *AccessReviewInstanceServerTransport
-	trAccessReviewInstanceContactedReviewersServer               *AccessReviewInstanceContactedReviewersServerTransport
-	trAccessReviewInstanceDecisionsServer                        *AccessReviewInstanceDecisionsServerTransport
-	trAccessReviewInstanceMyDecisionsServer                      *AccessReviewInstanceMyDecisionsServerTransport
-	trAccessReviewInstancesAssignedForMyApprovalServer           *AccessReviewInstancesAssignedForMyApprovalServerTransport
-	trAccessReviewInstancesServer                                *AccessReviewInstancesServerTransport
+	srv *ServerFactory
+	trMu sync.Mutex
+	trAccessReviewDefaultSettingsServer *AccessReviewDefaultSettingsServerTransport
+	trAccessReviewHistoryDefinitionServer *AccessReviewHistoryDefinitionServerTransport
+	trAccessReviewHistoryDefinitionInstanceServer *AccessReviewHistoryDefinitionInstanceServerTransport
+	trAccessReviewHistoryDefinitionInstancesServer *AccessReviewHistoryDefinitionInstancesServerTransport
+	trAccessReviewHistoryDefinitionsServer *AccessReviewHistoryDefinitionsServerTransport
+	trAccessReviewInstanceServer *AccessReviewInstanceServerTransport
+	trAccessReviewInstanceContactedReviewersServer *AccessReviewInstanceContactedReviewersServerTransport
+	trAccessReviewInstanceDecisionsServer *AccessReviewInstanceDecisionsServerTransport
+	trAccessReviewInstanceMyDecisionsServer *AccessReviewInstanceMyDecisionsServerTransport
+	trAccessReviewInstancesAssignedForMyApprovalServer *AccessReviewInstancesAssignedForMyApprovalServerTransport
+	trAccessReviewInstancesServer *AccessReviewInstancesServerTransport
 	trAccessReviewScheduleDefinitionsAssignedForMyApprovalServer *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport
-	trAccessReviewScheduleDefinitionsServer                      *AccessReviewScheduleDefinitionsServerTransport
-	trAlertConfigurationsServer                                  *AlertConfigurationsServerTransport
-	trAlertDefinitionsServer                                     *AlertDefinitionsServerTransport
-	trAlertIncidentsServer                                       *AlertIncidentsServerTransport
-	trAlertOperationServer                                       *AlertOperationServerTransport
-	trAlertsServer                                               *AlertsServerTransport
-	trClassicAdministratorsServer                                *ClassicAdministratorsServerTransport
-	trDenyAssignmentsServer                                      *DenyAssignmentsServerTransport
-	trEligibleChildResourcesServer                               *EligibleChildResourcesServerTransport
-	trGlobalAdministratorServer                                  *GlobalAdministratorServerTransport
-	trOperationsServer                                           *OperationsServerTransport
-	trPermissionsServer                                          *PermissionsServerTransport
-	trProviderOperationsMetadataServer                           *ProviderOperationsMetadataServerTransport
-	trRoleAssignmentScheduleInstancesServer                      *RoleAssignmentScheduleInstancesServerTransport
-	trRoleAssignmentScheduleRequestsServer                       *RoleAssignmentScheduleRequestsServerTransport
-	trRoleAssignmentSchedulesServer                              *RoleAssignmentSchedulesServerTransport
-	trRoleAssignmentsServer                                      *RoleAssignmentsServerTransport
-	trRoleDefinitionsServer                                      *RoleDefinitionsServerTransport
-	trRoleEligibilityScheduleInstancesServer                     *RoleEligibilityScheduleInstancesServerTransport
-	trRoleEligibilityScheduleRequestsServer                      *RoleEligibilityScheduleRequestsServerTransport
-	trRoleEligibilitySchedulesServer                             *RoleEligibilitySchedulesServerTransport
-	trRoleManagementPoliciesServer                               *RoleManagementPoliciesServerTransport
-	trRoleManagementPolicyAssignmentsServer                      *RoleManagementPolicyAssignmentsServerTransport
-	trScopeAccessReviewDefaultSettingsServer                     *ScopeAccessReviewDefaultSettingsServerTransport
-	trScopeAccessReviewHistoryDefinitionServer                   *ScopeAccessReviewHistoryDefinitionServerTransport
-	trScopeAccessReviewHistoryDefinitionInstanceServer           *ScopeAccessReviewHistoryDefinitionInstanceServerTransport
-	trScopeAccessReviewHistoryDefinitionInstancesServer          *ScopeAccessReviewHistoryDefinitionInstancesServerTransport
-	trScopeAccessReviewHistoryDefinitionsServer                  *ScopeAccessReviewHistoryDefinitionsServerTransport
-	trScopeAccessReviewInstanceServer                            *ScopeAccessReviewInstanceServerTransport
-	trScopeAccessReviewInstanceContactedReviewersServer          *ScopeAccessReviewInstanceContactedReviewersServerTransport
-	trScopeAccessReviewInstanceDecisionsServer                   *ScopeAccessReviewInstanceDecisionsServerTransport
-	trScopeAccessReviewInstancesServer                           *ScopeAccessReviewInstancesServerTransport
-	trScopeAccessReviewScheduleDefinitionsServer                 *ScopeAccessReviewScheduleDefinitionsServerTransport
-	trTenantLevelAccessReviewInstanceContactedReviewersServer    *TenantLevelAccessReviewInstanceContactedReviewersServerTransport
+	trAccessReviewScheduleDefinitionsServer *AccessReviewScheduleDefinitionsServerTransport
+	trAlertConfigurationsServer *AlertConfigurationsServerTransport
+	trAlertDefinitionsServer *AlertDefinitionsServerTransport
+	trAlertIncidentsServer *AlertIncidentsServerTransport
+	trAlertOperationServer *AlertOperationServerTransport
+	trAlertsServer *AlertsServerTransport
+	trAttributeNamespacesServer *AttributeNamespacesServerTransport
+	trClassicAdministratorsServer *ClassicAdministratorsServerTransport
+	trDenyAssignmentsServer *DenyAssignmentsServerTransport
+	trEligibleChildResourcesServer *EligibleChildResourcesServerTransport
+	trGlobalAdministratorServer *GlobalAdministratorServerTransport
+	trOperationsServer *OperationsServerTransport
+	trPermissionsServer *PermissionsServerTransport
+	trProviderOperationsMetadataServer *ProviderOperationsMetadataServerTransport
+	trRoleAssignmentScheduleInstancesServer *RoleAssignmentScheduleInstancesServerTransport
+	trRoleAssignmentScheduleRequestsServer *RoleAssignmentScheduleRequestsServerTransport
+	trRoleAssignmentSchedulesServer *RoleAssignmentSchedulesServerTransport
+	trRoleAssignmentsServer *RoleAssignmentsServerTransport
+	trRoleDefinitionsServer *RoleDefinitionsServerTransport
+	trRoleEligibilityScheduleInstancesServer *RoleEligibilityScheduleInstancesServerTransport
+	trRoleEligibilityScheduleRequestsServer *RoleEligibilityScheduleRequestsServerTransport
+	trRoleEligibilitySchedulesServer *RoleEligibilitySchedulesServerTransport
+	trRoleManagementPoliciesServer *RoleManagementPoliciesServerTransport
+	trRoleManagementPolicyAssignmentsServer *RoleManagementPolicyAssignmentsServerTransport
+	trScopeAccessReviewDefaultSettingsServer *ScopeAccessReviewDefaultSettingsServerTransport
+	trScopeAccessReviewHistoryDefinitionServer *ScopeAccessReviewHistoryDefinitionServerTransport
+	trScopeAccessReviewHistoryDefinitionInstanceServer *ScopeAccessReviewHistoryDefinitionInstanceServerTransport
+	trScopeAccessReviewHistoryDefinitionInstancesServer *ScopeAccessReviewHistoryDefinitionInstancesServerTransport
+	trScopeAccessReviewHistoryDefinitionsServer *ScopeAccessReviewHistoryDefinitionsServerTransport
+	trScopeAccessReviewInstanceServer *ScopeAccessReviewInstanceServerTransport
+	trScopeAccessReviewInstanceContactedReviewersServer *ScopeAccessReviewInstanceContactedReviewersServerTransport
+	trScopeAccessReviewInstanceDecisionsServer *ScopeAccessReviewInstanceDecisionsServerTransport
+	trScopeAccessReviewInstancesServer *ScopeAccessReviewInstancesServerTransport
+	trScopeAccessReviewScheduleDefinitionsServer *ScopeAccessReviewScheduleDefinitionsServerTransport
+	trTenantLevelAccessReviewInstanceContactedReviewersServer *TenantLevelAccessReviewInstanceContactedReviewersServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -140,112 +236,73 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AccessReviewDefaultSettingsClient":
-		initServer(s, &s.trAccessReviewDefaultSettingsServer, func() *AccessReviewDefaultSettingsServerTransport {
-			return NewAccessReviewDefaultSettingsServerTransport(&s.srv.AccessReviewDefaultSettingsServer)
-		})
+		initServer(s, &s.trAccessReviewDefaultSettingsServer, func() *AccessReviewDefaultSettingsServerTransport { return NewAccessReviewDefaultSettingsServerTransport(&s.srv.AccessReviewDefaultSettingsServer) })
 		resp, err = s.trAccessReviewDefaultSettingsServer.Do(req)
 	case "AccessReviewHistoryDefinitionClient":
-		initServer(s, &s.trAccessReviewHistoryDefinitionServer, func() *AccessReviewHistoryDefinitionServerTransport {
-			return NewAccessReviewHistoryDefinitionServerTransport(&s.srv.AccessReviewHistoryDefinitionServer)
-		})
+		initServer(s, &s.trAccessReviewHistoryDefinitionServer, func() *AccessReviewHistoryDefinitionServerTransport { return NewAccessReviewHistoryDefinitionServerTransport(&s.srv.AccessReviewHistoryDefinitionServer) })
 		resp, err = s.trAccessReviewHistoryDefinitionServer.Do(req)
 	case "AccessReviewHistoryDefinitionInstanceClient":
-		initServer(s, &s.trAccessReviewHistoryDefinitionInstanceServer, func() *AccessReviewHistoryDefinitionInstanceServerTransport {
-			return NewAccessReviewHistoryDefinitionInstanceServerTransport(&s.srv.AccessReviewHistoryDefinitionInstanceServer)
-		})
+		initServer(s, &s.trAccessReviewHistoryDefinitionInstanceServer, func() *AccessReviewHistoryDefinitionInstanceServerTransport { return NewAccessReviewHistoryDefinitionInstanceServerTransport(&s.srv.AccessReviewHistoryDefinitionInstanceServer) })
 		resp, err = s.trAccessReviewHistoryDefinitionInstanceServer.Do(req)
 	case "AccessReviewHistoryDefinitionInstancesClient":
-		initServer(s, &s.trAccessReviewHistoryDefinitionInstancesServer, func() *AccessReviewHistoryDefinitionInstancesServerTransport {
-			return NewAccessReviewHistoryDefinitionInstancesServerTransport(&s.srv.AccessReviewHistoryDefinitionInstancesServer)
-		})
+		initServer(s, &s.trAccessReviewHistoryDefinitionInstancesServer, func() *AccessReviewHistoryDefinitionInstancesServerTransport { return NewAccessReviewHistoryDefinitionInstancesServerTransport(&s.srv.AccessReviewHistoryDefinitionInstancesServer) })
 		resp, err = s.trAccessReviewHistoryDefinitionInstancesServer.Do(req)
 	case "AccessReviewHistoryDefinitionsClient":
-		initServer(s, &s.trAccessReviewHistoryDefinitionsServer, func() *AccessReviewHistoryDefinitionsServerTransport {
-			return NewAccessReviewHistoryDefinitionsServerTransport(&s.srv.AccessReviewHistoryDefinitionsServer)
-		})
+		initServer(s, &s.trAccessReviewHistoryDefinitionsServer, func() *AccessReviewHistoryDefinitionsServerTransport { return NewAccessReviewHistoryDefinitionsServerTransport(&s.srv.AccessReviewHistoryDefinitionsServer) })
 		resp, err = s.trAccessReviewHistoryDefinitionsServer.Do(req)
 	case "AccessReviewInstanceClient":
-		initServer(s, &s.trAccessReviewInstanceServer, func() *AccessReviewInstanceServerTransport {
-			return NewAccessReviewInstanceServerTransport(&s.srv.AccessReviewInstanceServer)
-		})
+		initServer(s, &s.trAccessReviewInstanceServer, func() *AccessReviewInstanceServerTransport { return NewAccessReviewInstanceServerTransport(&s.srv.AccessReviewInstanceServer) })
 		resp, err = s.trAccessReviewInstanceServer.Do(req)
 	case "AccessReviewInstanceContactedReviewersClient":
-		initServer(s, &s.trAccessReviewInstanceContactedReviewersServer, func() *AccessReviewInstanceContactedReviewersServerTransport {
-			return NewAccessReviewInstanceContactedReviewersServerTransport(&s.srv.AccessReviewInstanceContactedReviewersServer)
-		})
+		initServer(s, &s.trAccessReviewInstanceContactedReviewersServer, func() *AccessReviewInstanceContactedReviewersServerTransport { return NewAccessReviewInstanceContactedReviewersServerTransport(&s.srv.AccessReviewInstanceContactedReviewersServer) })
 		resp, err = s.trAccessReviewInstanceContactedReviewersServer.Do(req)
 	case "AccessReviewInstanceDecisionsClient":
-		initServer(s, &s.trAccessReviewInstanceDecisionsServer, func() *AccessReviewInstanceDecisionsServerTransport {
-			return NewAccessReviewInstanceDecisionsServerTransport(&s.srv.AccessReviewInstanceDecisionsServer)
-		})
+		initServer(s, &s.trAccessReviewInstanceDecisionsServer, func() *AccessReviewInstanceDecisionsServerTransport { return NewAccessReviewInstanceDecisionsServerTransport(&s.srv.AccessReviewInstanceDecisionsServer) })
 		resp, err = s.trAccessReviewInstanceDecisionsServer.Do(req)
 	case "AccessReviewInstanceMyDecisionsClient":
-		initServer(s, &s.trAccessReviewInstanceMyDecisionsServer, func() *AccessReviewInstanceMyDecisionsServerTransport {
-			return NewAccessReviewInstanceMyDecisionsServerTransport(&s.srv.AccessReviewInstanceMyDecisionsServer)
-		})
+		initServer(s, &s.trAccessReviewInstanceMyDecisionsServer, func() *AccessReviewInstanceMyDecisionsServerTransport { return NewAccessReviewInstanceMyDecisionsServerTransport(&s.srv.AccessReviewInstanceMyDecisionsServer) })
 		resp, err = s.trAccessReviewInstanceMyDecisionsServer.Do(req)
 	case "AccessReviewInstancesAssignedForMyApprovalClient":
-		initServer(s, &s.trAccessReviewInstancesAssignedForMyApprovalServer, func() *AccessReviewInstancesAssignedForMyApprovalServerTransport {
-			return NewAccessReviewInstancesAssignedForMyApprovalServerTransport(&s.srv.AccessReviewInstancesAssignedForMyApprovalServer)
-		})
+		initServer(s, &s.trAccessReviewInstancesAssignedForMyApprovalServer, func() *AccessReviewInstancesAssignedForMyApprovalServerTransport { return NewAccessReviewInstancesAssignedForMyApprovalServerTransport(&s.srv.AccessReviewInstancesAssignedForMyApprovalServer) })
 		resp, err = s.trAccessReviewInstancesAssignedForMyApprovalServer.Do(req)
 	case "AccessReviewInstancesClient":
-		initServer(s, &s.trAccessReviewInstancesServer, func() *AccessReviewInstancesServerTransport {
-			return NewAccessReviewInstancesServerTransport(&s.srv.AccessReviewInstancesServer)
-		})
+		initServer(s, &s.trAccessReviewInstancesServer, func() *AccessReviewInstancesServerTransport { return NewAccessReviewInstancesServerTransport(&s.srv.AccessReviewInstancesServer) })
 		resp, err = s.trAccessReviewInstancesServer.Do(req)
 	case "AccessReviewScheduleDefinitionsAssignedForMyApprovalClient":
-		initServer(s, &s.trAccessReviewScheduleDefinitionsAssignedForMyApprovalServer, func() *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport {
-			return NewAccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport(&s.srv.AccessReviewScheduleDefinitionsAssignedForMyApprovalServer)
-		})
+		initServer(s, &s.trAccessReviewScheduleDefinitionsAssignedForMyApprovalServer, func() *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport { return NewAccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport(&s.srv.AccessReviewScheduleDefinitionsAssignedForMyApprovalServer) })
 		resp, err = s.trAccessReviewScheduleDefinitionsAssignedForMyApprovalServer.Do(req)
 	case "AccessReviewScheduleDefinitionsClient":
-		initServer(s, &s.trAccessReviewScheduleDefinitionsServer, func() *AccessReviewScheduleDefinitionsServerTransport {
-			return NewAccessReviewScheduleDefinitionsServerTransport(&s.srv.AccessReviewScheduleDefinitionsServer)
-		})
+		initServer(s, &s.trAccessReviewScheduleDefinitionsServer, func() *AccessReviewScheduleDefinitionsServerTransport { return NewAccessReviewScheduleDefinitionsServerTransport(&s.srv.AccessReviewScheduleDefinitionsServer) })
 		resp, err = s.trAccessReviewScheduleDefinitionsServer.Do(req)
 	case "AlertConfigurationsClient":
-		initServer(s, &s.trAlertConfigurationsServer, func() *AlertConfigurationsServerTransport {
-			return NewAlertConfigurationsServerTransport(&s.srv.AlertConfigurationsServer)
-		})
+		initServer(s, &s.trAlertConfigurationsServer, func() *AlertConfigurationsServerTransport { return NewAlertConfigurationsServerTransport(&s.srv.AlertConfigurationsServer) })
 		resp, err = s.trAlertConfigurationsServer.Do(req)
 	case "AlertDefinitionsClient":
-		initServer(s, &s.trAlertDefinitionsServer, func() *AlertDefinitionsServerTransport {
-			return NewAlertDefinitionsServerTransport(&s.srv.AlertDefinitionsServer)
-		})
+		initServer(s, &s.trAlertDefinitionsServer, func() *AlertDefinitionsServerTransport { return NewAlertDefinitionsServerTransport(&s.srv.AlertDefinitionsServer) })
 		resp, err = s.trAlertDefinitionsServer.Do(req)
 	case "AlertIncidentsClient":
-		initServer(s, &s.trAlertIncidentsServer, func() *AlertIncidentsServerTransport {
-			return NewAlertIncidentsServerTransport(&s.srv.AlertIncidentsServer)
-		})
+		initServer(s, &s.trAlertIncidentsServer, func() *AlertIncidentsServerTransport { return NewAlertIncidentsServerTransport(&s.srv.AlertIncidentsServer) })
 		resp, err = s.trAlertIncidentsServer.Do(req)
 	case "AlertOperationClient":
-		initServer(s, &s.trAlertOperationServer, func() *AlertOperationServerTransport {
-			return NewAlertOperationServerTransport(&s.srv.AlertOperationServer)
-		})
+		initServer(s, &s.trAlertOperationServer, func() *AlertOperationServerTransport { return NewAlertOperationServerTransport(&s.srv.AlertOperationServer) })
 		resp, err = s.trAlertOperationServer.Do(req)
 	case "AlertsClient":
 		initServer(s, &s.trAlertsServer, func() *AlertsServerTransport { return NewAlertsServerTransport(&s.srv.AlertsServer) })
 		resp, err = s.trAlertsServer.Do(req)
+	case "AttributeNamespacesClient":
+		initServer(s, &s.trAttributeNamespacesServer, func() *AttributeNamespacesServerTransport { return NewAttributeNamespacesServerTransport(&s.srv.AttributeNamespacesServer) })
+		resp, err = s.trAttributeNamespacesServer.Do(req)
 	case "ClassicAdministratorsClient":
-		initServer(s, &s.trClassicAdministratorsServer, func() *ClassicAdministratorsServerTransport {
-			return NewClassicAdministratorsServerTransport(&s.srv.ClassicAdministratorsServer)
-		})
+		initServer(s, &s.trClassicAdministratorsServer, func() *ClassicAdministratorsServerTransport { return NewClassicAdministratorsServerTransport(&s.srv.ClassicAdministratorsServer) })
 		resp, err = s.trClassicAdministratorsServer.Do(req)
 	case "DenyAssignmentsClient":
-		initServer(s, &s.trDenyAssignmentsServer, func() *DenyAssignmentsServerTransport {
-			return NewDenyAssignmentsServerTransport(&s.srv.DenyAssignmentsServer)
-		})
+		initServer(s, &s.trDenyAssignmentsServer, func() *DenyAssignmentsServerTransport { return NewDenyAssignmentsServerTransport(&s.srv.DenyAssignmentsServer) })
 		resp, err = s.trDenyAssignmentsServer.Do(req)
 	case "EligibleChildResourcesClient":
-		initServer(s, &s.trEligibleChildResourcesServer, func() *EligibleChildResourcesServerTransport {
-			return NewEligibleChildResourcesServerTransport(&s.srv.EligibleChildResourcesServer)
-		})
+		initServer(s, &s.trEligibleChildResourcesServer, func() *EligibleChildResourcesServerTransport { return NewEligibleChildResourcesServerTransport(&s.srv.EligibleChildResourcesServer) })
 		resp, err = s.trEligibleChildResourcesServer.Do(req)
 	case "GlobalAdministratorClient":
-		initServer(s, &s.trGlobalAdministratorServer, func() *GlobalAdministratorServerTransport {
-			return NewGlobalAdministratorServerTransport(&s.srv.GlobalAdministratorServer)
-		})
+		initServer(s, &s.trGlobalAdministratorServer, func() *GlobalAdministratorServerTransport { return NewGlobalAdministratorServerTransport(&s.srv.GlobalAdministratorServer) })
 		resp, err = s.trGlobalAdministratorServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
@@ -254,114 +311,70 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		initServer(s, &s.trPermissionsServer, func() *PermissionsServerTransport { return NewPermissionsServerTransport(&s.srv.PermissionsServer) })
 		resp, err = s.trPermissionsServer.Do(req)
 	case "ProviderOperationsMetadataClient":
-		initServer(s, &s.trProviderOperationsMetadataServer, func() *ProviderOperationsMetadataServerTransport {
-			return NewProviderOperationsMetadataServerTransport(&s.srv.ProviderOperationsMetadataServer)
-		})
+		initServer(s, &s.trProviderOperationsMetadataServer, func() *ProviderOperationsMetadataServerTransport { return NewProviderOperationsMetadataServerTransport(&s.srv.ProviderOperationsMetadataServer) })
 		resp, err = s.trProviderOperationsMetadataServer.Do(req)
 	case "RoleAssignmentScheduleInstancesClient":
-		initServer(s, &s.trRoleAssignmentScheduleInstancesServer, func() *RoleAssignmentScheduleInstancesServerTransport {
-			return NewRoleAssignmentScheduleInstancesServerTransport(&s.srv.RoleAssignmentScheduleInstancesServer)
-		})
+		initServer(s, &s.trRoleAssignmentScheduleInstancesServer, func() *RoleAssignmentScheduleInstancesServerTransport { return NewRoleAssignmentScheduleInstancesServerTransport(&s.srv.RoleAssignmentScheduleInstancesServer) })
 		resp, err = s.trRoleAssignmentScheduleInstancesServer.Do(req)
 	case "RoleAssignmentScheduleRequestsClient":
-		initServer(s, &s.trRoleAssignmentScheduleRequestsServer, func() *RoleAssignmentScheduleRequestsServerTransport {
-			return NewRoleAssignmentScheduleRequestsServerTransport(&s.srv.RoleAssignmentScheduleRequestsServer)
-		})
+		initServer(s, &s.trRoleAssignmentScheduleRequestsServer, func() *RoleAssignmentScheduleRequestsServerTransport { return NewRoleAssignmentScheduleRequestsServerTransport(&s.srv.RoleAssignmentScheduleRequestsServer) })
 		resp, err = s.trRoleAssignmentScheduleRequestsServer.Do(req)
 	case "RoleAssignmentSchedulesClient":
-		initServer(s, &s.trRoleAssignmentSchedulesServer, func() *RoleAssignmentSchedulesServerTransport {
-			return NewRoleAssignmentSchedulesServerTransport(&s.srv.RoleAssignmentSchedulesServer)
-		})
+		initServer(s, &s.trRoleAssignmentSchedulesServer, func() *RoleAssignmentSchedulesServerTransport { return NewRoleAssignmentSchedulesServerTransport(&s.srv.RoleAssignmentSchedulesServer) })
 		resp, err = s.trRoleAssignmentSchedulesServer.Do(req)
 	case "RoleAssignmentsClient":
-		initServer(s, &s.trRoleAssignmentsServer, func() *RoleAssignmentsServerTransport {
-			return NewRoleAssignmentsServerTransport(&s.srv.RoleAssignmentsServer)
-		})
+		initServer(s, &s.trRoleAssignmentsServer, func() *RoleAssignmentsServerTransport { return NewRoleAssignmentsServerTransport(&s.srv.RoleAssignmentsServer) })
 		resp, err = s.trRoleAssignmentsServer.Do(req)
 	case "RoleDefinitionsClient":
-		initServer(s, &s.trRoleDefinitionsServer, func() *RoleDefinitionsServerTransport {
-			return NewRoleDefinitionsServerTransport(&s.srv.RoleDefinitionsServer)
-		})
+		initServer(s, &s.trRoleDefinitionsServer, func() *RoleDefinitionsServerTransport { return NewRoleDefinitionsServerTransport(&s.srv.RoleDefinitionsServer) })
 		resp, err = s.trRoleDefinitionsServer.Do(req)
 	case "RoleEligibilityScheduleInstancesClient":
-		initServer(s, &s.trRoleEligibilityScheduleInstancesServer, func() *RoleEligibilityScheduleInstancesServerTransport {
-			return NewRoleEligibilityScheduleInstancesServerTransport(&s.srv.RoleEligibilityScheduleInstancesServer)
-		})
+		initServer(s, &s.trRoleEligibilityScheduleInstancesServer, func() *RoleEligibilityScheduleInstancesServerTransport { return NewRoleEligibilityScheduleInstancesServerTransport(&s.srv.RoleEligibilityScheduleInstancesServer) })
 		resp, err = s.trRoleEligibilityScheduleInstancesServer.Do(req)
 	case "RoleEligibilityScheduleRequestsClient":
-		initServer(s, &s.trRoleEligibilityScheduleRequestsServer, func() *RoleEligibilityScheduleRequestsServerTransport {
-			return NewRoleEligibilityScheduleRequestsServerTransport(&s.srv.RoleEligibilityScheduleRequestsServer)
-		})
+		initServer(s, &s.trRoleEligibilityScheduleRequestsServer, func() *RoleEligibilityScheduleRequestsServerTransport { return NewRoleEligibilityScheduleRequestsServerTransport(&s.srv.RoleEligibilityScheduleRequestsServer) })
 		resp, err = s.trRoleEligibilityScheduleRequestsServer.Do(req)
 	case "RoleEligibilitySchedulesClient":
-		initServer(s, &s.trRoleEligibilitySchedulesServer, func() *RoleEligibilitySchedulesServerTransport {
-			return NewRoleEligibilitySchedulesServerTransport(&s.srv.RoleEligibilitySchedulesServer)
-		})
+		initServer(s, &s.trRoleEligibilitySchedulesServer, func() *RoleEligibilitySchedulesServerTransport { return NewRoleEligibilitySchedulesServerTransport(&s.srv.RoleEligibilitySchedulesServer) })
 		resp, err = s.trRoleEligibilitySchedulesServer.Do(req)
 	case "RoleManagementPoliciesClient":
-		initServer(s, &s.trRoleManagementPoliciesServer, func() *RoleManagementPoliciesServerTransport {
-			return NewRoleManagementPoliciesServerTransport(&s.srv.RoleManagementPoliciesServer)
-		})
+		initServer(s, &s.trRoleManagementPoliciesServer, func() *RoleManagementPoliciesServerTransport { return NewRoleManagementPoliciesServerTransport(&s.srv.RoleManagementPoliciesServer) })
 		resp, err = s.trRoleManagementPoliciesServer.Do(req)
 	case "RoleManagementPolicyAssignmentsClient":
-		initServer(s, &s.trRoleManagementPolicyAssignmentsServer, func() *RoleManagementPolicyAssignmentsServerTransport {
-			return NewRoleManagementPolicyAssignmentsServerTransport(&s.srv.RoleManagementPolicyAssignmentsServer)
-		})
+		initServer(s, &s.trRoleManagementPolicyAssignmentsServer, func() *RoleManagementPolicyAssignmentsServerTransport { return NewRoleManagementPolicyAssignmentsServerTransport(&s.srv.RoleManagementPolicyAssignmentsServer) })
 		resp, err = s.trRoleManagementPolicyAssignmentsServer.Do(req)
 	case "ScopeAccessReviewDefaultSettingsClient":
-		initServer(s, &s.trScopeAccessReviewDefaultSettingsServer, func() *ScopeAccessReviewDefaultSettingsServerTransport {
-			return NewScopeAccessReviewDefaultSettingsServerTransport(&s.srv.ScopeAccessReviewDefaultSettingsServer)
-		})
+		initServer(s, &s.trScopeAccessReviewDefaultSettingsServer, func() *ScopeAccessReviewDefaultSettingsServerTransport { return NewScopeAccessReviewDefaultSettingsServerTransport(&s.srv.ScopeAccessReviewDefaultSettingsServer) })
 		resp, err = s.trScopeAccessReviewDefaultSettingsServer.Do(req)
 	case "ScopeAccessReviewHistoryDefinitionClient":
-		initServer(s, &s.trScopeAccessReviewHistoryDefinitionServer, func() *ScopeAccessReviewHistoryDefinitionServerTransport {
-			return NewScopeAccessReviewHistoryDefinitionServerTransport(&s.srv.ScopeAccessReviewHistoryDefinitionServer)
-		})
+		initServer(s, &s.trScopeAccessReviewHistoryDefinitionServer, func() *ScopeAccessReviewHistoryDefinitionServerTransport { return NewScopeAccessReviewHistoryDefinitionServerTransport(&s.srv.ScopeAccessReviewHistoryDefinitionServer) })
 		resp, err = s.trScopeAccessReviewHistoryDefinitionServer.Do(req)
 	case "ScopeAccessReviewHistoryDefinitionInstanceClient":
-		initServer(s, &s.trScopeAccessReviewHistoryDefinitionInstanceServer, func() *ScopeAccessReviewHistoryDefinitionInstanceServerTransport {
-			return NewScopeAccessReviewHistoryDefinitionInstanceServerTransport(&s.srv.ScopeAccessReviewHistoryDefinitionInstanceServer)
-		})
+		initServer(s, &s.trScopeAccessReviewHistoryDefinitionInstanceServer, func() *ScopeAccessReviewHistoryDefinitionInstanceServerTransport { return NewScopeAccessReviewHistoryDefinitionInstanceServerTransport(&s.srv.ScopeAccessReviewHistoryDefinitionInstanceServer) })
 		resp, err = s.trScopeAccessReviewHistoryDefinitionInstanceServer.Do(req)
 	case "ScopeAccessReviewHistoryDefinitionInstancesClient":
-		initServer(s, &s.trScopeAccessReviewHistoryDefinitionInstancesServer, func() *ScopeAccessReviewHistoryDefinitionInstancesServerTransport {
-			return NewScopeAccessReviewHistoryDefinitionInstancesServerTransport(&s.srv.ScopeAccessReviewHistoryDefinitionInstancesServer)
-		})
+		initServer(s, &s.trScopeAccessReviewHistoryDefinitionInstancesServer, func() *ScopeAccessReviewHistoryDefinitionInstancesServerTransport { return NewScopeAccessReviewHistoryDefinitionInstancesServerTransport(&s.srv.ScopeAccessReviewHistoryDefinitionInstancesServer) })
 		resp, err = s.trScopeAccessReviewHistoryDefinitionInstancesServer.Do(req)
 	case "ScopeAccessReviewHistoryDefinitionsClient":
-		initServer(s, &s.trScopeAccessReviewHistoryDefinitionsServer, func() *ScopeAccessReviewHistoryDefinitionsServerTransport {
-			return NewScopeAccessReviewHistoryDefinitionsServerTransport(&s.srv.ScopeAccessReviewHistoryDefinitionsServer)
-		})
+		initServer(s, &s.trScopeAccessReviewHistoryDefinitionsServer, func() *ScopeAccessReviewHistoryDefinitionsServerTransport { return NewScopeAccessReviewHistoryDefinitionsServerTransport(&s.srv.ScopeAccessReviewHistoryDefinitionsServer) })
 		resp, err = s.trScopeAccessReviewHistoryDefinitionsServer.Do(req)
 	case "ScopeAccessReviewInstanceClient":
-		initServer(s, &s.trScopeAccessReviewInstanceServer, func() *ScopeAccessReviewInstanceServerTransport {
-			return NewScopeAccessReviewInstanceServerTransport(&s.srv.ScopeAccessReviewInstanceServer)
-		})
+		initServer(s, &s.trScopeAccessReviewInstanceServer, func() *ScopeAccessReviewInstanceServerTransport { return NewScopeAccessReviewInstanceServerTransport(&s.srv.ScopeAccessReviewInstanceServer) })
 		resp, err = s.trScopeAccessReviewInstanceServer.Do(req)
 	case "ScopeAccessReviewInstanceContactedReviewersClient":
-		initServer(s, &s.trScopeAccessReviewInstanceContactedReviewersServer, func() *ScopeAccessReviewInstanceContactedReviewersServerTransport {
-			return NewScopeAccessReviewInstanceContactedReviewersServerTransport(&s.srv.ScopeAccessReviewInstanceContactedReviewersServer)
-		})
+		initServer(s, &s.trScopeAccessReviewInstanceContactedReviewersServer, func() *ScopeAccessReviewInstanceContactedReviewersServerTransport { return NewScopeAccessReviewInstanceContactedReviewersServerTransport(&s.srv.ScopeAccessReviewInstanceContactedReviewersServer) })
 		resp, err = s.trScopeAccessReviewInstanceContactedReviewersServer.Do(req)
 	case "ScopeAccessReviewInstanceDecisionsClient":
-		initServer(s, &s.trScopeAccessReviewInstanceDecisionsServer, func() *ScopeAccessReviewInstanceDecisionsServerTransport {
-			return NewScopeAccessReviewInstanceDecisionsServerTransport(&s.srv.ScopeAccessReviewInstanceDecisionsServer)
-		})
+		initServer(s, &s.trScopeAccessReviewInstanceDecisionsServer, func() *ScopeAccessReviewInstanceDecisionsServerTransport { return NewScopeAccessReviewInstanceDecisionsServerTransport(&s.srv.ScopeAccessReviewInstanceDecisionsServer) })
 		resp, err = s.trScopeAccessReviewInstanceDecisionsServer.Do(req)
 	case "ScopeAccessReviewInstancesClient":
-		initServer(s, &s.trScopeAccessReviewInstancesServer, func() *ScopeAccessReviewInstancesServerTransport {
-			return NewScopeAccessReviewInstancesServerTransport(&s.srv.ScopeAccessReviewInstancesServer)
-		})
+		initServer(s, &s.trScopeAccessReviewInstancesServer, func() *ScopeAccessReviewInstancesServerTransport { return NewScopeAccessReviewInstancesServerTransport(&s.srv.ScopeAccessReviewInstancesServer) })
 		resp, err = s.trScopeAccessReviewInstancesServer.Do(req)
 	case "ScopeAccessReviewScheduleDefinitionsClient":
-		initServer(s, &s.trScopeAccessReviewScheduleDefinitionsServer, func() *ScopeAccessReviewScheduleDefinitionsServerTransport {
-			return NewScopeAccessReviewScheduleDefinitionsServerTransport(&s.srv.ScopeAccessReviewScheduleDefinitionsServer)
-		})
+		initServer(s, &s.trScopeAccessReviewScheduleDefinitionsServer, func() *ScopeAccessReviewScheduleDefinitionsServerTransport { return NewScopeAccessReviewScheduleDefinitionsServerTransport(&s.srv.ScopeAccessReviewScheduleDefinitionsServer) })
 		resp, err = s.trScopeAccessReviewScheduleDefinitionsServer.Do(req)
 	case "TenantLevelAccessReviewInstanceContactedReviewersClient":
-		initServer(s, &s.trTenantLevelAccessReviewInstanceContactedReviewersServer, func() *TenantLevelAccessReviewInstanceContactedReviewersServerTransport {
-			return NewTenantLevelAccessReviewInstanceContactedReviewersServerTransport(&s.srv.TenantLevelAccessReviewInstanceContactedReviewersServer)
-		})
+		initServer(s, &s.trTenantLevelAccessReviewInstanceContactedReviewersServer, func() *TenantLevelAccessReviewInstanceContactedReviewersServerTransport { return NewTenantLevelAccessReviewInstanceContactedReviewersServerTransport(&s.srv.TenantLevelAccessReviewInstanceContactedReviewersServer) })
 		resp, err = s.trTenantLevelAccessReviewInstanceContactedReviewersServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)

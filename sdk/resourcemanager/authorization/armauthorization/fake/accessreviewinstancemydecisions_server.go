@@ -20,7 +20,7 @@ import (
 )
 
 // AccessReviewInstanceMyDecisionsServer is a fake server for instances of the armauthorization.AccessReviewInstanceMyDecisionsClient type.
-type AccessReviewInstanceMyDecisionsServer struct {
+type AccessReviewInstanceMyDecisionsServer struct{
 	// GetByID is the fake for method AccessReviewInstanceMyDecisionsClient.GetByID
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByID func(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, options *armauthorization.AccessReviewInstanceMyDecisionsClientGetByIDOptions) (resp azfake.Responder[armauthorization.AccessReviewInstanceMyDecisionsClientGetByIDResponse], errResp azfake.ErrorResponder)
@@ -32,6 +32,7 @@ type AccessReviewInstanceMyDecisionsServer struct {
 	// Patch is the fake for method AccessReviewInstanceMyDecisionsClient.Patch
 	// HTTP status codes to indicate success: http.StatusOK
 	Patch func(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties armauthorization.AccessReviewDecisionProperties, options *armauthorization.AccessReviewInstanceMyDecisionsClientPatchOptions) (resp azfake.Responder[armauthorization.AccessReviewInstanceMyDecisionsClientPatchResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewAccessReviewInstanceMyDecisionsServerTransport creates a new instance of AccessReviewInstanceMyDecisionsServerTransport with the provided implementation.
@@ -39,7 +40,7 @@ type AccessReviewInstanceMyDecisionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAccessReviewInstanceMyDecisionsServerTransport(srv *AccessReviewInstanceMyDecisionsServer) *AccessReviewInstanceMyDecisionsServerTransport {
 	return &AccessReviewInstanceMyDecisionsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.AccessReviewInstanceMyDecisionsClientListResponse]](),
 	}
 }
@@ -47,7 +48,7 @@ func NewAccessReviewInstanceMyDecisionsServerTransport(srv *AccessReviewInstance
 // AccessReviewInstanceMyDecisionsServerTransport connects instances of armauthorization.AccessReviewInstanceMyDecisionsClient to instances of AccessReviewInstanceMyDecisionsServer.
 // Don't use this type directly, use NewAccessReviewInstanceMyDecisionsServerTransport instead.
 type AccessReviewInstanceMyDecisionsServerTransport struct {
-	srv          *AccessReviewInstanceMyDecisionsServer
+	srv *AccessReviewInstanceMyDecisionsServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.AccessReviewInstanceMyDecisionsClientListResponse]]
 }
 
@@ -59,25 +60,44 @@ func (a *AccessReviewInstanceMyDecisionsServerTransport) Do(req *http.Request) (
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AccessReviewInstanceMyDecisionsClient.GetByID":
-		resp, err = a.dispatchGetByID(req)
-	case "AccessReviewInstanceMyDecisionsClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	case "AccessReviewInstanceMyDecisionsClient.Patch":
-		resp, err = a.dispatchPatch(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AccessReviewInstanceMyDecisionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if accessReviewInstanceMyDecisionsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = accessReviewInstanceMyDecisionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AccessReviewInstanceMyDecisionsClient.GetByID":
+				res.resp, res.err = a.dispatchGetByID(req)
+			case "AccessReviewInstanceMyDecisionsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AccessReviewInstanceMyDecisionsClient.Patch":
+				res.resp, res.err = a.dispatchPatch(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AccessReviewInstanceMyDecisionsServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
@@ -87,7 +107,7 @@ func (a *AccessReviewInstanceMyDecisionsServerTransport) dispatchGetByID(req *ht
 	const regexStr = `/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/decisions/(?P<decisionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
@@ -123,33 +143,33 @@ func (a *AccessReviewInstanceMyDecisionsServerTransport) dispatchNewListPager(re
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/decisions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/decisions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.AccessReviewInstanceMyDecisionsClientListOptions
+	if filterParam != nil {
+		options = &armauthorization.AccessReviewInstanceMyDecisionsClientListOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
-		if err != nil {
-			return nil, err
-		}
-		idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.AccessReviewInstanceMyDecisionsClientListOptions
-		if filterParam != nil {
-			options = &armauthorization.AccessReviewInstanceMyDecisionsClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := a.srv.NewListPager(scheduleDefinitionIDParam, idParam, options)
+	}
+resp := a.srv.NewListPager(scheduleDefinitionIDParam, idParam, options)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.AccessReviewInstanceMyDecisionsClientListResponse, createLink func() string) {
@@ -177,7 +197,7 @@ func (a *AccessReviewInstanceMyDecisionsServerTransport) dispatchPatch(req *http
 	const regexStr = `/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/decisions/(?P<decisionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.AccessReviewDecisionProperties](req)
@@ -209,4 +229,10 @@ func (a *AccessReviewInstanceMyDecisionsServerTransport) dispatchPatch(req *http
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AccessReviewInstanceMyDecisionsServerTransport
+var accessReviewInstanceMyDecisionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

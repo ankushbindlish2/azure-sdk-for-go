@@ -19,7 +19,7 @@ import (
 )
 
 // PermissionsServer is a fake server for instances of the armauthorization.PermissionsClient type.
-type PermissionsServer struct {
+type PermissionsServer struct{
 	// NewListForResourcePager is the fake for method PermissionsClient.NewListForResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForResourcePager func(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *armauthorization.PermissionsClientListForResourceOptions) (resp azfake.PagerResponder[armauthorization.PermissionsClientListForResourceResponse])
@@ -27,6 +27,7 @@ type PermissionsServer struct {
 	// NewListForResourceGroupPager is the fake for method PermissionsClient.NewListForResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForResourceGroupPager func(resourceGroupName string, options *armauthorization.PermissionsClientListForResourceGroupOptions) (resp azfake.PagerResponder[armauthorization.PermissionsClientListForResourceGroupResponse])
+
 }
 
 // NewPermissionsServerTransport creates a new instance of PermissionsServerTransport with the provided implementation.
@@ -34,8 +35,8 @@ type PermissionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPermissionsServerTransport(srv *PermissionsServer) *PermissionsServerTransport {
 	return &PermissionsServerTransport{
-		srv:                          srv,
-		newListForResourcePager:      newTracker[azfake.PagerResponder[armauthorization.PermissionsClientListForResourceResponse]](),
+		srv: srv,
+		newListForResourcePager: newTracker[azfake.PagerResponder[armauthorization.PermissionsClientListForResourceResponse]](),
 		newListForResourceGroupPager: newTracker[azfake.PagerResponder[armauthorization.PermissionsClientListForResourceGroupResponse]](),
 	}
 }
@@ -43,8 +44,8 @@ func NewPermissionsServerTransport(srv *PermissionsServer) *PermissionsServerTra
 // PermissionsServerTransport connects instances of armauthorization.PermissionsClient to instances of PermissionsServer.
 // Don't use this type directly, use NewPermissionsServerTransport instead.
 type PermissionsServerTransport struct {
-	srv                          *PermissionsServer
-	newListForResourcePager      *tracker[azfake.PagerResponder[armauthorization.PermissionsClientListForResourceResponse]]
+	srv *PermissionsServer
+	newListForResourcePager *tracker[azfake.PagerResponder[armauthorization.PermissionsClientListForResourceResponse]]
 	newListForResourceGroupPager *tracker[azfake.PagerResponder[armauthorization.PermissionsClientListForResourceGroupResponse]]
 }
 
@@ -56,23 +57,42 @@ func (p *PermissionsServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PermissionsClient.NewListForResourcePager":
-		resp, err = p.dispatchNewListForResourcePager(req)
-	case "PermissionsClient.NewListForResourceGroupPager":
-		resp, err = p.dispatchNewListForResourceGroupPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PermissionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if permissionsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = permissionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PermissionsClient.NewListForResourcePager":
+				res.resp, res.err = p.dispatchNewListForResourcePager(req)
+			case "PermissionsClient.NewListForResourceGroupPager":
+				res.resp, res.err = p.dispatchNewListForResourceGroupPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PermissionsServerTransport) dispatchNewListForResourcePager(req *http.Request) (*http.Response, error) {
@@ -81,33 +101,33 @@ func (p *PermissionsServerTransport) dispatchNewListForResourcePager(req *http.R
 	}
 	newListForResourcePager := p.newListForResourcePager.get(req)
 	if newListForResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourcePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/permissions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
-		if err != nil {
-			return nil, err
-		}
-		parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListForResourcePager(resourceGroupNameParam, resourceProviderNamespaceParam, parentResourcePathParam, resourceTypeParam, resourceNameParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourcePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/permissions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
+	if err != nil {
+		return nil, err
+	}
+	resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+resp := p.srv.NewListForResourcePager(resourceGroupNameParam, resourceProviderNamespaceParam, parentResourcePathParam, resourceTypeParam, resourceNameParam, nil)
 		newListForResourcePager = &resp
 		p.newListForResourcePager.add(req, newListForResourcePager)
 		server.PagerResponderInjectNextLinks(newListForResourcePager, req, func(page *armauthorization.PermissionsClientListForResourceResponse, createLink func() string) {
@@ -134,17 +154,17 @@ func (p *PermissionsServerTransport) dispatchNewListForResourceGroupPager(req *h
 	}
 	newListForResourceGroupPager := p.newListForResourceGroupPager.get(req)
 	if newListForResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/permissions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListForResourceGroupPager(resourceGroupNameParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/permissions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := p.srv.NewListForResourceGroupPager(resourceGroupNameParam, nil)
 		newListForResourceGroupPager = &resp
 		p.newListForResourceGroupPager.add(req, newListForResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListForResourceGroupPager, req, func(page *armauthorization.PermissionsClientListForResourceGroupResponse, createLink func() string) {
@@ -163,4 +183,10 @@ func (p *PermissionsServerTransport) dispatchNewListForResourceGroupPager(req *h
 		p.newListForResourceGroupPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PermissionsServerTransport
+var permissionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

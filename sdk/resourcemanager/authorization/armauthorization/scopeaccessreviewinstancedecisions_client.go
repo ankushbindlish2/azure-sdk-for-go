@@ -25,14 +25,14 @@ type ScopeAccessReviewInstanceDecisionsClient struct {
 
 // NewScopeAccessReviewInstanceDecisionsClient creates a new instance of ScopeAccessReviewInstanceDecisionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewInstanceDecisionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewInstanceDecisionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScopeAccessReviewInstanceDecisionsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -45,13 +45,13 @@ func NewScopeAccessReviewInstanceDecisionsClient(credential azcore.TokenCredenti
 //   - id - The id of the access review instance.
 //   - options - ScopeAccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the ScopeAccessReviewInstanceDecisionsClient.NewListPager
 //     method.
-func (client *ScopeAccessReviewInstanceDecisionsClient) NewListPager(scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceDecisionsClientListOptions) *runtime.Pager[ScopeAccessReviewInstanceDecisionsClientListResponse] {
+func (client *ScopeAccessReviewInstanceDecisionsClient) NewListPager(scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceDecisionsClientListOptions) (*runtime.Pager[ScopeAccessReviewInstanceDecisionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScopeAccessReviewInstanceDecisionsClientListResponse]{
 		More: func(page ScopeAccessReviewInstanceDecisionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScopeAccessReviewInstanceDecisionsClientListResponse) (ScopeAccessReviewInstanceDecisionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewInstanceDecisionsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewInstanceDecisionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -63,7 +63,7 @@ func (client *ScopeAccessReviewInstanceDecisionsClient) NewListPager(scope strin
 				return ScopeAccessReviewInstanceDecisionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -107,3 +107,4 @@ func (client *ScopeAccessReviewInstanceDecisionsClient) listHandleResponse(resp 
 	}
 	return result, nil
 }
+

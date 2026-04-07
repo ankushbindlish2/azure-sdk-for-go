@@ -20,7 +20,7 @@ import (
 )
 
 // ScopeAccessReviewScheduleDefinitionsServer is a fake server for instances of the armauthorization.ScopeAccessReviewScheduleDefinitionsClient type.
-type ScopeAccessReviewScheduleDefinitionsServer struct {
+type ScopeAccessReviewScheduleDefinitionsServer struct{
 	// CreateOrUpdateByID is the fake for method ScopeAccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdateByID func(ctx context.Context, scope string, scheduleDefinitionID string, properties armauthorization.AccessReviewScheduleDefinitionProperties, options *armauthorization.ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (resp azfake.Responder[armauthorization.ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse], errResp azfake.ErrorResponder)
@@ -40,6 +40,7 @@ type ScopeAccessReviewScheduleDefinitionsServer struct {
 	// Stop is the fake for method ScopeAccessReviewScheduleDefinitionsClient.Stop
 	// HTTP status codes to indicate success: http.StatusNoContent
 	Stop func(ctx context.Context, scope string, scheduleDefinitionID string, options *armauthorization.ScopeAccessReviewScheduleDefinitionsClientStopOptions) (resp azfake.Responder[armauthorization.ScopeAccessReviewScheduleDefinitionsClientStopResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewScopeAccessReviewScheduleDefinitionsServerTransport creates a new instance of ScopeAccessReviewScheduleDefinitionsServerTransport with the provided implementation.
@@ -47,7 +48,7 @@ type ScopeAccessReviewScheduleDefinitionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewScopeAccessReviewScheduleDefinitionsServerTransport(srv *ScopeAccessReviewScheduleDefinitionsServer) *ScopeAccessReviewScheduleDefinitionsServerTransport {
 	return &ScopeAccessReviewScheduleDefinitionsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.ScopeAccessReviewScheduleDefinitionsClientListResponse]](),
 	}
 }
@@ -55,7 +56,7 @@ func NewScopeAccessReviewScheduleDefinitionsServerTransport(srv *ScopeAccessRevi
 // ScopeAccessReviewScheduleDefinitionsServerTransport connects instances of armauthorization.ScopeAccessReviewScheduleDefinitionsClient to instances of ScopeAccessReviewScheduleDefinitionsServer.
 // Don't use this type directly, use NewScopeAccessReviewScheduleDefinitionsServerTransport instead.
 type ScopeAccessReviewScheduleDefinitionsServerTransport struct {
-	srv          *ScopeAccessReviewScheduleDefinitionsServer
+	srv *ScopeAccessReviewScheduleDefinitionsServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.ScopeAccessReviewScheduleDefinitionsClientListResponse]]
 }
 
@@ -67,29 +68,48 @@ func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) Do(req *http.Reque
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ScopeAccessReviewScheduleDefinitionsClient.CreateOrUpdateByID":
-		resp, err = s.dispatchCreateOrUpdateByID(req)
-	case "ScopeAccessReviewScheduleDefinitionsClient.DeleteByID":
-		resp, err = s.dispatchDeleteByID(req)
-	case "ScopeAccessReviewScheduleDefinitionsClient.GetByID":
-		resp, err = s.dispatchGetByID(req)
-	case "ScopeAccessReviewScheduleDefinitionsClient.NewListPager":
-		resp, err = s.dispatchNewListPager(req)
-	case "ScopeAccessReviewScheduleDefinitionsClient.Stop":
-		resp, err = s.dispatchStop(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if scopeAccessReviewScheduleDefinitionsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = scopeAccessReviewScheduleDefinitionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ScopeAccessReviewScheduleDefinitionsClient.CreateOrUpdateByID":
+				res.resp, res.err = s.dispatchCreateOrUpdateByID(req)
+			case "ScopeAccessReviewScheduleDefinitionsClient.DeleteByID":
+				res.resp, res.err = s.dispatchDeleteByID(req)
+			case "ScopeAccessReviewScheduleDefinitionsClient.GetByID":
+				res.resp, res.err = s.dispatchGetByID(req)
+			case "ScopeAccessReviewScheduleDefinitionsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			case "ScopeAccessReviewScheduleDefinitionsClient.Stop":
+				res.resp, res.err = s.dispatchStop(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) dispatchCreateOrUpdateByID(req *http.Request) (*http.Response, error) {
@@ -99,7 +119,7 @@ func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) dispatchCreateOrUp
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.AccessReviewScheduleDefinitionProperties](req)
@@ -136,7 +156,7 @@ func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) dispatchDeleteByID
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -169,7 +189,7 @@ func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) dispatchGetByID(re
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -201,29 +221,29 @@ func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) dispatchNewListPag
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.ScopeAccessReviewScheduleDefinitionsClientListOptions
+	if filterParam != nil {
+		options = &armauthorization.ScopeAccessReviewScheduleDefinitionsClientListOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.ScopeAccessReviewScheduleDefinitionsClientListOptions
-		if filterParam != nil {
-			options = &armauthorization.ScopeAccessReviewScheduleDefinitionsClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := s.srv.NewListPager(scopeParam, options)
+	}
+resp := s.srv.NewListPager(scopeParam, options)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.ScopeAccessReviewScheduleDefinitionsClientListResponse, createLink func() string) {
@@ -251,7 +271,7 @@ func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) dispatchStop(req *
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -275,4 +295,10 @@ func (s *ScopeAccessReviewScheduleDefinitionsServerTransport) dispatchStop(req *
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ScopeAccessReviewScheduleDefinitionsServerTransport
+var scopeAccessReviewScheduleDefinitionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

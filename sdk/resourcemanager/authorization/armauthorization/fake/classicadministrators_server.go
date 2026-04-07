@@ -18,10 +18,11 @@ import (
 )
 
 // ClassicAdministratorsServer is a fake server for instances of the armauthorization.ClassicAdministratorsClient type.
-type ClassicAdministratorsServer struct {
+type ClassicAdministratorsServer struct{
 	// NewListPager is the fake for method ClassicAdministratorsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armauthorization.ClassicAdministratorsClientListOptions) (resp azfake.PagerResponder[armauthorization.ClassicAdministratorsClientListResponse])
+
 }
 
 // NewClassicAdministratorsServerTransport creates a new instance of ClassicAdministratorsServerTransport with the provided implementation.
@@ -29,7 +30,7 @@ type ClassicAdministratorsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewClassicAdministratorsServerTransport(srv *ClassicAdministratorsServer) *ClassicAdministratorsServerTransport {
 	return &ClassicAdministratorsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.ClassicAdministratorsClientListResponse]](),
 	}
 }
@@ -37,7 +38,7 @@ func NewClassicAdministratorsServerTransport(srv *ClassicAdministratorsServer) *
 // ClassicAdministratorsServerTransport connects instances of armauthorization.ClassicAdministratorsClient to instances of ClassicAdministratorsServer.
 // Don't use this type directly, use NewClassicAdministratorsServerTransport instead.
 type ClassicAdministratorsServerTransport struct {
-	srv          *ClassicAdministratorsServer
+	srv *ClassicAdministratorsServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.ClassicAdministratorsClientListResponse]]
 }
 
@@ -49,21 +50,40 @@ func (c *ClassicAdministratorsServerTransport) Do(req *http.Request) (*http.Resp
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return c.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ClassicAdministratorsClient.NewListPager":
-		resp, err = c.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (c *ClassicAdministratorsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if classicAdministratorsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = classicAdministratorsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ClassicAdministratorsClient.NewListPager":
+				res.resp, res.err = c.dispatchNewListPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (c *ClassicAdministratorsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -72,13 +92,13 @@ func (c *ClassicAdministratorsServerTransport) dispatchNewListPager(req *http.Re
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/classicAdministrators`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/classicAdministrators`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := c.srv.NewListPager(nil)
 		newListPager = &resp
 		c.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.ClassicAdministratorsClientListResponse, createLink func() string) {
@@ -97,4 +117,10 @@ func (c *ClassicAdministratorsServerTransport) dispatchNewListPager(req *http.Re
 		c.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ClassicAdministratorsServerTransport
+var classicAdministratorsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

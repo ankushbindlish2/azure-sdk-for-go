@@ -20,7 +20,7 @@ import (
 )
 
 // ProviderOperationsMetadataServer is a fake server for instances of the armauthorization.ProviderOperationsMetadataClient type.
-type ProviderOperationsMetadataServer struct {
+type ProviderOperationsMetadataServer struct{
 	// Get is the fake for method ProviderOperationsMetadataClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceProviderNamespace string, options *armauthorization.ProviderOperationsMetadataClientGetOptions) (resp azfake.Responder[armauthorization.ProviderOperationsMetadataClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,6 +28,7 @@ type ProviderOperationsMetadataServer struct {
 	// NewListPager is the fake for method ProviderOperationsMetadataClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armauthorization.ProviderOperationsMetadataClientListOptions) (resp azfake.PagerResponder[armauthorization.ProviderOperationsMetadataClientListResponse])
+
 }
 
 // NewProviderOperationsMetadataServerTransport creates a new instance of ProviderOperationsMetadataServerTransport with the provided implementation.
@@ -35,7 +36,7 @@ type ProviderOperationsMetadataServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewProviderOperationsMetadataServerTransport(srv *ProviderOperationsMetadataServer) *ProviderOperationsMetadataServerTransport {
 	return &ProviderOperationsMetadataServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.ProviderOperationsMetadataClientListResponse]](),
 	}
 }
@@ -43,7 +44,7 @@ func NewProviderOperationsMetadataServerTransport(srv *ProviderOperationsMetadat
 // ProviderOperationsMetadataServerTransport connects instances of armauthorization.ProviderOperationsMetadataClient to instances of ProviderOperationsMetadataServer.
 // Don't use this type directly, use NewProviderOperationsMetadataServerTransport instead.
 type ProviderOperationsMetadataServerTransport struct {
-	srv          *ProviderOperationsMetadataServer
+	srv *ProviderOperationsMetadataServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.ProviderOperationsMetadataClientListResponse]]
 }
 
@@ -55,23 +56,42 @@ func (p *ProviderOperationsMetadataServerTransport) Do(req *http.Request) (*http
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ProviderOperationsMetadataClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "ProviderOperationsMetadataClient.NewListPager":
-		resp, err = p.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *ProviderOperationsMetadataServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if providerOperationsMetadataServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = providerOperationsMetadataServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ProviderOperationsMetadataClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "ProviderOperationsMetadataClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *ProviderOperationsMetadataServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -81,7 +101,7 @@ func (p *ProviderOperationsMetadataServerTransport) dispatchGet(req *http.Reques
 	const regexStr = `/providers/Microsoft\.Authorization/providerOperations/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -121,19 +141,19 @@ func (p *ProviderOperationsMetadataServerTransport) dispatchNewListPager(req *ht
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		qp := req.URL.Query()
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
+	qp := req.URL.Query()
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	var options *armauthorization.ProviderOperationsMetadataClientListOptions
+	if expandParam != nil {
+		options = &armauthorization.ProviderOperationsMetadataClientListOptions{
+			Expand: expandParam,
 		}
-		expandParam := getOptional(expandUnescaped)
-		var options *armauthorization.ProviderOperationsMetadataClientListOptions
-		if expandParam != nil {
-			options = &armauthorization.ProviderOperationsMetadataClientListOptions{
-				Expand: expandParam,
-			}
-		}
-		resp := p.srv.NewListPager(options)
+	}
+resp := p.srv.NewListPager(options)
 		newListPager = &resp
 		p.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.ProviderOperationsMetadataClientListResponse, createLink func() string) {
@@ -152,4 +172,10 @@ func (p *ProviderOperationsMetadataServerTransport) dispatchNewListPager(req *ht
 		p.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ProviderOperationsMetadataServerTransport
+var providerOperationsMetadataServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

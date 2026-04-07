@@ -20,7 +20,7 @@ import (
 )
 
 // AlertDefinitionsServer is a fake server for instances of the armauthorization.AlertDefinitionsClient type.
-type AlertDefinitionsServer struct {
+type AlertDefinitionsServer struct{
 	// Get is the fake for method AlertDefinitionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, scope string, alertDefinitionID string, options *armauthorization.AlertDefinitionsClientGetOptions) (resp azfake.Responder[armauthorization.AlertDefinitionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,6 +28,7 @@ type AlertDefinitionsServer struct {
 	// NewListForScopePager is the fake for method AlertDefinitionsClient.NewListForScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForScopePager func(scope string, options *armauthorization.AlertDefinitionsClientListForScopeOptions) (resp azfake.PagerResponder[armauthorization.AlertDefinitionsClientListForScopeResponse])
+
 }
 
 // NewAlertDefinitionsServerTransport creates a new instance of AlertDefinitionsServerTransport with the provided implementation.
@@ -35,7 +36,7 @@ type AlertDefinitionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAlertDefinitionsServerTransport(srv *AlertDefinitionsServer) *AlertDefinitionsServerTransport {
 	return &AlertDefinitionsServerTransport{
-		srv:                  srv,
+		srv: srv,
 		newListForScopePager: newTracker[azfake.PagerResponder[armauthorization.AlertDefinitionsClientListForScopeResponse]](),
 	}
 }
@@ -43,7 +44,7 @@ func NewAlertDefinitionsServerTransport(srv *AlertDefinitionsServer) *AlertDefin
 // AlertDefinitionsServerTransport connects instances of armauthorization.AlertDefinitionsClient to instances of AlertDefinitionsServer.
 // Don't use this type directly, use NewAlertDefinitionsServerTransport instead.
 type AlertDefinitionsServerTransport struct {
-	srv                  *AlertDefinitionsServer
+	srv *AlertDefinitionsServer
 	newListForScopePager *tracker[azfake.PagerResponder[armauthorization.AlertDefinitionsClientListForScopeResponse]]
 }
 
@@ -55,23 +56,42 @@ func (a *AlertDefinitionsServerTransport) Do(req *http.Request) (*http.Response,
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AlertDefinitionsClient.Get":
-		resp, err = a.dispatchGet(req)
-	case "AlertDefinitionsClient.NewListForScopePager":
-		resp, err = a.dispatchNewListForScopePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AlertDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if alertDefinitionsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = alertDefinitionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AlertDefinitionsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AlertDefinitionsClient.NewListForScopePager":
+				res.resp, res.err = a.dispatchNewListForScopePager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AlertDefinitionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -81,7 +101,7 @@ func (a *AlertDefinitionsServerTransport) dispatchGet(req *http.Request) (*http.
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementAlertDefinitions/(?P<alertDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -113,17 +133,17 @@ func (a *AlertDefinitionsServerTransport) dispatchNewListForScopePager(req *http
 	}
 	newListForScopePager := a.newListForScopePager.get(req)
 	if newListForScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementAlertDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListForScopePager(scopeParam, nil)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementAlertDefinitions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListForScopePager(scopeParam, nil)
 		newListForScopePager = &resp
 		a.newListForScopePager.add(req, newListForScopePager)
 		server.PagerResponderInjectNextLinks(newListForScopePager, req, func(page *armauthorization.AlertDefinitionsClientListForScopeResponse, createLink func() string) {
@@ -142,4 +162,10 @@ func (a *AlertDefinitionsServerTransport) dispatchNewListForScopePager(req *http
 		a.newListForScopePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AlertDefinitionsServerTransport
+var alertDefinitionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

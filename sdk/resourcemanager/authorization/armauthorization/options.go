@@ -50,7 +50,7 @@ type AccessReviewHistoryDefinitionsClientGetByIDOptions struct {
 // AccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.NewListPager
 // method.
 type AccessReviewHistoryDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Only standard filters on definition name and created date are supported
+// The filter to apply on the operation. Only standard filters on definition name and created date are supported
 	Filter *string
 }
 
@@ -92,9 +92,9 @@ type AccessReviewInstanceContactedReviewersClientListOptions struct {
 // AccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceDecisionsClient.NewListPager
 // method.
 type AccessReviewInstanceDecisionsClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
@@ -107,9 +107,9 @@ type AccessReviewInstanceMyDecisionsClientGetByIDOptions struct {
 // AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.NewListPager
 // method.
 type AccessReviewInstanceMyDecisionsClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
@@ -128,9 +128,9 @@ type AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions struct {
 // AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.NewListPager
 // method.
 type AccessReviewInstancesAssignedForMyApprovalClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
@@ -148,18 +148,18 @@ type AccessReviewInstancesClientGetByIDOptions struct {
 // AccessReviewInstancesClientListOptions contains the optional parameters for the AccessReviewInstancesClient.NewListPager
 // method.
 type AccessReviewInstancesClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
 // AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager
 // method.
 type AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
@@ -184,9 +184,9 @@ type AccessReviewScheduleDefinitionsClientGetByIDOptions struct {
 // AccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.NewListPager
 // method.
 type AccessReviewScheduleDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
@@ -246,13 +246,13 @@ type AlertOperationClientGetOptions struct {
 
 // AlertsClientBeginRefreshAllOptions contains the optional parameters for the AlertsClient.BeginRefreshAll method.
 type AlertsClientBeginRefreshAllOptions struct {
-	// Resumes the LRO from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AlertsClientBeginRefreshOptions contains the optional parameters for the AlertsClient.BeginRefresh method.
 type AlertsClientBeginRefreshOptions struct {
-	// Resumes the LRO from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -271,9 +271,35 @@ type AlertsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AttributeNamespacesClientCreateOptions contains the optional parameters for the AttributeNamespacesClient.Create method.
+type AttributeNamespacesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AttributeNamespacesClientDeleteOptions contains the optional parameters for the AttributeNamespacesClient.Delete method.
+type AttributeNamespacesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AttributeNamespacesClientGetOptions contains the optional parameters for the AttributeNamespacesClient.Get method.
+type AttributeNamespacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.NewListPager
 // method.
 type ClassicAdministratorsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DenyAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the DenyAssignmentsClient.CreateOrUpdate
+// method.
+type DenyAssignmentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DenyAssignmentsClientDeleteOptions contains the optional parameters for the DenyAssignmentsClient.Delete method.
+type DenyAssignmentsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -290,69 +316,69 @@ type DenyAssignmentsClientGetOptions struct {
 // DenyAssignmentsClientListForResourceGroupOptions contains the optional parameters for the DenyAssignmentsClient.NewListForResourceGroupPager
 // method.
 type DenyAssignmentsClientListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
-	// eq '{name}' to search deny assignments by name at
-	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
-	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
-	// filter as it returns not only those deny assignments that contain the
-	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
-	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
-	// only the deny assignment name and description properties are returned.
+// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
+// eq '{name}' to search deny assignments by name at
+// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
+// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
+// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
+// filter as it returns not only those deny assignments that contain the
+// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
+// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
+// only the deny assignment name and description properties are returned.
 	Filter *string
 }
 
 // DenyAssignmentsClientListForResourceOptions contains the optional parameters for the DenyAssignmentsClient.NewListForResourcePager
 // method.
 type DenyAssignmentsClientListForResourceOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
-	// eq '{name}' to search deny assignments by name at
-	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
-	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
-	// filter as it returns not only those deny assignments that contain the
-	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
-	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
-	// only the deny assignment name and description properties are returned.
+// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
+// eq '{name}' to search deny assignments by name at
+// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
+// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
+// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
+// filter as it returns not only those deny assignments that contain the
+// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
+// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
+// only the deny assignment name and description properties are returned.
 	Filter *string
 }
 
 // DenyAssignmentsClientListForScopeOptions contains the optional parameters for the DenyAssignmentsClient.NewListForScopePager
 // method.
 type DenyAssignmentsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
-	// eq '{name}' to search deny assignments by name at
-	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
-	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
-	// filter as it returns not only those deny assignments that contain the
-	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
-	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
-	// only the deny assignment name and description properties are returned.
+// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
+// eq '{name}' to search deny assignments by name at
+// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
+// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
+// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
+// filter as it returns not only those deny assignments that contain the
+// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
+// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
+// only the deny assignment name and description properties are returned.
 	Filter *string
 }
 
 // DenyAssignmentsClientListOptions contains the optional parameters for the DenyAssignmentsClient.NewListPager method.
 type DenyAssignmentsClientListOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
-	// eq '{name}' to search deny assignments by name at
-	// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
-	// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
-	// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
-	// filter as it returns not only those deny assignments that contain the
-	// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
-	// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
-	// only the deny assignment name and description properties are returned.
+// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName
+// eq '{name}' to search deny assignments by name at
+// specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope for the
+// specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all
+// deny assignments at, above and below the scope for the specified principal. This filter is different from the principalId
+// filter as it returns not only those deny assignments that contain the
+// specified principal is the Principals list but also those deny assignments that contain the specified principal is the
+// ExcludePrincipals list. Additionally, when gdprExportPrincipalId filter is used,
+// only the deny assignment name and description properties are returned.
 	Filter *string
 }
 
 // EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.NewGetPager
 // method.
 type EligibleChildResourcesClientGetOptions struct {
-	// The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only resource of type = 'Subscription'.
-	// Use
-	// $filter=resourceType+eq+'subscription'+or+resourceType+eq+'resourcegroup' to filter on resource of type = 'Subscription'
-	// or 'ResourceGroup'
+// The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only resource of type = 'Subscription'.
+// Use
+// $filter=resourceType+eq+'subscription'+or+resourceType+eq+'resourcegroup' to filter on resource of type = 'Subscription'
+// or 'ResourceGroup'
 	Filter *string
 }
 
@@ -382,14 +408,14 @@ type PermissionsClientListForResourceOptions struct {
 // ProviderOperationsMetadataClientGetOptions contains the optional parameters for the ProviderOperationsMetadataClient.Get
 // method.
 type ProviderOperationsMetadataClientGetOptions struct {
-	// Specifies whether to expand the values.
+// Specifies whether to expand the values.
 	Expand *string
 }
 
 // ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.NewListPager
 // method.
 type ProviderOperationsMetadataClientListOptions struct {
-	// Specifies whether to expand the values.
+// Specifies whether to expand the values.
 	Expand *string
 }
 
@@ -402,11 +428,11 @@ type RoleAssignmentScheduleInstancesClientGetOptions struct {
 // RoleAssignmentScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstancesClient.NewListForScopePager
 // method.
 type RoleAssignmentScheduleInstancesClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
-	// Use $filter=principalId eq {id} to return all role assignment schedules at,
-	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role assignment
-	// schedule instances for the user. Use $filter=asTarget() to return all role
-	// assignment schedule instances created for the current user.
+// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
+// Use $filter=principalId eq {id} to return all role assignment schedules at,
+// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role assignment
+// schedule instances for the user. Use $filter=asTarget() to return all role
+// assignment schedule instances created for the current user.
 	Filter *string
 }
 
@@ -431,13 +457,13 @@ type RoleAssignmentScheduleRequestsClientGetOptions struct {
 // RoleAssignmentScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.NewListForScopePager
 // method.
 type RoleAssignmentScheduleRequestsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule requests at or above
-	// the scope. Use $filter=principalId eq {id} to return all role assignment
-	// schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role
-	// assignment schedule requests requested by the current user. Use
-	// $filter=asTarget() to return all role assignment schedule requests created for the current user. Use $filter=asApprover()
-	// to return all role assignment schedule requests where the current user is an
-	// approver.
+// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule requests at or above
+// the scope. Use $filter=principalId eq {id} to return all role assignment
+// schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role
+// assignment schedule requests requested by the current user. Use
+// $filter=asTarget() to return all role assignment schedule requests created for the current user. Use $filter=asApprover()
+// to return all role assignment schedule requests where the current user is an
+// approver.
 	Filter *string
 }
 
@@ -455,11 +481,11 @@ type RoleAssignmentSchedulesClientGetOptions struct {
 // RoleAssignmentSchedulesClientListForScopeOptions contains the optional parameters for the RoleAssignmentSchedulesClient.NewListForScopePager
 // method.
 type RoleAssignmentSchedulesClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
-	// Use $filter=principalId eq {id} to return all role assignment schedules at,
-	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role assignment
-	// schedules for the current user. Use $filter=asTarget() to return all role
-	// assignment schedules created for the current user.
+// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
+// Use $filter=principalId eq {id} to return all role assignment schedules at,
+// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role assignment
+// schedules for the current user. Use $filter=asTarget() to return all role
+// assignment schedules created for the current user.
 	Filter *string
 }
 
@@ -475,77 +501,77 @@ type RoleAssignmentsClientCreateOptions struct {
 
 // RoleAssignmentsClientDeleteByIDOptions contains the optional parameters for the RoleAssignmentsClient.DeleteByID method.
 type RoleAssignmentsClientDeleteByIDOptions struct {
-	// Tenant ID for cross-tenant request
+// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
 // RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
 type RoleAssignmentsClientDeleteOptions struct {
-	// Tenant ID for cross-tenant request
+// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
 // RoleAssignmentsClientGetByIDOptions contains the optional parameters for the RoleAssignmentsClient.GetByID method.
 type RoleAssignmentsClientGetByIDOptions struct {
-	// Tenant ID for cross-tenant request
+// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
 // RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
 type RoleAssignmentsClientGetOptions struct {
-	// Tenant ID for cross-tenant request
+// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
 // RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.NewListForResourceGroupPager
 // method.
 type RoleAssignmentsClientListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
+// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+// eq {id} to return all role assignments at, above or below the
+// scope for the specified principal.
 	Filter *string
 
-	// Tenant ID for cross-tenant request
+// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
 // RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.NewListForResourcePager
 // method.
 type RoleAssignmentsClientListForResourceOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
+// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+// eq {id} to return all role assignments at, above or below the
+// scope for the specified principal.
 	Filter *string
 
-	// Tenant ID for cross-tenant request
+// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
 // RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.NewListForScopePager
 // method.
 type RoleAssignmentsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
+// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+// eq {id} to return all role assignments at, above or below the
+// scope for the specified principal.
 	Filter *string
 
-	// The skipToken to apply on the operation. Use $skipToken={skiptoken} to return paged role assignments following the skipToken
-	// passed. Only supported on provider level calls.
+// The skipToken to apply on the operation. Use $skipToken={skiptoken} to return paged role assignments following the skipToken
+// passed. Only supported on provider level calls.
 	SkipToken *string
 
-	// Tenant ID for cross-tenant request
+// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
 // RoleAssignmentsClientListForSubscriptionOptions contains the optional parameters for the RoleAssignmentsClient.NewListForSubscriptionPager
 // method.
 type RoleAssignmentsClientListForSubscriptionOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
+// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
+// eq {id} to return all role assignments at, above or below the
+// scope for the specified principal.
 	Filter *string
 
-	// Tenant ID for cross-tenant request
+// Tenant ID for cross-tenant request
 	TenantID *string
 }
 
@@ -572,7 +598,7 @@ type RoleDefinitionsClientGetOptions struct {
 
 // RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.NewListPager method.
 type RoleDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
+// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string
 }
 
@@ -585,11 +611,11 @@ type RoleEligibilityScheduleInstancesClientGetOptions struct {
 // RoleEligibilityScheduleInstancesClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleInstancesClient.NewListForScopePager
 // method.
 type RoleEligibilityScheduleInstancesClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
-	// Use $filter=principalId eq {id} to return all role assignment schedules at,
-	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role eligibility
-	// schedules for the user. Use $filter=asTarget() to return all role eligibility
-	// schedules created for the current user.
+// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope.
+// Use $filter=principalId eq {id} to return all role assignment schedules at,
+// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role eligibility
+// schedules for the user. Use $filter=asTarget() to return all role eligibility
+// schedules created for the current user.
 	Filter *string
 }
 
@@ -614,13 +640,13 @@ type RoleEligibilityScheduleRequestsClientGetOptions struct {
 // RoleEligibilityScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.NewListForScopePager
 // method.
 type RoleEligibilityScheduleRequestsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedule requests at or above
-	// the scope. Use $filter=principalId eq {id} to return all role eligibility
-	// schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role
-	// eligibility schedule requests requested by the current user. Use
-	// $filter=asTarget() to return all role eligibility schedule requests created for the current user. Use $filter=asApprover()
-	// to return all role eligibility schedule requests where the current user is an
-	// approver.
+// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedule requests at or above
+// the scope. Use $filter=principalId eq {id} to return all role eligibility
+// schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role
+// eligibility schedule requests requested by the current user. Use
+// $filter=asTarget() to return all role eligibility schedule requests created for the current user. Use $filter=asApprover()
+// to return all role eligibility schedule requests where the current user is an
+// approver.
 	Filter *string
 }
 
@@ -638,11 +664,11 @@ type RoleEligibilitySchedulesClientGetOptions struct {
 // RoleEligibilitySchedulesClientListForScopeOptions contains the optional parameters for the RoleEligibilitySchedulesClient.NewListForScopePager
 // method.
 type RoleEligibilitySchedulesClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedules at or above the scope.
-	// Use $filter=principalId eq {id} to return all role eligibility schedules at,
-	// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role eligibility
-	// schedules for the user. Use $filter=asTarget() to return all role eligibility
-	// schedules created for the current user.
+// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedules at or above the scope.
+// Use $filter=principalId eq {id} to return all role eligibility schedules at,
+// above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role eligibility
+// schedules for the user. Use $filter=asTarget() to return all role eligibility
+// schedules created for the current user.
 	Filter *string
 }
 
@@ -738,7 +764,7 @@ type ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions struct {
 // ScopeAccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionsClient.NewListPager
 // method.
 type ScopeAccessReviewHistoryDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Only standard filters on definition name and created date are supported
+// The filter to apply on the operation. Only standard filters on definition name and created date are supported
 	Filter *string
 }
 
@@ -781,9 +807,9 @@ type ScopeAccessReviewInstanceContactedReviewersClientListOptions struct {
 // ScopeAccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the ScopeAccessReviewInstanceDecisionsClient.NewListPager
 // method.
 type ScopeAccessReviewInstanceDecisionsClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
@@ -802,9 +828,9 @@ type ScopeAccessReviewInstancesClientGetByIDOptions struct {
 // ScopeAccessReviewInstancesClientListOptions contains the optional parameters for the ScopeAccessReviewInstancesClient.NewListPager
 // method.
 type ScopeAccessReviewInstancesClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
@@ -829,9 +855,9 @@ type ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions struct {
 // ScopeAccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.NewListPager
 // method.
 type ScopeAccessReviewScheduleDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
-	// When one specified $filter=assignedToMeToReview(), only items that
-	// are assigned to the calling user to review are returned
+// The filter to apply on the operation. Other than standard filters, one custom filter option is supported : 'assignedToMeToReview()'.
+// When one specified $filter=assignedToMeToReview(), only items that
+// are assigned to the calling user to review are returned
 	Filter *string
 }
 
@@ -846,3 +872,4 @@ type ScopeAccessReviewScheduleDefinitionsClientStopOptions struct {
 type TenantLevelAccessReviewInstanceContactedReviewersClientListOptions struct {
 	// placeholder for future optional parameters
 }
+

@@ -20,7 +20,7 @@ import (
 )
 
 // RoleManagementPolicyAssignmentsServer is a fake server for instances of the armauthorization.RoleManagementPolicyAssignmentsClient type.
-type RoleManagementPolicyAssignmentsServer struct {
+type RoleManagementPolicyAssignmentsServer struct{
 	// Create is the fake for method RoleManagementPolicyAssignmentsClient.Create
 	// HTTP status codes to indicate success: http.StatusCreated
 	Create func(ctx context.Context, scope string, roleManagementPolicyAssignmentName string, parameters armauthorization.RoleManagementPolicyAssignment, options *armauthorization.RoleManagementPolicyAssignmentsClientCreateOptions) (resp azfake.Responder[armauthorization.RoleManagementPolicyAssignmentsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -36,6 +36,7 @@ type RoleManagementPolicyAssignmentsServer struct {
 	// NewListForScopePager is the fake for method RoleManagementPolicyAssignmentsClient.NewListForScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForScopePager func(scope string, options *armauthorization.RoleManagementPolicyAssignmentsClientListForScopeOptions) (resp azfake.PagerResponder[armauthorization.RoleManagementPolicyAssignmentsClientListForScopeResponse])
+
 }
 
 // NewRoleManagementPolicyAssignmentsServerTransport creates a new instance of RoleManagementPolicyAssignmentsServerTransport with the provided implementation.
@@ -43,7 +44,7 @@ type RoleManagementPolicyAssignmentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRoleManagementPolicyAssignmentsServerTransport(srv *RoleManagementPolicyAssignmentsServer) *RoleManagementPolicyAssignmentsServerTransport {
 	return &RoleManagementPolicyAssignmentsServerTransport{
-		srv:                  srv,
+		srv: srv,
 		newListForScopePager: newTracker[azfake.PagerResponder[armauthorization.RoleManagementPolicyAssignmentsClientListForScopeResponse]](),
 	}
 }
@@ -51,7 +52,7 @@ func NewRoleManagementPolicyAssignmentsServerTransport(srv *RoleManagementPolicy
 // RoleManagementPolicyAssignmentsServerTransport connects instances of armauthorization.RoleManagementPolicyAssignmentsClient to instances of RoleManagementPolicyAssignmentsServer.
 // Don't use this type directly, use NewRoleManagementPolicyAssignmentsServerTransport instead.
 type RoleManagementPolicyAssignmentsServerTransport struct {
-	srv                  *RoleManagementPolicyAssignmentsServer
+	srv *RoleManagementPolicyAssignmentsServer
 	newListForScopePager *tracker[azfake.PagerResponder[armauthorization.RoleManagementPolicyAssignmentsClientListForScopeResponse]]
 }
 
@@ -63,27 +64,46 @@ func (r *RoleManagementPolicyAssignmentsServerTransport) Do(req *http.Request) (
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleManagementPolicyAssignmentsClient.Create":
-		resp, err = r.dispatchCreate(req)
-	case "RoleManagementPolicyAssignmentsClient.Delete":
-		resp, err = r.dispatchDelete(req)
-	case "RoleManagementPolicyAssignmentsClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RoleManagementPolicyAssignmentsClient.NewListForScopePager":
-		resp, err = r.dispatchNewListForScopePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleManagementPolicyAssignmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if roleManagementPolicyAssignmentsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = roleManagementPolicyAssignmentsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleManagementPolicyAssignmentsClient.Create":
+				res.resp, res.err = r.dispatchCreate(req)
+			case "RoleManagementPolicyAssignmentsClient.Delete":
+				res.resp, res.err = r.dispatchDelete(req)
+			case "RoleManagementPolicyAssignmentsClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoleManagementPolicyAssignmentsClient.NewListForScopePager":
+				res.resp, res.err = r.dispatchNewListForScopePager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleManagementPolicyAssignmentsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -93,7 +113,7 @@ func (r *RoleManagementPolicyAssignmentsServerTransport) dispatchCreate(req *htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicyAssignments/(?P<roleManagementPolicyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleManagementPolicyAssignment](req)
@@ -130,7 +150,7 @@ func (r *RoleManagementPolicyAssignmentsServerTransport) dispatchDelete(req *htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicyAssignments/(?P<roleManagementPolicyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -163,7 +183,7 @@ func (r *RoleManagementPolicyAssignmentsServerTransport) dispatchGet(req *http.R
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicyAssignments/(?P<roleManagementPolicyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -195,17 +215,17 @@ func (r *RoleManagementPolicyAssignmentsServerTransport) dispatchNewListForScope
 	}
 	newListForScopePager := r.newListForScopePager.get(req)
 	if newListForScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicyAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListForScopePager(scopeParam, nil)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicyAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+resp := r.srv.NewListForScopePager(scopeParam, nil)
 		newListForScopePager = &resp
 		r.newListForScopePager.add(req, newListForScopePager)
 		server.PagerResponderInjectNextLinks(newListForScopePager, req, func(page *armauthorization.RoleManagementPolicyAssignmentsClientListForScopeResponse, createLink func() string) {
@@ -224,4 +244,10 @@ func (r *RoleManagementPolicyAssignmentsServerTransport) dispatchNewListForScope
 		r.newListForScopePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleManagementPolicyAssignmentsServerTransport
+var roleManagementPolicyAssignmentsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

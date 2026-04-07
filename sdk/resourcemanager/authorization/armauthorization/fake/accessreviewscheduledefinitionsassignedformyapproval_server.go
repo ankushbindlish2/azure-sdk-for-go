@@ -18,10 +18,11 @@ import (
 )
 
 // AccessReviewScheduleDefinitionsAssignedForMyApprovalServer is a fake server for instances of the armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClient type.
-type AccessReviewScheduleDefinitionsAssignedForMyApprovalServer struct {
+type AccessReviewScheduleDefinitionsAssignedForMyApprovalServer struct{
 	// NewListPager is the fake for method AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions) (resp azfake.PagerResponder[armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse])
+
 }
 
 // NewAccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport creates a new instance of AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport with the provided implementation.
@@ -29,7 +30,7 @@ type AccessReviewScheduleDefinitionsAssignedForMyApprovalServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport(srv *AccessReviewScheduleDefinitionsAssignedForMyApprovalServer) *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport {
 	return &AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse]](),
 	}
 }
@@ -37,7 +38,7 @@ func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport(srv 
 // AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport connects instances of armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClient to instances of AccessReviewScheduleDefinitionsAssignedForMyApprovalServer.
 // Don't use this type directly, use NewAccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport instead.
 type AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport struct {
-	srv          *AccessReviewScheduleDefinitionsAssignedForMyApprovalServer
+	srv *AccessReviewScheduleDefinitionsAssignedForMyApprovalServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse]]
 }
 
@@ -49,21 +50,40 @@ func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) Do
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if accessReviewScheduleDefinitionsAssignedForMyApprovalServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = accessReviewScheduleDefinitionsAssignedForMyApprovalServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -72,19 +92,19 @@ func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) di
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions
+	if filterParam != nil {
+		options = &armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions{
+			Filter: filterParam,
 		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions
-		if filterParam != nil {
-			options = &armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := a.srv.NewListPager(options)
+	}
+resp := a.srv.NewListPager(options)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse, createLink func() string) {
@@ -103,4 +123,10 @@ func (a *AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport) di
 		a.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AccessReviewScheduleDefinitionsAssignedForMyApprovalServerTransport
+var accessReviewScheduleDefinitionsAssignedForMyApprovalServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

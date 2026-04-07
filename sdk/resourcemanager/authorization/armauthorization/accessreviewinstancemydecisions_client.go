@@ -25,14 +25,14 @@ type AccessReviewInstanceMyDecisionsClient struct {
 
 // NewAccessReviewInstanceMyDecisionsClient creates a new instance of AccessReviewInstanceMyDecisionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstanceMyDecisionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstanceMyDecisionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AccessReviewInstanceMyDecisionsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -69,7 +69,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) GetByID(ctx context.Context
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, options *AccessReviewInstanceMyDecisionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, _ *AccessReviewInstanceMyDecisionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/decisions/{decisionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -110,13 +110,13 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleResponse(resp 
 //   - id - The id of the access review instance.
 //   - options - AccessReviewInstanceMyDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceMyDecisionsClient.NewListPager
 //     method.
-func (client *AccessReviewInstanceMyDecisionsClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceMyDecisionsClientListResponse] {
+func (client *AccessReviewInstanceMyDecisionsClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceMyDecisionsClientListOptions) (*runtime.Pager[AccessReviewInstanceMyDecisionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstanceMyDecisionsClientListResponse]{
 		More: func(page AccessReviewInstanceMyDecisionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessReviewInstanceMyDecisionsClientListResponse) (AccessReviewInstanceMyDecisionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstanceMyDecisionsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstanceMyDecisionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -128,7 +128,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) NewListPager(scheduleDefini
 				return AccessReviewInstanceMyDecisionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -202,7 +202,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) Patch(ctx context.Context, 
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties AccessReviewDecisionProperties, options *AccessReviewInstanceMyDecisionsClientPatchOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, decisionID string, properties AccessReviewDecisionProperties, _ *AccessReviewInstanceMyDecisionsClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/decisions/{decisionId}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -225,9 +225,9 @@ func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx cont
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // patchHandleResponse handles the Patch response.
@@ -238,3 +238,4 @@ func (client *AccessReviewInstanceMyDecisionsClient) patchHandleResponse(resp *h
 	}
 	return result, nil
 }
+

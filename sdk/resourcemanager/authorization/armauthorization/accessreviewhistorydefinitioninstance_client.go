@@ -20,14 +20,14 @@ import (
 // AccessReviewHistoryDefinitionInstanceClient contains the methods for the AccessReviewHistoryDefinitionInstance group.
 // Don't use this type directly, use NewAccessReviewHistoryDefinitionInstanceClient() instead.
 type AccessReviewHistoryDefinitionInstanceClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewAccessReviewHistoryDefinitionInstanceClient creates a new instance of AccessReviewHistoryDefinitionInstanceClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewHistoryDefinitionInstanceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewHistoryDefinitionInstanceClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewAccessReviewHistoryDefinitionInstanceClient(subscriptionID string, crede
 	}
 	client := &AccessReviewHistoryDefinitionInstanceClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -72,7 +72,7 @@ func (client *AccessReviewHistoryDefinitionInstanceClient) GenerateDownloadURI(c
 }
 
 // generateDownloadURICreateRequest creates the GenerateDownloadURI request.
-func (client *AccessReviewHistoryDefinitionInstanceClient) generateDownloadURICreateRequest(ctx context.Context, historyDefinitionID string, instanceID string, options *AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions) (*policy.Request, error) {
+func (client *AccessReviewHistoryDefinitionInstanceClient) generateDownloadURICreateRequest(ctx context.Context, historyDefinitionID string, instanceID string, _ *AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}/instances/{instanceId}/generateDownloadUri"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -105,3 +105,4 @@ func (client *AccessReviewHistoryDefinitionInstanceClient) generateDownloadURIHa
 	}
 	return result, nil
 }
+

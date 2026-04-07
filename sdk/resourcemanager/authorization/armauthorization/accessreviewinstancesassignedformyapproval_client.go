@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// AccessReviewInstancesAssignedForMyApprovalClient contains the methods for the AccessReviewInstancesAssignedForMyApproval group.
+// AccessReviewInstancesAssignedForMyApprovalClient contains the methods for the AccessReviewInstancesAssignedForMyApproval
+// group.
 // Don't use this type directly, use NewAccessReviewInstancesAssignedForMyApprovalClient() instead.
 type AccessReviewInstancesAssignedForMyApprovalClient struct {
 	internal *arm.Client
@@ -25,14 +26,14 @@ type AccessReviewInstancesAssignedForMyApprovalClient struct {
 
 // NewAccessReviewInstancesAssignedForMyApprovalClient creates a new instance of AccessReviewInstancesAssignedForMyApprovalClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstancesAssignedForMyApprovalClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstancesAssignedForMyApprovalClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AccessReviewInstancesAssignedForMyApprovalClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -68,7 +69,7 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) GetByID(ctx cont
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -104,13 +105,13 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) getByIDHandleRes
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - options - AccessReviewInstancesAssignedForMyApprovalClientListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApprovalClient.NewListPager
 //     method.
-func (client *AccessReviewInstancesAssignedForMyApprovalClient) NewListPager(scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewInstancesAssignedForMyApprovalClientListResponse] {
+func (client *AccessReviewInstancesAssignedForMyApprovalClient) NewListPager(scheduleDefinitionID string, options *AccessReviewInstancesAssignedForMyApprovalClientListOptions) (*runtime.Pager[AccessReviewInstancesAssignedForMyApprovalClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstancesAssignedForMyApprovalClientListResponse]{
 		More: func(page AccessReviewInstancesAssignedForMyApprovalClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessReviewInstancesAssignedForMyApprovalClientListResponse) (AccessReviewInstancesAssignedForMyApprovalClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstancesAssignedForMyApprovalClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstancesAssignedForMyApprovalClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -122,7 +123,7 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) NewListPager(sch
 				return AccessReviewInstancesAssignedForMyApprovalClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -158,3 +159,4 @@ func (client *AccessReviewInstancesAssignedForMyApprovalClient) listHandleRespon
 	}
 	return result, nil
 }
+

@@ -23,14 +23,14 @@ type ProviderOperationsMetadataClient struct {
 
 // NewProviderOperationsMetadataClient creates a new instance of ProviderOperationsMetadataClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProviderOperationsMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderOperationsMetadataClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProviderOperationsMetadataClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -73,10 +73,10 @@ func (client *ProviderOperationsMetadataClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -96,13 +96,13 @@ func (client *ProviderOperationsMetadataClient) getHandleResponse(resp *http.Res
 // Generated from API version 2022-04-01
 //   - options - ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.NewListPager
 //     method.
-func (client *ProviderOperationsMetadataClient) NewListPager(options *ProviderOperationsMetadataClientListOptions) *runtime.Pager[ProviderOperationsMetadataClientListResponse] {
+func (client *ProviderOperationsMetadataClient) NewListPager(options *ProviderOperationsMetadataClientListOptions) (*runtime.Pager[ProviderOperationsMetadataClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ProviderOperationsMetadataClientListResponse]{
 		More: func(page ProviderOperationsMetadataClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ProviderOperationsMetadataClientListResponse) (ProviderOperationsMetadataClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderOperationsMetadataClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderOperationsMetadataClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -114,7 +114,7 @@ func (client *ProviderOperationsMetadataClient) NewListPager(options *ProviderOp
 				return ProviderOperationsMetadataClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -127,10 +127,10 @@ func (client *ProviderOperationsMetadataClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -144,3 +144,4 @@ func (client *ProviderOperationsMetadataClient) listHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

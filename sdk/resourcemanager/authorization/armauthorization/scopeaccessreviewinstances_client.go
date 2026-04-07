@@ -25,14 +25,14 @@ type ScopeAccessReviewInstancesClient struct {
 
 // NewScopeAccessReviewInstancesClient creates a new instance of ScopeAccessReviewInstancesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewInstancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScopeAccessReviewInstancesClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -70,7 +70,7 @@ func (client *ScopeAccessReviewInstancesClient) Create(ctx context.Context, scop
 }
 
 // createCreateRequest creates the Create request.
-func (client *ScopeAccessReviewInstancesClient) createCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, properties AccessReviewInstanceProperties, options *ScopeAccessReviewInstancesClientCreateOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstancesClient) createCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, properties AccessReviewInstanceProperties, _ *ScopeAccessReviewInstancesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -93,9 +93,9 @@ func (client *ScopeAccessReviewInstancesClient) createCreateRequest(ctx context.
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // createHandleResponse handles the Create response.
@@ -139,7 +139,7 @@ func (client *ScopeAccessReviewInstancesClient) GetByID(ctx context.Context, sco
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *ScopeAccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, _ *ScopeAccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -180,13 +180,13 @@ func (client *ScopeAccessReviewInstancesClient) getByIDHandleResponse(resp *http
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - options - ScopeAccessReviewInstancesClientListOptions contains the optional parameters for the ScopeAccessReviewInstancesClient.NewListPager
 //     method.
-func (client *ScopeAccessReviewInstancesClient) NewListPager(scope string, scheduleDefinitionID string, options *ScopeAccessReviewInstancesClientListOptions) *runtime.Pager[ScopeAccessReviewInstancesClientListResponse] {
+func (client *ScopeAccessReviewInstancesClient) NewListPager(scope string, scheduleDefinitionID string, options *ScopeAccessReviewInstancesClientListOptions) (*runtime.Pager[ScopeAccessReviewInstancesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScopeAccessReviewInstancesClientListResponse]{
 		More: func(page ScopeAccessReviewInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScopeAccessReviewInstancesClientListResponse) (ScopeAccessReviewInstancesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewInstancesClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewInstancesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -198,7 +198,7 @@ func (client *ScopeAccessReviewInstancesClient) NewListPager(scope string, sched
 				return ScopeAccessReviewInstancesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -238,3 +238,4 @@ func (client *ScopeAccessReviewInstancesClient) listHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

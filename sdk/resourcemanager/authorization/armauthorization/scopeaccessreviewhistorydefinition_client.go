@@ -25,14 +25,14 @@ type ScopeAccessReviewHistoryDefinitionClient struct {
 
 // NewScopeAccessReviewHistoryDefinitionClient creates a new instance of ScopeAccessReviewHistoryDefinitionClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewHistoryDefinitionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewHistoryDefinitionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScopeAccessReviewHistoryDefinitionClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -69,7 +69,7 @@ func (client *ScopeAccessReviewHistoryDefinitionClient) Create(ctx context.Conte
 }
 
 // createCreateRequest creates the Create request.
-func (client *ScopeAccessReviewHistoryDefinitionClient) createCreateRequest(ctx context.Context, scope string, historyDefinitionID string, properties AccessReviewHistoryDefinitionProperties, options *ScopeAccessReviewHistoryDefinitionClientCreateOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewHistoryDefinitionClient) createCreateRequest(ctx context.Context, scope string, historyDefinitionID string, properties AccessReviewHistoryDefinitionProperties, _ *ScopeAccessReviewHistoryDefinitionClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -88,9 +88,9 @@ func (client *ScopeAccessReviewHistoryDefinitionClient) createCreateRequest(ctx 
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // createHandleResponse handles the Create response.
@@ -132,7 +132,7 @@ func (client *ScopeAccessReviewHistoryDefinitionClient) DeleteByID(ctx context.C
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
-func (client *ScopeAccessReviewHistoryDefinitionClient) deleteByIDCreateRequest(ctx context.Context, scope string, historyDefinitionID string, options *ScopeAccessReviewHistoryDefinitionClientDeleteByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewHistoryDefinitionClient) deleteByIDCreateRequest(ctx context.Context, scope string, historyDefinitionID string, _ *ScopeAccessReviewHistoryDefinitionClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -152,3 +152,4 @@ func (client *ScopeAccessReviewHistoryDefinitionClient) deleteByIDCreateRequest(
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

@@ -9,197 +9,193 @@ import "time"
 
 // AccessReviewActorIdentity - Details of the actor identity
 type AccessReviewActorIdentity struct {
-	// READ-ONLY; The identity id
+// READ-ONLY; The identity id
 	PrincipalID *string
 
-	// READ-ONLY; The identity display name
+// READ-ONLY; The identity display name
 	PrincipalName *string
 
-	// READ-ONLY; The identity type : user/servicePrincipal
+// READ-ONLY; The identity type : user/servicePrincipal
 	PrincipalType *AccessReviewActorIdentityType
 
-	// READ-ONLY; The user principal name(if valid)
+// READ-ONLY; The user principal name(if valid)
 	UserPrincipalName *string
 }
 
 // AccessReviewContactedReviewer - Access Review Contacted Reviewer.
 type AccessReviewContactedReviewer struct {
-	// Access Review Contacted Reviewer properties.
+// Access Review Contacted Reviewer properties.
 	Properties *AccessReviewContactedReviewerProperties
 
-	// READ-ONLY; The access review reviewer id.
+// READ-ONLY; The access review reviewer id.
 	ID *string
 
-	// READ-ONLY; The access review reviewer id.
+// READ-ONLY; The access review reviewer id.
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // AccessReviewContactedReviewerListResult - List of access review contacted reviewers.
 type AccessReviewContactedReviewerListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Access Review Contacted Reviewer.
+// Access Review Contacted Reviewer.
 	Value []*AccessReviewContactedReviewer
 }
 
 // AccessReviewContactedReviewerProperties - Properties of access review contacted reviewer.
 type AccessReviewContactedReviewerProperties struct {
-	// READ-ONLY; Date Time when the reviewer was contacted.
+// READ-ONLY; Date Time when the reviewer was contacted.
 	CreatedDateTime *time.Time
 
-	// READ-ONLY; The display name of the reviewer
+// READ-ONLY; The display name of the reviewer
 	UserDisplayName *string
 
-	// READ-ONLY; The user principal name of the reviewer
+// READ-ONLY; The user principal name of the reviewer
 	UserPrincipalName *string
 }
 
 // AccessReviewDecision - Access Review.
 type AccessReviewDecision struct {
-	// Access Review Decision properties.
+// Access Review Decision properties.
 	Properties *AccessReviewDecisionProperties
 
-	// READ-ONLY; The access review decision id.
+// READ-ONLY; The access review decision id.
 	ID *string
 
-	// READ-ONLY; The access review decision name.
+// READ-ONLY; The access review decision name.
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // AccessReviewDecisionIdentity - Target of the decision.
 type AccessReviewDecisionIdentity struct {
-	// REQUIRED; The type of decision target : User/ServicePrincipal
+// REQUIRED; The type of decision target : User/ServicePrincipal
 	Type *DecisionTargetType
 
-	// READ-ONLY; The display name of the user whose access was reviewed.
+// READ-ONLY; The display name of the user whose access was reviewed.
 	DisplayName *string
 
-	// READ-ONLY; The id of principal whose access was reviewed.
+// READ-ONLY; The id of principal whose access was reviewed.
 	ID *string
 }
 
 // GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionIdentity.
-func (a *AccessReviewDecisionIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
-	return a
-}
+func (a *AccessReviewDecisionIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity { return a }
 
 // AccessReviewDecisionInsight - Access Review Decision Insight.
 type AccessReviewDecisionInsight struct {
-	// Access Review Decision Insight properties.
+// Access Review Decision Insight properties.
 	Properties AccessReviewDecisionInsightPropertiesClassification
 
-	// READ-ONLY; The access review insight id.
+// READ-ONLY; The access review insight id.
 	ID *string
 
-	// READ-ONLY; The access review insight name.
+// READ-ONLY; The access review insight name.
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // AccessReviewDecisionInsightProperties - Details of the Insight.
 type AccessReviewDecisionInsightProperties struct {
-	// REQUIRED; The type of insight
+// REQUIRED; The type of insight
 	Type *AccessReviewDecisionInsightType
 
-	// READ-ONLY; Date Time when the insight was created.
+// READ-ONLY; Date Time when the insight was created.
 	InsightCreatedDateTime any
 }
 
 // GetAccessReviewDecisionInsightProperties implements the AccessReviewDecisionInsightPropertiesClassification interface for
 // type AccessReviewDecisionInsightProperties.
-func (a *AccessReviewDecisionInsightProperties) GetAccessReviewDecisionInsightProperties() *AccessReviewDecisionInsightProperties {
-	return a
-}
+func (a *AccessReviewDecisionInsightProperties) GetAccessReviewDecisionInsightProperties() *AccessReviewDecisionInsightProperties { return a }
 
 // AccessReviewDecisionListResult - List of access review decisions.
 type AccessReviewDecisionListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Access Review Decision list.
+// Access Review Decision list.
 	Value []*AccessReviewDecision
 }
 
 // AccessReviewDecisionPrincipalResourceMembership - Target of the decision.
 type AccessReviewDecisionPrincipalResourceMembership struct {
-	// Every decision item in an access review represents a principal's membership to a resource. This property represents details
-	// of the membership. Examples of this detail might be whether the principal
-	// has direct access or indirect access
+// Every decision item in an access review represents a principal's membership to a resource. This property represents details
+// of the membership. Examples of this detail might be whether the principal
+// has direct access or indirect access
 	MembershipTypes []*AccessReviewDecisionPrincipalResourceMembershipType
 }
 
 // AccessReviewDecisionProperties - Approval Step.
 type AccessReviewDecisionProperties struct {
-	// The decision on the approval step. This value is initially set to NotReviewed. Approvers can take action of Approve/Deny
+// The decision on the approval step. This value is initially set to NotReviewed. Approvers can take action of Approve/Deny
 	Decision *AccessReviewResult
 
-	// This is the collection of insights for this decision item.
+// This is the collection of insights for this decision item.
 	Insights []*AccessReviewDecisionInsight
 
-	// Justification provided by approvers for their action
+// Justification provided by approvers for their action
 	Justification *string
 
-	// READ-ONLY; Details of the approver.
+// READ-ONLY; Details of the approver.
 	AppliedBy *AccessReviewActorIdentity
 
-	// READ-ONLY; The date and time when the review decision was applied.
+// READ-ONLY; The date and time when the review decision was applied.
 	AppliedDateTime *time.Time
 
-	// READ-ONLY; The outcome of applying the decision.
+// READ-ONLY; The outcome of applying the decision.
 	ApplyResult *AccessReviewApplyResult
 
-	// READ-ONLY; Principal associated with the decision record. Can be AccessReviewDecisionUserIdentity or AccessReviewDecisionServicePrincipalIdentity
+// READ-ONLY; Principal associated with the decision record. Can be AccessReviewDecisionUserIdentity or AccessReviewDecisionServicePrincipalIdentity
 	Principal AccessReviewDecisionIdentityClassification
 
-	// READ-ONLY; Details of the membership type.
+// READ-ONLY; Details of the membership type.
 	PrincipalResourceMembership *AccessReviewDecisionPrincipalResourceMembership
 
-	// READ-ONLY; The feature- generated recommendation shown to the reviewer.
+// READ-ONLY; The feature- generated recommendation shown to the reviewer.
 	Recommendation *AccessRecommendationType
 
-	// READ-ONLY; Resource associated with this decision record.
+// READ-ONLY; Resource associated with this decision record.
 	Resource *AccessReviewDecisionResource
 
-	// READ-ONLY; Details of the approver.
+// READ-ONLY; Details of the approver.
 	ReviewedBy *AccessReviewActorIdentity
 
-	// READ-ONLY; Date Time when a decision was taken.
+// READ-ONLY; Date Time when a decision was taken.
 	ReviewedDateTime *time.Time
 }
 
 // AccessReviewDecisionResource - Target of the decision.
 type AccessReviewDecisionResource struct {
-	// REQUIRED; The type of resource
+// REQUIRED; The type of resource
 	Type *DecisionResourceType
 
-	// READ-ONLY; The display name of resource associated with a decision record.
+// READ-ONLY; The display name of resource associated with a decision record.
 	DisplayName *string
 
-	// READ-ONLY; The id of resource associated with a decision record.
+// READ-ONLY; The id of resource associated with a decision record.
 	ID *string
 }
 
 // AccessReviewDecisionServicePrincipalIdentity - Service Principal Decision Target
 type AccessReviewDecisionServicePrincipalIdentity struct {
-	// REQUIRED; The type of decision target : User/ServicePrincipal
+// REQUIRED; The type of decision target : User/ServicePrincipal
 	Type *DecisionTargetType
 
-	// READ-ONLY; The appId for the service principal entity being reviewed
+// READ-ONLY; The appId for the service principal entity being reviewed
 	AppID *string
 
-	// READ-ONLY; The display name of the user whose access was reviewed.
+// READ-ONLY; The display name of the user whose access was reviewed.
 	DisplayName *string
 
-	// READ-ONLY; The id of principal whose access was reviewed.
+// READ-ONLY; The id of principal whose access was reviewed.
 	ID *string
 }
 
@@ -207,23 +203,23 @@ type AccessReviewDecisionServicePrincipalIdentity struct {
 func (a *AccessReviewDecisionServicePrincipalIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
 	return &AccessReviewDecisionIdentity{
 		DisplayName: a.DisplayName,
-		ID:          a.ID,
-		Type:        a.Type,
+		ID: a.ID,
+		Type: a.Type,
 	}
 }
 
 // AccessReviewDecisionUserIdentity - User Decision Target
 type AccessReviewDecisionUserIdentity struct {
-	// REQUIRED; The type of decision target : User/ServicePrincipal
+// REQUIRED; The type of decision target : User/ServicePrincipal
 	Type *DecisionTargetType
 
-	// READ-ONLY; The display name of the user whose access was reviewed.
+// READ-ONLY; The display name of the user whose access was reviewed.
 	DisplayName *string
 
-	// READ-ONLY; The id of principal whose access was reviewed.
+// READ-ONLY; The id of principal whose access was reviewed.
 	ID *string
 
-	// READ-ONLY; The user principal name of the user whose access was reviewed.
+// READ-ONLY; The user principal name of the user whose access was reviewed.
 	UserPrincipalName *string
 }
 
@@ -231,20 +227,20 @@ type AccessReviewDecisionUserIdentity struct {
 func (a *AccessReviewDecisionUserIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
 	return &AccessReviewDecisionIdentity{
 		DisplayName: a.DisplayName,
-		ID:          a.ID,
-		Type:        a.Type,
+		ID: a.ID,
+		Type: a.Type,
 	}
 }
 
 // AccessReviewDecisionUserSignInInsightProperties - User Decision Target
 type AccessReviewDecisionUserSignInInsightProperties struct {
-	// REQUIRED; The type of insight
+// REQUIRED; The type of insight
 	Type *AccessReviewDecisionInsightType
 
-	// READ-ONLY; Date Time when the insight was created.
+// READ-ONLY; Date Time when the insight was created.
 	InsightCreatedDateTime any
 
-	// READ-ONLY; Date Time when the user signed into the tenant.
+// READ-ONLY; Date Time when the user signed into the tenant.
 	LastSignInDateTime any
 }
 
@@ -253,521 +249,519 @@ type AccessReviewDecisionUserSignInInsightProperties struct {
 func (a *AccessReviewDecisionUserSignInInsightProperties) GetAccessReviewDecisionInsightProperties() *AccessReviewDecisionInsightProperties {
 	return &AccessReviewDecisionInsightProperties{
 		InsightCreatedDateTime: a.InsightCreatedDateTime,
-		Type:                   a.Type,
+		Type: a.Type,
 	}
 }
 
 // AccessReviewDefaultSettings - Access Review Default Settings.
 type AccessReviewDefaultSettings struct {
-	// Access Review properties.
+// Access Review properties.
 	Properties *AccessReviewScheduleSettings
 
-	// READ-ONLY; The access review default settings id. This is only going to be default
+// READ-ONLY; The access review default settings id. This is only going to be default
 	ID *string
 
-	// READ-ONLY; The access review default settings name. This is always going to be Access Review Default Settings
+// READ-ONLY; The access review default settings name. This is always going to be Access Review Default Settings
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // AccessReviewHistoryDefinition - Access Review History Definition.
 type AccessReviewHistoryDefinition struct {
-	// Access Review History Definition properties.
+// Access Review History Definition properties.
 	Properties *AccessReviewHistoryDefinitionProperties
 
-	// READ-ONLY; The access review history definition id.
+// READ-ONLY; The access review history definition id.
 	ID *string
 
-	// READ-ONLY; The access review history definition unique id.
+// READ-ONLY; The access review history definition unique id.
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // AccessReviewHistoryDefinitionInstanceListResult - List of Access Review History Instances.
 type AccessReviewHistoryDefinitionInstanceListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Access Review History Definition's Instance list.
+// Access Review History Definition's Instance list.
 	Value []*AccessReviewHistoryInstance
 }
 
 // AccessReviewHistoryDefinitionListResult - List of Access Review History Definitions.
 type AccessReviewHistoryDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Access Review History Definition list.
+// Access Review History Definition list.
 	Value []*AccessReviewHistoryDefinition
 }
 
 // AccessReviewHistoryDefinitionProperties - Access Review History Instances.
 type AccessReviewHistoryDefinitionProperties struct {
-	// Collection of review decisions which the history data should be filtered on. For example if Approve and Deny are supplied
-	// the data will only contain review results in which the decision maker approved
-	// or denied a review request.
+// Collection of review decisions which the history data should be filtered on. For example if Approve and Deny are supplied
+// the data will only contain review results in which the decision maker approved
+// or denied a review request.
 	Decisions []*AccessReviewResult
 
-	// The display name for the history definition.
+// The display name for the history definition.
 	DisplayName *string
 
-	// Set of access review history instances for this history definition.
+// Set of access review history instances for this history definition.
 	Instances []*AccessReviewHistoryInstance
 
-	// A collection of scopes used when selecting review history data
+// A collection of scopes used when selecting review history data
 	Scopes []*AccessReviewScope
 
-	// Recurrence settings for recurring history reports, skip for one-time reports.
+// Recurrence settings for recurring history reports, skip for one-time reports.
 	Settings *AccessReviewHistoryScheduleSettings
 
-	// READ-ONLY; The user or other identity who created this history definition.
+// READ-ONLY; The user or other identity who created this history definition.
 	CreatedBy *AccessReviewActorIdentity
 
-	// READ-ONLY; Date time when history definition was created
+// READ-ONLY; Date time when history definition was created
 	CreatedDateTime *time.Time
 
-	// READ-ONLY; Date time used when selecting review data, all reviews included in data end on or before this date. For use
-	// only with one-time/non-recurring reports.
+// READ-ONLY; Date time used when selecting review data, all reviews included in data end on or before this date. For use
+// only with one-time/non-recurring reports.
 	ReviewHistoryPeriodEndDateTime *time.Time
 
-	// READ-ONLY; Date time used when selecting review data, all reviews included in data start on or after this date. For use
-	// only with one-time/non-recurring reports.
+// READ-ONLY; Date time used when selecting review data, all reviews included in data start on or after this date. For use
+// only with one-time/non-recurring reports.
 	ReviewHistoryPeriodStartDateTime *time.Time
 
-	// READ-ONLY; This read-only field specifies the of the requested review history data. This is either requested, in-progress,
-	// done or error.
+// READ-ONLY; This read-only field specifies the of the requested review history data. This is either requested, in-progress,
+// done or error.
 	Status *AccessReviewHistoryDefinitionStatus
 }
 
 // AccessReviewHistoryInstance - Access Review History Definition Instance.
 type AccessReviewHistoryInstance struct {
-	// Access Review History Definition Instance properties.
+// Access Review History Definition Instance properties.
 	Properties *AccessReviewHistoryInstanceProperties
 
-	// READ-ONLY; The access review history definition instance id.
+// READ-ONLY; The access review history definition instance id.
 	ID *string
 
-	// READ-ONLY; The access review history definition instance unique id.
+// READ-ONLY; The access review history definition instance unique id.
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // AccessReviewHistoryInstanceProperties - Access Review History Definition Instance properties.
 type AccessReviewHistoryInstanceProperties struct {
-	// The display name for the parent history definition.
+// The display name for the parent history definition.
 	DisplayName *string
 
-	// Date time when history data report expires and the associated data is deleted.
+// Date time when history data report expires and the associated data is deleted.
 	Expiration *time.Time
 
-	// Date time when the history data report is scheduled to be generated.
+// Date time when the history data report is scheduled to be generated.
 	FulfilledDateTime *time.Time
 
-	// Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring
-	// reports.
+// Date time used when selecting review data, all reviews included in data end on or before this date. For use only with one-time/non-recurring
+// reports.
 	ReviewHistoryPeriodEndDateTime *time.Time
 
-	// Date time used when selecting review data, all reviews included in data start on or after this date. For use only with
-	// one-time/non-recurring reports.
+// Date time used when selecting review data, all reviews included in data start on or after this date. For use only with
+// one-time/non-recurring reports.
 	ReviewHistoryPeriodStartDateTime *time.Time
 
-	// Date time when the history data report is scheduled to be generated.
+// Date time when the history data report is scheduled to be generated.
 	RunDateTime *time.Time
 
-	// READ-ONLY; Uri which can be used to retrieve review history data. To generate this Uri, generateDownloadUri() must be called
-	// for a specific accessReviewHistoryDefinitionInstance. The link expires after a 24 hour
-	// period. Callers can see the expiration date time by looking at the 'se' parameter in the generated uri.
+// READ-ONLY; Uri which can be used to retrieve review history data. To generate this Uri, generateDownloadUri() must be called
+// for a specific accessReviewHistoryDefinitionInstance. The link expires after a 24 hour
+// period. Callers can see the expiration date time by looking at the 'se' parameter in the generated uri.
 	DownloadURI *string
 
-	// READ-ONLY; Status of the requested review history instance data. This is either requested, in-progress, done or error.
-	// The state transitions are as follows - Requested -> InProgress -> Done -> Expired
+// READ-ONLY; Status of the requested review history instance data. This is either requested, in-progress, done or error.
+// The state transitions are as follows - Requested -> InProgress -> Done -> Expired
 	Status *AccessReviewHistoryDefinitionStatus
 }
 
 // AccessReviewHistoryScheduleSettings - Recurrence settings of an Access Review History Definition.
 type AccessReviewHistoryScheduleSettings struct {
-	// Access Review History Definition recurrence settings.
+// Access Review History Definition recurrence settings.
 	Pattern *AccessReviewRecurrencePattern
 
-	// Access Review History Definition recurrence settings.
+// Access Review History Definition recurrence settings.
 	Range *AccessReviewRecurrenceRange
 }
 
 // AccessReviewInstance - Access Review Instance.
 type AccessReviewInstance struct {
-	// Access Review properties.
+// Access Review properties.
 	Properties *AccessReviewInstanceProperties
 
-	// READ-ONLY; The access review instance id.
+// READ-ONLY; The access review instance id.
 	ID *string
 
-	// READ-ONLY; The access review instance name.
+// READ-ONLY; The access review instance name.
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // AccessReviewInstanceListResult - List of Access Review Instances.
 type AccessReviewInstanceListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Access Review Instance list.
+// Access Review Instance list.
 	Value []*AccessReviewInstance
 }
 
 // AccessReviewInstanceProperties - Access Review Instance properties.
 type AccessReviewInstanceProperties struct {
-	// This is the collection of backup reviewers.
+// This is the collection of backup reviewers.
 	BackupReviewers []*AccessReviewReviewer
 
-	// The DateTime when the review instance is scheduled to end.
+// The DateTime when the review instance is scheduled to end.
 	EndDateTime *time.Time
 
-	// This is the collection of reviewers.
+// This is the collection of reviewers.
 	Reviewers []*AccessReviewReviewer
 
-	// The DateTime when the review instance is scheduled to be start.
+// The DateTime when the review instance is scheduled to be start.
 	StartDateTime *time.Time
 
-	// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned.
-	// However, in some cases, the reviewers may not be assigned and instead be chosen
-	// dynamically. For example managers review or self review.
+// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned.
+// However, in some cases, the reviewers may not be assigned and instead be chosen
+// dynamically. For example managers review or self review.
 	ReviewersType *AccessReviewInstanceReviewersType
 
-	// READ-ONLY; This read-only field specifies the status of an access review instance.
+// READ-ONLY; This read-only field specifies the status of an access review instance.
 	Status *AccessReviewInstanceStatus
 }
 
 // AccessReviewRecurrencePattern - Recurrence Pattern of an Access Review Schedule Definition.
 type AccessReviewRecurrencePattern struct {
-	// The interval for recurrence. For a quarterly review, the interval is 3 for type : absoluteMonthly.
+// The interval for recurrence. For a quarterly review, the interval is 3 for type : absoluteMonthly.
 	Interval *int32
 
-	// The recurrence type : weekly, monthly, etc.
+// The recurrence type : weekly, monthly, etc.
 	Type *AccessReviewRecurrencePatternType
 }
 
 // AccessReviewRecurrenceRange - Recurrence Range of an Access Review Schedule Definition.
 type AccessReviewRecurrenceRange struct {
-	// The DateTime when the review is scheduled to end. Required if type is endDate
+// The DateTime when the review is scheduled to end. Required if type is endDate
 	EndDate *time.Time
 
-	// The number of times to repeat the access review. Required and must be positive if type is numbered.
+// The number of times to repeat the access review. Required and must be positive if type is numbered.
 	NumberOfOccurrences *int32
 
-	// The DateTime when the review is scheduled to be start. This could be a date in the future. Required on create.
+// The DateTime when the review is scheduled to be start. This could be a date in the future. Required on create.
 	StartDate *time.Time
 
-	// The recurrence range type. The possible values are: endDate, noEnd, numbered.
+// The recurrence range type. The possible values are: endDate, noEnd, numbered.
 	Type *AccessReviewRecurrenceRangeType
 }
 
 // AccessReviewRecurrenceSettings - Recurrence Settings of an Access Review Schedule Definition.
 type AccessReviewRecurrenceSettings struct {
-	// Access Review schedule definition recurrence pattern.
+// Access Review schedule definition recurrence pattern.
 	Pattern *AccessReviewRecurrencePattern
 
-	// Access Review schedule definition recurrence range.
+// Access Review schedule definition recurrence range.
 	Range *AccessReviewRecurrenceRange
 }
 
 // AccessReviewReviewer - Descriptor for what needs to be reviewed
 type AccessReviewReviewer struct {
-	// The id of the reviewer(user/servicePrincipal)
+// The id of the reviewer(user/servicePrincipal)
 	PrincipalID *string
 
-	// READ-ONLY; The identity type : user/servicePrincipal
+// READ-ONLY; The identity type : user/servicePrincipal
 	PrincipalType *AccessReviewReviewerType
 }
 
 // AccessReviewScheduleDefinition - Access Review Schedule Definition.
 type AccessReviewScheduleDefinition struct {
-	// Access Review properties.
+// Access Review properties.
 	Properties *AccessReviewScheduleDefinitionProperties
 
-	// READ-ONLY; The access review schedule definition id.
+// READ-ONLY; The access review schedule definition id.
 	ID *string
 
-	// READ-ONLY; The access review schedule definition unique id.
+// READ-ONLY; The access review schedule definition unique id.
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // AccessReviewScheduleDefinitionListResult - List of Access Review Schedule Definitions.
 type AccessReviewScheduleDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Access Review Schedule Definition list.
+// Access Review Schedule Definition list.
 	Value []*AccessReviewScheduleDefinition
 }
 
 // AccessReviewScheduleDefinitionProperties - Access Review.
 type AccessReviewScheduleDefinitionProperties struct {
-	// This is the collection of backup reviewers.
+// This is the collection of backup reviewers.
 	BackupReviewers []*AccessReviewReviewer
 
-	// The description provided by the access review creator and visible to admins.
+// The description provided by the access review creator and visible to admins.
 	DescriptionForAdmins *string
 
-	// The description provided by the access review creator to be shown to reviewers.
+// The description provided by the access review creator to be shown to reviewers.
 	DescriptionForReviewers *string
 
-	// The display name for the schedule definition.
+// The display name for the schedule definition.
 	DisplayName *string
 
-	// This is the collection of instances returned when one does an expand on it.
+// This is the collection of instances returned when one does an expand on it.
 	Instances []*AccessReviewInstance
 
-	// This is the collection of reviewers.
+// This is the collection of reviewers.
 	Reviewers []*AccessReviewReviewer
 
-	// Access Review Settings.
+// Access Review Settings.
 	Settings *AccessReviewScheduleSettings
 
-	// READ-ONLY; The user or other identity who created this review.
+// READ-ONLY; The user or other identity who created this review.
 	CreatedBy *AccessReviewActorIdentity
 
-	// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned.
-	// However, in some cases, the reviewers may not be assigned and instead be chosen
-	// dynamically. For example managers review or self review.
+// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned.
+// However, in some cases, the reviewers may not be assigned and instead be chosen
+// dynamically. For example managers review or self review.
 	ReviewersType *AccessReviewScheduleDefinitionReviewersType
 
-	// READ-ONLY; This is used to define what to include in scope of the review. The scope definition includes the resourceId
-	// and roleDefinitionId.
+// READ-ONLY; This is used to define what to include in scope of the review. The scope definition includes the resourceId
+// and roleDefinitionId.
 	Scope *AccessReviewScope
 
-	// READ-ONLY; This read-only field specifies the status of an accessReview.
+// READ-ONLY; This read-only field specifies the status of an accessReview.
 	Status *AccessReviewScheduleDefinitionStatus
 }
 
 // AccessReviewScheduleSettings - Settings of an Access Review.
 type AccessReviewScheduleSettings struct {
-	// Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled.
-	// If not enabled, a user must, after the review completes, apply the access review.
+// Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled.
+// If not enabled, a user must, after the review completes, apply the access review.
 	AutoApplyDecisionsEnabled *bool
 
-	// This specifies the behavior for the autoReview feature when an access review completes.
+// This specifies the behavior for the autoReview feature when an access review completes.
 	DefaultDecision *DefaultDecisionType
 
-	// Flag to indicate whether reviewers are required to provide a justification when reviewing access.
+// Flag to indicate whether reviewers are required to provide a justification when reviewing access.
 	DefaultDecisionEnabled *bool
 
-	// The duration in days for an instance.
+// The duration in days for an instance.
 	InstanceDurationInDays *int32
 
-	// Flag to indicate whether the reviewer is required to pass justification when recording a decision.
+// Flag to indicate whether the reviewer is required to pass justification when recording a decision.
 	JustificationRequiredOnApproval *bool
 
-	// Flag to indicate whether sending mails to reviewers and the review creator is enabled.
+// Flag to indicate whether sending mails to reviewers and the review creator is enabled.
 	MailNotificationsEnabled *bool
 
-	// Recommendations for access reviews are calculated by looking back at 30 days of data(w.r.t the start date of the review)
-	// by default. However, in some scenarios, customers want to change how far back
-	// to look at and want to configure 60 days, 90 days, etc. instead. This setting allows customers to configure this duration.
-	// The value should be in ISO 8601 format
-	// (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string:
-	// XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))
+// Recommendations for access reviews are calculated by looking back at 30 days of data(w.r.t the start date of the review)
+// by default. However, in some scenarios, customers want to change how far back
+// to look at and want to configure 60 days, 90 days, etc. instead. This setting allows customers to configure this duration.
+// The value should be in ISO 8601 format
+// (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan to a valid interval string:
+// XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))
 	RecommendationLookBackDuration *string
 
-	// Flag to indicate whether showing recommendations to reviewers is enabled.
+// Flag to indicate whether showing recommendations to reviewers is enabled.
 	RecommendationsEnabled *bool
 
-	// Access Review Settings.
+// Access Review Settings.
 	Recurrence *AccessReviewRecurrenceSettings
 
-	// Flag to indicate whether sending reminder emails to reviewers are enabled.
+// Flag to indicate whether sending reminder emails to reviewers are enabled.
 	ReminderNotificationsEnabled *bool
 }
 
 // AccessReviewScope - Descriptor for what needs to be reviewed
 type AccessReviewScope struct {
-	// This is used to indicate the resource id(s) to exclude
+// This is used to indicate the resource id(s) to exclude
 	ExcludeResourceID *string
 
-	// This is used to indicate the role definition id(s) to exclude
+// This is used to indicate the role definition id(s) to exclude
 	ExcludeRoleDefinitionID *string
 
-	// Flag to indicate whether to expand nested memberships or not.
+// Flag to indicate whether to expand nested memberships or not.
 	ExpandNestedMemberships *bool
 
-	// Duration users are inactive for. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This
-	// code can be used to convert TimeSpan to a valid interval string:
-	// XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))
+// Duration users are inactive for. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This
+// code can be used to convert TimeSpan to a valid interval string:
+// XmlConvert.ToString(new TimeSpan(hours, minutes, seconds))
 	InactiveDuration *string
 
-	// Flag to indicate whether to expand nested memberships or not.
+// Flag to indicate whether to expand nested memberships or not.
 	IncludeAccessBelowResource *bool
 
-	// Flag to indicate whether to expand nested memberships or not.
+// Flag to indicate whether to expand nested memberships or not.
 	IncludeInheritedAccess *bool
 
-	// READ-ONLY; The role assignment state eligible/active to review
+// READ-ONLY; The role assignment state eligible/active to review
 	AssignmentState *AccessReviewScopeAssignmentState
 
-	// READ-ONLY; The identity type user/servicePrincipal to review
+// READ-ONLY; The identity type user/servicePrincipal to review
 	PrincipalType *AccessReviewScopePrincipalType
 
-	// READ-ONLY; ResourceId in which this review is getting created
+// READ-ONLY; ResourceId in which this review is getting created
 	ResourceID *string
 
-	// READ-ONLY; This is used to indicate the role being reviewed
+// READ-ONLY; This is used to indicate the role being reviewed
 	RoleDefinitionID *string
 }
 
 // Alert - The alert.
 type Alert struct {
-	// Alert properties.
+// Alert properties.
 	Properties *AlertProperties
 
-	// READ-ONLY; The alert ID.
+// READ-ONLY; The alert ID.
 	ID *string
 
-	// READ-ONLY; The alert name.
+// READ-ONLY; The alert name.
 	Name *string
 
-	// READ-ONLY; The alert type.
+// READ-ONLY; The alert type.
 	Type *string
 }
 
 // AlertConfiguration - Alert configuration.
 type AlertConfiguration struct {
-	// Alert configuration properties.
+// Alert configuration properties.
 	Properties AlertConfigurationPropertiesClassification
 
-	// READ-ONLY; The alert configuration ID.
+// READ-ONLY; The alert configuration ID.
 	ID *string
 
-	// READ-ONLY; The alert configuration name.
+// READ-ONLY; The alert configuration name.
 	Name *string
 
-	// READ-ONLY; The alert configuration type.
+// READ-ONLY; The alert configuration type.
 	Type *string
 }
 
 // AlertConfigurationListResult - Alert configuration list operation result.
 type AlertConfigurationListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Alert configuration list
+// Alert configuration list
 	Value []*AlertConfiguration
 }
 
 // AlertConfigurationProperties - Alert configuration properties.
 type AlertConfigurationProperties struct {
-	// REQUIRED; The alert configuration type.
+// REQUIRED; The alert configuration type.
 	AlertConfigurationType *string
 
-	// True if the alert is enabled, false will disable the scanning for the specific alert.
+// True if the alert is enabled, false will disable the scanning for the specific alert.
 	IsEnabled *bool
 
-	// READ-ONLY; The alert definition.
+// READ-ONLY; The alert definition.
 	AlertDefinition *AlertDefinition
 
-	// READ-ONLY; The alert definition ID.
+// READ-ONLY; The alert definition ID.
 	AlertDefinitionID *string
 
-	// READ-ONLY; The alert scope.
+// READ-ONLY; The alert scope.
 	Scope *string
 }
 
 // GetAlertConfigurationProperties implements the AlertConfigurationPropertiesClassification interface for type AlertConfigurationProperties.
-func (a *AlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
-	return a
-}
+func (a *AlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties { return a }
 
 // AlertDefinition - Alert definition
 type AlertDefinition struct {
-	// Alert definition properties.
+// Alert definition properties.
 	Properties *AlertDefinitionProperties
 
-	// READ-ONLY; The alert definition ID.
+// READ-ONLY; The alert definition ID.
 	ID *string
 
-	// READ-ONLY; The alert definition name.
+// READ-ONLY; The alert definition name.
 	Name *string
 
-	// READ-ONLY; The alert definition type.
+// READ-ONLY; The alert definition type.
 	Type *string
 }
 
 // AlertDefinitionListResult - Alert definition list operation result.
 type AlertDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Alert definition list
+// Alert definition list
 	Value []*AlertDefinition
 }
 
 // AlertDefinitionProperties - Alert definition properties.
 type AlertDefinitionProperties struct {
-	// READ-ONLY; The alert description.
+// READ-ONLY; The alert description.
 	Description *string
 
-	// READ-ONLY; The alert display name.
+// READ-ONLY; The alert display name.
 	DisplayName *string
 
-	// READ-ONLY; The ways to prevent the alert.
+// READ-ONLY; The ways to prevent the alert.
 	HowToPrevent *string
 
-	// READ-ONLY; True if the alert configuration can be configured; false, otherwise.
+// READ-ONLY; True if the alert configuration can be configured; false, otherwise.
 	IsConfigurable *bool
 
-	// READ-ONLY; True if the alert can be remediated; false, otherwise.
+// READ-ONLY; True if the alert can be remediated; false, otherwise.
 	IsRemediatable *bool
 
-	// READ-ONLY; The methods to mitigate the alert.
+// READ-ONLY; The methods to mitigate the alert.
 	MitigationSteps *string
 
-	// READ-ONLY; The alert scope.
+// READ-ONLY; The alert scope.
 	Scope *string
 
-	// READ-ONLY; Security impact of the alert.
+// READ-ONLY; Security impact of the alert.
 	SecurityImpact *string
 
-	// READ-ONLY; Severity level of the alert.
+// READ-ONLY; Severity level of the alert.
 	SeverityLevel *SeverityLevel
 }
 
 // AlertIncident - Alert incident
 type AlertIncident struct {
-	// Alert incident properties.
+// Alert incident properties.
 	Properties AlertIncidentPropertiesClassification
 
-	// READ-ONLY; The alert incident ID.
+// READ-ONLY; The alert incident ID.
 	ID *string
 
-	// READ-ONLY; The alert incident name.
+// READ-ONLY; The alert incident name.
 	Name *string
 
-	// READ-ONLY; The alert incident type.
+// READ-ONLY; The alert incident type.
 	Type *string
 }
 
 // AlertIncidentListResult - Alert incident list operation result.
 type AlertIncidentListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Alert incident list
+// Alert incident list
 	Value []*AlertIncident
 }
 
 // AlertIncidentProperties - Alert incident properties
 type AlertIncidentProperties struct {
-	// REQUIRED; The alert incident type.
+// REQUIRED; The alert incident type.
 	AlertIncidentType *string
 }
 
@@ -776,115 +770,133 @@ func (a *AlertIncidentProperties) GetAlertIncidentProperties() *AlertIncidentPro
 
 // AlertListResult - Alert list operation result.
 type AlertListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Alert list
+// Alert list
 	Value []*Alert
 }
 
 // AlertOperationResult - Alert operation result
 type AlertOperationResult struct {
-	// READ-ONLY; The created date of the alert operation.
+// READ-ONLY; The created date of the alert operation.
 	CreatedDateTime *time.Time
 
-	// READ-ONLY; The id of the alert operation.
+// READ-ONLY; The id of the alert operation.
 	ID *string
 
-	// READ-ONLY; The last action date of the alert operation.
+// READ-ONLY; The last action date of the alert operation.
 	LastActionDateTime *time.Time
 
-	// READ-ONLY; The location of the alert associated with the operation.
+// READ-ONLY; The location of the alert associated with the operation.
 	ResourceLocation *string
 
-	// READ-ONLY; The status of the alert operation.
+// READ-ONLY; The status of the alert operation.
 	Status *string
 
-	// READ-ONLY; The status detail of the alert operation.
+// READ-ONLY; The status detail of the alert operation.
 	StatusDetail *string
 }
 
 // AlertProperties - Alert properties.
 type AlertProperties struct {
-	// False by default; true if the alert is active.
+// False by default; true if the alert is active.
 	IsActive *bool
 
-	// READ-ONLY; The alert configuration.
+// READ-ONLY; The alert configuration.
 	AlertConfiguration *AlertConfiguration
 
-	// READ-ONLY; The alert definition.
+// READ-ONLY; The alert definition.
 	AlertDefinition *AlertDefinition
 
-	// READ-ONLY; The alert incidents.
+// READ-ONLY; The alert incidents.
 	AlertIncidents []*AlertIncident
 
-	// READ-ONLY; The number of generated incidents of the alert.
+// READ-ONLY; The number of generated incidents of the alert.
 	IncidentCount *int32
 
-	// READ-ONLY; The date time when the alert configuration was updated or new incidents were generated.
+// READ-ONLY; The date time when the alert configuration was updated or new incidents were generated.
 	LastModifiedDateTime *time.Time
 
-	// READ-ONLY; The date time when the alert was last scanned.
+// READ-ONLY; The date time when the alert was last scanned.
 	LastScannedDateTime *time.Time
 
-	// READ-ONLY; The alert scope.
+// READ-ONLY; The alert scope.
 	Scope *string
 }
 
 // ApprovalSettings - The approval settings.
 type ApprovalSettings struct {
-	// The type of rule
+// The type of rule
 	ApprovalMode *ApprovalMode
 
-	// The approval stages of the request.
+// The approval stages of the request.
 	ApprovalStages []*ApprovalStage
 
-	// Determines whether approval is required or not.
+// Determines whether approval is required or not.
 	IsApprovalRequired *bool
 
-	// Determines whether approval is required for assignment extension.
+// Determines whether approval is required for assignment extension.
 	IsApprovalRequiredForExtension *bool
 
-	// Determine whether requestor justification is required.
+// Determine whether requestor justification is required.
 	IsRequestorJustificationRequired *bool
 }
 
 // ApprovalStage - The approval stage.
 type ApprovalStage struct {
-	// The time in days when approval request would be timed out
+// The time in days when approval request would be timed out
 	ApprovalStageTimeOutInDays *int32
 
-	// The escalation approver of the request.
+// The escalation approver of the request.
 	EscalationApprovers []*UserSet
 
-	// The time in minutes when the approval request would be escalated if the primary approver does not approve
+// The time in minutes when the approval request would be escalated if the primary approver does not approve
 	EscalationTimeInMinutes *int32
 
-	// Determines whether approver need to provide justification for his decision.
+// Determines whether approver need to provide justification for his decision.
 	IsApproverJustificationRequired *bool
 
-	// The value determine whether escalation feature is enabled.
+// The value determine whether escalation feature is enabled.
 	IsEscalationEnabled *bool
 
-	// The primary approver of the request.
+// The primary approver of the request.
 	PrimaryApprovers []*UserSet
+}
+
+// AttributeNamespace - An attribute namespace resource.
+type AttributeNamespace struct {
+// READ-ONLY; The fully qualified resource ID of the attribute namespace. For example, /providers/Microsoft.Authorization/attributeNamespaces/{attributeNamespace}.
+	ID *string
+
+// READ-ONLY; The name of the attribute namespace.
+	Name *string
+
+// READ-ONLY; The type of the resource. For example, Microsoft.Authorization/attributeNamespaces.
+	Type *string
+}
+
+// AttributeNamespaceCreateRequest - Request body for creating an attribute namespace.
+type AttributeNamespaceCreateRequest struct {
+// REQUIRED; The principal ID of the namespace owner.
+	NamespaceOwnerPrincipalID *string
 }
 
 // AzureRolesAssignedOutsidePimAlertConfigurationProperties - The Azure roles assigned outside PIM alert configuration properties.
 type AzureRolesAssignedOutsidePimAlertConfigurationProperties struct {
-	// REQUIRED; The alert configuration type.
+// REQUIRED; The alert configuration type.
 	AlertConfigurationType *string
 
-	// True if the alert is enabled, false will disable the scanning for the specific alert.
+// True if the alert is enabled, false will disable the scanning for the specific alert.
 	IsEnabled *bool
 
-	// READ-ONLY; The alert definition.
+// READ-ONLY; The alert definition.
 	AlertDefinition *AlertDefinition
 
-	// READ-ONLY; The alert definition ID.
+// READ-ONLY; The alert definition ID.
 	AlertDefinitionID *string
 
-	// READ-ONLY; The alert scope.
+// READ-ONLY; The alert scope.
 	Scope *string
 }
 
@@ -892,46 +904,46 @@ type AzureRolesAssignedOutsidePimAlertConfigurationProperties struct {
 func (a *AzureRolesAssignedOutsidePimAlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
 	return &AlertConfigurationProperties{
 		AlertConfigurationType: a.AlertConfigurationType,
-		AlertDefinition:        a.AlertDefinition,
-		AlertDefinitionID:      a.AlertDefinitionID,
-		IsEnabled:              a.IsEnabled,
-		Scope:                  a.Scope,
+		AlertDefinition: a.AlertDefinition,
+		AlertDefinitionID: a.AlertDefinitionID,
+		IsEnabled: a.IsEnabled,
+		Scope: a.Scope,
 	}
 }
 
 // AzureRolesAssignedOutsidePimAlertIncidentProperties - Azure roles assigned outside PIM alert incident properties.
 type AzureRolesAssignedOutsidePimAlertIncidentProperties struct {
-	// REQUIRED; The alert incident type.
+// REQUIRED; The alert incident type.
 	AlertIncidentType *string
 
-	// READ-ONLY; The assignee display name.
+// READ-ONLY; The assignee display name.
 	AssigneeDisplayName *string
 
-	// READ-ONLY; The assignee ID.
+// READ-ONLY; The assignee ID.
 	AssigneeID *string
 
-	// READ-ONLY; The assignee user principal name.
+// READ-ONLY; The assignee user principal name.
 	AssigneeUserPrincipalName *string
 
-	// READ-ONLY; The date the assignment was activated.
+// READ-ONLY; The date the assignment was activated.
 	AssignmentActivatedDate *time.Time
 
-	// READ-ONLY; The requestor display name.
+// READ-ONLY; The requestor display name.
 	RequestorDisplayName *string
 
-	// READ-ONLY; The requestor ID.
+// READ-ONLY; The requestor ID.
 	RequestorID *string
 
-	// READ-ONLY; The requestor user principal name.
+// READ-ONLY; The requestor user principal name.
 	RequestorUserPrincipalName *string
 
-	// READ-ONLY; The role definition ID.
+// READ-ONLY; The role definition ID.
 	RoleDefinitionID *string
 
-	// READ-ONLY; The role display name.
+// READ-ONLY; The role display name.
 	RoleDisplayName *string
 
-	// READ-ONLY; The role template ID.
+// READ-ONLY; The role template ID.
 	RoleTemplateID *string
 }
 
@@ -944,157 +956,172 @@ func (a *AzureRolesAssignedOutsidePimAlertIncidentProperties) GetAlertIncidentPr
 
 // ClassicAdministrator - Classic Administrators
 type ClassicAdministrator struct {
-	// The ID of the administrator.
+// The ID of the administrator.
 	ID *string
 
-	// The name of the administrator.
+// The name of the administrator.
 	Name *string
 
-	// Properties for the classic administrator.
+// Properties for the classic administrator.
 	Properties *ClassicAdministratorProperties
 
-	// The type of the administrator.
+// The type of the administrator.
 	Type *string
 }
 
 // ClassicAdministratorListResult - ClassicAdministrator list result information.
 type ClassicAdministratorListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// An array of administrators.
+// An array of administrators.
 	Value []*ClassicAdministrator
 }
 
 // ClassicAdministratorProperties - Classic Administrator properties.
 type ClassicAdministratorProperties struct {
-	// The email address of the administrator.
+// The email address of the administrator.
 	EmailAddress *string
 
-	// The role of the administrator.
+// The role of the administrator.
 	Role *string
 }
 
 // DenyAssignment - Deny Assignment
 type DenyAssignment struct {
-	// Deny assignment properties.
+// Deny assignment properties.
 	Properties *DenyAssignmentProperties
 
-	// READ-ONLY; The deny assignment ID.
+// READ-ONLY; The deny assignment ID.
 	ID *string
 
-	// READ-ONLY; The deny assignment name.
+// READ-ONLY; The deny assignment name.
 	Name *string
 
-	// READ-ONLY; The deny assignment type.
+// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+// READ-ONLY; The deny assignment type.
 	Type *string
 }
 
 // DenyAssignmentFilter - Deny Assignments filter
 type DenyAssignmentFilter struct {
-	// Return deny assignment with specified name.
+// Return deny assignment with specified name.
 	DenyAssignmentName *string
 
-	// Return all deny assignments where the specified principal is listed either in the principals list or exclude principals
-	// list of deny assignments.
+// Return all deny assignments where the specified principal is listed either in the principals list or exclude principals
+// list of deny assignments.
 	GdprExportPrincipalID *string
 
-	// Return all deny assignments where the specified principal is listed in the principals list of deny assignments.
+// Return all deny assignments where the specified principal is listed in the principals list of deny assignments.
 	PrincipalID *string
 }
 
 // DenyAssignmentListResult - Deny assignment list operation result.
 type DenyAssignmentListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Deny assignment list.
+// Deny assignment list.
 	Value []*DenyAssignment
 }
 
 // DenyAssignmentPermission - Deny assignment permissions.
 type DenyAssignmentPermission struct {
-	// Actions to which the deny assignment does not grant access.
+// Actions to which the deny assignment does not grant access.
 	Actions []*string
 
-	// The conditions on the Deny assignment permission. This limits the resources it applies to.
+// The conditions on the Deny assignment permission. This limits the resources it applies to.
 	Condition *string
 
-	// Version of the condition.
+// Version of the condition.
 	ConditionVersion *string
 
-	// Data actions to which the deny assignment does not grant access.
+// Data actions to which the deny assignment does not grant access.
 	DataActions []*string
 
-	// Actions to exclude from that the deny assignment does not grant access.
+// Actions to exclude from that the deny assignment does not grant access.
 	NotActions []*string
 
-	// Data actions to exclude from that the deny assignment does not grant access.
+// Data actions to exclude from that the deny assignment does not grant access.
 	NotDataActions []*string
+}
+
+// DenyAssignmentPrincipal - Deny assignment principal.
+type DenyAssignmentPrincipal struct {
+// The object ID of the principal.
+	ID *string
+
+// The type of the principal such as user, group, servicePrincipal, etc.
+	Type *DenyAssignmentPrincipalType
 }
 
 // DenyAssignmentProperties - Deny assignment properties.
 type DenyAssignmentProperties struct {
-	// The conditions on the deny assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// The conditions on the deny assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// Version of the condition.
+// Version of the condition.
 	ConditionVersion *string
 
-	// The display name of the deny assignment.
+// The effect of the deny assignment. 'enforced' blocks access, 'audit' logs without blocking.
+	DenyAssignmentEffect *DenyAssignmentEffect
+
+// The display name of the deny assignment.
 	DenyAssignmentName *string
 
-	// The description of the deny assignment.
+// The description of the deny assignment.
 	Description *string
 
-	// Determines if the deny assignment applies to child scopes. Default value is false.
+// Determines if the deny assignment applies to child scopes. Default value is false.
 	DoNotApplyToChildScopes *bool
 
-	// Array of principals to which the deny assignment does not apply.
-	ExcludePrincipals []*Principal
+// Array of principals to which the deny assignment does not apply.
+	ExcludePrincipals []*DenyAssignmentPrincipal
 
-	// Specifies whether this deny assignment was created by Azure and cannot be edited or deleted.
+// Specifies whether this deny assignment was created by Azure and cannot be edited or deleted.
 	IsSystemProtected *bool
 
-	// An array of permissions that are denied by the deny assignment.
+// An array of permissions that are denied by the deny assignment.
 	Permissions []*DenyAssignmentPermission
 
-	// Array of principals to which the deny assignment applies.
-	Principals []*Principal
+// Array of principals to which the deny assignment applies.
+	Principals []*DenyAssignmentPrincipal
 
-	// The deny assignment scope.
-	Scope *string
-
-	// READ-ONLY; Id of the user who created the assignment
+// READ-ONLY; Id of the user who created the assignment
 	CreatedBy *string
 
-	// READ-ONLY; Time it was created
+// READ-ONLY; Time it was created
 	CreatedOn *time.Time
 
-	// READ-ONLY; Id of the user who updated the assignment
+// READ-ONLY; The deny assignment scope.
+	Scope *string
+
+// READ-ONLY; Id of the user who updated the assignment
 	UpdatedBy *string
 
-	// READ-ONLY; Time it was updated
+// READ-ONLY; Time it was updated
 	UpdatedOn *time.Time
 }
 
 // DuplicateRoleCreatedAlertConfigurationProperties - The duplicate role created alert configuration.
 type DuplicateRoleCreatedAlertConfigurationProperties struct {
-	// REQUIRED; The alert configuration type.
+// REQUIRED; The alert configuration type.
 	AlertConfigurationType *string
 
-	// True if the alert is enabled, false will disable the scanning for the specific alert.
+// True if the alert is enabled, false will disable the scanning for the specific alert.
 	IsEnabled *bool
 
-	// READ-ONLY; The alert definition.
+// READ-ONLY; The alert definition.
 	AlertDefinition *AlertDefinition
 
-	// READ-ONLY; The alert definition ID.
+// READ-ONLY; The alert definition ID.
 	AlertDefinitionID *string
 
-	// READ-ONLY; The alert scope.
+// READ-ONLY; The alert scope.
 	Scope *string
 }
 
@@ -1102,25 +1129,25 @@ type DuplicateRoleCreatedAlertConfigurationProperties struct {
 func (d *DuplicateRoleCreatedAlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
 	return &AlertConfigurationProperties{
 		AlertConfigurationType: d.AlertConfigurationType,
-		AlertDefinition:        d.AlertDefinition,
-		AlertDefinitionID:      d.AlertDefinitionID,
-		IsEnabled:              d.IsEnabled,
-		Scope:                  d.Scope,
+		AlertDefinition: d.AlertDefinition,
+		AlertDefinitionID: d.AlertDefinitionID,
+		IsEnabled: d.IsEnabled,
+		Scope: d.Scope,
 	}
 }
 
 // DuplicateRoleCreatedAlertIncidentProperties - Duplicate role created alert incident properties.
 type DuplicateRoleCreatedAlertIncidentProperties struct {
-	// REQUIRED; The alert incident type.
+// REQUIRED; The alert incident type.
 	AlertIncidentType *string
 
-	// READ-ONLY; The duplicate roles.
+// READ-ONLY; The duplicate roles.
 	DuplicateRoles *string
 
-	// READ-ONLY; The reason for the incident.
+// READ-ONLY; The reason for the incident.
 	Reason *string
 
-	// READ-ONLY; The role name.
+// READ-ONLY; The role name.
 	RoleName *string
 }
 
@@ -1133,1335 +1160,1404 @@ func (d *DuplicateRoleCreatedAlertIncidentProperties) GetAlertIncidentProperties
 
 // EligibleChildResource - Eligible child resource
 type EligibleChildResource struct {
-	// READ-ONLY; The resource scope Id.
+// READ-ONLY; The resource scope Id.
 	ID *string
 
-	// READ-ONLY; The resource name.
+// READ-ONLY; The resource name.
 	Name *string
 
-	// READ-ONLY; The resource type.
+// READ-ONLY; The resource type.
 	Type *string
 }
 
 // EligibleChildResourcesListResult - Eligible child resources list operation result.
 type EligibleChildResourcesListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Eligible child resource list.
+// Eligible child resource list.
 	Value []*EligibleChildResource
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
+// READ-ONLY; The additional info.
 	Info any
 
-	// READ-ONLY; The additional info type.
+// READ-ONLY; The additional info type.
 	Type *string
 }
 
 // ErrorDefinition - Error description and code explaining why an operation failed.
 type ErrorDefinition struct {
-	// Error of the list gateway status.
+// Error of the list gateway status.
 	Error *ErrorDefinitionProperties
 }
 
 // ErrorDefinitionProperties - Error description and code explaining why an operation failed.
 type ErrorDefinitionProperties struct {
-	// Error code of list gateway.
+// Error code of list gateway.
 	Code *string
 
-	// READ-ONLY; Description of the error.
+// READ-ONLY; Description of the error.
 	Message *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
+// READ-ONLY; The error additional info.
 	AdditionalInfo []*ErrorAdditionalInfo
 
-	// READ-ONLY; The error code.
+// READ-ONLY; The error code.
 	Code *string
 
-	// READ-ONLY; The error details.
+// READ-ONLY; The error details.
 	Details []*ErrorDetail
 
-	// READ-ONLY; The error message.
+// READ-ONLY; The error message.
 	Message *string
 
-	// READ-ONLY; The error target.
+// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorDetailAutoGenerated - The error detail.
+type ErrorDetailAutoGenerated struct {
+// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+// READ-ONLY; The error code.
+	Code *string
+
+// READ-ONLY; The error details.
+	Details []*ErrorDetailAutoGenerated
+
+// READ-ONLY; The error message.
+	Message *string
+
+// READ-ONLY; The error target.
 	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
-	// The error object.
+// The error object.
 	Error *ErrorDetail
 }
 
+// ErrorResponseAutoGenerated - Common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
+type ErrorResponseAutoGenerated struct {
+// The error object.
+	Error *ErrorDetailAutoGenerated
+}
+
 type ExpandedProperties struct {
-	// Details of the principal
+// Details of the principal
 	Principal *ExpandedPropertiesPrincipal
 
-	// Details of role definition
+// Details of role definition
 	RoleDefinition *ExpandedPropertiesRoleDefinition
 
-	// Details of the resource scope
+// Details of the resource scope
 	Scope *ExpandedPropertiesScope
 }
 
 // ExpandedPropertiesPrincipal - Details of the principal
 type ExpandedPropertiesPrincipal struct {
-	// Display name of the principal
+// Display name of the principal
 	DisplayName *string
 
-	// Email id of the principal
+// Email id of the principal
 	Email *string
 
-	// Id of the principal
+// Id of the principal
 	ID *string
 
-	// Type of the principal
+// Type of the principal
 	Type *string
 }
 
 // ExpandedPropertiesRoleDefinition - Details of role definition
 type ExpandedPropertiesRoleDefinition struct {
-	// Display name of the role definition
+// Display name of the role definition
 	DisplayName *string
 
-	// Id of the role definition
+// Id of the role definition
 	ID *string
 
-	// Type of the role definition
+// Type of the role definition
 	Type *string
 }
 
 // ExpandedPropertiesScope - Details of the resource scope
 type ExpandedPropertiesScope struct {
-	// Display name of the resource
+// Display name of the resource
 	DisplayName *string
 
-	// Scope id of the resource
+// Scope id of the resource
 	ID *string
 
-	// Type of the resource
+// Type of the resource
 	Type *string
 }
 
 // Operation - The definition of a Microsoft.Authorization operation.
 type Operation struct {
-	// Display of the operation
+// Display of the operation
 	Display *OperationDisplay
 
-	// Indicates whether the operation is a data action
+// Indicates whether the operation is a data action
 	IsDataAction *bool
 
-	// Name of the operation
+// Name of the operation
 	Name *string
 
-	// Origin of the operation
+// Origin of the operation
 	Origin *string
 }
 
 // OperationDisplay - The display information for a Microsoft.Authorization operation.
 type OperationDisplay struct {
-	// READ-ONLY; The description for the operation.
+// READ-ONLY; The description for the operation.
 	Description *string
 
-	// READ-ONLY; The operation that users can perform.
+// READ-ONLY; The operation that users can perform.
 	Operation *string
 
-	// READ-ONLY; The resource provider name: Microsoft.Authorization.
+// READ-ONLY; The resource provider name: Microsoft.Authorization.
 	Provider *string
 
-	// READ-ONLY; The resource on which the operation is performed.
+// READ-ONLY; The resource on which the operation is performed.
 	Resource *string
 }
 
 // OperationListResult - The result of a request to list Microsoft.Authorization operations.
 type OperationListResult struct {
-	// The URI that can be used to request the next set of paged results.
+// The URI that can be used to request the next set of paged results.
 	NextLink *string
 
-	// The collection value.
+// The collection value.
 	Value []*Operation
+}
+
+// PIMOnlyModeSettings - The PIM Only Mode settings.
+type PIMOnlyModeSettings struct {
+// The list of excluded assignment types allowed.
+	ExcludedAssignmentTypes []*ExcludedPrincipalTypes
+
+// The list of excluded entities that the rule does not apply to.
+	Excludes []*UsersOrServicePrincipalSet
+
+// Determines whether the setting is enabled, disabled or report only.
+	Mode *PIMOnlyMode
 }
 
 // Permission - Role definition permissions.
 type Permission struct {
-	// Allowed actions.
+// Allowed actions.
 	Actions []*string
 
-	// Allowed Data actions.
+// Allowed Data actions.
 	DataActions []*string
 
-	// Denied actions.
+// Denied actions.
 	NotActions []*string
 
-	// Denied Data actions.
+// Denied Data actions.
 	NotDataActions []*string
 
-	// READ-ONLY; The conditions on the role definition. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// READ-ONLY; The conditions on the role definition. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// READ-ONLY; Version of the condition. Currently the only accepted value is '2.0'
+// READ-ONLY; Version of the condition. Currently the only accepted value is '2.0'
 	ConditionVersion *string
 }
 
 // PermissionGetResult - Permissions information.
 type PermissionGetResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// An array of permissions.
+// An array of permissions.
 	Value []*Permission
 }
 
+// PolicyAssignmentProperties - Expanded info of resource scope, role definition and policy
 type PolicyAssignmentProperties struct {
-	// Details of the policy
+// Details of the policy
 	Policy *PolicyAssignmentPropertiesPolicy
 
-	// Details of role definition
+// Details of role definition
 	RoleDefinition *PolicyAssignmentPropertiesRoleDefinition
 
-	// Details of the resource scope
+// Details of the resource scope
 	Scope *PolicyAssignmentPropertiesScope
 }
 
 // PolicyAssignmentPropertiesPolicy - Details of the policy
 type PolicyAssignmentPropertiesPolicy struct {
-	// Id of the policy
+// Id of the policy
 	ID *string
 
-	// The last modified date time.
+// The last modified date time.
 	LastModifiedDateTime *time.Time
 
-	// READ-ONLY; The name of the entity last modified it
+// READ-ONLY; The name of the entity last modified it
 	LastModifiedBy *Principal
 }
 
 // PolicyAssignmentPropertiesRoleDefinition - Details of role definition
 type PolicyAssignmentPropertiesRoleDefinition struct {
-	// Display name of the role definition
+// Display name of the role definition
 	DisplayName *string
 
-	// Id of the role definition
+// Id of the role definition
 	ID *string
 
-	// Type of the role definition
+// Type of the role definition
 	Type *string
 }
 
 // PolicyAssignmentPropertiesScope - Details of the resource scope
 type PolicyAssignmentPropertiesScope struct {
-	// Display name of the resource
+// Display name of the resource
 	DisplayName *string
 
-	// Scope id of the resource
+// Scope id of the resource
 	ID *string
 
-	// Type of the resource
+// Type of the resource
 	Type *string
 }
 
+// PolicyProperties - Expanded info of resource scope
 type PolicyProperties struct {
-	// READ-ONLY; Details of the resource scope
+// READ-ONLY; Details of the resource scope
 	Scope *PolicyPropertiesScope
 }
 
 // PolicyPropertiesScope - Details of the resource scope
 type PolicyPropertiesScope struct {
-	// Display name of the resource
+// Display name of the resource
 	DisplayName *string
 
-	// Scope id of the resource
+// Scope id of the resource
 	ID *string
 
-	// Type of the resource
+// Type of the resource
 	Type *string
 }
 
 // Principal - The name of the entity last modified it
 type Principal struct {
-	// The name of the principal made changes
+// The name of the principal made changes
 	DisplayName *string
 
-	// Email of principal
+// Email of principal
 	Email *string
 
-	// The id of the principal made changes
+// The id of the principal made changes
 	ID *string
 
-	// Type of principal such as user , group etc
+// Type of principal such as user , group etc
 	Type *string
 }
 
 // ProviderOperation - Operation
 type ProviderOperation struct {
-	// The operation description.
+// The operation description.
 	Description *string
 
-	// The operation display name.
+// The operation display name.
 	DisplayName *string
 
-	// The dataAction flag to specify the operation type.
+// The dataAction flag to specify the operation type.
 	IsDataAction *bool
 
-	// The operation name.
+// The operation name.
 	Name *string
 
-	// The operation origin.
+// The operation origin.
 	Origin *string
 
-	// The operation properties.
+// The operation properties.
 	Properties any
 }
 
 // ProviderOperationsMetadata - Provider Operations metadata
 type ProviderOperationsMetadata struct {
-	// The provider display name.
+// The provider display name.
 	DisplayName *string
 
-	// The provider id.
+// The provider id.
 	ID *string
 
-	// The provider name.
+// The provider name.
 	Name *string
 
-	// The provider operations.
+// The provider operations.
 	Operations []*ProviderOperation
 
-	// The provider resource types
+// The provider resource types
 	ResourceTypes []*ResourceType
 
-	// The provider type.
+// The provider type.
 	Type *string
 }
 
 // ProviderOperationsMetadataListResult - Provider operations metadata list
 type ProviderOperationsMetadataListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// The list of providers.
+// The list of providers.
 	Value []*ProviderOperationsMetadata
 }
 
 // RecordAllDecisionsProperties - Record All Decisions payload.
 type RecordAllDecisionsProperties struct {
-	// The decision to make. Approvers can take action of Approve/Deny
+// The decision to make. Approvers can take action of Approve/Deny
 	Decision *RecordAllDecisionsResult
 
-	// Justification provided by approvers for their action
+// Justification provided by approvers for their action
 	Justification *string
 
-	// READ-ONLY; The id of principal which needs to be approved/denied.
+// READ-ONLY; The id of principal which needs to be approved/denied.
 	PrincipalID *string
 
-	// READ-ONLY; The id of resource which needs to be approved/denied.
+// READ-ONLY; The id of resource which needs to be approved/denied.
 	ResourceID *string
 }
 
 // ResourceType - Resource Type
 type ResourceType struct {
-	// The resource type display name.
+// The resource type display name.
 	DisplayName *string
 
-	// The resource type name.
+// The resource type name.
 	Name *string
 
-	// The resource type operations.
+// The resource type operations.
 	Operations []*ProviderOperation
 }
 
 // RoleAssignment - Role Assignments
 type RoleAssignment struct {
-	// Role assignment properties.
+// Role assignment properties.
 	Properties *RoleAssignmentProperties
 
-	// READ-ONLY; The role assignment ID.
+// READ-ONLY; The role assignment ID.
 	ID *string
 
-	// READ-ONLY; The role assignment name.
+// READ-ONLY; The role assignment name.
 	Name *string
 
-	// READ-ONLY; The role assignment type.
+// READ-ONLY; The role assignment type.
 	Type *string
 }
 
 // RoleAssignmentCreateParameters - Role assignment create parameters.
 type RoleAssignmentCreateParameters struct {
-	// REQUIRED; Role assignment properties.
+// REQUIRED; Role assignment properties.
 	Properties *RoleAssignmentProperties
 }
 
 // RoleAssignmentFilter - Role Assignments filter
 type RoleAssignmentFilter struct {
-	// Returns role assignment of the specific principal.
+// Returns role assignment of the specific principal.
 	PrincipalID *string
 }
 
 // RoleAssignmentListResult - Role assignment list operation result.
 type RoleAssignmentListResult struct {
-	// Role assignment list.
+// Role assignment list.
 	Value []*RoleAssignment
 
-	// READ-ONLY; The skipToken to use for getting the next set of results.
+// READ-ONLY; The skipToken to use for getting the next set of results.
 	NextLink *string
 }
 
 // RoleAssignmentProperties - Role assignment properties.
 type RoleAssignmentProperties struct {
-	// REQUIRED; The principal ID.
+// REQUIRED; The principal ID.
 	PrincipalID *string
 
-	// REQUIRED; The role definition ID.
+// REQUIRED; The role definition ID.
 	RoleDefinitionID *string
 
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// Version of the condition. Currently the only accepted value is '2.0'
+// Version of the condition. Currently the only accepted value is '2.0'
 	ConditionVersion *string
 
-	// Id of the delegated managed identity resource
+// Id of the delegated managed identity resource
 	DelegatedManagedIdentityResourceID *string
 
-	// Description of role assignment
+// Description of role assignment
 	Description *string
 
-	// The principal type of the assigned principal ID.
+// The principal type of the assigned principal ID.
 	PrincipalType *PrincipalType
 
-	// READ-ONLY; Id of the user who created the assignment
+// READ-ONLY; Id of the user who created the assignment
 	CreatedBy *string
 
-	// READ-ONLY; Time it was created
+// READ-ONLY; Time it was created
 	CreatedOn *time.Time
 
-	// READ-ONLY; The role assignment scope.
+// READ-ONLY; The role assignment scope.
 	Scope *string
 
-	// READ-ONLY; Id of the user who updated the assignment
+// READ-ONLY; Id of the user who updated the assignment
 	UpdatedBy *string
 
-	// READ-ONLY; Time it was updated
+// READ-ONLY; Time it was updated
 	UpdatedOn *time.Time
 }
 
 // RoleAssignmentSchedule - Role Assignment schedule
 type RoleAssignmentSchedule struct {
-	// Role assignment schedule properties.
+// Role assignment schedule properties.
 	Properties *RoleAssignmentScheduleProperties
 
-	// READ-ONLY; The role assignment schedule Id.
+// READ-ONLY; The role assignment schedule Id.
 	ID *string
 
-	// READ-ONLY; The role assignment schedule name.
+// READ-ONLY; The role assignment schedule name.
 	Name *string
 
-	// READ-ONLY; The role assignment schedule type.
+// READ-ONLY; The role assignment schedule type.
 	Type *string
 }
 
 // RoleAssignmentScheduleFilter - Role assignment schedule filter
 type RoleAssignmentScheduleFilter struct {
-	// Returns role assignment schedule of the specific principal.
+// Returns role assignment schedule of the specific principal.
 	PrincipalID *string
 
-	// Returns role assignment schedule of the specific role definition.
+// Returns role assignment schedule of the specific role definition.
 	RoleDefinitionID *string
 
-	// Returns role assignment schedule instances of the specific status.
+// Returns role assignment schedule instances of the specific status.
 	Status *string
 }
 
 // RoleAssignmentScheduleInstance - Information about current or upcoming role assignment schedule instance
 type RoleAssignmentScheduleInstance struct {
-	// Role assignment schedule instance properties.
+// Role assignment schedule instance properties.
 	Properties *RoleAssignmentScheduleInstanceProperties
 
-	// READ-ONLY; The role assignment schedule instance ID.
+// READ-ONLY; The role assignment schedule instance ID.
 	ID *string
 
-	// READ-ONLY; The role assignment schedule instance name.
+// READ-ONLY; The role assignment schedule instance name.
 	Name *string
 
-	// READ-ONLY; The role assignment schedule instance type.
+// READ-ONLY; The role assignment schedule instance type.
 	Type *string
 }
 
 // RoleAssignmentScheduleInstanceFilter - Role assignment schedule instance filter
 type RoleAssignmentScheduleInstanceFilter struct {
-	// Returns role assignment schedule instances of the specific principal.
+// Returns role assignment schedule instances of the specific principal.
 	PrincipalID *string
 
-	// Returns role assignment schedule instances belonging to a specific role assignment schedule.
+// Returns role assignment schedule instances belonging to a specific role assignment schedule.
 	RoleAssignmentScheduleID *string
 
-	// Returns role assignment schedule instances of the specific role definition.
+// Returns role assignment schedule instances of the specific role definition.
 	RoleDefinitionID *string
 
-	// Returns role assignment schedule instances of the specific status.
+// Returns role assignment schedule instances of the specific status.
 	Status *string
 }
 
 // RoleAssignmentScheduleInstanceListResult - Role assignment schedule instance list operation result.
 type RoleAssignmentScheduleInstanceListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Role assignment schedule instance list.
+// Role assignment schedule instance list.
 	Value []*RoleAssignmentScheduleInstance
 }
 
 // RoleAssignmentScheduleInstanceProperties - Role assignment schedule properties with scope.
 type RoleAssignmentScheduleInstanceProperties struct {
-	// Assignment type of the role assignment schedule
+// Assignment type of the role assignment schedule
 	AssignmentType *AssignmentType
 
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// Version of the condition. Currently accepted value is '2.0'
+// Version of the condition. Currently accepted value is '2.0'
 	ConditionVersion *string
 
-	// DateTime when role assignment schedule was created
+// DateTime when role assignment schedule was created
 	CreatedOn *time.Time
 
-	// The endDateTime of the role assignment schedule instance
+// The endDateTime of the role assignment schedule instance
 	EndDateTime *time.Time
 
-	// Additional properties of principal, scope and role definition
+// Additional properties of principal, scope and role definition
 	ExpandedProperties *ExpandedProperties
 
-	// roleEligibilityScheduleId used to activate
+// roleEligibilityScheduleId used to activate
 	LinkedRoleEligibilityScheduleID *string
 
-	// roleEligibilityScheduleInstanceId linked to this roleAssignmentScheduleInstance
+// roleEligibilityScheduleInstanceId linked to this roleAssignmentScheduleInstance
 	LinkedRoleEligibilityScheduleInstanceID *string
 
-	// Membership type of the role assignment schedule
+// Membership type of the role assignment schedule
 	MemberType *MemberType
 
-	// Role Assignment Id in external system
+// Role Assignment Id in external system
 	OriginRoleAssignmentID *string
 
-	// The principal ID.
+// The principal ID.
 	PrincipalID *string
 
-	// The principal type of the assigned principal ID.
+// The principal type of the assigned principal ID.
 	PrincipalType *PrincipalType
 
-	// Id of the master role assignment schedule
+// Id of the master role assignment schedule
 	RoleAssignmentScheduleID *string
 
-	// The role definition ID.
+// The role definition ID.
 	RoleDefinitionID *string
 
-	// The role assignment schedule scope.
+// The role assignment schedule scope.
 	Scope *string
 
-	// The startDateTime of the role assignment schedule instance
+// The startDateTime of the role assignment schedule instance
 	StartDateTime *time.Time
 
-	// The status of the role assignment schedule instance.
+// The status of the role assignment schedule instance.
 	Status *Status
 }
 
 // RoleAssignmentScheduleListResult - Role assignment schedule list operation result.
 type RoleAssignmentScheduleListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Role assignment schedule list.
+// Role assignment schedule list.
 	Value []*RoleAssignmentSchedule
 }
 
 // RoleAssignmentScheduleProperties - Role assignment schedule properties with scope.
 type RoleAssignmentScheduleProperties struct {
-	// Assignment type of the role assignment schedule
+// Assignment type of the role assignment schedule
 	AssignmentType *AssignmentType
 
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// Version of the condition. Currently accepted value is '2.0'
+// Version of the condition. Currently accepted value is '2.0'
 	ConditionVersion *string
 
-	// DateTime when role assignment schedule was created
+// DateTime when role assignment schedule was created
 	CreatedOn *time.Time
 
-	// End DateTime when role assignment schedule
+// End DateTime when role assignment schedule
 	EndDateTime *time.Time
 
-	// Additional properties of principal, scope and role definition
+// Additional properties of principal, scope and role definition
 	ExpandedProperties *ExpandedProperties
 
-	// The id of roleEligibilitySchedule used to activated this roleAssignmentSchedule
+// The id of roleEligibilitySchedule used to activated this roleAssignmentSchedule
 	LinkedRoleEligibilityScheduleID *string
 
-	// Membership type of the role assignment schedule
+// Membership type of the role assignment schedule
 	MemberType *MemberType
 
-	// The principal ID.
+// The principal ID.
 	PrincipalID *string
 
-	// The principal type of the assigned principal ID.
+// The principal type of the assigned principal ID.
 	PrincipalType *PrincipalType
 
-	// The id of roleAssignmentScheduleRequest used to create this roleAssignmentSchedule
+// The id of roleAssignmentScheduleRequest used to create this roleAssignmentSchedule
 	RoleAssignmentScheduleRequestID *string
 
-	// The role definition ID.
+// The role definition ID.
 	RoleDefinitionID *string
 
-	// The role assignment schedule scope.
+// The role assignment schedule scope.
 	Scope *string
 
-	// Start DateTime when role assignment schedule
+// Start DateTime when role assignment schedule
 	StartDateTime *time.Time
 
-	// The status of the role assignment schedule.
+// The status of the role assignment schedule.
 	Status *Status
 
-	// DateTime when role assignment schedule was modified
+// DateTime when role assignment schedule was modified
 	UpdatedOn *time.Time
 }
 
 // RoleAssignmentScheduleRequest - Role Assignment schedule request
 type RoleAssignmentScheduleRequest struct {
-	// Role assignment schedule request properties.
+// Role assignment schedule request properties.
 	Properties *RoleAssignmentScheduleRequestProperties
 
-	// READ-ONLY; The role assignment schedule request ID.
+// READ-ONLY; The role assignment schedule request ID.
 	ID *string
 
-	// READ-ONLY; The role assignment schedule request name.
+// READ-ONLY; The role assignment schedule request name.
 	Name *string
 
-	// READ-ONLY; The role assignment schedule request type.
+// READ-ONLY; The role assignment schedule request type.
 	Type *string
 }
 
 // RoleAssignmentScheduleRequestFilter - Role assignment schedule request filter
 type RoleAssignmentScheduleRequestFilter struct {
-	// Returns role assignment requests of the specific principal.
+// Returns role assignment requests of the specific principal.
 	PrincipalID *string
 
-	// Returns role assignment requests created by specific principal.
+// Returns role assignment requests created by specific principal.
 	RequestorID *string
 
-	// Returns role assignment requests of the specific role definition.
+// Returns role assignment requests of the specific role definition.
 	RoleDefinitionID *string
 
-	// Returns role assignment requests of specific status.
+// Returns role assignment requests of specific status.
 	Status *string
 }
 
 // RoleAssignmentScheduleRequestListResult - Role assignment schedule request list operation result.
 type RoleAssignmentScheduleRequestListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Role assignment schedule request list.
+// Role assignment schedule request list.
 	Value []*RoleAssignmentScheduleRequest
 }
 
 // RoleAssignmentScheduleRequestProperties - Role assignment schedule request properties with scope.
 type RoleAssignmentScheduleRequestProperties struct {
-	// REQUIRED; The principal ID.
+// REQUIRED; The principal ID.
 	PrincipalID *string
 
-	// REQUIRED; The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
+// REQUIRED; The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
 	RequestType *RequestType
 
-	// REQUIRED; The role definition ID.
+// REQUIRED; The role definition ID.
 	RoleDefinitionID *string
 
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// Version of the condition. Currently accepted value is '2.0'
+// Version of the condition. Currently accepted value is '2.0'
 	ConditionVersion *string
 
-	// Justification for the role assignment
+// Justification for the role assignment
 	Justification *string
 
-	// The linked role eligibility schedule id - to activate an eligibility.
+// The linked role eligibility schedule id - to activate an eligibility.
 	LinkedRoleEligibilityScheduleID *string
 
-	// Schedule info of the role assignment schedule
+// Schedule info of the role assignment schedule
 	ScheduleInfo *RoleAssignmentScheduleRequestPropertiesScheduleInfo
 
-	// The resultant role assignment schedule id or the role assignment schedule id being updated
+// The resultant role assignment schedule id or the role assignment schedule id being updated
 	TargetRoleAssignmentScheduleID *string
 
-	// The role assignment schedule instance id being updated
+// The role assignment schedule instance id being updated
 	TargetRoleAssignmentScheduleInstanceID *string
 
-	// Ticket Info of the role assignment
+// Ticket Info of the role assignment
 	TicketInfo *RoleAssignmentScheduleRequestPropertiesTicketInfo
 
-	// READ-ONLY; The approvalId of the role assignment schedule request.
+// READ-ONLY; The approvalId of the role assignment schedule request.
 	ApprovalID *string
 
-	// READ-ONLY; DateTime when role assignment schedule request was created
+// READ-ONLY; DateTime when role assignment schedule request was created
 	CreatedOn *time.Time
 
-	// READ-ONLY; Additional properties of principal, scope and role definition
+// READ-ONLY; Additional properties of principal, scope and role definition
 	ExpandedProperties *ExpandedProperties
 
-	// READ-ONLY; The principal type of the assigned principal ID.
+// READ-ONLY; The principal type of the assigned principal ID.
 	PrincipalType *PrincipalType
 
-	// READ-ONLY; Id of the user who created this request
+// READ-ONLY; Id of the user who created this request
 	RequestorID *string
 
-	// READ-ONLY; The role assignment schedule request scope.
+// READ-ONLY; The role assignment schedule request scope.
 	Scope *string
 
-	// READ-ONLY; The status of the role assignment schedule request.
+// READ-ONLY; The status of the role assignment schedule request.
 	Status *Status
 }
 
 // RoleAssignmentScheduleRequestPropertiesScheduleInfo - Schedule info of the role assignment schedule
 type RoleAssignmentScheduleRequestPropertiesScheduleInfo struct {
-	// Expiration of the role assignment schedule
+// Expiration of the role assignment schedule
 	Expiration *RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration
 
-	// Start DateTime of the role assignment schedule.
+// Start DateTime of the role assignment schedule.
 	StartDateTime *time.Time
 }
 
 // RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration - Expiration of the role assignment schedule
 type RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration struct {
-	// Duration of the role assignment schedule in TimeSpan.
+// Duration of the role assignment schedule in TimeSpan.
 	Duration *string
 
-	// End DateTime of the role assignment schedule.
+// End DateTime of the role assignment schedule.
 	EndDateTime *time.Time
 
-	// Type of the role assignment schedule expiration
+// Type of the role assignment schedule expiration
 	Type *Type
 }
 
 // RoleAssignmentScheduleRequestPropertiesTicketInfo - Ticket Info of the role assignment
 type RoleAssignmentScheduleRequestPropertiesTicketInfo struct {
-	// Ticket number for the role assignment
+// Ticket number for the role assignment
 	TicketNumber *string
 
-	// Ticket system name for the role assignment
+// Ticket system name for the role assignment
 	TicketSystem *string
 }
 
 // RoleDefinition - Role definition.
 type RoleDefinition struct {
-	// Role definition properties.
+// Role definition properties.
 	Properties *RoleDefinitionProperties
 
-	// READ-ONLY; The role definition ID.
+// READ-ONLY; The role definition ID.
 	ID *string
 
-	// READ-ONLY; The role definition name.
+// READ-ONLY; The role definition name.
 	Name *string
 
-	// READ-ONLY; The role definition type.
+// READ-ONLY; The role definition type.
 	Type *string
 }
 
 // RoleDefinitionFilter - Role Definitions filter
 type RoleDefinitionFilter struct {
-	// Returns role definition with the specific name.
+// Returns role definition with the specific name.
 	RoleName *string
 
-	// Returns role definition with the specific type.
+// Returns role definition with the specific type.
 	Type *string
 }
 
 // RoleDefinitionListResult - Role definition list operation result.
 type RoleDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Role definition list.
+// Role definition list.
 	Value []*RoleDefinition
 }
 
 // RoleDefinitionProperties - Role definition properties.
 type RoleDefinitionProperties struct {
-	// Role definition assignable scopes.
+// Role definition assignable scopes.
 	AssignableScopes []*string
 
-	// The role definition description.
+// The role definition description.
 	Description *string
 
-	// Role definition permissions.
+// Role definition permissions.
 	Permissions []*Permission
 
-	// The role name.
+// The role name.
 	RoleName *string
 
-	// The role type.
+// The role type.
 	RoleType *string
 
-	// READ-ONLY; Id of the user who created the assignment
+// READ-ONLY; Id of the user who created the assignment
 	CreatedBy *string
 
-	// READ-ONLY; Time it was created
+// READ-ONLY; Time it was created
 	CreatedOn *time.Time
 
-	// READ-ONLY; Id of the user who updated the assignment
+// READ-ONLY; Id of the user who updated the assignment
 	UpdatedBy *string
 
-	// READ-ONLY; Time it was updated
+// READ-ONLY; Time it was updated
 	UpdatedOn *time.Time
 }
 
 // RoleEligibilitySchedule - Role eligibility schedule
 type RoleEligibilitySchedule struct {
-	// role eligibility schedule properties.
+// role eligibility schedule properties.
 	Properties *RoleEligibilityScheduleProperties
 
-	// READ-ONLY; The role eligibility schedule Id.
+// READ-ONLY; The role eligibility schedule Id.
 	ID *string
 
-	// READ-ONLY; The role eligibility schedule name.
+// READ-ONLY; The role eligibility schedule name.
 	Name *string
 
-	// READ-ONLY; The role eligibility schedule type.
+// READ-ONLY; The role eligibility schedule type.
 	Type *string
 }
 
 // RoleEligibilityScheduleFilter - Role eligibility schedule filter
 type RoleEligibilityScheduleFilter struct {
-	// Returns role eligibility schedule of the specific principal.
+// Returns role eligibility schedule of the specific principal.
 	PrincipalID *string
 
-	// Returns role eligibility schedule of the specific role definition.
+// Returns role eligibility schedule of the specific role definition.
 	RoleDefinitionID *string
 
-	// Returns role eligibility schedule of the specific status.
+// Returns role eligibility schedule of the specific status.
 	Status *string
 }
 
 // RoleEligibilityScheduleInstance - Information about current or upcoming role eligibility schedule instance
 type RoleEligibilityScheduleInstance struct {
-	// Role eligibility schedule instance properties.
+// Role eligibility schedule instance properties.
 	Properties *RoleEligibilityScheduleInstanceProperties
 
-	// READ-ONLY; The role eligibility schedule instance ID.
+// READ-ONLY; The role eligibility schedule instance ID.
 	ID *string
 
-	// READ-ONLY; The role eligibility schedule instance name.
+// READ-ONLY; The role eligibility schedule instance name.
 	Name *string
 
-	// READ-ONLY; The role eligibility schedule instance type.
+// READ-ONLY; The role eligibility schedule instance type.
 	Type *string
 }
 
 // RoleEligibilityScheduleInstanceFilter - Role eligibility schedule instance filter
 type RoleEligibilityScheduleInstanceFilter struct {
-	// Returns role eligibility schedule instances of the specific principal.
+// Returns role eligibility schedule instances of the specific principal.
 	PrincipalID *string
 
-	// Returns role eligibility schedule instances of the specific role definition.
+// Returns role eligibility schedule instances of the specific role definition.
 	RoleDefinitionID *string
 
-	// Returns role eligibility schedule instances belonging to a specific role eligibility schedule.
+// Returns role eligibility schedule instances belonging to a specific role eligibility schedule.
 	RoleEligibilityScheduleID *string
 
-	// Returns role eligibility schedule instances of the specific status.
+// Returns role eligibility schedule instances of the specific status.
 	Status *string
 }
 
 // RoleEligibilityScheduleInstanceListResult - Role eligibility schedule instance list operation result.
 type RoleEligibilityScheduleInstanceListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Role eligibility schedule instance list.
+// Role eligibility schedule instance list.
 	Value []*RoleEligibilityScheduleInstance
 }
 
 // RoleEligibilityScheduleInstanceProperties - Role eligibility schedule properties with scope.
 type RoleEligibilityScheduleInstanceProperties struct {
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// Version of the condition. Currently accepted value is '2.0'
+// Version of the condition. Currently accepted value is '2.0'
 	ConditionVersion *string
 
-	// DateTime when role eligibility schedule was created
+// DateTime when role eligibility schedule was created
 	CreatedOn *time.Time
 
-	// The endDateTime of the role eligibility schedule instance
+// The endDateTime of the role eligibility schedule instance
 	EndDateTime *time.Time
 
-	// Additional properties of principal, scope and role definition
+// Additional properties of principal, scope and role definition
 	ExpandedProperties *ExpandedProperties
 
-	// Membership type of the role eligibility schedule
+// Membership type of the role eligibility schedule
 	MemberType *MemberType
 
-	// The principal ID.
+// The principal ID.
 	PrincipalID *string
 
-	// The principal type of the assigned principal ID.
+// The principal type of the assigned principal ID.
 	PrincipalType *PrincipalType
 
-	// The role definition ID.
+// The role definition ID.
 	RoleDefinitionID *string
 
-	// Id of the master role eligibility schedule
+// Id of the master role eligibility schedule
 	RoleEligibilityScheduleID *string
 
-	// The role eligibility schedule scope.
+// The role eligibility schedule scope.
 	Scope *string
 
-	// The startDateTime of the role eligibility schedule instance
+// The startDateTime of the role eligibility schedule instance
 	StartDateTime *time.Time
 
-	// The status of the role eligibility schedule instance
+// The status of the role eligibility schedule instance
 	Status *Status
 }
 
 // RoleEligibilityScheduleListResult - role eligibility schedule list operation result.
 type RoleEligibilityScheduleListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// role eligibility schedule list.
+// role eligibility schedule list.
 	Value []*RoleEligibilitySchedule
 }
 
 // RoleEligibilityScheduleProperties - Role eligibility schedule properties with scope.
 type RoleEligibilityScheduleProperties struct {
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// Version of the condition. Currently accepted value is '2.0'
+// Version of the condition. Currently accepted value is '2.0'
 	ConditionVersion *string
 
-	// DateTime when role eligibility schedule was created
+// DateTime when role eligibility schedule was created
 	CreatedOn *time.Time
 
-	// End DateTime when role eligibility schedule
+// End DateTime when role eligibility schedule
 	EndDateTime *time.Time
 
-	// Additional properties of principal, scope and role definition
+// Additional properties of principal, scope and role definition
 	ExpandedProperties *ExpandedProperties
 
-	// Membership type of the role eligibility schedule
+// Membership type of the role eligibility schedule
 	MemberType *MemberType
 
-	// The principal ID.
+// The principal ID.
 	PrincipalID *string
 
-	// The principal type of the assigned principal ID.
+// The principal type of the assigned principal ID.
 	PrincipalType *PrincipalType
 
-	// The role definition ID.
+// The role definition ID.
 	RoleDefinitionID *string
 
-	// The id of roleEligibilityScheduleRequest used to create this roleAssignmentSchedule
+// The id of roleEligibilityScheduleRequest used to create this roleAssignmentSchedule
 	RoleEligibilityScheduleRequestID *string
 
-	// The role eligibility schedule scope.
+// The role eligibility schedule scope.
 	Scope *string
 
-	// Start DateTime when role eligibility schedule
+// Start DateTime when role eligibility schedule
 	StartDateTime *time.Time
 
-	// The status of the role eligibility schedule.
+// The status of the role eligibility schedule.
 	Status *Status
 
-	// DateTime when role eligibility schedule was modified
+// DateTime when role eligibility schedule was modified
 	UpdatedOn *time.Time
 }
 
 // RoleEligibilityScheduleRequest - Role Eligibility schedule request
 type RoleEligibilityScheduleRequest struct {
-	// Role eligibility schedule request properties.
+// Role eligibility schedule request properties.
 	Properties *RoleEligibilityScheduleRequestProperties
 
-	// READ-ONLY; The role eligibility schedule request ID.
+// READ-ONLY; The role eligibility schedule request ID.
 	ID *string
 
-	// READ-ONLY; The role eligibility schedule request name.
+// READ-ONLY; The role eligibility schedule request name.
 	Name *string
 
-	// READ-ONLY; The role eligibility schedule request type.
+// READ-ONLY; The role eligibility schedule request type.
 	Type *string
 }
 
 // RoleEligibilityScheduleRequestFilter - Role eligibility schedule request filter
 type RoleEligibilityScheduleRequestFilter struct {
-	// Returns role eligibility requests of the specific principal.
+// Returns role eligibility requests of the specific principal.
 	PrincipalID *string
 
-	// Returns role eligibility requests created by specific principal.
+// Returns role eligibility requests created by specific principal.
 	RequestorID *string
 
-	// Returns role eligibility requests of the specific role definition.
+// Returns role eligibility requests of the specific role definition.
 	RoleDefinitionID *string
 
-	// Returns role eligibility requests of specific status.
+// Returns role eligibility requests of specific status.
 	Status *string
 }
 
 // RoleEligibilityScheduleRequestListResult - Role eligibility schedule request list operation result.
 type RoleEligibilityScheduleRequestListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Role eligibility schedule request list.
+// Role eligibility schedule request list.
 	Value []*RoleEligibilityScheduleRequest
 }
 
 // RoleEligibilityScheduleRequestProperties - Role eligibility schedule request properties with scope.
 type RoleEligibilityScheduleRequestProperties struct {
-	// REQUIRED; The principal ID.
+// REQUIRED; The principal ID.
 	PrincipalID *string
 
-	// REQUIRED; The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
+// REQUIRED; The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
 	RequestType *RequestType
 
-	// REQUIRED; The role definition ID.
+// REQUIRED; The role definition ID.
 	RoleDefinitionID *string
 
-	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-	// StringEqualsIgnoreCase
-	// 'foostoragecontainer'
+// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+// StringEqualsIgnoreCase
+// 'foostoragecontainer'
 	Condition *string
 
-	// Version of the condition. Currently accepted value is '2.0'
+// Version of the condition. Currently accepted value is '2.0'
 	ConditionVersion *string
 
-	// Justification for the role eligibility
+// Justification for the role eligibility
 	Justification *string
 
-	// Schedule info of the role eligibility schedule
+// Schedule info of the role eligibility schedule
 	ScheduleInfo *RoleEligibilityScheduleRequestPropertiesScheduleInfo
 
-	// The resultant role eligibility schedule id or the role eligibility schedule id being updated
+// The resultant role eligibility schedule id or the role eligibility schedule id being updated
 	TargetRoleEligibilityScheduleID *string
 
-	// The role eligibility schedule instance id being updated
+// The role eligibility schedule instance id being updated
 	TargetRoleEligibilityScheduleInstanceID *string
 
-	// Ticket Info of the role eligibility
+// Ticket Info of the role eligibility
 	TicketInfo *RoleEligibilityScheduleRequestPropertiesTicketInfo
 
-	// READ-ONLY; The approvalId of the role eligibility schedule request.
+// READ-ONLY; The approvalId of the role eligibility schedule request.
 	ApprovalID *string
 
-	// READ-ONLY; DateTime when role eligibility schedule request was created
+// READ-ONLY; DateTime when role eligibility schedule request was created
 	CreatedOn *time.Time
 
-	// READ-ONLY; Additional properties of principal, scope and role definition
+// READ-ONLY; Additional properties of principal, scope and role definition
 	ExpandedProperties *ExpandedProperties
 
-	// READ-ONLY; The principal type of the assigned principal ID.
+// READ-ONLY; The principal type of the assigned principal ID.
 	PrincipalType *PrincipalType
 
-	// READ-ONLY; Id of the user who created this request
+// READ-ONLY; Id of the user who created this request
 	RequestorID *string
 
-	// READ-ONLY; The role eligibility schedule request scope.
+// READ-ONLY; The role eligibility schedule request scope.
 	Scope *string
 
-	// READ-ONLY; The status of the role eligibility schedule request.
+// READ-ONLY; The status of the role eligibility schedule request.
 	Status *Status
 }
 
 // RoleEligibilityScheduleRequestPropertiesScheduleInfo - Schedule info of the role eligibility schedule
 type RoleEligibilityScheduleRequestPropertiesScheduleInfo struct {
-	// Expiration of the role eligibility schedule
+// Expiration of the role eligibility schedule
 	Expiration *RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration
 
-	// Start DateTime of the role eligibility schedule.
+// Start DateTime of the role eligibility schedule.
 	StartDateTime *time.Time
 }
 
 // RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration - Expiration of the role eligibility schedule
 type RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration struct {
-	// Duration of the role eligibility schedule in TimeSpan.
+// Duration of the role eligibility schedule in TimeSpan.
 	Duration *string
 
-	// End DateTime of the role eligibility schedule.
+// End DateTime of the role eligibility schedule.
 	EndDateTime *time.Time
 
-	// Type of the role eligibility schedule expiration
+// Type of the role eligibility schedule expiration
 	Type *Type
 }
 
 // RoleEligibilityScheduleRequestPropertiesTicketInfo - Ticket Info of the role eligibility
 type RoleEligibilityScheduleRequestPropertiesTicketInfo struct {
-	// Ticket number for the role eligibility
+// Ticket number for the role eligibility
 	TicketNumber *string
 
-	// Ticket system name for the role eligibility
+// Ticket system name for the role eligibility
 	TicketSystem *string
 }
 
 // RoleManagementPolicy - Role management policy
 type RoleManagementPolicy struct {
-	// Role management policy properties.
+// Role management policy properties.
 	Properties *RoleManagementPolicyProperties
 
-	// READ-ONLY; The role management policy Id.
+// READ-ONLY; The role management policy Id.
 	ID *string
 
-	// READ-ONLY; The role management policy name.
+// READ-ONLY; The role management policy name.
 	Name *string
 
-	// READ-ONLY; The role management policy type.
+// READ-ONLY; The role management policy type.
 	Type *string
 }
 
 // RoleManagementPolicyApprovalRule - The role management policy approval rule.
 type RoleManagementPolicyApprovalRule struct {
-	// REQUIRED; The type of rule
+// REQUIRED; The type of rule
 	RuleType *RoleManagementPolicyRuleType
 
-	// The id of the rule.
+// The id of the rule.
 	ID *string
 
-	// The approval setting
+// The approval setting
 	Setting *ApprovalSettings
 
-	// The target of the current rule.
+// The target of the current rule.
 	Target *RoleManagementPolicyRuleTarget
 }
 
 // GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyApprovalRule.
 func (r *RoleManagementPolicyApprovalRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
 	return &RoleManagementPolicyRule{
-		ID:       r.ID,
+		ID: r.ID,
 		RuleType: r.RuleType,
-		Target:   r.Target,
+		Target: r.Target,
 	}
 }
 
 // RoleManagementPolicyAssignment - Role management policy
 type RoleManagementPolicyAssignment struct {
-	// Role management policy properties.
+// Role management policy properties.
 	Properties *RoleManagementPolicyAssignmentProperties
 
-	// READ-ONLY; The role management policy Id.
+// READ-ONLY; The role management policy Id.
 	ID *string
 
-	// READ-ONLY; The role management policy name.
+// READ-ONLY; The role management policy name.
 	Name *string
 
-	// READ-ONLY; The role management policy type.
+// READ-ONLY; The role management policy type.
 	Type *string
 }
 
 // RoleManagementPolicyAssignmentListResult - Role management policy assignment list operation result.
 type RoleManagementPolicyAssignmentListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Role management policy assignment list.
+// Role management policy assignment list.
 	Value []*RoleManagementPolicyAssignment
 }
 
 // RoleManagementPolicyAssignmentProperties - Role management policy assignment properties with scope.
 type RoleManagementPolicyAssignmentProperties struct {
-	// The policy id role management policy assignment.
+// The policy id role management policy assignment.
 	PolicyID *string
 
-	// The role definition of management policy assignment.
+// The role definition of management policy assignment.
 	RoleDefinitionID *string
 
-	// The role management policy scope.
+// The role management policy scope.
 	Scope *string
 
-	// READ-ONLY; Additional properties of scope, role definition and policy
+// READ-ONLY; The readonly computed rule applied to the policy.
+	EffectiveRules []RoleManagementPolicyRuleClassification
+
+// READ-ONLY; Additional properties of scope, role definition and policy
 	PolicyAssignmentProperties *PolicyAssignmentProperties
 }
 
 // RoleManagementPolicyAuthenticationContextRule - The role management policy authentication context rule.
 type RoleManagementPolicyAuthenticationContextRule struct {
-	// REQUIRED; The type of rule
+// REQUIRED; The type of rule
 	RuleType *RoleManagementPolicyRuleType
 
-	// The claim value.
+// The claim value.
 	ClaimValue *string
 
-	// The id of the rule.
+// The id of the rule.
 	ID *string
 
-	// The value indicating if rule is enabled.
+// The value indicating if rule is enabled.
 	IsEnabled *bool
 
-	// The target of the current rule.
+// The target of the current rule.
 	Target *RoleManagementPolicyRuleTarget
 }
 
 // GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyAuthenticationContextRule.
 func (r *RoleManagementPolicyAuthenticationContextRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
 	return &RoleManagementPolicyRule{
-		ID:       r.ID,
+		ID: r.ID,
 		RuleType: r.RuleType,
-		Target:   r.Target,
+		Target: r.Target,
 	}
 }
 
 // RoleManagementPolicyEnablementRule - The role management policy enablement rule.
 type RoleManagementPolicyEnablementRule struct {
-	// REQUIRED; The type of rule
+// REQUIRED; The type of rule
 	RuleType *RoleManagementPolicyRuleType
 
-	// The list of enabled rules.
+// The list of enabled rules.
 	EnabledRules []*EnablementRules
 
-	// The id of the rule.
+// The id of the rule.
 	ID *string
 
-	// The target of the current rule.
+// The target of the current rule.
 	Target *RoleManagementPolicyRuleTarget
 }
 
 // GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyEnablementRule.
 func (r *RoleManagementPolicyEnablementRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
 	return &RoleManagementPolicyRule{
-		ID:       r.ID,
+		ID: r.ID,
 		RuleType: r.RuleType,
-		Target:   r.Target,
+		Target: r.Target,
 	}
 }
 
 // RoleManagementPolicyExpirationRule - The role management policy expiration rule.
 type RoleManagementPolicyExpirationRule struct {
-	// REQUIRED; The type of rule
+// REQUIRED; The type of rule
 	RuleType *RoleManagementPolicyRuleType
 
-	// The id of the rule.
+// The members not restricted by expiration rule.
+	ExceptionMembers []*UserSet
+
+// The id of the rule.
 	ID *string
 
-	// The value indicating whether expiration is required.
+// The value indicating whether expiration is required.
 	IsExpirationRequired *bool
 
-	// The maximum duration of expiration in timespan.
+// The maximum duration of expiration in timespan.
 	MaximumDuration *string
 
-	// The target of the current rule.
+// The target of the current rule.
 	Target *RoleManagementPolicyRuleTarget
 }
 
 // GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyExpirationRule.
 func (r *RoleManagementPolicyExpirationRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
 	return &RoleManagementPolicyRule{
-		ID:       r.ID,
+		ID: r.ID,
 		RuleType: r.RuleType,
-		Target:   r.Target,
+		Target: r.Target,
 	}
 }
 
 // RoleManagementPolicyListResult - Role management policy list operation result.
 type RoleManagementPolicyListResult struct {
-	// The URL to use for getting the next set of results.
+// The URL to use for getting the next set of results.
 	NextLink *string
 
-	// Role management policy list.
+// Role management policy list.
 	Value []*RoleManagementPolicy
 }
 
 // RoleManagementPolicyNotificationRule - The role management policy notification rule.
 type RoleManagementPolicyNotificationRule struct {
-	// REQUIRED; The type of rule
+// REQUIRED; The type of rule
 	RuleType *RoleManagementPolicyRuleType
 
-	// The id of the rule.
+// The id of the rule.
 	ID *string
 
-	// Determines if the notification will be sent to the recipient type specified in the policy rule.
+// Determines if the notification will be sent to the recipient type specified in the policy rule.
 	IsDefaultRecipientsEnabled *bool
 
-	// The notification level.
+// The notification level.
 	NotificationLevel *NotificationLevel
 
-	// The list of notification recipients.
+// The list of notification recipients.
 	NotificationRecipients []*string
 
-	// The type of notification.
+// The type of notification.
 	NotificationType *NotificationDeliveryMechanism
 
-	// The recipient type.
+// The recipient type.
 	RecipientType *RecipientType
 
-	// The target of the current rule.
+// The target of the current rule.
 	Target *RoleManagementPolicyRuleTarget
 }
 
 // GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyNotificationRule.
 func (r *RoleManagementPolicyNotificationRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
 	return &RoleManagementPolicyRule{
-		ID:       r.ID,
+		ID: r.ID,
 		RuleType: r.RuleType,
-		Target:   r.Target,
+		Target: r.Target,
+	}
+}
+
+// RoleManagementPolicyPimOnlyModeRule - The role management policy PIM only mode rule.
+type RoleManagementPolicyPimOnlyModeRule struct {
+// REQUIRED; The type of rule
+	RuleType *RoleManagementPolicyRuleType
+
+// The id of the rule.
+	ID *string
+
+// The PIM Only Mode settings
+	PimOnlyModeSettings *PIMOnlyModeSettings
+
+// The target of the current rule.
+	Target *RoleManagementPolicyRuleTarget
+}
+
+// GetRoleManagementPolicyRule implements the RoleManagementPolicyRuleClassification interface for type RoleManagementPolicyPimOnlyModeRule.
+func (r *RoleManagementPolicyPimOnlyModeRule) GetRoleManagementPolicyRule() *RoleManagementPolicyRule {
+	return &RoleManagementPolicyRule{
+		ID: r.ID,
+		RuleType: r.RuleType,
+		Target: r.Target,
 	}
 }
 
 // RoleManagementPolicyProperties - Role management policy properties with scope.
 type RoleManagementPolicyProperties struct {
-	// The role management policy description.
+// The role management policy description.
 	Description *string
 
-	// The role management policy display name.
+// The role management policy display name.
 	DisplayName *string
 
-	// The role management policy is default policy.
+// The role management policy is default policy.
 	IsOrganizationDefault *bool
 
-	// The rule applied to the policy.
+// The rule applied to the policy.
 	Rules []RoleManagementPolicyRuleClassification
 
-	// The role management policy scope.
+// The role management policy scope.
 	Scope *string
 
-	// READ-ONLY; The readonly computed rule applied to the policy.
+// READ-ONLY; The readonly computed rule applied to the policy.
 	EffectiveRules []RoleManagementPolicyRuleClassification
 
-	// READ-ONLY; The name of the entity last modified it
+// READ-ONLY; The name of the entity last modified it
 	LastModifiedBy *Principal
 
-	// READ-ONLY; The last modified date time.
+// READ-ONLY; The last modified date time.
 	LastModifiedDateTime *time.Time
 
-	// READ-ONLY; Additional properties of scope
+// READ-ONLY; Additional properties of scope
 	PolicyProperties *PolicyProperties
 }
 
 // RoleManagementPolicyRule - The role management policy rule.
 type RoleManagementPolicyRule struct {
-	// REQUIRED; The type of rule
+// REQUIRED; The type of rule
 	RuleType *RoleManagementPolicyRuleType
 
-	// The id of the rule.
+// The id of the rule.
 	ID *string
 
-	// The target of the current rule.
+// The target of the current rule.
 	Target *RoleManagementPolicyRuleTarget
 }
 
@@ -2470,47 +2566,68 @@ func (r *RoleManagementPolicyRule) GetRoleManagementPolicyRule() *RoleManagement
 
 // RoleManagementPolicyRuleTarget - The role management policy rule target.
 type RoleManagementPolicyRuleTarget struct {
-	// The caller of the setting.
+// The caller of the setting.
 	Caller *string
 
-	// The list of enforced settings.
+// The list of enforced settings.
 	EnforcedSettings []*string
 
-	// The list of inheritable settings.
+// The list of inheritable settings.
 	InheritableSettings []*string
 
-	// The assignment level to which rule is applied.
+// The assignment level to which rule is applied.
 	Level *string
 
-	// The type of operation.
+// The type of operation.
 	Operations []*string
 
-	// The list of target objects.
+// The list of target objects.
 	TargetObjects []*string
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+// The identity that created the resource.
+	CreatedBy *string
+
+// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+// The identity that last modified the resource.
+	LastModifiedBy *string
+
+// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
 // TooManyOwnersAssignedToResourceAlertConfigurationProperties - Too many owners assigned to resource alert configuration
 // properties.
 type TooManyOwnersAssignedToResourceAlertConfigurationProperties struct {
-	// REQUIRED; The alert configuration type.
+// REQUIRED; The alert configuration type.
 	AlertConfigurationType *string
 
-	// True if the alert is enabled, false will disable the scanning for the specific alert.
+// True if the alert is enabled, false will disable the scanning for the specific alert.
 	IsEnabled *bool
 
-	// The threshold number of owners.
+// The threshold number of owners.
 	ThresholdNumberOfOwners *int32
 
-	// The threshold percentage of owners out of all role members.
+// The threshold percentage of owners out of all role members.
 	ThresholdPercentageOfOwnersOutOfAllRoleMembers *int32
 
-	// READ-ONLY; The alert definition.
+// READ-ONLY; The alert definition.
 	AlertDefinition *AlertDefinition
 
-	// READ-ONLY; The alert definition ID.
+// READ-ONLY; The alert definition ID.
 	AlertDefinitionID *string
 
-	// READ-ONLY; The alert scope.
+// READ-ONLY; The alert scope.
 	Scope *string
 }
 
@@ -2518,22 +2635,22 @@ type TooManyOwnersAssignedToResourceAlertConfigurationProperties struct {
 func (t *TooManyOwnersAssignedToResourceAlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
 	return &AlertConfigurationProperties{
 		AlertConfigurationType: t.AlertConfigurationType,
-		AlertDefinition:        t.AlertDefinition,
-		AlertDefinitionID:      t.AlertDefinitionID,
-		IsEnabled:              t.IsEnabled,
-		Scope:                  t.Scope,
+		AlertDefinition: t.AlertDefinition,
+		AlertDefinitionID: t.AlertDefinitionID,
+		IsEnabled: t.IsEnabled,
+		Scope: t.Scope,
 	}
 }
 
 // TooManyOwnersAssignedToResourceAlertIncidentProperties - Too many owners assigned to resource alert incident properties.
 type TooManyOwnersAssignedToResourceAlertIncidentProperties struct {
-	// REQUIRED; The alert incident type.
+// REQUIRED; The alert incident type.
 	AlertIncidentType *string
 
-	// READ-ONLY; The assignee name.
+// READ-ONLY; The assignee name.
 	AssigneeName *string
 
-	// READ-ONLY; The assignee type.
+// READ-ONLY; The assignee type.
 	AssigneeType *string
 }
 
@@ -2547,25 +2664,25 @@ func (t *TooManyOwnersAssignedToResourceAlertIncidentProperties) GetAlertInciden
 // TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties - Too many permanent owners assigned to resource alert
 // configuration properties.
 type TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties struct {
-	// REQUIRED; The alert configuration type.
+// REQUIRED; The alert configuration type.
 	AlertConfigurationType *string
 
-	// True if the alert is enabled, false will disable the scanning for the specific alert.
+// True if the alert is enabled, false will disable the scanning for the specific alert.
 	IsEnabled *bool
 
-	// The threshold number of permanent owners.
+// The threshold number of permanent owners.
 	ThresholdNumberOfPermanentOwners *int32
 
-	// The threshold percentage of permanent owners out of all owners.
+// The threshold percentage of permanent owners out of all owners.
 	ThresholdPercentageOfPermanentOwnersOutOfAllOwners *int32
 
-	// READ-ONLY; The alert definition.
+// READ-ONLY; The alert definition.
 	AlertDefinition *AlertDefinition
 
-	// READ-ONLY; The alert definition ID.
+// READ-ONLY; The alert definition ID.
 	AlertDefinitionID *string
 
-	// READ-ONLY; The alert scope.
+// READ-ONLY; The alert scope.
 	Scope *string
 }
 
@@ -2573,23 +2690,23 @@ type TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties struct
 func (t *TooManyPermanentOwnersAssignedToResourceAlertConfigurationProperties) GetAlertConfigurationProperties() *AlertConfigurationProperties {
 	return &AlertConfigurationProperties{
 		AlertConfigurationType: t.AlertConfigurationType,
-		AlertDefinition:        t.AlertDefinition,
-		AlertDefinitionID:      t.AlertDefinitionID,
-		IsEnabled:              t.IsEnabled,
-		Scope:                  t.Scope,
+		AlertDefinition: t.AlertDefinition,
+		AlertDefinitionID: t.AlertDefinitionID,
+		IsEnabled: t.IsEnabled,
+		Scope: t.Scope,
 	}
 }
 
 // TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties - Too many permanent owners assigned to resource alert
 // incident properties.
 type TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties struct {
-	// REQUIRED; The alert incident type.
+// REQUIRED; The alert incident type.
 	AlertIncidentType *string
 
-	// READ-ONLY; The assignee name.
+// READ-ONLY; The assignee name.
 	AssigneeName *string
 
-	// READ-ONLY; The assignee type.
+// READ-ONLY; The assignee type.
 	AssigneeType *string
 }
 
@@ -2602,33 +2719,46 @@ func (t *TooManyPermanentOwnersAssignedToResourceAlertIncidentProperties) GetAle
 
 // UserSet - The detail of a user.
 type UserSet struct {
-	// The description of the user.
+// The description of the user.
 	Description *string
 
-	// The object id of the user.
+// The object id of the user.
 	ID *string
 
-	// The value indicating whether the user is a backup fallback approver
+// The value indicating whether the user is a backup fallback approver
 	IsBackup *bool
 
-	// The type of user.
+// The type of user.
 	UserType *UserType
+}
+
+// UsersOrServicePrincipalSet - The detail of a subject.
+type UsersOrServicePrincipalSet struct {
+// The display Name of the entity.
+	DisplayName *string
+
+// The object id of the entity.
+	ID *string
+
+// The type of user.
+	Type *UserType
 }
 
 // ValidationResponse - Validation response
 type ValidationResponse struct {
-	// Failed validation result details
+// Failed validation result details
 	ErrorInfo *ValidationResponseErrorInfo
 
-	// READ-ONLY; Whether or not validation succeeded
+// READ-ONLY; Whether or not validation succeeded
 	IsValid *bool
 }
 
 // ValidationResponseErrorInfo - Failed validation result details
 type ValidationResponseErrorInfo struct {
-	// READ-ONLY; Error code indicating why validation failed
+// READ-ONLY; Error code indicating why validation failed
 	Code *string
 
-	// READ-ONLY; Message indicating why validation failed
+// READ-ONLY; Message indicating why validation failed
 	Message *string
 }
+

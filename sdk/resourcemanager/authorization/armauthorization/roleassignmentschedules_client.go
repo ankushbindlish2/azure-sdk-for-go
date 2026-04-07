@@ -25,14 +25,14 @@ type RoleAssignmentSchedulesClient struct {
 
 // NewRoleAssignmentSchedulesClient creates a new instance of RoleAssignmentSchedulesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRoleAssignmentSchedulesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleAssignmentSchedulesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RoleAssignmentSchedulesClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -40,7 +40,7 @@ func NewRoleAssignmentSchedulesClient(credential azcore.TokenCredential, options
 // Get - Get the specified role assignment schedule for a resource scope
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-10-01-preview
+// Generated from API version 2024-09-01-preview
 //   - scope - The scope of the role assignment schedule.
 //   - roleAssignmentScheduleName - The name (guid) of the role assignment schedule to get.
 //   - options - RoleAssignmentSchedulesClientGetOptions contains the optional parameters for the RoleAssignmentSchedulesClient.Get
@@ -68,7 +68,7 @@ func (client *RoleAssignmentSchedulesClient) Get(ctx context.Context, scope stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleName string, options *RoleAssignmentSchedulesClientGetOptions) (*policy.Request, error) {
+func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleName string, _ *RoleAssignmentSchedulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentSchedules/{roleAssignmentScheduleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleAssignmentScheduleName == "" {
@@ -80,7 +80,7 @@ func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -97,17 +97,17 @@ func (client *RoleAssignmentSchedulesClient) getHandleResponse(resp *http.Respon
 
 // NewListForScopePager - Gets role assignment schedules for a resource scope.
 //
-// Generated from API version 2020-10-01-preview
+// Generated from API version 2024-09-01-preview
 //   - scope - The scope of the role assignments schedules.
 //   - options - RoleAssignmentSchedulesClientListForScopeOptions contains the optional parameters for the RoleAssignmentSchedulesClient.NewListForScopePager
 //     method.
-func (client *RoleAssignmentSchedulesClient) NewListForScopePager(scope string, options *RoleAssignmentSchedulesClientListForScopeOptions) *runtime.Pager[RoleAssignmentSchedulesClientListForScopeResponse] {
+func (client *RoleAssignmentSchedulesClient) NewListForScopePager(scope string, options *RoleAssignmentSchedulesClientListForScopeOptions) (*runtime.Pager[RoleAssignmentSchedulesClientListForScopeResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentSchedulesClientListForScopeResponse]{
 		More: func(page RoleAssignmentSchedulesClientListForScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RoleAssignmentSchedulesClientListForScopeResponse) (RoleAssignmentSchedulesClientListForScopeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentSchedulesClient.NewListForScopePager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentSchedulesClient.NewListForScopePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -119,7 +119,7 @@ func (client *RoleAssignmentSchedulesClient) NewListForScopePager(scope string, 
 				return RoleAssignmentSchedulesClientListForScopeResponse{}, err
 			}
 			return client.listForScopeHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -136,7 +136,7 @@ func (client *RoleAssignmentSchedulesClient) listForScopeCreateRequest(ctx conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -150,3 +150,4 @@ func (client *RoleAssignmentSchedulesClient) listForScopeHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

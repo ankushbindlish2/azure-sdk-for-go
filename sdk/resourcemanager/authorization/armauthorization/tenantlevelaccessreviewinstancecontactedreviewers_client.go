@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// TenantLevelAccessReviewInstanceContactedReviewersClient contains the methods for the TenantLevelAccessReviewInstanceContactedReviewers group.
+// TenantLevelAccessReviewInstanceContactedReviewersClient contains the methods for the TenantLevelAccessReviewInstanceContactedReviewers
+// group.
 // Don't use this type directly, use NewTenantLevelAccessReviewInstanceContactedReviewersClient() instead.
 type TenantLevelAccessReviewInstanceContactedReviewersClient struct {
 	internal *arm.Client
@@ -25,14 +26,14 @@ type TenantLevelAccessReviewInstanceContactedReviewersClient struct {
 
 // NewTenantLevelAccessReviewInstanceContactedReviewersClient creates a new instance of TenantLevelAccessReviewInstanceContactedReviewersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTenantLevelAccessReviewInstanceContactedReviewersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantLevelAccessReviewInstanceContactedReviewersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TenantLevelAccessReviewInstanceContactedReviewersClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -44,13 +45,13 @@ func NewTenantLevelAccessReviewInstanceContactedReviewersClient(credential azcor
 //   - id - The id of the access review instance.
 //   - options - TenantLevelAccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager
 //     method.
-func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) NewListPager(scheduleDefinitionID string, id string, options *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[TenantLevelAccessReviewInstanceContactedReviewersClientListResponse] {
+func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) NewListPager(scheduleDefinitionID string, id string, options *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) (*runtime.Pager[TenantLevelAccessReviewInstanceContactedReviewersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[TenantLevelAccessReviewInstanceContactedReviewersClientListResponse]{
 		More: func(page TenantLevelAccessReviewInstanceContactedReviewersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *TenantLevelAccessReviewInstanceContactedReviewersClientListResponse) (TenantLevelAccessReviewInstanceContactedReviewersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -62,13 +63,13 @@ func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) NewListPa
 				return TenantLevelAccessReviewInstanceContactedReviewersClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
+func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/contactedReviewers"
 	if scheduleDefinitionID == "" {
 		return nil, errors.New("parameter scheduleDefinitionID cannot be empty")
@@ -97,3 +98,4 @@ func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) listHandl
 	}
 	return result, nil
 }
+

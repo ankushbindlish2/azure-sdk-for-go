@@ -20,14 +20,14 @@ import (
 // AccessReviewInstanceContactedReviewersClient contains the methods for the AccessReviewInstanceContactedReviewers group.
 // Don't use this type directly, use NewAccessReviewInstanceContactedReviewersClient() instead.
 type AccessReviewInstanceContactedReviewersClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewAccessReviewInstanceContactedReviewersClient creates a new instance of AccessReviewInstanceContactedReviewersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstanceContactedReviewersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstanceContactedReviewersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewAccessReviewInstanceContactedReviewersClient(subscriptionID string, cred
 	}
 	client := &AccessReviewInstanceContactedReviewersClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -47,13 +47,13 @@ func NewAccessReviewInstanceContactedReviewersClient(subscriptionID string, cred
 //   - id - The id of the access review instance.
 //   - options - AccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the AccessReviewInstanceContactedReviewersClient.NewListPager
 //     method.
-func (client *AccessReviewInstanceContactedReviewersClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[AccessReviewInstanceContactedReviewersClientListResponse] {
+func (client *AccessReviewInstanceContactedReviewersClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceContactedReviewersClientListOptions) (*runtime.Pager[AccessReviewInstanceContactedReviewersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstanceContactedReviewersClientListResponse]{
 		More: func(page AccessReviewInstanceContactedReviewersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessReviewInstanceContactedReviewersClientListResponse) (AccessReviewInstanceContactedReviewersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstanceContactedReviewersClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstanceContactedReviewersClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -65,13 +65,13 @@ func (client *AccessReviewInstanceContactedReviewersClient) NewListPager(schedul
 				return AccessReviewInstanceContactedReviewersClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
+func (client *AccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/contactedReviewers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -104,3 +104,4 @@ func (client *AccessReviewInstanceContactedReviewersClient) listHandleResponse(r
 	}
 	return result, nil
 }
+

@@ -20,14 +20,14 @@ import (
 // AccessReviewHistoryDefinitionInstancesClient contains the methods for the AccessReviewHistoryDefinitionInstances group.
 // Don't use this type directly, use NewAccessReviewHistoryDefinitionInstancesClient() instead.
 type AccessReviewHistoryDefinitionInstancesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewAccessReviewHistoryDefinitionInstancesClient creates a new instance of AccessReviewHistoryDefinitionInstancesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewHistoryDefinitionInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewHistoryDefinitionInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewAccessReviewHistoryDefinitionInstancesClient(subscriptionID string, cred
 	}
 	client := &AccessReviewHistoryDefinitionInstancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -46,13 +46,13 @@ func NewAccessReviewHistoryDefinitionInstancesClient(subscriptionID string, cred
 //   - historyDefinitionID - The id of the access review history definition.
 //   - options - AccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionInstancesClient.NewListPager
 //     method.
-func (client *AccessReviewHistoryDefinitionInstancesClient) NewListPager(historyDefinitionID string, options *AccessReviewHistoryDefinitionInstancesClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionInstancesClientListResponse] {
+func (client *AccessReviewHistoryDefinitionInstancesClient) NewListPager(historyDefinitionID string, options *AccessReviewHistoryDefinitionInstancesClientListOptions) (*runtime.Pager[AccessReviewHistoryDefinitionInstancesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessReviewHistoryDefinitionInstancesClientListResponse]{
 		More: func(page AccessReviewHistoryDefinitionInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessReviewHistoryDefinitionInstancesClientListResponse) (AccessReviewHistoryDefinitionInstancesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewHistoryDefinitionInstancesClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewHistoryDefinitionInstancesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -64,13 +64,13 @@ func (client *AccessReviewHistoryDefinitionInstancesClient) NewListPager(history
 				return AccessReviewHistoryDefinitionInstancesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessReviewHistoryDefinitionInstancesClient) listCreateRequest(ctx context.Context, historyDefinitionID string, options *AccessReviewHistoryDefinitionInstancesClientListOptions) (*policy.Request, error) {
+func (client *AccessReviewHistoryDefinitionInstancesClient) listCreateRequest(ctx context.Context, historyDefinitionID string, _ *AccessReviewHistoryDefinitionInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}/instances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,3 +99,4 @@ func (client *AccessReviewHistoryDefinitionInstancesClient) listHandleResponse(r
 	}
 	return result, nil
 }
+

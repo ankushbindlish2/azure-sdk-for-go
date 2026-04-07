@@ -20,7 +20,7 @@ import (
 )
 
 // RoleAssignmentsServer is a fake server for instances of the armauthorization.RoleAssignmentsClient type.
-type RoleAssignmentsServer struct {
+type RoleAssignmentsServer struct{
 	// Create is the fake for method RoleAssignmentsClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	Create func(ctx context.Context, scope string, roleAssignmentName string, parameters armauthorization.RoleAssignmentCreateParameters, options *armauthorization.RoleAssignmentsClientCreateOptions) (resp azfake.Responder[armauthorization.RoleAssignmentsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -60,6 +60,7 @@ type RoleAssignmentsServer struct {
 	// NewListForSubscriptionPager is the fake for method RoleAssignmentsClient.NewListForSubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForSubscriptionPager func(options *armauthorization.RoleAssignmentsClientListForSubscriptionOptions) (resp azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForSubscriptionResponse])
+
 }
 
 // NewRoleAssignmentsServerTransport creates a new instance of RoleAssignmentsServerTransport with the provided implementation.
@@ -67,22 +68,22 @@ type RoleAssignmentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRoleAssignmentsServerTransport(srv *RoleAssignmentsServer) *RoleAssignmentsServerTransport {
 	return &RoleAssignmentsServerTransport{
-		srv:                          srv,
-		newListForResourcePager:      newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForResourceResponse]](),
+		srv: srv,
+		newListForResourcePager: newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForResourceResponse]](),
 		newListForResourceGroupPager: newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForResourceGroupResponse]](),
-		newListForScopePager:         newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForScopeResponse]](),
-		newListForSubscriptionPager:  newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForSubscriptionResponse]](),
+		newListForScopePager: newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForScopeResponse]](),
+		newListForSubscriptionPager: newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForSubscriptionResponse]](),
 	}
 }
 
 // RoleAssignmentsServerTransport connects instances of armauthorization.RoleAssignmentsClient to instances of RoleAssignmentsServer.
 // Don't use this type directly, use NewRoleAssignmentsServerTransport instead.
 type RoleAssignmentsServerTransport struct {
-	srv                          *RoleAssignmentsServer
-	newListForResourcePager      *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForResourceResponse]]
+	srv *RoleAssignmentsServer
+	newListForResourcePager *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForResourceResponse]]
 	newListForResourceGroupPager *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForResourceGroupResponse]]
-	newListForScopePager         *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForScopeResponse]]
-	newListForSubscriptionPager  *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForSubscriptionResponse]]
+	newListForScopePager *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForScopeResponse]]
+	newListForSubscriptionPager *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentsClientListForSubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for RoleAssignmentsServerTransport.
@@ -93,39 +94,58 @@ func (r *RoleAssignmentsServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleAssignmentsClient.Create":
-		resp, err = r.dispatchCreate(req)
-	case "RoleAssignmentsClient.CreateByID":
-		resp, err = r.dispatchCreateByID(req)
-	case "RoleAssignmentsClient.Delete":
-		resp, err = r.dispatchDelete(req)
-	case "RoleAssignmentsClient.DeleteByID":
-		resp, err = r.dispatchDeleteByID(req)
-	case "RoleAssignmentsClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RoleAssignmentsClient.GetByID":
-		resp, err = r.dispatchGetByID(req)
-	case "RoleAssignmentsClient.NewListForResourcePager":
-		resp, err = r.dispatchNewListForResourcePager(req)
-	case "RoleAssignmentsClient.NewListForResourceGroupPager":
-		resp, err = r.dispatchNewListForResourceGroupPager(req)
-	case "RoleAssignmentsClient.NewListForScopePager":
-		resp, err = r.dispatchNewListForScopePager(req)
-	case "RoleAssignmentsClient.NewListForSubscriptionPager":
-		resp, err = r.dispatchNewListForSubscriptionPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleAssignmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if roleAssignmentsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = roleAssignmentsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleAssignmentsClient.Create":
+				res.resp, res.err = r.dispatchCreate(req)
+			case "RoleAssignmentsClient.CreateByID":
+				res.resp, res.err = r.dispatchCreateByID(req)
+			case "RoleAssignmentsClient.Delete":
+				res.resp, res.err = r.dispatchDelete(req)
+			case "RoleAssignmentsClient.DeleteByID":
+				res.resp, res.err = r.dispatchDeleteByID(req)
+			case "RoleAssignmentsClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoleAssignmentsClient.GetByID":
+				res.resp, res.err = r.dispatchGetByID(req)
+			case "RoleAssignmentsClient.NewListForResourcePager":
+				res.resp, res.err = r.dispatchNewListForResourcePager(req)
+			case "RoleAssignmentsClient.NewListForResourceGroupPager":
+				res.resp, res.err = r.dispatchNewListForResourceGroupPager(req)
+			case "RoleAssignmentsClient.NewListForScopePager":
+				res.resp, res.err = r.dispatchNewListForScopePager(req)
+			case "RoleAssignmentsClient.NewListForSubscriptionPager":
+				res.resp, res.err = r.dispatchNewListForSubscriptionPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleAssignmentsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -135,7 +155,7 @@ func (r *RoleAssignmentsServerTransport) dispatchCreate(req *http.Request) (*htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleAssignmentCreateParameters](req)
@@ -172,7 +192,7 @@ func (r *RoleAssignmentsServerTransport) dispatchCreateByID(req *http.Request) (
 	const regexStr = `/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleAssignmentCreateParameters](req)
@@ -205,7 +225,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDelete(req *http.Request) (*htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -250,7 +270,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByID(req *http.Request) (
 	const regexStr = `/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -291,7 +311,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGet(req *http.Request) (*http.R
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments/(?P<roleAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -336,7 +356,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByID(req *http.Request) (*ht
 	const regexStr = `/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -376,47 +396,47 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForResourcePager(req *ht
 	}
 	newListForResourcePager := r.newListForResourcePager.get(req)
 	if newListForResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
+	if err != nil {
+		return nil, err
+	}
+	tenantIDParam := getOptional(tenantIDUnescaped)
+	var options *armauthorization.RoleAssignmentsClientListForResourceOptions
+	if filterParam != nil || tenantIDParam != nil {
+		options = &armauthorization.RoleAssignmentsClientListForResourceOptions{
+			Filter: filterParam,
+			TenantID: tenantIDParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-		if err != nil {
-			return nil, err
-		}
-		tenantIDParam := getOptional(tenantIDUnescaped)
-		var options *armauthorization.RoleAssignmentsClientListForResourceOptions
-		if filterParam != nil || tenantIDParam != nil {
-			options = &armauthorization.RoleAssignmentsClientListForResourceOptions{
-				Filter:   filterParam,
-				TenantID: tenantIDParam,
-			}
-		}
-		resp := r.srv.NewListForResourcePager(resourceGroupNameParam, resourceProviderNamespaceParam, resourceTypeParam, resourceNameParam, options)
+	}
+resp := r.srv.NewListForResourcePager(resourceGroupNameParam, resourceProviderNamespaceParam, resourceTypeParam, resourceNameParam, options)
 		newListForResourcePager = &resp
 		r.newListForResourcePager.add(req, newListForResourcePager)
 		server.PagerResponderInjectNextLinks(newListForResourcePager, req, func(page *armauthorization.RoleAssignmentsClientListForResourceResponse, createLink func() string) {
@@ -443,35 +463,35 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForResourceGroupPager(re
 	}
 	newListForResourceGroupPager := r.newListForResourceGroupPager.get(req)
 	if newListForResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
+	if err != nil {
+		return nil, err
+	}
+	tenantIDParam := getOptional(tenantIDUnescaped)
+	var options *armauthorization.RoleAssignmentsClientListForResourceGroupOptions
+	if filterParam != nil || tenantIDParam != nil {
+		options = &armauthorization.RoleAssignmentsClientListForResourceGroupOptions{
+			Filter: filterParam,
+			TenantID: tenantIDParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-		if err != nil {
-			return nil, err
-		}
-		tenantIDParam := getOptional(tenantIDUnescaped)
-		var options *armauthorization.RoleAssignmentsClientListForResourceGroupOptions
-		if filterParam != nil || tenantIDParam != nil {
-			options = &armauthorization.RoleAssignmentsClientListForResourceGroupOptions{
-				Filter:   filterParam,
-				TenantID: tenantIDParam,
-			}
-		}
-		resp := r.srv.NewListForResourceGroupPager(resourceGroupNameParam, options)
+	}
+resp := r.srv.NewListForResourceGroupPager(resourceGroupNameParam, options)
 		newListForResourceGroupPager = &resp
 		r.newListForResourceGroupPager.add(req, newListForResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListForResourceGroupPager, req, func(page *armauthorization.RoleAssignmentsClientListForResourceGroupResponse, createLink func() string) {
@@ -498,41 +518,41 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForScopePager(req *http.
 	}
 	newListForScopePager := r.newListForScopePager.get(req)
 	if newListForScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
+	if err != nil {
+		return nil, err
+	}
+	tenantIDParam := getOptional(tenantIDUnescaped)
+	skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+	if err != nil {
+		return nil, err
+	}
+	skipTokenParam := getOptional(skipTokenUnescaped)
+	var options *armauthorization.RoleAssignmentsClientListForScopeOptions
+	if filterParam != nil || tenantIDParam != nil || skipTokenParam != nil {
+		options = &armauthorization.RoleAssignmentsClientListForScopeOptions{
+			Filter: filterParam,
+			TenantID: tenantIDParam,
+			SkipToken: skipTokenParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-		if err != nil {
-			return nil, err
-		}
-		tenantIDParam := getOptional(tenantIDUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
-		var options *armauthorization.RoleAssignmentsClientListForScopeOptions
-		if filterParam != nil || tenantIDParam != nil || skipTokenParam != nil {
-			options = &armauthorization.RoleAssignmentsClientListForScopeOptions{
-				Filter:    filterParam,
-				TenantID:  tenantIDParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := r.srv.NewListForScopePager(scopeParam, options)
+	}
+resp := r.srv.NewListForScopePager(scopeParam, options)
 		newListForScopePager = &resp
 		r.newListForScopePager.add(req, newListForScopePager)
 		server.PagerResponderInjectNextLinks(newListForScopePager, req, func(page *armauthorization.RoleAssignmentsClientListForScopeResponse, createLink func() string) {
@@ -559,31 +579,31 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForSubscriptionPager(req
 	}
 	newListForSubscriptionPager := r.newListForSubscriptionPager.get(req)
 	if newListForSubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
+	if err != nil {
+		return nil, err
+	}
+	tenantIDParam := getOptional(tenantIDUnescaped)
+	var options *armauthorization.RoleAssignmentsClientListForSubscriptionOptions
+	if filterParam != nil || tenantIDParam != nil {
+		options = &armauthorization.RoleAssignmentsClientListForSubscriptionOptions{
+			Filter: filterParam,
+			TenantID: tenantIDParam,
 		}
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-		if err != nil {
-			return nil, err
-		}
-		tenantIDParam := getOptional(tenantIDUnescaped)
-		var options *armauthorization.RoleAssignmentsClientListForSubscriptionOptions
-		if filterParam != nil || tenantIDParam != nil {
-			options = &armauthorization.RoleAssignmentsClientListForSubscriptionOptions{
-				Filter:   filterParam,
-				TenantID: tenantIDParam,
-			}
-		}
-		resp := r.srv.NewListForSubscriptionPager(options)
+	}
+resp := r.srv.NewListForSubscriptionPager(options)
 		newListForSubscriptionPager = &resp
 		r.newListForSubscriptionPager.add(req, newListForSubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListForSubscriptionPager, req, func(page *armauthorization.RoleAssignmentsClientListForSubscriptionResponse, createLink func() string) {
@@ -602,4 +622,10 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForSubscriptionPager(req
 		r.newListForSubscriptionPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleAssignmentsServerTransport
+var roleAssignmentsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

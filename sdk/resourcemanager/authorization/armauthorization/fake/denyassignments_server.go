@@ -20,7 +20,15 @@ import (
 )
 
 // DenyAssignmentsServer is a fake server for instances of the armauthorization.DenyAssignmentsClient type.
-type DenyAssignmentsServer struct {
+type DenyAssignmentsServer struct{
+	// CreateOrUpdate is the fake for method DenyAssignmentsClient.CreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	CreateOrUpdate func(ctx context.Context, scope string, denyAssignmentID string, parameters armauthorization.DenyAssignment, options *armauthorization.DenyAssignmentsClientCreateOrUpdateOptions) (resp azfake.Responder[armauthorization.DenyAssignmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Delete is the fake for method DenyAssignmentsClient.Delete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	Delete func(ctx context.Context, scope string, denyAssignmentID string, options *armauthorization.DenyAssignmentsClientDeleteOptions) (resp azfake.Responder[armauthorization.DenyAssignmentsClientDeleteResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DenyAssignmentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, scope string, denyAssignmentID string, options *armauthorization.DenyAssignmentsClientGetOptions) (resp azfake.Responder[armauthorization.DenyAssignmentsClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,6 +52,7 @@ type DenyAssignmentsServer struct {
 	// NewListForScopePager is the fake for method DenyAssignmentsClient.NewListForScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForScopePager func(scope string, options *armauthorization.DenyAssignmentsClientListForScopeOptions) (resp azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForScopeResponse])
+
 }
 
 // NewDenyAssignmentsServerTransport creates a new instance of DenyAssignmentsServerTransport with the provided implementation.
@@ -51,22 +60,22 @@ type DenyAssignmentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDenyAssignmentsServerTransport(srv *DenyAssignmentsServer) *DenyAssignmentsServerTransport {
 	return &DenyAssignmentsServerTransport{
-		srv:                          srv,
-		newListPager:                 newTracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListResponse]](),
-		newListForResourcePager:      newTracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForResourceResponse]](),
+		srv: srv,
+		newListPager: newTracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListResponse]](),
+		newListForResourcePager: newTracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForResourceResponse]](),
 		newListForResourceGroupPager: newTracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForResourceGroupResponse]](),
-		newListForScopePager:         newTracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForScopeResponse]](),
+		newListForScopePager: newTracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForScopeResponse]](),
 	}
 }
 
 // DenyAssignmentsServerTransport connects instances of armauthorization.DenyAssignmentsClient to instances of DenyAssignmentsServer.
 // Don't use this type directly, use NewDenyAssignmentsServerTransport instead.
 type DenyAssignmentsServerTransport struct {
-	srv                          *DenyAssignmentsServer
-	newListPager                 *tracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListResponse]]
-	newListForResourcePager      *tracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForResourceResponse]]
+	srv *DenyAssignmentsServer
+	newListPager *tracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListResponse]]
+	newListForResourcePager *tracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForResourceResponse]]
 	newListForResourceGroupPager *tracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForResourceGroupResponse]]
-	newListForScopePager         *tracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForScopeResponse]]
+	newListForScopePager *tracker[azfake.PagerResponder[armauthorization.DenyAssignmentsClientListForScopeResponse]]
 }
 
 // Do implements the policy.Transporter interface for DenyAssignmentsServerTransport.
@@ -77,30 +86,123 @@ func (d *DenyAssignmentsServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DenyAssignmentsClient.Get":
-		resp, err = d.dispatchGet(req)
-	case "DenyAssignmentsClient.GetByID":
-		resp, err = d.dispatchGetByID(req)
-	case "DenyAssignmentsClient.NewListPager":
-		resp, err = d.dispatchNewListPager(req)
-	case "DenyAssignmentsClient.NewListForResourcePager":
-		resp, err = d.dispatchNewListForResourcePager(req)
-	case "DenyAssignmentsClient.NewListForResourceGroupPager":
-		resp, err = d.dispatchNewListForResourceGroupPager(req)
-	case "DenyAssignmentsClient.NewListForScopePager":
-		resp, err = d.dispatchNewListForScopePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DenyAssignmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if denyAssignmentsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = denyAssignmentsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DenyAssignmentsClient.CreateOrUpdate":
+				res.resp, res.err = d.dispatchCreateOrUpdate(req)
+			case "DenyAssignmentsClient.Delete":
+				res.resp, res.err = d.dispatchDelete(req)
+			case "DenyAssignmentsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DenyAssignmentsClient.GetByID":
+				res.resp, res.err = d.dispatchGetByID(req)
+			case "DenyAssignmentsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
+			case "DenyAssignmentsClient.NewListForResourcePager":
+				res.resp, res.err = d.dispatchNewListForResourcePager(req)
+			case "DenyAssignmentsClient.NewListForResourceGroupPager":
+				res.resp, res.err = d.dispatchNewListForResourceGroupPager(req)
+			case "DenyAssignmentsClient.NewListForScopePager":
+				res.resp, res.err = d.dispatchNewListForScopePager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
+}
 
+func (d *DenyAssignmentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.CreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+	}
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments/(?P<denyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armauthorization.DenyAssignment](req)
 	if err != nil {
 		return nil, err
 	}
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	denyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("denyAssignmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CreateOrUpdate(req.Context(), scopeParam, denyAssignmentIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DenyAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
 
+func (d *DenyAssignmentsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+	if d.srv.Delete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+	}
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments/(?P<denyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	denyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("denyAssignmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Delete(req.Context(), scopeParam, denyAssignmentIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -111,7 +213,7 @@ func (d *DenyAssignmentsServerTransport) dispatchGet(req *http.Request) (*http.R
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments/(?P<denyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -144,7 +246,7 @@ func (d *DenyAssignmentsServerTransport) dispatchGetByID(req *http.Request) (*ht
 	const regexStr = `/(?P<denyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	denyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("denyAssignmentId")])
@@ -172,25 +274,25 @@ func (d *DenyAssignmentsServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.DenyAssignmentsClientListOptions
+	if filterParam != nil {
+		options = &armauthorization.DenyAssignmentsClientListOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.DenyAssignmentsClientListOptions
-		if filterParam != nil {
-			options = &armauthorization.DenyAssignmentsClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := d.srv.NewListPager(options)
+	}
+resp := d.srv.NewListPager(options)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.DenyAssignmentsClientListResponse, createLink func() string) {
@@ -217,45 +319,45 @@ func (d *DenyAssignmentsServerTransport) dispatchNewListForResourcePager(req *ht
 	}
 	newListForResourcePager := d.newListForResourcePager.get(req)
 	if newListForResourcePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourcePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourcePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
+	if err != nil {
+		return nil, err
+	}
+	resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.DenyAssignmentsClientListForResourceOptions
+	if filterParam != nil {
+		options = &armauthorization.DenyAssignmentsClientListForResourceOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
-		if err != nil {
-			return nil, err
-		}
-		parentResourcePathParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourcePath")])
-		if err != nil {
-			return nil, err
-		}
-		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.DenyAssignmentsClientListForResourceOptions
-		if filterParam != nil {
-			options = &armauthorization.DenyAssignmentsClientListForResourceOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := d.srv.NewListForResourcePager(resourceGroupNameParam, resourceProviderNamespaceParam, parentResourcePathParam, resourceTypeParam, resourceNameParam, options)
+	}
+resp := d.srv.NewListForResourcePager(resourceGroupNameParam, resourceProviderNamespaceParam, parentResourcePathParam, resourceTypeParam, resourceNameParam, options)
 		newListForResourcePager = &resp
 		d.newListForResourcePager.add(req, newListForResourcePager)
 		server.PagerResponderInjectNextLinks(newListForResourcePager, req, func(page *armauthorization.DenyAssignmentsClientListForResourceResponse, createLink func() string) {
@@ -282,29 +384,29 @@ func (d *DenyAssignmentsServerTransport) dispatchNewListForResourceGroupPager(re
 	}
 	newListForResourceGroupPager := d.newListForResourceGroupPager.get(req)
 	if newListForResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.DenyAssignmentsClientListForResourceGroupOptions
+	if filterParam != nil {
+		options = &armauthorization.DenyAssignmentsClientListForResourceGroupOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.DenyAssignmentsClientListForResourceGroupOptions
-		if filterParam != nil {
-			options = &armauthorization.DenyAssignmentsClientListForResourceGroupOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := d.srv.NewListForResourceGroupPager(resourceGroupNameParam, options)
+	}
+resp := d.srv.NewListForResourceGroupPager(resourceGroupNameParam, options)
 		newListForResourceGroupPager = &resp
 		d.newListForResourceGroupPager.add(req, newListForResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListForResourceGroupPager, req, func(page *armauthorization.DenyAssignmentsClientListForResourceGroupResponse, createLink func() string) {
@@ -331,29 +433,29 @@ func (d *DenyAssignmentsServerTransport) dispatchNewListForScopePager(req *http.
 	}
 	newListForScopePager := d.newListForScopePager.get(req)
 	if newListForScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/denyAssignments`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.DenyAssignmentsClientListForScopeOptions
+	if filterParam != nil {
+		options = &armauthorization.DenyAssignmentsClientListForScopeOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.DenyAssignmentsClientListForScopeOptions
-		if filterParam != nil {
-			options = &armauthorization.DenyAssignmentsClientListForScopeOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := d.srv.NewListForScopePager(scopeParam, options)
+	}
+resp := d.srv.NewListForScopePager(scopeParam, options)
 		newListForScopePager = &resp
 		d.newListForScopePager.add(req, newListForScopePager)
 		server.PagerResponderInjectNextLinks(newListForScopePager, req, func(page *armauthorization.DenyAssignmentsClientListForScopeResponse, createLink func() string) {
@@ -372,4 +474,10 @@ func (d *DenyAssignmentsServerTransport) dispatchNewListForScopePager(req *http.
 		d.newListForScopePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DenyAssignmentsServerTransport
+var denyAssignmentsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

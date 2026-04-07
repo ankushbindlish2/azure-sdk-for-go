@@ -20,14 +20,14 @@ import (
 // PermissionsClient contains the methods for the Permissions group.
 // Don't use this type directly, use NewPermissionsClient() instead.
 type PermissionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewPermissionsClient creates a new instance of PermissionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PermissionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredenti
 	}
 	client := &PermissionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -50,13 +50,13 @@ func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredenti
 //   - resourceName - The name of the resource to get the permissions for.
 //   - options - PermissionsClientListForResourceOptions contains the optional parameters for the PermissionsClient.NewListForResourcePager
 //     method.
-func (client *PermissionsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsClientListForResourceOptions) *runtime.Pager[PermissionsClientListForResourceResponse] {
+func (client *PermissionsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsClientListForResourceOptions) (*runtime.Pager[PermissionsClientListForResourceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListForResourceResponse]{
 		More: func(page PermissionsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PermissionsClientListForResourceResponse) (PermissionsClientListForResourceResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListForResourcePager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListForResourcePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -68,13 +68,13 @@ func (client *PermissionsClient) NewListForResourcePager(resourceGroupName strin
 				return PermissionsClientListForResourceResponse{}, err
 			}
 			return client.listForResourceHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
-func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsClientListForResourceOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, _ *PermissionsClientListForResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -117,13 +117,13 @@ func (client *PermissionsClient) listForResourceHandleResponse(resp *http.Respon
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.NewListForResourceGroupPager
 //     method.
-func (client *PermissionsClient) NewListForResourceGroupPager(resourceGroupName string, options *PermissionsClientListForResourceGroupOptions) *runtime.Pager[PermissionsClientListForResourceGroupResponse] {
+func (client *PermissionsClient) NewListForResourceGroupPager(resourceGroupName string, options *PermissionsClientListForResourceGroupOptions) (*runtime.Pager[PermissionsClientListForResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListForResourceGroupResponse]{
 		More: func(page PermissionsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *PermissionsClientListForResourceGroupResponse) (PermissionsClientListForResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListForResourceGroupPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PermissionsClient.NewListForResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -135,13 +135,13 @@ func (client *PermissionsClient) NewListForResourceGroupPager(resourceGroupName 
 				return PermissionsClientListForResourceGroupResponse{}, err
 			}
 			return client.listForResourceGroupHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
-func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PermissionsClientListForResourceGroupOptions) (*policy.Request, error) {
+func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *PermissionsClientListForResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization/permissions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,3 +170,4 @@ func (client *PermissionsClient) listForResourceGroupHandleResponse(resp *http.R
 	}
 	return result, nil
 }
+

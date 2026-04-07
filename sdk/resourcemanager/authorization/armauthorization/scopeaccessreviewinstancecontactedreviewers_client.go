@@ -17,7 +17,8 @@ import (
 	"strings"
 )
 
-// ScopeAccessReviewInstanceContactedReviewersClient contains the methods for the ScopeAccessReviewInstanceContactedReviewers group.
+// ScopeAccessReviewInstanceContactedReviewersClient contains the methods for the ScopeAccessReviewInstanceContactedReviewers
+// group.
 // Don't use this type directly, use NewScopeAccessReviewInstanceContactedReviewersClient() instead.
 type ScopeAccessReviewInstanceContactedReviewersClient struct {
 	internal *arm.Client
@@ -25,14 +26,14 @@ type ScopeAccessReviewInstanceContactedReviewersClient struct {
 
 // NewScopeAccessReviewInstanceContactedReviewersClient creates a new instance of ScopeAccessReviewInstanceContactedReviewersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewInstanceContactedReviewersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewInstanceContactedReviewersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScopeAccessReviewInstanceContactedReviewersClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -45,13 +46,13 @@ func NewScopeAccessReviewInstanceContactedReviewersClient(credential azcore.Toke
 //   - id - The id of the access review instance.
 //   - options - ScopeAccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the ScopeAccessReviewInstanceContactedReviewersClient.NewListPager
 //     method.
-func (client *ScopeAccessReviewInstanceContactedReviewersClient) NewListPager(scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[ScopeAccessReviewInstanceContactedReviewersClientListResponse] {
+func (client *ScopeAccessReviewInstanceContactedReviewersClient) NewListPager(scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceContactedReviewersClientListOptions) (*runtime.Pager[ScopeAccessReviewInstanceContactedReviewersClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScopeAccessReviewInstanceContactedReviewersClientListResponse]{
 		More: func(page ScopeAccessReviewInstanceContactedReviewersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScopeAccessReviewInstanceContactedReviewersClientListResponse) (ScopeAccessReviewInstanceContactedReviewersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewInstanceContactedReviewersClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewInstanceContactedReviewersClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -63,13 +64,13 @@ func (client *ScopeAccessReviewInstanceContactedReviewersClient) NewListPager(sc
 				return ScopeAccessReviewInstanceContactedReviewersClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ScopeAccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, options *ScopeAccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewInstanceContactedReviewersClient) listCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, id string, _ *ScopeAccessReviewInstanceContactedReviewersClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}/contactedReviewers"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -102,3 +103,4 @@ func (client *ScopeAccessReviewInstanceContactedReviewersClient) listHandleRespo
 	}
 	return result, nil
 }
+

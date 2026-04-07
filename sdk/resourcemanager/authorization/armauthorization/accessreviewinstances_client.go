@@ -20,14 +20,14 @@ import (
 // AccessReviewInstancesClient contains the methods for the AccessReviewInstances group.
 // Don't use this type directly, use NewAccessReviewInstancesClient() instead.
 type AccessReviewInstancesClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewAccessReviewInstancesClient creates a new instance of AccessReviewInstancesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewAccessReviewInstancesClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &AccessReviewInstancesClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -72,7 +72,7 @@ func (client *AccessReviewInstancesClient) Create(ctx context.Context, scheduleD
 }
 
 // createCreateRequest creates the Create request.
-func (client *AccessReviewInstancesClient) createCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, properties AccessReviewInstanceProperties, options *AccessReviewInstancesClientCreateOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesClient) createCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, properties AccessReviewInstanceProperties, _ *AccessReviewInstancesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,9 +95,9 @@ func (client *AccessReviewInstancesClient) createCreateRequest(ctx context.Conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // createHandleResponse handles the Create response.
@@ -140,7 +140,7 @@ func (client *AccessReviewInstancesClient) GetByID(ctx context.Context, schedule
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, options *AccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Context, scheduleDefinitionID string, id string, _ *AccessReviewInstancesClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/instances/{id}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -180,13 +180,13 @@ func (client *AccessReviewInstancesClient) getByIDHandleResponse(resp *http.Resp
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - options - AccessReviewInstancesClientListOptions contains the optional parameters for the AccessReviewInstancesClient.NewListPager
 //     method.
-func (client *AccessReviewInstancesClient) NewListPager(scheduleDefinitionID string, options *AccessReviewInstancesClientListOptions) *runtime.Pager[AccessReviewInstancesClientListResponse] {
+func (client *AccessReviewInstancesClient) NewListPager(scheduleDefinitionID string, options *AccessReviewInstancesClientListOptions) (*runtime.Pager[AccessReviewInstancesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstancesClientListResponse]{
 		More: func(page AccessReviewInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessReviewInstancesClientListResponse) (AccessReviewInstancesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstancesClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstancesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -198,7 +198,7 @@ func (client *AccessReviewInstancesClient) NewListPager(scheduleDefinitionID str
 				return AccessReviewInstancesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -238,3 +238,4 @@ func (client *AccessReviewInstancesClient) listHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

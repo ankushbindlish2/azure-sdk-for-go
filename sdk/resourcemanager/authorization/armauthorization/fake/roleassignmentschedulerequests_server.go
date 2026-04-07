@@ -20,7 +20,7 @@ import (
 )
 
 // RoleAssignmentScheduleRequestsServer is a fake server for instances of the armauthorization.RoleAssignmentScheduleRequestsClient type.
-type RoleAssignmentScheduleRequestsServer struct {
+type RoleAssignmentScheduleRequestsServer struct{
 	// Cancel is the fake for method RoleAssignmentScheduleRequestsClient.Cancel
 	// HTTP status codes to indicate success: http.StatusOK
 	Cancel func(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, options *armauthorization.RoleAssignmentScheduleRequestsClientCancelOptions) (resp azfake.Responder[armauthorization.RoleAssignmentScheduleRequestsClientCancelResponse], errResp azfake.ErrorResponder)
@@ -40,6 +40,7 @@ type RoleAssignmentScheduleRequestsServer struct {
 	// Validate is the fake for method RoleAssignmentScheduleRequestsClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
 	Validate func(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, parameters armauthorization.RoleAssignmentScheduleRequest, options *armauthorization.RoleAssignmentScheduleRequestsClientValidateOptions) (resp azfake.Responder[armauthorization.RoleAssignmentScheduleRequestsClientValidateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewRoleAssignmentScheduleRequestsServerTransport creates a new instance of RoleAssignmentScheduleRequestsServerTransport with the provided implementation.
@@ -47,7 +48,7 @@ type RoleAssignmentScheduleRequestsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRoleAssignmentScheduleRequestsServerTransport(srv *RoleAssignmentScheduleRequestsServer) *RoleAssignmentScheduleRequestsServerTransport {
 	return &RoleAssignmentScheduleRequestsServerTransport{
-		srv:                  srv,
+		srv: srv,
 		newListForScopePager: newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentScheduleRequestsClientListForScopeResponse]](),
 	}
 }
@@ -55,7 +56,7 @@ func NewRoleAssignmentScheduleRequestsServerTransport(srv *RoleAssignmentSchedul
 // RoleAssignmentScheduleRequestsServerTransport connects instances of armauthorization.RoleAssignmentScheduleRequestsClient to instances of RoleAssignmentScheduleRequestsServer.
 // Don't use this type directly, use NewRoleAssignmentScheduleRequestsServerTransport instead.
 type RoleAssignmentScheduleRequestsServerTransport struct {
-	srv                  *RoleAssignmentScheduleRequestsServer
+	srv *RoleAssignmentScheduleRequestsServer
 	newListForScopePager *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentScheduleRequestsClientListForScopeResponse]]
 }
 
@@ -67,29 +68,48 @@ func (r *RoleAssignmentScheduleRequestsServerTransport) Do(req *http.Request) (*
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleAssignmentScheduleRequestsClient.Cancel":
-		resp, err = r.dispatchCancel(req)
-	case "RoleAssignmentScheduleRequestsClient.Create":
-		resp, err = r.dispatchCreate(req)
-	case "RoleAssignmentScheduleRequestsClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RoleAssignmentScheduleRequestsClient.NewListForScopePager":
-		resp, err = r.dispatchNewListForScopePager(req)
-	case "RoleAssignmentScheduleRequestsClient.Validate":
-		resp, err = r.dispatchValidate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleAssignmentScheduleRequestsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if roleAssignmentScheduleRequestsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = roleAssignmentScheduleRequestsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleAssignmentScheduleRequestsClient.Cancel":
+				res.resp, res.err = r.dispatchCancel(req)
+			case "RoleAssignmentScheduleRequestsClient.Create":
+				res.resp, res.err = r.dispatchCreate(req)
+			case "RoleAssignmentScheduleRequestsClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoleAssignmentScheduleRequestsClient.NewListForScopePager":
+				res.resp, res.err = r.dispatchNewListForScopePager(req)
+			case "RoleAssignmentScheduleRequestsClient.Validate":
+				res.resp, res.err = r.dispatchValidate(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleAssignmentScheduleRequestsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
@@ -99,7 +119,7 @@ func (r *RoleAssignmentScheduleRequestsServerTransport) dispatchCancel(req *http
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentScheduleRequests/(?P<roleAssignmentScheduleRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -132,7 +152,7 @@ func (r *RoleAssignmentScheduleRequestsServerTransport) dispatchCreate(req *http
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentScheduleRequests/(?P<roleAssignmentScheduleRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleAssignmentScheduleRequest](req)
@@ -169,7 +189,7 @@ func (r *RoleAssignmentScheduleRequestsServerTransport) dispatchGet(req *http.Re
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentScheduleRequests/(?P<roleAssignmentScheduleRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -201,29 +221,29 @@ func (r *RoleAssignmentScheduleRequestsServerTransport) dispatchNewListForScopeP
 	}
 	newListForScopePager := r.newListForScopePager.get(req)
 	if newListForScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentScheduleRequests`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentScheduleRequests`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.RoleAssignmentScheduleRequestsClientListForScopeOptions
+	if filterParam != nil {
+		options = &armauthorization.RoleAssignmentScheduleRequestsClientListForScopeOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.RoleAssignmentScheduleRequestsClientListForScopeOptions
-		if filterParam != nil {
-			options = &armauthorization.RoleAssignmentScheduleRequestsClientListForScopeOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := r.srv.NewListForScopePager(scopeParam, options)
+	}
+resp := r.srv.NewListForScopePager(scopeParam, options)
 		newListForScopePager = &resp
 		r.newListForScopePager.add(req, newListForScopePager)
 		server.PagerResponderInjectNextLinks(newListForScopePager, req, func(page *armauthorization.RoleAssignmentScheduleRequestsClientListForScopeResponse, createLink func() string) {
@@ -251,7 +271,7 @@ func (r *RoleAssignmentScheduleRequestsServerTransport) dispatchValidate(req *ht
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentScheduleRequests/(?P<roleAssignmentScheduleRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleAssignmentScheduleRequest](req)
@@ -279,4 +299,10 @@ func (r *RoleAssignmentScheduleRequestsServerTransport) dispatchValidate(req *ht
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleAssignmentScheduleRequestsServerTransport
+var roleAssignmentScheduleRequestsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

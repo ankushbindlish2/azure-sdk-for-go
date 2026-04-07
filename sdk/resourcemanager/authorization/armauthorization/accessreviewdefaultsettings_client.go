@@ -20,14 +20,14 @@ import (
 // AccessReviewDefaultSettingsClient contains the methods for the AccessReviewDefaultSettings group.
 // Don't use this type directly, use NewAccessReviewDefaultSettingsClient() instead.
 type AccessReviewDefaultSettingsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewAccessReviewDefaultSettingsClient creates a new instance of AccessReviewDefaultSettingsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewDefaultSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewDefaultSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewAccessReviewDefaultSettingsClient(subscriptionID string, credential azco
 	}
 	client := &AccessReviewDefaultSettingsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -69,7 +69,7 @@ func (client *AccessReviewDefaultSettingsClient) Get(ctx context.Context, option
 }
 
 // getCreateRequest creates the Get request.
-func (client *AccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Context, options *AccessReviewDefaultSettingsClientGetOptions) (*policy.Request, error) {
+func (client *AccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Context, _ *AccessReviewDefaultSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -125,7 +125,7 @@ func (client *AccessReviewDefaultSettingsClient) Put(ctx context.Context, proper
 }
 
 // putCreateRequest creates the Put request.
-func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Context, properties AccessReviewScheduleSettings, options *AccessReviewDefaultSettingsClientPutOptions) (*policy.Request, error) {
+func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Context, properties AccessReviewScheduleSettings, _ *AccessReviewDefaultSettingsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewScheduleSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,9 +140,9 @@ func (client *AccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // putHandleResponse handles the Put response.
@@ -153,3 +153,4 @@ func (client *AccessReviewDefaultSettingsClient) putHandleResponse(resp *http.Re
 	}
 	return result, nil
 }
+

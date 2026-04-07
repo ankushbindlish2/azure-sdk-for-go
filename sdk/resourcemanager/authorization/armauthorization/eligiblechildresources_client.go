@@ -23,31 +23,31 @@ type EligibleChildResourcesClient struct {
 
 // NewEligibleChildResourcesClient creates a new instance of EligibleChildResourcesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEligibleChildResourcesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EligibleChildResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EligibleChildResourcesClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
 
 // NewGetPager - Get the child resources of a resource on which user has eligible access
 //
-// Generated from API version 2020-10-01-preview
+// Generated from API version 2024-09-01-preview
 //   - scope - The scope of the role management policy.
 //   - options - EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.NewGetPager
 //     method.
-func (client *EligibleChildResourcesClient) NewGetPager(scope string, options *EligibleChildResourcesClientGetOptions) *runtime.Pager[EligibleChildResourcesClientGetResponse] {
+func (client *EligibleChildResourcesClient) NewGetPager(scope string, options *EligibleChildResourcesClientGetOptions) (*runtime.Pager[EligibleChildResourcesClientGetResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EligibleChildResourcesClientGetResponse]{
 		More: func(page EligibleChildResourcesClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EligibleChildResourcesClientGetResponse) (EligibleChildResourcesClientGetResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EligibleChildResourcesClient.NewGetPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EligibleChildResourcesClient.NewGetPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -59,7 +59,7 @@ func (client *EligibleChildResourcesClient) NewGetPager(scope string, options *E
 				return EligibleChildResourcesClientGetResponse{}, err
 			}
 			return client.getHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -76,7 +76,7 @@ func (client *EligibleChildResourcesClient) getCreateRequest(ctx context.Context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-10-01-preview")
+	reqQP.Set("api-version", "2024-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -90,3 +90,4 @@ func (client *EligibleChildResourcesClient) getHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

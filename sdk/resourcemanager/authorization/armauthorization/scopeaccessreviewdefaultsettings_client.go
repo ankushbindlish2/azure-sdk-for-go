@@ -25,14 +25,14 @@ type ScopeAccessReviewDefaultSettingsClient struct {
 
 // NewScopeAccessReviewDefaultSettingsClient creates a new instance of ScopeAccessReviewDefaultSettingsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewDefaultSettingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewDefaultSettingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScopeAccessReviewDefaultSettingsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -67,7 +67,7 @@ func (client *ScopeAccessReviewDefaultSettingsClient) Get(ctx context.Context, s
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScopeAccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Context, scope string, options *ScopeAccessReviewDefaultSettingsClientGetOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewDefaultSettingsClient) getCreateRequest(ctx context.Context, scope string, _ *ScopeAccessReviewDefaultSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleSettings/default"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -124,7 +124,7 @@ func (client *ScopeAccessReviewDefaultSettingsClient) Put(ctx context.Context, s
 }
 
 // putCreateRequest creates the Put request.
-func (client *ScopeAccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Context, scope string, properties AccessReviewScheduleSettings, options *ScopeAccessReviewDefaultSettingsClientPutOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewDefaultSettingsClient) putCreateRequest(ctx context.Context, scope string, properties AccessReviewScheduleSettings, _ *ScopeAccessReviewDefaultSettingsClientPutOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleSettings/default"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -139,9 +139,9 @@ func (client *ScopeAccessReviewDefaultSettingsClient) putCreateRequest(ctx conte
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // putHandleResponse handles the Put response.
@@ -152,3 +152,4 @@ func (client *ScopeAccessReviewDefaultSettingsClient) putHandleResponse(resp *ht
 	}
 	return result, nil
 }
+

@@ -20,14 +20,14 @@ import (
 // RoleAssignmentsClient contains the methods for the RoleAssignments group.
 // Don't use this type directly, use NewRoleAssignmentsClient() instead.
 type RoleAssignmentsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewRoleAssignmentsClient creates a new instance of RoleAssignmentsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRoleAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleAssignmentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewRoleAssignmentsClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &RoleAssignmentsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -74,7 +74,7 @@ func (client *RoleAssignmentsClient) Create(ctx context.Context, scope string, r
 }
 
 // createCreateRequest creates the Create request.
-func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, _ *RoleAssignmentsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
@@ -87,9 +87,9 @@ func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, sc
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // createHandleResponse handles the Create response.
@@ -134,7 +134,7 @@ func (client *RoleAssignmentsClient) CreateByID(ctx context.Context, roleAssignm
 }
 
 // createByIDCreateRequest creates the CreateByID request.
-func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsClientCreateByIDOptions) (*policy.Request, error) {
+func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, _ *RoleAssignmentsClientCreateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -146,9 +146,9 @@ func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // createByIDHandleResponse handles the CreateByID response.
@@ -404,13 +404,13 @@ func (client *RoleAssignmentsClient) getByIDHandleResponse(resp *http.Response) 
 //   - resourceName - The resource name.
 //   - options - RoleAssignmentsClientListForResourceOptions contains the optional parameters for the RoleAssignmentsClient.NewListForResourcePager
 //     method.
-func (client *RoleAssignmentsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, resourceType string, resourceName string, options *RoleAssignmentsClientListForResourceOptions) *runtime.Pager[RoleAssignmentsClientListForResourceResponse] {
+func (client *RoleAssignmentsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, resourceType string, resourceName string, options *RoleAssignmentsClientListForResourceOptions) (*runtime.Pager[RoleAssignmentsClientListForResourceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListForResourceResponse]{
 		More: func(page RoleAssignmentsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RoleAssignmentsClientListForResourceResponse) (RoleAssignmentsClientListForResourceResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListForResourcePager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListForResourcePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -422,7 +422,7 @@ func (client *RoleAssignmentsClient) NewListForResourcePager(resourceGroupName s
 				return RoleAssignmentsClientListForResourceResponse{}, err
 			}
 			return client.listForResourceHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -475,13 +475,13 @@ func (client *RoleAssignmentsClient) listForResourceHandleResponse(resp *http.Re
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RoleAssignmentsClientListForResourceGroupOptions contains the optional parameters for the RoleAssignmentsClient.NewListForResourceGroupPager
 //     method.
-func (client *RoleAssignmentsClient) NewListForResourceGroupPager(resourceGroupName string, options *RoleAssignmentsClientListForResourceGroupOptions) *runtime.Pager[RoleAssignmentsClientListForResourceGroupResponse] {
+func (client *RoleAssignmentsClient) NewListForResourceGroupPager(resourceGroupName string, options *RoleAssignmentsClientListForResourceGroupOptions) (*runtime.Pager[RoleAssignmentsClientListForResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListForResourceGroupResponse]{
 		More: func(page RoleAssignmentsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RoleAssignmentsClientListForResourceGroupResponse) (RoleAssignmentsClientListForResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListForResourceGroupPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListForResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -493,7 +493,7 @@ func (client *RoleAssignmentsClient) NewListForResourceGroupPager(resourceGroupN
 				return RoleAssignmentsClientListForResourceGroupResponse{}, err
 			}
 			return client.listForResourceGroupHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -546,13 +546,13 @@ func (client *RoleAssignmentsClient) listForResourceGroupHandleResponse(resp *ht
 //     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 //   - options - RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.NewListForScopePager
 //     method.
-func (client *RoleAssignmentsClient) NewListForScopePager(scope string, options *RoleAssignmentsClientListForScopeOptions) *runtime.Pager[RoleAssignmentsClientListForScopeResponse] {
+func (client *RoleAssignmentsClient) NewListForScopePager(scope string, options *RoleAssignmentsClientListForScopeOptions) (*runtime.Pager[RoleAssignmentsClientListForScopeResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListForScopeResponse]{
 		More: func(page RoleAssignmentsClientListForScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RoleAssignmentsClientListForScopeResponse) (RoleAssignmentsClientListForScopeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListForScopePager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListForScopePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -564,7 +564,7 @@ func (client *RoleAssignmentsClient) NewListForScopePager(scope string, options 
 				return RoleAssignmentsClientListForScopeResponse{}, err
 			}
 			return client.listForScopeHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -609,13 +609,13 @@ func (client *RoleAssignmentsClient) listForScopeHandleResponse(resp *http.Respo
 // Generated from API version 2022-04-01
 //   - options - RoleAssignmentsClientListForSubscriptionOptions contains the optional parameters for the RoleAssignmentsClient.NewListForSubscriptionPager
 //     method.
-func (client *RoleAssignmentsClient) NewListForSubscriptionPager(options *RoleAssignmentsClientListForSubscriptionOptions) *runtime.Pager[RoleAssignmentsClientListForSubscriptionResponse] {
+func (client *RoleAssignmentsClient) NewListForSubscriptionPager(options *RoleAssignmentsClientListForSubscriptionOptions) (*runtime.Pager[RoleAssignmentsClientListForSubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentsClientListForSubscriptionResponse]{
 		More: func(page RoleAssignmentsClientListForSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RoleAssignmentsClientListForSubscriptionResponse) (RoleAssignmentsClientListForSubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListForSubscriptionPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleAssignmentsClient.NewListForSubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -627,7 +627,7 @@ func (client *RoleAssignmentsClient) NewListForSubscriptionPager(options *RoleAs
 				return RoleAssignmentsClientListForSubscriptionResponse{}, err
 			}
 			return client.listForSubscriptionHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -666,3 +666,4 @@ func (client *RoleAssignmentsClient) listForSubscriptionHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

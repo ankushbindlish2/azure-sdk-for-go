@@ -20,14 +20,14 @@ import (
 // AccessReviewInstanceDecisionsClient contains the methods for the AccessReviewInstanceDecisions group.
 // Don't use this type directly, use NewAccessReviewInstanceDecisionsClient() instead.
 type AccessReviewInstanceDecisionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewAccessReviewInstanceDecisionsClient creates a new instance of AccessReviewInstanceDecisionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewInstanceDecisionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstanceDecisionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewAccessReviewInstanceDecisionsClient(subscriptionID string, credential az
 	}
 	client := &AccessReviewInstanceDecisionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -47,13 +47,13 @@ func NewAccessReviewInstanceDecisionsClient(subscriptionID string, credential az
 //   - id - The id of the access review instance.
 //   - options - AccessReviewInstanceDecisionsClientListOptions contains the optional parameters for the AccessReviewInstanceDecisionsClient.NewListPager
 //     method.
-func (client *AccessReviewInstanceDecisionsClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsClientListOptions) *runtime.Pager[AccessReviewInstanceDecisionsClientListResponse] {
+func (client *AccessReviewInstanceDecisionsClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceDecisionsClientListOptions) (*runtime.Pager[AccessReviewInstanceDecisionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstanceDecisionsClientListResponse]{
 		More: func(page AccessReviewInstanceDecisionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessReviewInstanceDecisionsClientListResponse) (AccessReviewInstanceDecisionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstanceDecisionsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewInstanceDecisionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -65,7 +65,7 @@ func (client *AccessReviewInstanceDecisionsClient) NewListPager(scheduleDefiniti
 				return AccessReviewInstanceDecisionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -109,3 +109,4 @@ func (client *AccessReviewInstanceDecisionsClient) listHandleResponse(resp *http
 	}
 	return result, nil
 }
+

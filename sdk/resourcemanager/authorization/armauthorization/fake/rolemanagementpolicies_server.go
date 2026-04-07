@@ -20,7 +20,7 @@ import (
 )
 
 // RoleManagementPoliciesServer is a fake server for instances of the armauthorization.RoleManagementPoliciesClient type.
-type RoleManagementPoliciesServer struct {
+type RoleManagementPoliciesServer struct{
 	// Delete is the fake for method RoleManagementPoliciesClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, scope string, roleManagementPolicyName string, options *armauthorization.RoleManagementPoliciesClientDeleteOptions) (resp azfake.Responder[armauthorization.RoleManagementPoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -36,6 +36,7 @@ type RoleManagementPoliciesServer struct {
 	// Update is the fake for method RoleManagementPoliciesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, scope string, roleManagementPolicyName string, parameters armauthorization.RoleManagementPolicy, options *armauthorization.RoleManagementPoliciesClientUpdateOptions) (resp azfake.Responder[armauthorization.RoleManagementPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewRoleManagementPoliciesServerTransport creates a new instance of RoleManagementPoliciesServerTransport with the provided implementation.
@@ -43,7 +44,7 @@ type RoleManagementPoliciesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRoleManagementPoliciesServerTransport(srv *RoleManagementPoliciesServer) *RoleManagementPoliciesServerTransport {
 	return &RoleManagementPoliciesServerTransport{
-		srv:                  srv,
+		srv: srv,
 		newListForScopePager: newTracker[azfake.PagerResponder[armauthorization.RoleManagementPoliciesClientListForScopeResponse]](),
 	}
 }
@@ -51,7 +52,7 @@ func NewRoleManagementPoliciesServerTransport(srv *RoleManagementPoliciesServer)
 // RoleManagementPoliciesServerTransport connects instances of armauthorization.RoleManagementPoliciesClient to instances of RoleManagementPoliciesServer.
 // Don't use this type directly, use NewRoleManagementPoliciesServerTransport instead.
 type RoleManagementPoliciesServerTransport struct {
-	srv                  *RoleManagementPoliciesServer
+	srv *RoleManagementPoliciesServer
 	newListForScopePager *tracker[azfake.PagerResponder[armauthorization.RoleManagementPoliciesClientListForScopeResponse]]
 }
 
@@ -63,27 +64,46 @@ func (r *RoleManagementPoliciesServerTransport) Do(req *http.Request) (*http.Res
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleManagementPoliciesClient.Delete":
-		resp, err = r.dispatchDelete(req)
-	case "RoleManagementPoliciesClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RoleManagementPoliciesClient.NewListForScopePager":
-		resp, err = r.dispatchNewListForScopePager(req)
-	case "RoleManagementPoliciesClient.Update":
-		resp, err = r.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleManagementPoliciesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if roleManagementPoliciesServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = roleManagementPoliciesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleManagementPoliciesClient.Delete":
+				res.resp, res.err = r.dispatchDelete(req)
+			case "RoleManagementPoliciesClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoleManagementPoliciesClient.NewListForScopePager":
+				res.resp, res.err = r.dispatchNewListForScopePager(req)
+			case "RoleManagementPoliciesClient.Update":
+				res.resp, res.err = r.dispatchUpdate(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleManagementPoliciesServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
@@ -93,7 +113,7 @@ func (r *RoleManagementPoliciesServerTransport) dispatchDelete(req *http.Request
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicies/(?P<roleManagementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -126,7 +146,7 @@ func (r *RoleManagementPoliciesServerTransport) dispatchGet(req *http.Request) (
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicies/(?P<roleManagementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -158,17 +178,17 @@ func (r *RoleManagementPoliciesServerTransport) dispatchNewListForScopePager(req
 	}
 	newListForScopePager := r.newListForScopePager.get(req)
 	if newListForScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListForScopePager(scopeParam, nil)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicies`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+resp := r.srv.NewListForScopePager(scopeParam, nil)
 		newListForScopePager = &resp
 		r.newListForScopePager.add(req, newListForScopePager)
 		server.PagerResponderInjectNextLinks(newListForScopePager, req, func(page *armauthorization.RoleManagementPoliciesClientListForScopeResponse, createLink func() string) {
@@ -196,7 +216,7 @@ func (r *RoleManagementPoliciesServerTransport) dispatchUpdate(req *http.Request
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleManagementPolicies/(?P<roleManagementPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleManagementPolicy](req)
@@ -224,4 +244,10 @@ func (r *RoleManagementPoliciesServerTransport) dispatchUpdate(req *http.Request
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleManagementPoliciesServerTransport
+var roleManagementPoliciesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

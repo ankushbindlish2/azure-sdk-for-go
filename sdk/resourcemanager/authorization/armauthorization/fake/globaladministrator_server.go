@@ -17,10 +17,11 @@ import (
 )
 
 // GlobalAdministratorServer is a fake server for instances of the armauthorization.GlobalAdministratorClient type.
-type GlobalAdministratorServer struct {
+type GlobalAdministratorServer struct{
 	// ElevateAccess is the fake for method GlobalAdministratorClient.ElevateAccess
 	// HTTP status codes to indicate success: http.StatusOK
 	ElevateAccess func(ctx context.Context, options *armauthorization.GlobalAdministratorClientElevateAccessOptions) (resp azfake.Responder[armauthorization.GlobalAdministratorClientElevateAccessResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewGlobalAdministratorServerTransport creates a new instance of GlobalAdministratorServerTransport with the provided implementation.
@@ -44,21 +45,40 @@ func (g *GlobalAdministratorServerTransport) Do(req *http.Request) (*http.Respon
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return g.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "GlobalAdministratorClient.ElevateAccess":
-		resp, err = g.dispatchElevateAccess(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (g *GlobalAdministratorServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if globalAdministratorServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = globalAdministratorServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "GlobalAdministratorClient.ElevateAccess":
+				res.resp, res.err = g.dispatchElevateAccess(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (g *GlobalAdministratorServerTransport) dispatchElevateAccess(req *http.Request) (*http.Response, error) {
@@ -78,4 +98,10 @@ func (g *GlobalAdministratorServerTransport) dispatchElevateAccess(req *http.Req
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to GlobalAdministratorServerTransport
+var globalAdministratorServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

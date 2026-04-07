@@ -25,14 +25,14 @@ type RoleDefinitionsClient struct {
 
 // NewRoleDefinitionsClient creates a new instance of RoleDefinitionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRoleDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RoleDefinitionsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -72,7 +72,7 @@ func (client *RoleDefinitionsClient) CreateOrUpdate(ctx context.Context, scope s
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RoleDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, roleDefinitionID string, roleDefinition RoleDefinition, options *RoleDefinitionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RoleDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, roleDefinitionID string, roleDefinition RoleDefinition, _ *RoleDefinitionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleDefinitionID == "" {
@@ -88,9 +88,9 @@ func (client *RoleDefinitionsClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, roleDefinition); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
@@ -135,7 +135,7 @@ func (client *RoleDefinitionsClient) Delete(ctx context.Context, scope string, r
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RoleDefinitionsClient) deleteCreateRequest(ctx context.Context, scope string, roleDefinitionID string, options *RoleDefinitionsClientDeleteOptions) (*policy.Request, error) {
+func (client *RoleDefinitionsClient) deleteCreateRequest(ctx context.Context, scope string, roleDefinitionID string, _ *RoleDefinitionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleDefinitionID == "" {
@@ -195,7 +195,7 @@ func (client *RoleDefinitionsClient) Get(ctx context.Context, scope string, role
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoleDefinitionsClient) getCreateRequest(ctx context.Context, scope string, roleDefinitionID string, options *RoleDefinitionsClientGetOptions) (*policy.Request, error) {
+func (client *RoleDefinitionsClient) getCreateRequest(ctx context.Context, scope string, roleDefinitionID string, _ *RoleDefinitionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleDefinitionID == "" {
@@ -253,7 +253,7 @@ func (client *RoleDefinitionsClient) GetByID(ctx context.Context, roleID string,
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *RoleDefinitionsClient) getByIDCreateRequest(ctx context.Context, roleID string, options *RoleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *RoleDefinitionsClient) getByIDCreateRequest(ctx context.Context, roleID string, _ *RoleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleId}", roleID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -285,13 +285,13 @@ func (client *RoleDefinitionsClient) getByIDHandleResponse(resp *http.Response) 
 //     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 //   - options - RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.NewListPager
 //     method.
-func (client *RoleDefinitionsClient) NewListPager(scope string, options *RoleDefinitionsClientListOptions) *runtime.Pager[RoleDefinitionsClientListResponse] {
+func (client *RoleDefinitionsClient) NewListPager(scope string, options *RoleDefinitionsClientListOptions) (*runtime.Pager[RoleDefinitionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[RoleDefinitionsClientListResponse]{
 		More: func(page RoleDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *RoleDefinitionsClientListResponse) (RoleDefinitionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleDefinitionsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RoleDefinitionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -303,7 +303,7 @@ func (client *RoleDefinitionsClient) NewListPager(scope string, options *RoleDef
 				return RoleDefinitionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -334,3 +334,4 @@ func (client *RoleDefinitionsClient) listHandleResponse(resp *http.Response) (Ro
 	}
 	return result, nil
 }
+

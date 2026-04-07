@@ -19,10 +19,11 @@ import (
 )
 
 // AccessReviewInstanceContactedReviewersServer is a fake server for instances of the armauthorization.AccessReviewInstanceContactedReviewersClient type.
-type AccessReviewInstanceContactedReviewersServer struct {
+type AccessReviewInstanceContactedReviewersServer struct{
 	// NewListPager is the fake for method AccessReviewInstanceContactedReviewersClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(scheduleDefinitionID string, id string, options *armauthorization.AccessReviewInstanceContactedReviewersClientListOptions) (resp azfake.PagerResponder[armauthorization.AccessReviewInstanceContactedReviewersClientListResponse])
+
 }
 
 // NewAccessReviewInstanceContactedReviewersServerTransport creates a new instance of AccessReviewInstanceContactedReviewersServerTransport with the provided implementation.
@@ -30,7 +31,7 @@ type AccessReviewInstanceContactedReviewersServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAccessReviewInstanceContactedReviewersServerTransport(srv *AccessReviewInstanceContactedReviewersServer) *AccessReviewInstanceContactedReviewersServerTransport {
 	return &AccessReviewInstanceContactedReviewersServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.AccessReviewInstanceContactedReviewersClientListResponse]](),
 	}
 }
@@ -38,7 +39,7 @@ func NewAccessReviewInstanceContactedReviewersServerTransport(srv *AccessReviewI
 // AccessReviewInstanceContactedReviewersServerTransport connects instances of armauthorization.AccessReviewInstanceContactedReviewersClient to instances of AccessReviewInstanceContactedReviewersServer.
 // Don't use this type directly, use NewAccessReviewInstanceContactedReviewersServerTransport instead.
 type AccessReviewInstanceContactedReviewersServerTransport struct {
-	srv          *AccessReviewInstanceContactedReviewersServer
+	srv *AccessReviewInstanceContactedReviewersServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.AccessReviewInstanceContactedReviewersClientListResponse]]
 }
 
@@ -50,21 +51,40 @@ func (a *AccessReviewInstanceContactedReviewersServerTransport) Do(req *http.Req
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AccessReviewInstanceContactedReviewersClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AccessReviewInstanceContactedReviewersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if accessReviewInstanceContactedReviewersServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = accessReviewInstanceContactedReviewersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AccessReviewInstanceContactedReviewersClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AccessReviewInstanceContactedReviewersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -73,21 +93,21 @@ func (a *AccessReviewInstanceContactedReviewersServerTransport) dispatchNewListP
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contactedReviewers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
-		if err != nil {
-			return nil, err
-		}
-		idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(scheduleDefinitionIDParam, idParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contactedReviewers`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+resp := a.srv.NewListPager(scheduleDefinitionIDParam, idParam, nil)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.AccessReviewInstanceContactedReviewersClientListResponse, createLink func() string) {
@@ -106,4 +126,10 @@ func (a *AccessReviewInstanceContactedReviewersServerTransport) dispatchNewListP
 		a.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AccessReviewInstanceContactedReviewersServerTransport
+var accessReviewInstanceContactedReviewersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

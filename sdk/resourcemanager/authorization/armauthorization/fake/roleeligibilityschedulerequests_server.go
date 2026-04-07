@@ -20,7 +20,7 @@ import (
 )
 
 // RoleEligibilityScheduleRequestsServer is a fake server for instances of the armauthorization.RoleEligibilityScheduleRequestsClient type.
-type RoleEligibilityScheduleRequestsServer struct {
+type RoleEligibilityScheduleRequestsServer struct{
 	// Cancel is the fake for method RoleEligibilityScheduleRequestsClient.Cancel
 	// HTTP status codes to indicate success: http.StatusOK
 	Cancel func(ctx context.Context, scope string, roleEligibilityScheduleRequestName string, options *armauthorization.RoleEligibilityScheduleRequestsClientCancelOptions) (resp azfake.Responder[armauthorization.RoleEligibilityScheduleRequestsClientCancelResponse], errResp azfake.ErrorResponder)
@@ -40,6 +40,7 @@ type RoleEligibilityScheduleRequestsServer struct {
 	// Validate is the fake for method RoleEligibilityScheduleRequestsClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
 	Validate func(ctx context.Context, scope string, roleEligibilityScheduleRequestName string, parameters armauthorization.RoleEligibilityScheduleRequest, options *armauthorization.RoleEligibilityScheduleRequestsClientValidateOptions) (resp azfake.Responder[armauthorization.RoleEligibilityScheduleRequestsClientValidateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewRoleEligibilityScheduleRequestsServerTransport creates a new instance of RoleEligibilityScheduleRequestsServerTransport with the provided implementation.
@@ -47,7 +48,7 @@ type RoleEligibilityScheduleRequestsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRoleEligibilityScheduleRequestsServerTransport(srv *RoleEligibilityScheduleRequestsServer) *RoleEligibilityScheduleRequestsServerTransport {
 	return &RoleEligibilityScheduleRequestsServerTransport{
-		srv:                  srv,
+		srv: srv,
 		newListForScopePager: newTracker[azfake.PagerResponder[armauthorization.RoleEligibilityScheduleRequestsClientListForScopeResponse]](),
 	}
 }
@@ -55,7 +56,7 @@ func NewRoleEligibilityScheduleRequestsServerTransport(srv *RoleEligibilitySched
 // RoleEligibilityScheduleRequestsServerTransport connects instances of armauthorization.RoleEligibilityScheduleRequestsClient to instances of RoleEligibilityScheduleRequestsServer.
 // Don't use this type directly, use NewRoleEligibilityScheduleRequestsServerTransport instead.
 type RoleEligibilityScheduleRequestsServerTransport struct {
-	srv                  *RoleEligibilityScheduleRequestsServer
+	srv *RoleEligibilityScheduleRequestsServer
 	newListForScopePager *tracker[azfake.PagerResponder[armauthorization.RoleEligibilityScheduleRequestsClientListForScopeResponse]]
 }
 
@@ -67,29 +68,48 @@ func (r *RoleEligibilityScheduleRequestsServerTransport) Do(req *http.Request) (
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleEligibilityScheduleRequestsClient.Cancel":
-		resp, err = r.dispatchCancel(req)
-	case "RoleEligibilityScheduleRequestsClient.Create":
-		resp, err = r.dispatchCreate(req)
-	case "RoleEligibilityScheduleRequestsClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RoleEligibilityScheduleRequestsClient.NewListForScopePager":
-		resp, err = r.dispatchNewListForScopePager(req)
-	case "RoleEligibilityScheduleRequestsClient.Validate":
-		resp, err = r.dispatchValidate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleEligibilityScheduleRequestsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if roleEligibilityScheduleRequestsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = roleEligibilityScheduleRequestsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleEligibilityScheduleRequestsClient.Cancel":
+				res.resp, res.err = r.dispatchCancel(req)
+			case "RoleEligibilityScheduleRequestsClient.Create":
+				res.resp, res.err = r.dispatchCreate(req)
+			case "RoleEligibilityScheduleRequestsClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoleEligibilityScheduleRequestsClient.NewListForScopePager":
+				res.resp, res.err = r.dispatchNewListForScopePager(req)
+			case "RoleEligibilityScheduleRequestsClient.Validate":
+				res.resp, res.err = r.dispatchValidate(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleEligibilityScheduleRequestsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
@@ -99,7 +119,7 @@ func (r *RoleEligibilityScheduleRequestsServerTransport) dispatchCancel(req *htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleEligibilityScheduleRequests/(?P<roleEligibilityScheduleRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -132,7 +152,7 @@ func (r *RoleEligibilityScheduleRequestsServerTransport) dispatchCreate(req *htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleEligibilityScheduleRequests/(?P<roleEligibilityScheduleRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleEligibilityScheduleRequest](req)
@@ -169,7 +189,7 @@ func (r *RoleEligibilityScheduleRequestsServerTransport) dispatchGet(req *http.R
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleEligibilityScheduleRequests/(?P<roleEligibilityScheduleRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -201,29 +221,29 @@ func (r *RoleEligibilityScheduleRequestsServerTransport) dispatchNewListForScope
 	}
 	newListForScopePager := r.newListForScopePager.get(req)
 	if newListForScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleEligibilityScheduleRequests`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleEligibilityScheduleRequests`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.RoleEligibilityScheduleRequestsClientListForScopeOptions
+	if filterParam != nil {
+		options = &armauthorization.RoleEligibilityScheduleRequestsClientListForScopeOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.RoleEligibilityScheduleRequestsClientListForScopeOptions
-		if filterParam != nil {
-			options = &armauthorization.RoleEligibilityScheduleRequestsClientListForScopeOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := r.srv.NewListForScopePager(scopeParam, options)
+	}
+resp := r.srv.NewListForScopePager(scopeParam, options)
 		newListForScopePager = &resp
 		r.newListForScopePager.add(req, newListForScopePager)
 		server.PagerResponderInjectNextLinks(newListForScopePager, req, func(page *armauthorization.RoleEligibilityScheduleRequestsClientListForScopeResponse, createLink func() string) {
@@ -251,7 +271,7 @@ func (r *RoleEligibilityScheduleRequestsServerTransport) dispatchValidate(req *h
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleEligibilityScheduleRequests/(?P<roleEligibilityScheduleRequestName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleEligibilityScheduleRequest](req)
@@ -279,4 +299,10 @@ func (r *RoleEligibilityScheduleRequestsServerTransport) dispatchValidate(req *h
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleEligibilityScheduleRequestsServerTransport
+var roleEligibilityScheduleRequestsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

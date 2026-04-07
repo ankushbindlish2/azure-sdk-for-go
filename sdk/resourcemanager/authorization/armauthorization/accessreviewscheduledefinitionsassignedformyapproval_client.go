@@ -15,7 +15,8 @@ import (
 	"strings"
 )
 
-// AccessReviewScheduleDefinitionsAssignedForMyApprovalClient contains the methods for the AccessReviewScheduleDefinitionsAssignedForMyApproval group.
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalClient contains the methods for the AccessReviewScheduleDefinitionsAssignedForMyApproval
+// group.
 // Don't use this type directly, use NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient() instead.
 type AccessReviewScheduleDefinitionsAssignedForMyApprovalClient struct {
 	internal *arm.Client
@@ -23,14 +24,14 @@ type AccessReviewScheduleDefinitionsAssignedForMyApprovalClient struct {
 
 // NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient creates a new instance of AccessReviewScheduleDefinitionsAssignedForMyApprovalClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewScheduleDefinitionsAssignedForMyApprovalClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AccessReviewScheduleDefinitionsAssignedForMyApprovalClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -40,13 +41,13 @@ func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(credential az
 // Generated from API version 2021-12-01-preview
 //   - options - AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions contains the optional parameters for the
 //     AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager method.
-func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) NewListPager(options *AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse] {
+func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) NewListPager(options *AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions) (*runtime.Pager[AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse]{
 		More: func(page AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse) (AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -58,7 +59,7 @@ func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) NewLis
 				return AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -90,3 +91,4 @@ func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listHa
 	}
 	return result, nil
 }
+

@@ -20,14 +20,14 @@ import (
 // AccessReviewHistoryDefinitionsClient contains the methods for the AccessReviewHistoryDefinitions group.
 // Don't use this type directly, use NewAccessReviewHistoryDefinitionsClient() instead.
 type AccessReviewHistoryDefinitionsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewAccessReviewHistoryDefinitionsClient creates a new instance of AccessReviewHistoryDefinitionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessReviewHistoryDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewHistoryDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewAccessReviewHistoryDefinitionsClient(subscriptionID string, credential a
 	}
 	client := &AccessReviewHistoryDefinitionsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -70,7 +70,7 @@ func (client *AccessReviewHistoryDefinitionsClient) GetByID(ctx context.Context,
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *AccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx context.Context, historyDefinitionID string, options *AccessReviewHistoryDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *AccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx context.Context, historyDefinitionID string, _ *AccessReviewHistoryDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -106,13 +106,13 @@ func (client *AccessReviewHistoryDefinitionsClient) getByIDHandleResponse(resp *
 // Generated from API version 2021-12-01-preview
 //   - options - AccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.NewListPager
 //     method.
-func (client *AccessReviewHistoryDefinitionsClient) NewListPager(options *AccessReviewHistoryDefinitionsClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionsClientListResponse] {
+func (client *AccessReviewHistoryDefinitionsClient) NewListPager(options *AccessReviewHistoryDefinitionsClientListOptions) (*runtime.Pager[AccessReviewHistoryDefinitionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AccessReviewHistoryDefinitionsClientListResponse]{
 		More: func(page AccessReviewHistoryDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AccessReviewHistoryDefinitionsClientListResponse) (AccessReviewHistoryDefinitionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewHistoryDefinitionsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AccessReviewHistoryDefinitionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -124,7 +124,7 @@ func (client *AccessReviewHistoryDefinitionsClient) NewListPager(options *Access
 				return AccessReviewHistoryDefinitionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -160,3 +160,4 @@ func (client *AccessReviewHistoryDefinitionsClient) listHandleResponse(resp *htt
 	}
 	return result, nil
 }
+

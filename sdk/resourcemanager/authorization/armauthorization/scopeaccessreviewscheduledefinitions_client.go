@@ -25,14 +25,14 @@ type ScopeAccessReviewScheduleDefinitionsClient struct {
 
 // NewScopeAccessReviewScheduleDefinitionsClient creates a new instance of ScopeAccessReviewScheduleDefinitionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewScheduleDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewScheduleDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScopeAccessReviewScheduleDefinitionsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -69,7 +69,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) CreateOrUpdateByID(ctx
 }
 
 // createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, options *ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, properties AccessReviewScheduleDefinitionProperties, _ *ScopeAccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -88,9 +88,9 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) createOrUpdateByIDCrea
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // createOrUpdateByIDHandleResponse handles the CreateOrUpdateByID response.
@@ -132,7 +132,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) DeleteByID(ctx context
 }
 
 // deleteByIDCreateRequest creates the DeleteByID request.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, options *ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, _ *ScopeAccessReviewScheduleDefinitionsClientDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -184,7 +184,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) GetByID(ctx context.Co
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, options *ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, _ *ScopeAccessReviewScheduleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -220,13 +220,13 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) getByIDHandleResponse(
 //   - scope - The scope of the resource.
 //   - options - ScopeAccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewScheduleDefinitionsClient.NewListPager
 //     method.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) NewListPager(scope string, options *ScopeAccessReviewScheduleDefinitionsClientListOptions) *runtime.Pager[ScopeAccessReviewScheduleDefinitionsClientListResponse] {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) NewListPager(scope string, options *ScopeAccessReviewScheduleDefinitionsClientListOptions) (*runtime.Pager[ScopeAccessReviewScheduleDefinitionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScopeAccessReviewScheduleDefinitionsClientListResponse]{
 		More: func(page ScopeAccessReviewScheduleDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScopeAccessReviewScheduleDefinitionsClientListResponse) (ScopeAccessReviewScheduleDefinitionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewScheduleDefinitionsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewScheduleDefinitionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -238,7 +238,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) NewListPager(scope str
 				return ScopeAccessReviewScheduleDefinitionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -305,7 +305,7 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) Stop(ctx context.Conte
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *ScopeAccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, options *ScopeAccessReviewScheduleDefinitionsClientStopOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx context.Context, scope string, scheduleDefinitionID string, _ *ScopeAccessReviewScheduleDefinitionsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewScheduleDefinitions/{scheduleDefinitionId}/stop"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -325,3 +325,4 @@ func (client *ScopeAccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx 
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
+

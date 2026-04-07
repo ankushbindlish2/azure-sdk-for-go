@@ -19,10 +19,11 @@ import (
 )
 
 // EligibleChildResourcesServer is a fake server for instances of the armauthorization.EligibleChildResourcesClient type.
-type EligibleChildResourcesServer struct {
+type EligibleChildResourcesServer struct{
 	// NewGetPager is the fake for method EligibleChildResourcesClient.NewGetPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewGetPager func(scope string, options *armauthorization.EligibleChildResourcesClientGetOptions) (resp azfake.PagerResponder[armauthorization.EligibleChildResourcesClientGetResponse])
+
 }
 
 // NewEligibleChildResourcesServerTransport creates a new instance of EligibleChildResourcesServerTransport with the provided implementation.
@@ -30,7 +31,7 @@ type EligibleChildResourcesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEligibleChildResourcesServerTransport(srv *EligibleChildResourcesServer) *EligibleChildResourcesServerTransport {
 	return &EligibleChildResourcesServerTransport{
-		srv:         srv,
+		srv: srv,
 		newGetPager: newTracker[azfake.PagerResponder[armauthorization.EligibleChildResourcesClientGetResponse]](),
 	}
 }
@@ -38,7 +39,7 @@ func NewEligibleChildResourcesServerTransport(srv *EligibleChildResourcesServer)
 // EligibleChildResourcesServerTransport connects instances of armauthorization.EligibleChildResourcesClient to instances of EligibleChildResourcesServer.
 // Don't use this type directly, use NewEligibleChildResourcesServerTransport instead.
 type EligibleChildResourcesServerTransport struct {
-	srv         *EligibleChildResourcesServer
+	srv *EligibleChildResourcesServer
 	newGetPager *tracker[azfake.PagerResponder[armauthorization.EligibleChildResourcesClientGetResponse]]
 }
 
@@ -50,21 +51,40 @@ func (e *EligibleChildResourcesServerTransport) Do(req *http.Request) (*http.Res
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EligibleChildResourcesClient.NewGetPager":
-		resp, err = e.dispatchNewGetPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EligibleChildResourcesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if eligibleChildResourcesServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = eligibleChildResourcesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EligibleChildResourcesClient.NewGetPager":
+				res.resp, res.err = e.dispatchNewGetPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *EligibleChildResourcesServerTransport) dispatchNewGetPager(req *http.Request) (*http.Response, error) {
@@ -73,29 +93,29 @@ func (e *EligibleChildResourcesServerTransport) dispatchNewGetPager(req *http.Re
 	}
 	newGetPager := e.newGetPager.get(req)
 	if newGetPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/eligibleChildResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/eligibleChildResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.EligibleChildResourcesClientGetOptions
+	if filterParam != nil {
+		options = &armauthorization.EligibleChildResourcesClientGetOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.EligibleChildResourcesClientGetOptions
-		if filterParam != nil {
-			options = &armauthorization.EligibleChildResourcesClientGetOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := e.srv.NewGetPager(scopeParam, options)
+	}
+resp := e.srv.NewGetPager(scopeParam, options)
 		newGetPager = &resp
 		e.newGetPager.add(req, newGetPager)
 		server.PagerResponderInjectNextLinks(newGetPager, req, func(page *armauthorization.EligibleChildResourcesClientGetResponse, createLink func() string) {
@@ -114,4 +134,10 @@ func (e *EligibleChildResourcesServerTransport) dispatchNewGetPager(req *http.Re
 		e.newGetPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EligibleChildResourcesServerTransport
+var eligibleChildResourcesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

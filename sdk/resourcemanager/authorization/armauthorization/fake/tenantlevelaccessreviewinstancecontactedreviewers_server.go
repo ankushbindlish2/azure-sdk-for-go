@@ -19,10 +19,11 @@ import (
 )
 
 // TenantLevelAccessReviewInstanceContactedReviewersServer is a fake server for instances of the armauthorization.TenantLevelAccessReviewInstanceContactedReviewersClient type.
-type TenantLevelAccessReviewInstanceContactedReviewersServer struct {
+type TenantLevelAccessReviewInstanceContactedReviewersServer struct{
 	// NewListPager is the fake for method TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(scheduleDefinitionID string, id string, options *armauthorization.TenantLevelAccessReviewInstanceContactedReviewersClientListOptions) (resp azfake.PagerResponder[armauthorization.TenantLevelAccessReviewInstanceContactedReviewersClientListResponse])
+
 }
 
 // NewTenantLevelAccessReviewInstanceContactedReviewersServerTransport creates a new instance of TenantLevelAccessReviewInstanceContactedReviewersServerTransport with the provided implementation.
@@ -30,7 +31,7 @@ type TenantLevelAccessReviewInstanceContactedReviewersServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTenantLevelAccessReviewInstanceContactedReviewersServerTransport(srv *TenantLevelAccessReviewInstanceContactedReviewersServer) *TenantLevelAccessReviewInstanceContactedReviewersServerTransport {
 	return &TenantLevelAccessReviewInstanceContactedReviewersServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.TenantLevelAccessReviewInstanceContactedReviewersClientListResponse]](),
 	}
 }
@@ -38,7 +39,7 @@ func NewTenantLevelAccessReviewInstanceContactedReviewersServerTransport(srv *Te
 // TenantLevelAccessReviewInstanceContactedReviewersServerTransport connects instances of armauthorization.TenantLevelAccessReviewInstanceContactedReviewersClient to instances of TenantLevelAccessReviewInstanceContactedReviewersServer.
 // Don't use this type directly, use NewTenantLevelAccessReviewInstanceContactedReviewersServerTransport instead.
 type TenantLevelAccessReviewInstanceContactedReviewersServerTransport struct {
-	srv          *TenantLevelAccessReviewInstanceContactedReviewersServer
+	srv *TenantLevelAccessReviewInstanceContactedReviewersServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.TenantLevelAccessReviewInstanceContactedReviewersClientListResponse]]
 }
 
@@ -50,21 +51,40 @@ func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) Do(re
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return t.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager":
-		resp, err = t.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if tenantLevelAccessReviewInstanceContactedReviewersServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = tenantLevelAccessReviewInstanceContactedReviewersServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager":
+				res.resp, res.err = t.dispatchNewListPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
@@ -73,21 +93,21 @@ func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) dispa
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contactedReviewers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
-		if err != nil {
-			return nil, err
-		}
-		idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
-		if err != nil {
-			return nil, err
-		}
-		resp := t.srv.NewListPager(scheduleDefinitionIDParam, idParam, nil)
+	const regexStr = `/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/instances/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/contactedReviewers`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
+	if err != nil {
+		return nil, err
+	}
+	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
+	if err != nil {
+		return nil, err
+	}
+resp := t.srv.NewListPager(scheduleDefinitionIDParam, idParam, nil)
 		newListPager = &resp
 		t.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.TenantLevelAccessReviewInstanceContactedReviewersClientListResponse, createLink func() string) {
@@ -106,4 +126,10 @@ func (t *TenantLevelAccessReviewInstanceContactedReviewersServerTransport) dispa
 		t.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to TenantLevelAccessReviewInstanceContactedReviewersServerTransport
+var tenantLevelAccessReviewInstanceContactedReviewersServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

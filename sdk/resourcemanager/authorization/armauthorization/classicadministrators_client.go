@@ -20,14 +20,14 @@ import (
 // ClassicAdministratorsClient contains the methods for the ClassicAdministrators group.
 // Don't use this type directly, use NewClassicAdministratorsClient() instead.
 type ClassicAdministratorsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewClassicAdministratorsClient creates a new instance of ClassicAdministratorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClassicAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClassicAdministratorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewClassicAdministratorsClient(subscriptionID string, credential azcore.Tok
 	}
 	client := &ClassicAdministratorsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -45,13 +45,13 @@ func NewClassicAdministratorsClient(subscriptionID string, credential azcore.Tok
 // Generated from API version 2015-07-01
 //   - options - ClassicAdministratorsClientListOptions contains the optional parameters for the ClassicAdministratorsClient.NewListPager
 //     method.
-func (client *ClassicAdministratorsClient) NewListPager(options *ClassicAdministratorsClientListOptions) *runtime.Pager[ClassicAdministratorsClientListResponse] {
+func (client *ClassicAdministratorsClient) NewListPager(options *ClassicAdministratorsClientListOptions) (*runtime.Pager[ClassicAdministratorsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ClassicAdministratorsClientListResponse]{
 		More: func(page ClassicAdministratorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ClassicAdministratorsClientListResponse) (ClassicAdministratorsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClassicAdministratorsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ClassicAdministratorsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -63,13 +63,13 @@ func (client *ClassicAdministratorsClient) NewListPager(options *ClassicAdminist
 				return ClassicAdministratorsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ClassicAdministratorsClient) listCreateRequest(ctx context.Context, options *ClassicAdministratorsClientListOptions) (*policy.Request, error) {
+func (client *ClassicAdministratorsClient) listCreateRequest(ctx context.Context, _ *ClassicAdministratorsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -94,3 +94,4 @@ func (client *ClassicAdministratorsClient) listHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+

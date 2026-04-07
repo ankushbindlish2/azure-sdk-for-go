@@ -25,14 +25,14 @@ type ScopeAccessReviewHistoryDefinitionsClient struct {
 
 // NewScopeAccessReviewHistoryDefinitionsClient creates a new instance of ScopeAccessReviewHistoryDefinitionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScopeAccessReviewHistoryDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScopeAccessReviewHistoryDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScopeAccessReviewHistoryDefinitionsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -68,7 +68,7 @@ func (client *ScopeAccessReviewHistoryDefinitionsClient) GetByID(ctx context.Con
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *ScopeAccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx context.Context, scope string, historyDefinitionID string, options *ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions) (*policy.Request, error) {
+func (client *ScopeAccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx context.Context, scope string, historyDefinitionID string, _ *ScopeAccessReviewHistoryDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/accessReviewHistoryDefinitions/{historyDefinitionId}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -105,13 +105,13 @@ func (client *ScopeAccessReviewHistoryDefinitionsClient) getByIDHandleResponse(r
 //   - scope - The scope of the resource.
 //   - options - ScopeAccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionsClient.NewListPager
 //     method.
-func (client *ScopeAccessReviewHistoryDefinitionsClient) NewListPager(scope string, options *ScopeAccessReviewHistoryDefinitionsClientListOptions) *runtime.Pager[ScopeAccessReviewHistoryDefinitionsClientListResponse] {
+func (client *ScopeAccessReviewHistoryDefinitionsClient) NewListPager(scope string, options *ScopeAccessReviewHistoryDefinitionsClientListOptions) (*runtime.Pager[ScopeAccessReviewHistoryDefinitionsClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[ScopeAccessReviewHistoryDefinitionsClientListResponse]{
 		More: func(page ScopeAccessReviewHistoryDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ScopeAccessReviewHistoryDefinitionsClientListResponse) (ScopeAccessReviewHistoryDefinitionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewHistoryDefinitionsClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScopeAccessReviewHistoryDefinitionsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -123,7 +123,7 @@ func (client *ScopeAccessReviewHistoryDefinitionsClient) NewListPager(scope stri
 				return ScopeAccessReviewHistoryDefinitionsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -159,3 +159,4 @@ func (client *ScopeAccessReviewHistoryDefinitionsClient) listHandleResponse(resp
 	}
 	return result, nil
 }
+

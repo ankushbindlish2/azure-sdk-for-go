@@ -20,7 +20,7 @@ import (
 )
 
 // AccessReviewScheduleDefinitionsServer is a fake server for instances of the armauthorization.AccessReviewScheduleDefinitionsClient type.
-type AccessReviewScheduleDefinitionsServer struct {
+type AccessReviewScheduleDefinitionsServer struct{
 	// CreateOrUpdateByID is the fake for method AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
 	// HTTP status codes to indicate success: http.StatusOK
 	CreateOrUpdateByID func(ctx context.Context, scheduleDefinitionID string, properties armauthorization.AccessReviewScheduleDefinitionProperties, options *armauthorization.AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions) (resp azfake.Responder[armauthorization.AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse], errResp azfake.ErrorResponder)
@@ -40,6 +40,7 @@ type AccessReviewScheduleDefinitionsServer struct {
 	// Stop is the fake for method AccessReviewScheduleDefinitionsClient.Stop
 	// HTTP status codes to indicate success: http.StatusNoContent
 	Stop func(ctx context.Context, scheduleDefinitionID string, options *armauthorization.AccessReviewScheduleDefinitionsClientStopOptions) (resp azfake.Responder[armauthorization.AccessReviewScheduleDefinitionsClientStopResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewAccessReviewScheduleDefinitionsServerTransport creates a new instance of AccessReviewScheduleDefinitionsServerTransport with the provided implementation.
@@ -47,7 +48,7 @@ type AccessReviewScheduleDefinitionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAccessReviewScheduleDefinitionsServerTransport(srv *AccessReviewScheduleDefinitionsServer) *AccessReviewScheduleDefinitionsServerTransport {
 	return &AccessReviewScheduleDefinitionsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.AccessReviewScheduleDefinitionsClientListResponse]](),
 	}
 }
@@ -55,7 +56,7 @@ func NewAccessReviewScheduleDefinitionsServerTransport(srv *AccessReviewSchedule
 // AccessReviewScheduleDefinitionsServerTransport connects instances of armauthorization.AccessReviewScheduleDefinitionsClient to instances of AccessReviewScheduleDefinitionsServer.
 // Don't use this type directly, use NewAccessReviewScheduleDefinitionsServerTransport instead.
 type AccessReviewScheduleDefinitionsServerTransport struct {
-	srv          *AccessReviewScheduleDefinitionsServer
+	srv *AccessReviewScheduleDefinitionsServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.AccessReviewScheduleDefinitionsClientListResponse]]
 }
 
@@ -67,29 +68,48 @@ func (a *AccessReviewScheduleDefinitionsServerTransport) Do(req *http.Request) (
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID":
-		resp, err = a.dispatchCreateOrUpdateByID(req)
-	case "AccessReviewScheduleDefinitionsClient.DeleteByID":
-		resp, err = a.dispatchDeleteByID(req)
-	case "AccessReviewScheduleDefinitionsClient.GetByID":
-		resp, err = a.dispatchGetByID(req)
-	case "AccessReviewScheduleDefinitionsClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	case "AccessReviewScheduleDefinitionsClient.Stop":
-		resp, err = a.dispatchStop(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AccessReviewScheduleDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if accessReviewScheduleDefinitionsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = accessReviewScheduleDefinitionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID":
+				res.resp, res.err = a.dispatchCreateOrUpdateByID(req)
+			case "AccessReviewScheduleDefinitionsClient.DeleteByID":
+				res.resp, res.err = a.dispatchDeleteByID(req)
+			case "AccessReviewScheduleDefinitionsClient.GetByID":
+				res.resp, res.err = a.dispatchGetByID(req)
+			case "AccessReviewScheduleDefinitionsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AccessReviewScheduleDefinitionsClient.Stop":
+				res.resp, res.err = a.dispatchStop(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AccessReviewScheduleDefinitionsServerTransport) dispatchCreateOrUpdateByID(req *http.Request) (*http.Response, error) {
@@ -99,7 +119,7 @@ func (a *AccessReviewScheduleDefinitionsServerTransport) dispatchCreateOrUpdateB
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.AccessReviewScheduleDefinitionProperties](req)
@@ -132,7 +152,7 @@ func (a *AccessReviewScheduleDefinitionsServerTransport) dispatchDeleteByID(req 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
@@ -161,7 +181,7 @@ func (a *AccessReviewScheduleDefinitionsServerTransport) dispatchGetByID(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
@@ -189,25 +209,25 @@ func (a *AccessReviewScheduleDefinitionsServerTransport) dispatchNewListPager(re
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.AccessReviewScheduleDefinitionsClientListOptions
+	if filterParam != nil {
+		options = &armauthorization.AccessReviewScheduleDefinitionsClientListOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.AccessReviewScheduleDefinitionsClientListOptions
-		if filterParam != nil {
-			options = &armauthorization.AccessReviewScheduleDefinitionsClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := a.srv.NewListPager(options)
+	}
+resp := a.srv.NewListPager(options)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.AccessReviewScheduleDefinitionsClientListResponse, createLink func() string) {
@@ -235,7 +255,7 @@ func (a *AccessReviewScheduleDefinitionsServerTransport) dispatchStop(req *http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/accessReviewScheduleDefinitions/(?P<scheduleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scheduleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("scheduleDefinitionId")])
@@ -255,4 +275,10 @@ func (a *AccessReviewScheduleDefinitionsServerTransport) dispatchStop(req *http.
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AccessReviewScheduleDefinitionsServerTransport
+var accessReviewScheduleDefinitionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

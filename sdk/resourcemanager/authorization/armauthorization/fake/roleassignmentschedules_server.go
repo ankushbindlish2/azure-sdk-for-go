@@ -20,7 +20,7 @@ import (
 )
 
 // RoleAssignmentSchedulesServer is a fake server for instances of the armauthorization.RoleAssignmentSchedulesClient type.
-type RoleAssignmentSchedulesServer struct {
+type RoleAssignmentSchedulesServer struct{
 	// Get is the fake for method RoleAssignmentSchedulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, scope string, roleAssignmentScheduleName string, options *armauthorization.RoleAssignmentSchedulesClientGetOptions) (resp azfake.Responder[armauthorization.RoleAssignmentSchedulesClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,6 +28,7 @@ type RoleAssignmentSchedulesServer struct {
 	// NewListForScopePager is the fake for method RoleAssignmentSchedulesClient.NewListForScopePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForScopePager func(scope string, options *armauthorization.RoleAssignmentSchedulesClientListForScopeOptions) (resp azfake.PagerResponder[armauthorization.RoleAssignmentSchedulesClientListForScopeResponse])
+
 }
 
 // NewRoleAssignmentSchedulesServerTransport creates a new instance of RoleAssignmentSchedulesServerTransport with the provided implementation.
@@ -35,7 +36,7 @@ type RoleAssignmentSchedulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRoleAssignmentSchedulesServerTransport(srv *RoleAssignmentSchedulesServer) *RoleAssignmentSchedulesServerTransport {
 	return &RoleAssignmentSchedulesServerTransport{
-		srv:                  srv,
+		srv: srv,
 		newListForScopePager: newTracker[azfake.PagerResponder[armauthorization.RoleAssignmentSchedulesClientListForScopeResponse]](),
 	}
 }
@@ -43,7 +44,7 @@ func NewRoleAssignmentSchedulesServerTransport(srv *RoleAssignmentSchedulesServe
 // RoleAssignmentSchedulesServerTransport connects instances of armauthorization.RoleAssignmentSchedulesClient to instances of RoleAssignmentSchedulesServer.
 // Don't use this type directly, use NewRoleAssignmentSchedulesServerTransport instead.
 type RoleAssignmentSchedulesServerTransport struct {
-	srv                  *RoleAssignmentSchedulesServer
+	srv *RoleAssignmentSchedulesServer
 	newListForScopePager *tracker[azfake.PagerResponder[armauthorization.RoleAssignmentSchedulesClientListForScopeResponse]]
 }
 
@@ -55,23 +56,42 @@ func (r *RoleAssignmentSchedulesServerTransport) Do(req *http.Request) (*http.Re
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleAssignmentSchedulesClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RoleAssignmentSchedulesClient.NewListForScopePager":
-		resp, err = r.dispatchNewListForScopePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleAssignmentSchedulesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if roleAssignmentSchedulesServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = roleAssignmentSchedulesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleAssignmentSchedulesClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoleAssignmentSchedulesClient.NewListForScopePager":
+				res.resp, res.err = r.dispatchNewListForScopePager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleAssignmentSchedulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -81,7 +101,7 @@ func (r *RoleAssignmentSchedulesServerTransport) dispatchGet(req *http.Request) 
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentSchedules/(?P<roleAssignmentScheduleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -113,29 +133,29 @@ func (r *RoleAssignmentSchedulesServerTransport) dispatchNewListForScopePager(re
 	}
 	newListForScopePager := r.newListForScopePager.get(req)
 	if newListForScopePager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentSchedules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleAssignmentSchedules`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.RoleAssignmentSchedulesClientListForScopeOptions
+	if filterParam != nil {
+		options = &armauthorization.RoleAssignmentSchedulesClientListForScopeOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.RoleAssignmentSchedulesClientListForScopeOptions
-		if filterParam != nil {
-			options = &armauthorization.RoleAssignmentSchedulesClientListForScopeOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := r.srv.NewListForScopePager(scopeParam, options)
+	}
+resp := r.srv.NewListForScopePager(scopeParam, options)
 		newListForScopePager = &resp
 		r.newListForScopePager.add(req, newListForScopePager)
 		server.PagerResponderInjectNextLinks(newListForScopePager, req, func(page *armauthorization.RoleAssignmentSchedulesClientListForScopeResponse, createLink func() string) {
@@ -154,4 +174,10 @@ func (r *RoleAssignmentSchedulesServerTransport) dispatchNewListForScopePager(re
 		r.newListForScopePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleAssignmentSchedulesServerTransport
+var roleAssignmentSchedulesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

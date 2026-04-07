@@ -23,14 +23,14 @@ type AlertDefinitionsClient struct {
 
 // NewAlertDefinitionsClient creates a new instance of AlertDefinitionsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AlertDefinitionsClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -70,7 +70,7 @@ func (client *AlertDefinitionsClient) Get(ctx context.Context, scope string, ale
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertDefinitionsClient) getCreateRequest(ctx context.Context, scope string, alertDefinitionID string, options *AlertDefinitionsClientGetOptions) (*policy.Request, error) {
+func (client *AlertDefinitionsClient) getCreateRequest(ctx context.Context, scope string, alertDefinitionID string, _ *AlertDefinitionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlertDefinitions/{alertDefinitionId}"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{alertDefinitionId}", alertDefinitionID)
@@ -100,13 +100,13 @@ func (client *AlertDefinitionsClient) getHandleResponse(resp *http.Response) (Al
 //   - scope - The scope of the alert definition.
 //   - options - AlertDefinitionsClientListForScopeOptions contains the optional parameters for the AlertDefinitionsClient.NewListForScopePager
 //     method.
-func (client *AlertDefinitionsClient) NewListForScopePager(scope string, options *AlertDefinitionsClientListForScopeOptions) *runtime.Pager[AlertDefinitionsClientListForScopeResponse] {
+func (client *AlertDefinitionsClient) NewListForScopePager(scope string, options *AlertDefinitionsClientListForScopeOptions) (*runtime.Pager[AlertDefinitionsClientListForScopeResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[AlertDefinitionsClientListForScopeResponse]{
 		More: func(page AlertDefinitionsClientListForScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AlertDefinitionsClientListForScopeResponse) (AlertDefinitionsClientListForScopeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertDefinitionsClient.NewListForScopePager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AlertDefinitionsClient.NewListForScopePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -118,13 +118,13 @@ func (client *AlertDefinitionsClient) NewListForScopePager(scope string, options
 				return AlertDefinitionsClientListForScopeResponse{}, err
 			}
 			return client.listForScopeHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *AlertDefinitionsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *AlertDefinitionsClientListForScopeOptions) (*policy.Request, error) {
+func (client *AlertDefinitionsClient) listForScopeCreateRequest(ctx context.Context, scope string, _ *AlertDefinitionsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleManagementAlertDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -146,3 +146,4 @@ func (client *AlertDefinitionsClient) listForScopeHandleResponse(resp *http.Resp
 	}
 	return result, nil
 }
+

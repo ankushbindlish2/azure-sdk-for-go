@@ -20,7 +20,7 @@ import (
 )
 
 // RoleDefinitionsServer is a fake server for instances of the armauthorization.RoleDefinitionsClient type.
-type RoleDefinitionsServer struct {
+type RoleDefinitionsServer struct{
 	// CreateOrUpdate is the fake for method RoleDefinitionsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, scope string, roleDefinitionID string, roleDefinition armauthorization.RoleDefinition, options *armauthorization.RoleDefinitionsClientCreateOrUpdateOptions) (resp azfake.Responder[armauthorization.RoleDefinitionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -40,6 +40,7 @@ type RoleDefinitionsServer struct {
 	// NewListPager is the fake for method RoleDefinitionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(scope string, options *armauthorization.RoleDefinitionsClientListOptions) (resp azfake.PagerResponder[armauthorization.RoleDefinitionsClientListResponse])
+
 }
 
 // NewRoleDefinitionsServerTransport creates a new instance of RoleDefinitionsServerTransport with the provided implementation.
@@ -47,7 +48,7 @@ type RoleDefinitionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRoleDefinitionsServerTransport(srv *RoleDefinitionsServer) *RoleDefinitionsServerTransport {
 	return &RoleDefinitionsServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armauthorization.RoleDefinitionsClientListResponse]](),
 	}
 }
@@ -55,7 +56,7 @@ func NewRoleDefinitionsServerTransport(srv *RoleDefinitionsServer) *RoleDefiniti
 // RoleDefinitionsServerTransport connects instances of armauthorization.RoleDefinitionsClient to instances of RoleDefinitionsServer.
 // Don't use this type directly, use NewRoleDefinitionsServerTransport instead.
 type RoleDefinitionsServerTransport struct {
-	srv          *RoleDefinitionsServer
+	srv *RoleDefinitionsServer
 	newListPager *tracker[azfake.PagerResponder[armauthorization.RoleDefinitionsClientListResponse]]
 }
 
@@ -67,29 +68,48 @@ func (r *RoleDefinitionsServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "RoleDefinitionsClient.CreateOrUpdate":
-		resp, err = r.dispatchCreateOrUpdate(req)
-	case "RoleDefinitionsClient.Delete":
-		resp, err = r.dispatchDelete(req)
-	case "RoleDefinitionsClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "RoleDefinitionsClient.GetByID":
-		resp, err = r.dispatchGetByID(req)
-	case "RoleDefinitionsClient.NewListPager":
-		resp, err = r.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *RoleDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if roleDefinitionsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = roleDefinitionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "RoleDefinitionsClient.CreateOrUpdate":
+				res.resp, res.err = r.dispatchCreateOrUpdate(req)
+			case "RoleDefinitionsClient.Delete":
+				res.resp, res.err = r.dispatchDelete(req)
+			case "RoleDefinitionsClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "RoleDefinitionsClient.GetByID":
+				res.resp, res.err = r.dispatchGetByID(req)
+			case "RoleDefinitionsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *RoleDefinitionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -99,7 +119,7 @@ func (r *RoleDefinitionsServerTransport) dispatchCreateOrUpdate(req *http.Reques
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armauthorization.RoleDefinition](req)
@@ -136,7 +156,7 @@ func (r *RoleDefinitionsServerTransport) dispatchDelete(req *http.Request) (*htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -169,7 +189,7 @@ func (r *RoleDefinitionsServerTransport) dispatchGet(req *http.Request) (*http.R
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -202,7 +222,7 @@ func (r *RoleDefinitionsServerTransport) dispatchGetByID(req *http.Request) (*ht
 	const regexStr = `/(?P<roleId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	roleIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleId")])
@@ -230,29 +250,29 @@ func (r *RoleDefinitionsServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/roleDefinitions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armauthorization.RoleDefinitionsClientListOptions
+	if filterParam != nil {
+		options = &armauthorization.RoleDefinitionsClientListOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armauthorization.RoleDefinitionsClientListOptions
-		if filterParam != nil {
-			options = &armauthorization.RoleDefinitionsClientListOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := r.srv.NewListPager(scopeParam, options)
+	}
+resp := r.srv.NewListPager(scopeParam, options)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armauthorization.RoleDefinitionsClientListResponse, createLink func() string) {
@@ -271,4 +291,10 @@ func (r *RoleDefinitionsServerTransport) dispatchNewListPager(req *http.Request)
 		r.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to RoleDefinitionsServerTransport
+var roleDefinitionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }
