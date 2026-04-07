@@ -2391,7 +2391,6 @@ func (u UpdateGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "afterGates", u.AfterGates)
 	populate(objectMap, "beforeGates", u.BeforeGates)
-	populate(objectMap, "maxConcurrency", u.MaxConcurrency)
 	populate(objectMap, "name", u.Name)
 	return json.Marshal(objectMap)
 }
@@ -2411,9 +2410,6 @@ func (u *UpdateGroup) UnmarshalJSON(data []byte) error {
 		case "beforeGates":
 			err = unpopulate(val, "BeforeGates", &u.BeforeGates)
 			delete(rawMsg, key)
-		case "maxConcurrency":
-			err = unpopulate(val, "MaxConcurrency", &u.MaxConcurrency)
-			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &u.Name)
 			delete(rawMsg, key)
@@ -2430,7 +2426,6 @@ func (u UpdateGroupStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "afterGates", u.AfterGates)
 	populate(objectMap, "beforeGates", u.BeforeGates)
-	populate(objectMap, "maxConcurrency", u.MaxConcurrency)
 	populate(objectMap, "members", u.Members)
 	populate(objectMap, "name", u.Name)
 	populate(objectMap, "status", u.Status)
@@ -2451,9 +2446,6 @@ func (u *UpdateGroupStatus) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "beforeGates":
 			err = unpopulate(val, "BeforeGates", &u.BeforeGates)
-			delete(rawMsg, key)
-		case "maxConcurrency":
-			err = unpopulate(val, "MaxConcurrency", &u.MaxConcurrency)
 			delete(rawMsg, key)
 		case "members":
 			err = unpopulate(val, "Members", &u.Members)
@@ -2740,7 +2732,6 @@ func (u UpdateStage) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "afterStageWaitInSeconds", u.AfterStageWaitInSeconds)
 	populate(objectMap, "beforeGates", u.BeforeGates)
 	populate(objectMap, "groups", u.Groups)
-	populate(objectMap, "maxConcurrency", u.MaxConcurrency)
 	populate(objectMap, "name", u.Name)
 	return json.Marshal(objectMap)
 }
@@ -2766,9 +2757,6 @@ func (u *UpdateStage) UnmarshalJSON(data []byte) error {
 		case "groups":
 			err = unpopulate(val, "Groups", &u.Groups)
 			delete(rawMsg, key)
-		case "maxConcurrency":
-			err = unpopulate(val, "MaxConcurrency", &u.MaxConcurrency)
-			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &u.Name)
 			delete(rawMsg, key)
@@ -2787,7 +2775,6 @@ func (u UpdateStageStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "afterStageWaitStatus", u.AfterStageWaitStatus)
 	populate(objectMap, "beforeGates", u.BeforeGates)
 	populate(objectMap, "groups", u.Groups)
-	populate(objectMap, "maxConcurrency", u.MaxConcurrency)
 	populate(objectMap, "name", u.Name)
 	populate(objectMap, "status", u.Status)
 	return json.Marshal(objectMap)
@@ -2813,9 +2800,6 @@ func (u *UpdateStageStatus) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "groups":
 			err = unpopulate(val, "Groups", &u.Groups)
-			delete(rawMsg, key)
-		case "maxConcurrency":
-			err = unpopulate(val, "MaxConcurrency", &u.MaxConcurrency)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &u.Name)
