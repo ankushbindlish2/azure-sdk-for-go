@@ -236,13 +236,14 @@ type AlertsClientListForScopeResponse struct {
 
 // AlertsClientRefreshAllResponse contains the response from method AlertsClient.BeginRefreshAll.
 type AlertsClientRefreshAllResponse struct {
-	// Resource operation accepted.
-	ArmAcceptedLroResponse
+	// Alert operation result
+	AlertOperationResult
 }
 
 // AlertsClientRefreshResponse contains the response from method AlertsClient.BeginRefresh.
 type AlertsClientRefreshResponse struct {
-	// placeholder for future response values
+	// Alert operation result
+	AlertOperationResult
 }
 
 // AlertsClientUpdateResponse contains the response from method AlertsClient.Update.

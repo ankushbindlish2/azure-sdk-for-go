@@ -893,10 +893,6 @@ type ApprovalStage struct {
 	PrimaryApprovers []*UserSet
 }
 
-// ArmAcceptedLroResponse - Resource operation accepted.
-type ArmAcceptedLroResponse struct {
-}
-
 // AttributeNamespace - An attribute namespace resource.
 type AttributeNamespace struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}

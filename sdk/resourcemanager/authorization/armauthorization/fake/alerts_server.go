@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,7 +29,7 @@ type AlertsServer struct {
 	NewListForScopePager func(scope string, options *armauthorization.AlertsClientListForScopeOptions) (resp azfake.PagerResponder[armauthorization.AlertsClientListForScopeResponse])
 
 	// BeginRefresh is the fake for method AlertsClient.BeginRefresh
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRefresh func(ctx context.Context, scope string, alertID string, options *armauthorization.AlertsClientBeginRefreshOptions) (resp azfake.PollerResponder[armauthorization.AlertsClientRefreshResponse], errResp azfake.ErrorResponder)
 
 	// BeginRefreshAll is the fake for method AlertsClient.BeginRefreshAll
@@ -217,9 +217,9 @@ func (a *AlertsServerTransport) dispatchBeginRefresh(req *http.Request) (*http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginRefresh.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginRefresh) {
 		a.beginRefresh.remove(req)
