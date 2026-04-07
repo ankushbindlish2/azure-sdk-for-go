@@ -5,11 +5,12 @@ package sas
 
 import (
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"net"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 )
@@ -143,6 +144,7 @@ type QueryParameters struct {
 	correlationID                string    `param:"scid"`
 	encryptionScope              string    `param:"ses"`
 	signedDelegatedUserObjectID  string    `param:"sduoid"`
+	signedDelegatedUserTenantID  string    `param:"skdutid"`
 	signedRequestHeaders         string    `param:"srh"`
 	signedRequestQueryParameters string    `param:"srq"`
 	// private member used for startTime and expiryTime formatting.
@@ -295,6 +297,11 @@ func (p *QueryParameters) SignedDelegatedUserObjectID() string {
 	return p.signedDelegatedUserObjectID
 }
 
+// SignedDelegatedUserTenantID returns SignedDelegatedUserTenantID
+func (p *QueryParameters) SignedDelegatedUserTenantID() string {
+	return p.signedDelegatedUserTenantID
+}
+
 // SignedRequestHeaders returns signedRequestHeaders.
 func (p *QueryParameters) SignedRequestHeaders() string {
 	return p.signedRequestHeaders
@@ -383,6 +390,9 @@ func (p *QueryParameters) Encode() string {
 	if p.signedDelegatedUserObjectID != "" {
 		v.Add("sduoid", p.signedDelegatedUserObjectID)
 	}
+	if p.signedDelegatedUserTenantID != "" {
+		v.Add("skdutid", p.signedDelegatedUserTenantID)
+	}
 	if p.signedRequestHeaders != "" {
 		v.Add("srh", p.signedRequestHeaders)
 	}
@@ -467,6 +477,8 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.encryptionScope = val
 		case "sduoid":
 			p.signedDelegatedUserObjectID = val
+		case "skdutid":
+			p.signedDelegatedUserTenantID = val
 		case "srh":
 			p.signedRequestHeaders = val
 		case "srq":

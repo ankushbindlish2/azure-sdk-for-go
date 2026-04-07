@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
@@ -91,6 +92,60 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceClientFromConnectionString() {
 	_require.NoError(err)
 	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, testcommon.GenerateFileSystemName(testName), svcClient)
 	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredentialError() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	dummyTenantID := "00000000-0000-0000-0000-000000000000"
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:                 to.Ptr(start.Format(time.RFC3339)),
+		Expiry:                to.Ptr(expiry.Format(time.RFC3339)),
+		DelegatedUserTenantID: to.Ptr(dummyTenantID),
+	}
+
+	_, err = svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.Error(err)
+	testcommon.ValidateErrorCode(_require, err, datalakeerror.AuthenticationFailed)
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestGetUserDelegationCredential() {
+	_require := require.New(s.T())
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".dfs.core.windows.net/", cred, options)
+	_require.NoError(err)
+
+	now := time.Now().UTC()
+	start := now.Add(-5 * time.Minute)
+	expiry := now.Add(5 * time.Minute)
+	info := service.KeyInfo{
+		Start:  to.Ptr(start.Format(time.RFC3339)),
+		Expiry: to.Ptr(expiry.Format(time.RFC3339)),
+	}
+
+	response, err := svcClient.GetUserDelegationCredential(context.Background(), info, nil)
+	_require.NoError(err)
+	_require.NotNil(response)
 }
 
 func (s *ServiceRecordedTestsSuite) TestCreateFilesystemsWithOptions() {
@@ -932,6 +987,83 @@ func (s *ServiceRecordedTestsSuite) TestServiceClientUsingOauthWithCustomAudienc
 	_require.NotNil(fs)
 	_require.NoError(err)
 
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserObjectId() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	now := time.Now().UTC().Add(-time.Minute)
+	expiry := now.Add(30 * time.Minute)
+	serviceCode := "b"
+	version := sas.Version
+	oid := "00000000-0000-0000-0000-000000000000"
+	tid := "11111111-1111-1111-1111-111111111111"
+	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
+
+	udk := exported.UserDelegationKey{
+		SignedStart:   &now,
+		SignedExpiry:  &expiry,
+		SignedService: &serviceCode,
+		SignedVersion: &version,
+		SignedOID:     &oid,
+		SignedTID:     &tid,
+		Value:         val,
+	}
+	udc := exported.NewUserDelegationCredential("testaccount", udk)
+
+	fileSystemName := testcommon.GenerateFileSystemName(testName)
+	sv := sas.DatalakeSignatureValues{
+		Protocol:                    sas.ProtocolHTTPS,
+		StartTime:                   now,
+		ExpiryTime:                  expiry,
+		Permissions:                 (&sas.FileSystemPermissions{Read: true, List: true}).String(),
+		FileSystemName:              fileSystemName,
+		SignedDelegatedUserObjectID: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+	}
+	qp, err := sv.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	enc := qp.Encode()
+	_require.Contains(enc, "sduoid=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
+}
+
+func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserTenantID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	now := time.Now().UTC().Add(-time.Minute)
+	expiry := now.Add(30 * time.Minute)
+	serviceCode := "b"
+	version := sas.Version
+	oid := "00000000-0000-0000-0000-000000000000"
+	tid := "11111111-1111-1111-1111-111111111111"
+	skdutid := "22222222-2222-2222-2222-222222222222"
+	val := to.Ptr("AAAAAAAAAAAAAAAAAAAAAA==")
+
+	udk := exported.UserDelegationKey{
+		SignedStart:                 &now,
+		SignedExpiry:                &expiry,
+		SignedService:               &serviceCode,
+		SignedVersion:               &version,
+		SignedOID:                   &oid,
+		SignedTID:                   &tid,
+		SignedDelegatedUserTenantID: &skdutid,
+		Value:                       val,
+	}
+	udc := exported.NewUserDelegationCredential("testaccount", udk)
+
+	fileSystemName := testcommon.GenerateFileSystemName(testName)
+	sv := sas.DatalakeSignatureValues{
+		Protocol:       sas.ProtocolHTTPS,
+		StartTime:      now,
+		ExpiryTime:     expiry,
+		Permissions:    (&sas.FileSystemPermissions{Read: true, List: true}).String(),
+		FileSystemName: fileSystemName,
+	}
+	qp, err := sv.SignWithUserDelegation(udc)
+	_require.NoError(err)
+	enc := qp.Encode()
+	_require.Contains(enc, "skdutid="+skdutid)
 }
 
 // customRequestHeadersAndQueryParametersPolicy injects additional headers and query parameters into each request.

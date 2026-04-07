@@ -137,6 +137,8 @@ type QueryParameters struct {
 	unauthorizedObjectID         string    `param:"suoid"`
 	correlationID                string    `param:"scid"`
 	encryptionScope              string    `param:"ses"`
+	signedDelegatedUserObjectID  string    `param:"sduoid"`
+	signedDelegatedUserTenantID  string    `param:"skdutid"`
 	signedRequestHeaders         string    `param:"srh"`
 	signedRequestQueryParameters string    `param:"srq"`
 	// private member used for startTime and expiryTime formatting.
@@ -284,6 +286,16 @@ func (p *QueryParameters) SignedEncryptionScope() string {
 	return p.encryptionScope
 }
 
+// SignedDelegatedUserObjectID returns SignedDelegatedUserObjectID
+func (p *QueryParameters) SignedDelegatedUserObjectID() string {
+	return p.signedDelegatedUserObjectID
+}
+
+// SignedDelegatedUserTenantID returns SignedDelegatedUserTenantID
+func (p *QueryParameters) SignedDelegatedUserTenantID() string {
+	return p.signedDelegatedUserTenantID
+}
+
 // SignedRequestHeaders returns signedRequestHeaders.
 func (p *QueryParameters) SignedRequestHeaders() string {
 	return p.signedRequestHeaders
@@ -369,6 +381,12 @@ func (p *QueryParameters) Encode() string {
 	if p.encryptionScope != "" {
 		v.Add("ses", p.encryptionScope)
 	}
+	if p.signedDelegatedUserObjectID != "" {
+		v.Add("sduoid", p.signedDelegatedUserObjectID)
+	}
+	if p.signedDelegatedUserTenantID != "" {
+		v.Add("skdutid", p.signedDelegatedUserTenantID)
+	}
 	if p.signedRequestHeaders != "" {
 		v.Add("srh", p.signedRequestHeaders)
 	}
@@ -446,6 +464,10 @@ func NewQueryParameters(values url.Values) QueryParameters {
 			p.correlationID = val
 		case "ses":
 			p.encryptionScope = val
+		case "sduoid":
+			p.signedDelegatedUserObjectID = val
+		case "skdutid":
+			p.signedDelegatedUserTenantID = val
 		case "srh":
 			p.signedRequestHeaders = val
 		case "srq":
@@ -527,6 +549,10 @@ func newQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.correlationID = val
 		case "ses":
 			p.encryptionScope = val
+		case "sduoid":
+			p.signedDelegatedUserObjectID = val
+		case "skdutid":
+			p.signedDelegatedUserTenantID = val
 		case "srh":
 			p.signedRequestHeaders = val
 		case "srq":

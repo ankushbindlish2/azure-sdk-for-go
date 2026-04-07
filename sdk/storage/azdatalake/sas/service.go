@@ -40,6 +40,7 @@ type DatalakeSignatureValues struct {
 	UnauthorizedObjectID         string // suoid
 	CorrelationID                string // scid
 	EncryptionScope              string `param:"ses"`
+	SignedDelegatedUserObjectID  string // sduoid
 	SignedRequestHeaders         map[string]string
 	SignedRequestQueryParameters map[string]string
 }
@@ -224,6 +225,11 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 
 	udkStart, udkExpiry := formatTimesForSigning(*udk.SignedStart, *udk.SignedExpiry)
 
+	var signedDelegatedUserTenantID string
+	if udk.SignedDelegatedUserTenantID != nil {
+		signedDelegatedUserTenantID = *udk.SignedDelegatedUserTenantID
+	}
+
 	srhNames, srhCanonicalized := formatSignedRequestHeaders(v.SignedRequestHeaders)
 	srqNames, srqCanonicalized := formatSignedRequestQueryParameters(v.SignedRequestQueryParameters)
 
@@ -241,8 +247,8 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		v.AuthorizedObjectID,
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
-		"", // Placeholder for SignedKeyDelegatedUserTenantId (future field)
-		"", // Placeholder for SignedDelegatedUserObjectID (future field)
+		signedDelegatedUserTenantID,
+		v.SignedDelegatedUserObjectID,
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
@@ -285,6 +291,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 		authorizedObjectID:           v.AuthorizedObjectID,
 		unauthorizedObjectID:         v.UnauthorizedObjectID,
 		correlationID:                v.CorrelationID,
+		signedDelegatedUserObjectID:  v.SignedDelegatedUserObjectID,
 		signedRequestHeaders:         srhNames,
 		signedRequestQueryParameters: srqNames,
 		// Calculated SAS signature
@@ -298,6 +305,7 @@ func (v DatalakeSignatureValues) SignWithUserDelegation(userDelegationCredential
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
+	p.signedDelegatedUserTenantID = signedDelegatedUserTenantID
 
 	return p, nil
 }
