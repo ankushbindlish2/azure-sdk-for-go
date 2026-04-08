@@ -20413,8 +20413,8 @@ func (s *SyncMemberProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Systemdata.
-func (s Systemdata) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type SystemData.
+func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
@@ -20425,8 +20425,8 @@ func (s Systemdata) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Systemdata.
-func (s *Systemdata) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
+func (s *SystemData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", s, err)
