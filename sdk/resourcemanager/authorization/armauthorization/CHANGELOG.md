@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.3 (2026-04-07)
+## 3.0.0-beta.3 (2026-04-08)
 ### Breaking Changes
 
 - Type of `AccessReviewDecisionInsightProperties.InsightCreatedDateTime` has been changed from `any` to `*time.Time`
