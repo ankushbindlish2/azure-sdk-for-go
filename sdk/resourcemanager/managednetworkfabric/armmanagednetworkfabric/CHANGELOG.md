@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-04-08)
+## 2.0.0-beta.1 (2026-04-09)
 ### Breaking Changes
 
 - Function `*InternalNetworksClient.BeginUpdateBgpAdministrativeState` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body UpdateAdministrativeState, options *InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions)` to `(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, internalNetworkName string, body InternalNetworkBgpAdministrativeStateRequest, options *InternalNetworksClientBeginUpdateBgpAdministrativeStateOptions)`
