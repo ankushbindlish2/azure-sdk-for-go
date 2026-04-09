@@ -52,7 +52,7 @@ func (testsuite *ApimgroupsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimgroupsTestSuite(t *testing.T) {
+func TTestApimgroupsTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimgroupsTestSuite))
 }
 

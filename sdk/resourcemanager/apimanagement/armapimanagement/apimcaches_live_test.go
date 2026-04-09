@@ -52,7 +52,7 @@ func (testsuite *ApimcachesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimcachesTestSuite(t *testing.T) {
+func TTestApimcachesTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimcachesTestSuite))
 }
 

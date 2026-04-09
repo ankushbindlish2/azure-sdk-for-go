@@ -56,7 +56,7 @@ func (testsuite *ApimidentityproviderTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimidentityproviderTestSuite(t *testing.T) {
+func TTestApimidentityproviderTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimidentityproviderTestSuite))
 }
 

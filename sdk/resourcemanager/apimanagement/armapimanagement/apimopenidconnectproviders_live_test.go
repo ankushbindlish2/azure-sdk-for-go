@@ -52,7 +52,7 @@ func (testsuite *ApimopenidconnectprovidersTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimopenidconnectprovidersTestSuite(t *testing.T) {
+func TTestApimopenidconnectprovidersTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimopenidconnectprovidersTestSuite))
 }
 

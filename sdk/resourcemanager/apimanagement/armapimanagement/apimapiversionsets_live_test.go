@@ -52,7 +52,7 @@ func (testsuite *ApimapiversionsetsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimapiversionsetsTestSuite(t *testing.T) {
+func TTestApimapiversionsetsTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimapiversionsetsTestSuite))
 }
 

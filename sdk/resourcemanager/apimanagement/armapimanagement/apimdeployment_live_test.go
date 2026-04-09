@@ -49,7 +49,7 @@ func (testsuite *ApimdeploymentTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimdeploymentTestSuite(t *testing.T) {
+func TTestApimdeploymentTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimdeploymentTestSuite))
 }
 

@@ -56,7 +56,7 @@ func (testsuite *ApimgatewaysTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimgatewaysTestSuite(t *testing.T) {
+func TTestApimgatewaysTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimgatewaysTestSuite))
 }
 

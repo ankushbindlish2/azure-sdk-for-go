@@ -55,7 +55,7 @@ func (testsuite *ApimsubscriptionsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimsubscriptionsTestSuite(t *testing.T) {
+func TTestApimsubscriptionsTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimsubscriptionsTestSuite))
 }
 

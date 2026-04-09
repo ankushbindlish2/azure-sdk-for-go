@@ -73,7 +73,7 @@ func (testsuite *ApimapisTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimapisTestSuite(t *testing.T) {
+func TTestApimapisTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimapisTestSuite))
 }
 

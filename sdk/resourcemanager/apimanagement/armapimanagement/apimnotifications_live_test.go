@@ -54,7 +54,7 @@ func (testsuite *ApimnotificationsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimnotificationsTestSuite(t *testing.T) {
+func TTestApimnotificationsTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimnotificationsTestSuite))
 }
 

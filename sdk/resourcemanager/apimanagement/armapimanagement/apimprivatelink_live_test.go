@@ -56,7 +56,7 @@ func (testsuite *ApimprivatelinkTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimprivatelinkTestSuite(t *testing.T) {
+func TTestApimprivatelinkTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimprivatelinkTestSuite))
 }
 

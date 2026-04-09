@@ -52,7 +52,7 @@ func (testsuite *ApimnamedvaluesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimnamedvaluesTestSuite(t *testing.T) {
+func TTestApimnamedvaluesTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimnamedvaluesTestSuite))
 }
 

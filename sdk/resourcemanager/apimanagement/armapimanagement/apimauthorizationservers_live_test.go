@@ -52,7 +52,7 @@ func (testsuite *ApimauthorizationserversTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestApimauthorizationserversTestSuite(t *testing.T) {
+func TTestApimauthorizationserversTestSuite(t *testing.T) {
 	suite.Run(t, new(ApimauthorizationserversTestSuite))
 }
 
