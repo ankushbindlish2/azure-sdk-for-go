@@ -162,8 +162,7 @@ func (testsuite *ServerKeysTestSuite) TestServerKeys() {
 							},
 						},
 					},
-					"enableSoftDelete":    true,
-					"enablePurgeProtection": false,
+					"enableSoftDelete": true,
 				},
 			},
 			map[string]any{
@@ -196,7 +195,10 @@ func (testsuite *ServerKeysTestSuite) TestServerKeys() {
 	// URI format: https://{vaultName}.vault.azure.net/keys/{keyName}/{version}
 	uriParts := strings.Split(keyVaultKeyUri, "/")
 	// uriParts: ["https:", "", "{vaultName}.vault.azure.net", "keys", "{keyName}", "{version}"]
-	serverKeyName := strings.Split(uriParts[2], ".")[0] + "_" + uriParts[4] + "_" + uriParts[5]
+	testsuite.Require().True(len(uriParts) >= 6, "unexpected key URI format: %s", keyVaultKeyUri)
+	vaultHostParts := strings.Split(uriParts[2], ".")
+	testsuite.Require().True(len(vaultHostParts) >= 1, "unexpected key vault host format: %s", uriParts[2])
+	serverKeyName := vaultHostParts[0] + "_" + uriParts[4] + "_" + uriParts[5]
 
 	// From step ServerKeys_CreateOrUpdate
 	fmt.Println("Call operation: ServerKeys_CreateOrUpdate")
