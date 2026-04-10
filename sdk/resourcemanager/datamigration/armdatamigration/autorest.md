@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/930e8030f5058d947fea4e2640725baab8a4561a/specification/datamigration/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/b3944c3f75fb842840b43e8bb82fa2cd316aa544/specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/b3944c3f75fb842840b43e8bb82fa2cd316aa544/specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 2.0.0
-tag: package-2025-06
+module-version: 3.0.0-beta.1
+tag: package-preview-2025-09
 ```
