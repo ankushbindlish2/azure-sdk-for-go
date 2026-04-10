@@ -1,0 +1,4 @@
+directory: specification/storagecache/resource-manager/Microsoft.StorageCache/StorageCache
+commit: 5e0fc4fdd181f4574e3c2831b1077f0649a9cf48
+repo: i-specs
+additionalDirectories: 
