@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-04-01/TrafficManagerUserMetricsKeys-PUT.json
+// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-PUT.json
 func ExampleUserMetricsKeysClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -28,14 +28,14 @@ func ExampleUserMetricsKeysClient_CreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2022-04-01/TrafficManagerUserMetricsKeys-DELETE.json
+// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-DELETE.json
 func ExampleUserMetricsKeysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -52,14 +52,14 @@ func ExampleUserMetricsKeysClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/TrafficManagerUserMetricsKeys-GET.json
+// Generated from example definition: 2024-04-01-preview/TrafficManagerUserMetricsKeys-GET.json
 func ExampleUserMetricsKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

@@ -12,14 +12,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithAlwaysServe.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithAlwaysServe.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithAlwaysServe() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -43,7 +43,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithAlwaysServe() 
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			AlwaysServe: to.Ptr(armtrafficmanager.AlwaysServeEnabled),
 	// 			EndpointLocation: to.Ptr("North Europe"),
@@ -57,14 +57,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithAlwaysServe() 
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithCustomHeaders.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithCustomHeaders.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithCustomHeaders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -97,7 +97,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithCustomHeaders(
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			CustomHeaders: []*armtrafficmanager.EndpointPropertiesCustomHeadersItem{
 	// 				{
@@ -120,14 +120,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithCustomHeaders(
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithGeoMapping.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithGeoMapping.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithGeoMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -153,7 +153,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithGeoMapping() {
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("My external endpoint"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
 	// 			EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
@@ -169,14 +169,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithGeoMapping() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithLocation.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithLocation.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -199,7 +199,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithLocation() {
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointLocation: to.Ptr("North Europe"),
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
@@ -212,14 +212,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithLocation() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PUT-External-WithSubnetMapping.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-PUT-External-WithSubnetMapping.json
 func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithSubnetMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -251,7 +251,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithSubnetMapping(
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("My external endpoint"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
 	// 			EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
@@ -273,14 +273,14 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointPutExternalWithSubnetMapping(
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-DELETE-External.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-DELETE-External.json
 func ExampleEndpointsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -297,14 +297,14 @@ func ExampleEndpointsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-GET-External-WithGeoMapping.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithGeoMapping.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithGeoMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -319,7 +319,7 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithGeoMapping() {
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("My external endpoint"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
 	// 			EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
@@ -335,14 +335,14 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithGeoMapping() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-GET-External-WithLocation.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithLocation.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -357,7 +357,7 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithLocation() {
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointLocation: to.Ptr("North Europe"),
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
@@ -370,14 +370,14 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithLocation() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-GET-External-WithSubnetMapping.json
+// Generated from example definition: 2024-04-01-preview/Endpoint-GET-External-WithSubnetMapping.json
 func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -392,7 +392,7 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("My external endpoint"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager2191/providers/Microsoft.Network/trafficManagerProfiles/azuresdkfornetautoresttrafficmanager8224/externalEndpoints/My external endpoint"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),
 	// 			EndpointStatus: to.Ptr(armtrafficmanager.EndpointStatusEnabled),
@@ -414,21 +414,18 @@ func ExampleEndpointsClient_Get_endpointGetExternalWithSubnetMapping() {
 	// }
 }
 
-// Generated from example definition: 2022-04-01/Endpoint-PATCH-External-Target.json
-func ExampleEndpointsClient_Update() {
+// Generated from example definition: 2024-04-01-preview/Endpoint-PATCH-External-Target.json
+func ExampleEndpointsClient_UpdateV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armtrafficmanager.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armtrafficmanager.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEndpointsClient().Update(ctx, "azuresdkfornetautoresttrafficmanager1421", "azsmnet6386", armtrafficmanager.EndpointTypeExternalEndpoints, "azsmnet7187", armtrafficmanager.Endpoint{
-		Name: to.Ptr("azsmnet7187"),
-		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-		ID:   to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	res, err := clientFactory.NewEndpointsClient().UpdateV2(ctx, "azuresdkfornetautoresttrafficmanager1421", "azsmnet6386", armtrafficmanager.EndpointTypeExternalEndpoints, "azsmnet7187", armtrafficmanager.EndpointUpdate{
 		Properties: &armtrafficmanager.EndpointProperties{
 			Target: to.Ptr("another.foobar.contoso.com"),
 		},
@@ -439,11 +436,11 @@ func ExampleEndpointsClient_Update() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armtrafficmanager.EndpointsClientUpdateResponse{
+	// res = armtrafficmanager.EndpointsClientUpdateV2Response{
 	// 	Endpoint: &armtrafficmanager.Endpoint{
 	// 		Name: to.Ptr("azsmnet7187"),
 	// 		Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 	// 		Properties: &armtrafficmanager.EndpointProperties{
 	// 			EndpointLocation: to.Ptr("North Europe"),
 	// 			EndpointMonitorStatus: to.Ptr(armtrafficmanager.EndpointMonitorStatusCheckingEndpoint),

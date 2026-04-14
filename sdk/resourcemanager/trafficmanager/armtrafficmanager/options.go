@@ -19,8 +19,8 @@ type EndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EndpointsClientUpdateOptions contains the optional parameters for the EndpointsClient.Update method.
-type EndpointsClientUpdateOptions struct {
+// EndpointsClientUpdateV2Options contains the optional parameters for the EndpointsClient.UpdateV2 method.
+type EndpointsClientUpdateV2Options struct {
 	// placeholder for future optional parameters
 }
 
@@ -78,8 +78,8 @@ type ProfilesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesClientUpdateOptions contains the optional parameters for the ProfilesClient.Update method.
-type ProfilesClientUpdateOptions struct {
+// ProfilesClientUpdateV2Options contains the optional parameters for the ProfilesClient.UpdateV2 method.
+type ProfilesClientUpdateV2Options struct {
 	// placeholder for future optional parameters
 }
 
