@@ -2426,6 +2426,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfModifiedSinceTrue() {
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
 	tierChangeTime := *resp.AccessTierChangeTime
 	conditionTime := tierChangeTime.Add(-10 * time.Second)
 
@@ -2458,6 +2460,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfModifiedSinceFalse() 
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
 	tierChangeTime := *resp.AccessTierChangeTime
 	conditionTime := tierChangeTime.Add(10 * time.Second)
 
@@ -2488,6 +2492,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfUnmodifiedSinceTrue()
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
 	tierChangeTime := *resp.AccessTierChangeTime
 	conditionTime := tierChangeTime.Add(10 * time.Second)
 
@@ -2520,6 +2526,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDeleteAccessTierIfUnmodifiedSinceFalse(
 
 	resp, err := bbClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
+	_require.NotNil(resp.AccessTierChangeTime)
+
 	tierChangeTime := *resp.AccessTierChangeTime
 	conditionTime := tierChangeTime.Add(-10 * time.Second)
 
