@@ -20,13 +20,13 @@ import (
 )
 
 // CustomLocationsServer is a fake server for instances of the armextendedlocation.CustomLocationsClient type.
-type CustomLocationsServer struct {
+type CustomLocationsServer struct{
 	// BeginCreateOrUpdate is the fake for method CustomLocationsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, parameters armextendedlocation.CustomLocation, options *armextendedlocation.CustomLocationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armextendedlocation.CustomLocationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CustomLocationsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, options *armextendedlocation.CustomLocationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armextendedlocation.CustomLocationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// FindTargetResourceGroup is the fake for method CustomLocationsClient.FindTargetResourceGroup
@@ -56,6 +56,7 @@ type CustomLocationsServer struct {
 	// Update is the fake for method CustomLocationsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, resourceName string, parameters armextendedlocation.PatchableCustomLocations, options *armextendedlocation.CustomLocationsClientUpdateOptions) (resp azfake.Responder[armextendedlocation.CustomLocationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewCustomLocationsServerTransport creates a new instance of CustomLocationsServerTransport with the provided implementation.
@@ -63,26 +64,26 @@ type CustomLocationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCustomLocationsServerTransport(srv *CustomLocationsServer) *CustomLocationsServerTransport {
 	return &CustomLocationsServerTransport{
-		srv:                              srv,
-		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armextendedlocation.CustomLocationsClientCreateOrUpdateResponse]](),
-		beginDelete:                      newTracker[azfake.PollerResponder[armextendedlocation.CustomLocationsClientDeleteResponse]](),
-		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:       newTracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListBySubscriptionResponse]](),
+		srv: srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armextendedlocation.CustomLocationsClientCreateOrUpdateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armextendedlocation.CustomLocationsClientDeleteResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListBySubscriptionResponse]](),
 		newListEnabledResourceTypesPager: newTracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListEnabledResourceTypesResponse]](),
-		newListOperationsPager:           newTracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListOperationsResponse]](),
+		newListOperationsPager: newTracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListOperationsResponse]](),
 	}
 }
 
 // CustomLocationsServerTransport connects instances of armextendedlocation.CustomLocationsClient to instances of CustomLocationsServer.
 // Don't use this type directly, use NewCustomLocationsServerTransport instead.
 type CustomLocationsServerTransport struct {
-	srv                              *CustomLocationsServer
-	beginCreateOrUpdate              *tracker[azfake.PollerResponder[armextendedlocation.CustomLocationsClientCreateOrUpdateResponse]]
-	beginDelete                      *tracker[azfake.PollerResponder[armextendedlocation.CustomLocationsClientDeleteResponse]]
-	newListByResourceGroupPager      *tracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager       *tracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListBySubscriptionResponse]]
+	srv *CustomLocationsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armextendedlocation.CustomLocationsClientCreateOrUpdateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armextendedlocation.CustomLocationsClientDeleteResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager *tracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListBySubscriptionResponse]]
 	newListEnabledResourceTypesPager *tracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListEnabledResourceTypesResponse]]
-	newListOperationsPager           *tracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListOperationsResponse]]
+	newListOperationsPager *tracker[azfake.PagerResponder[armextendedlocation.CustomLocationsClientListOperationsResponse]]
 }
 
 // Do implements the policy.Transporter interface for CustomLocationsServerTransport.
@@ -93,37 +94,56 @@ func (c *CustomLocationsServerTransport) Do(req *http.Request) (*http.Response, 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return c.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "CustomLocationsClient.BeginCreateOrUpdate":
-		resp, err = c.dispatchBeginCreateOrUpdate(req)
-	case "CustomLocationsClient.BeginDelete":
-		resp, err = c.dispatchBeginDelete(req)
-	case "CustomLocationsClient.FindTargetResourceGroup":
-		resp, err = c.dispatchFindTargetResourceGroup(req)
-	case "CustomLocationsClient.Get":
-		resp, err = c.dispatchGet(req)
-	case "CustomLocationsClient.NewListByResourceGroupPager":
-		resp, err = c.dispatchNewListByResourceGroupPager(req)
-	case "CustomLocationsClient.NewListBySubscriptionPager":
-		resp, err = c.dispatchNewListBySubscriptionPager(req)
-	case "CustomLocationsClient.NewListEnabledResourceTypesPager":
-		resp, err = c.dispatchNewListEnabledResourceTypesPager(req)
-	case "CustomLocationsClient.NewListOperationsPager":
-		resp, err = c.dispatchNewListOperationsPager(req)
-	case "CustomLocationsClient.Update":
-		resp, err = c.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (c *CustomLocationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if customLocationsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = customLocationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "CustomLocationsClient.BeginCreateOrUpdate":
+				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
+			case "CustomLocationsClient.BeginDelete":
+				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CustomLocationsClient.FindTargetResourceGroup":
+				res.resp, res.err = c.dispatchFindTargetResourceGroup(req)
+			case "CustomLocationsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "CustomLocationsClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "CustomLocationsClient.NewListBySubscriptionPager":
+				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
+			case "CustomLocationsClient.NewListEnabledResourceTypesPager":
+				res.resp, res.err = c.dispatchNewListEnabledResourceTypesPager(req)
+			case "CustomLocationsClient.NewListOperationsPager":
+				res.resp, res.err = c.dispatchNewListOperationsPager(req)
+			case "CustomLocationsClient.Update":
+				res.resp, res.err = c.dispatchUpdate(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (c *CustomLocationsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -132,28 +152,28 @@ func (c *CustomLocationsServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armextendedlocation.CustomLocation](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armextendedlocation.CustomLocation](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreateOrUpdate = &respr
 		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
@@ -180,24 +200,24 @@ func (c *CustomLocationsServerTransport) dispatchBeginDelete(req *http.Request) 
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.BeginDelete(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		c.beginDelete.add(req, beginDelete)
 	}
@@ -207,9 +227,9 @@ func (c *CustomLocationsServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		c.beginDelete.remove(req)
@@ -225,7 +245,7 @@ func (c *CustomLocationsServerTransport) dispatchFindTargetResourceGroup(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/findTargetResourceGroup`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armextendedlocation.CustomLocationFindTargetResourceGroupProperties](req)
@@ -262,7 +282,7 @@ func (c *CustomLocationsServerTransport) dispatchGet(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -294,17 +314,17 @@ func (c *CustomLocationsServerTransport) dispatchNewListByResourceGroupPager(req
 	}
 	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		c.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armextendedlocation.CustomLocationsClientListByResourceGroupResponse, createLink func() string) {
@@ -331,13 +351,13 @@ func (c *CustomLocationsServerTransport) dispatchNewListBySubscriptionPager(req 
 	}
 	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := c.srv.NewListBySubscriptionPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := c.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		c.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armextendedlocation.CustomLocationsClientListBySubscriptionResponse, createLink func() string) {
@@ -364,21 +384,21 @@ func (c *CustomLocationsServerTransport) dispatchNewListEnabledResourceTypesPage
 	}
 	newListEnabledResourceTypesPager := c.newListEnabledResourceTypesPager.get(req)
 	if newListEnabledResourceTypesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enabledResourceTypes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListEnabledResourceTypesPager(resourceGroupNameParam, resourceNameParam, nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enabledResourceTypes`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+resp := c.srv.NewListEnabledResourceTypesPager(resourceGroupNameParam, resourceNameParam, nil)
 		newListEnabledResourceTypesPager = &resp
 		c.newListEnabledResourceTypesPager.add(req, newListEnabledResourceTypesPager)
 		server.PagerResponderInjectNextLinks(newListEnabledResourceTypesPager, req, func(page *armextendedlocation.CustomLocationsClientListEnabledResourceTypesResponse, createLink func() string) {
@@ -405,7 +425,7 @@ func (c *CustomLocationsServerTransport) dispatchNewListOperationsPager(req *htt
 	}
 	newListOperationsPager := c.newListOperationsPager.get(req)
 	if newListOperationsPager == nil {
-		resp := c.srv.NewListOperationsPager(nil)
+resp := c.srv.NewListOperationsPager(nil)
 		newListOperationsPager = &resp
 		c.newListOperationsPager.add(req, newListOperationsPager)
 		server.PagerResponderInjectNextLinks(newListOperationsPager, req, func(page *armextendedlocation.CustomLocationsClientListOperationsResponse, createLink func() string) {
@@ -433,7 +453,7 @@ func (c *CustomLocationsServerTransport) dispatchUpdate(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armextendedlocation.PatchableCustomLocations](req)
@@ -461,4 +481,10 @@ func (c *CustomLocationsServerTransport) dispatchUpdate(req *http.Request) (*htt
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to CustomLocationsServerTransport
+var customLocationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

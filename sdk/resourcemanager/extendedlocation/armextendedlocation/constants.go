@@ -5,24 +5,19 @@
 
 package armextendedlocation
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extendedlocation/armextendedlocation"
-	moduleVersion = "v1.3.0-beta.1"
-)
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -39,7 +34,7 @@ const (
 
 // PossibleHostTypeValues returns the possible values for the HostType const type.
 func PossibleHostTypeValues() []HostType {
-	return []HostType{
+	return []HostType{	
 		HostTypeKubernetes,
 	}
 }
@@ -48,14 +43,15 @@ func PossibleHostTypeValues() []HostType {
 type ResourceIdentityType string
 
 const (
-	ResourceIdentityTypeNone           ResourceIdentityType = "None"
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
+	return []ResourceIdentityType{	
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 	}
 }
+

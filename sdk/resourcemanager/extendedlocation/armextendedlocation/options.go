@@ -8,13 +8,13 @@ package armextendedlocation
 // CustomLocationsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomLocationsClient.BeginCreateOrUpdate
 // method.
 type CustomLocationsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CustomLocationsClientBeginDeleteOptions contains the optional parameters for the CustomLocationsClient.BeginDelete method.
 type CustomLocationsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -61,14 +61,14 @@ type CustomLocationsClientUpdateOptions struct {
 // ResourceSyncRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceSyncRulesClient.BeginCreateOrUpdate
 // method.
 type ResourceSyncRulesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ResourceSyncRulesClientBeginUpdateOptions contains the optional parameters for the ResourceSyncRulesClient.BeginUpdate
 // method.
 type ResourceSyncRulesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -87,3 +87,4 @@ type ResourceSyncRulesClientGetOptions struct {
 type ResourceSyncRulesClientListByCustomLocationIDOptions struct {
 	// placeholder for future optional parameters
 }
+

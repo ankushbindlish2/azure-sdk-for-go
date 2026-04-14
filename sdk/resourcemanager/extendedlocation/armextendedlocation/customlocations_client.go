@@ -20,14 +20,14 @@ import (
 // CustomLocationsClient contains the methods for the CustomLocations group.
 // Don't use this type directly, use NewCustomLocationsClient() instead.
 type CustomLocationsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewCustomLocationsClient creates a new instance of CustomLocationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCustomLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomLocationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,7 +35,7 @@ func NewCustomLocationsClient(subscriptionID string, credential azcore.TokenCred
 	}
 	client := &CustomLocationsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -57,7 +57,7 @@ func (client *CustomLocationsClient) BeginCreateOrUpdate(ctx context.Context, re
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomLocationsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -93,7 +93,7 @@ func (client *CustomLocationsClient) createOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, options *CustomLocationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, _ *CustomLocationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,9 +116,9 @@ func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // BeginDelete - Deletes the Custom Location with the specified Resource Name, Resource Group, and Subscription Id.
@@ -137,7 +137,7 @@ func (client *CustomLocationsClient) BeginDelete(ctx context.Context, resourceGr
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CustomLocationsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -173,7 +173,7 @@ func (client *CustomLocationsClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomLocationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *CustomLocationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -231,7 +231,7 @@ func (client *CustomLocationsClient) FindTargetResourceGroup(ctx context.Context
 }
 
 // findTargetResourceGroupCreateRequest creates the FindTargetResourceGroup request.
-func (client *CustomLocationsClient) findTargetResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocationFindTargetResourceGroupProperties, options *CustomLocationsClientFindTargetResourceGroupOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) findTargetResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocationFindTargetResourceGroupProperties, _ *CustomLocationsClientFindTargetResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/findTargetResourceGroup"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -254,9 +254,9 @@ func (client *CustomLocationsClient) findTargetResourceGroupCreateRequest(ctx co
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // findTargetResourceGroupHandleResponse handles the FindTargetResourceGroup response.
@@ -298,7 +298,7 @@ func (client *CustomLocationsClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomLocationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientGetOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *CustomLocationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -339,13 +339,13 @@ func (client *CustomLocationsClient) getHandleResponse(resp *http.Response) (Cus
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CustomLocationsClientListByResourceGroupOptions contains the optional parameters for the CustomLocationsClient.NewListByResourceGroupPager
 //     method.
-func (client *CustomLocationsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomLocationsClientListByResourceGroupOptions) *runtime.Pager[CustomLocationsClientListByResourceGroupResponse] {
+func (client *CustomLocationsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomLocationsClientListByResourceGroupOptions) (*runtime.Pager[CustomLocationsClientListByResourceGroupResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListByResourceGroupResponse]{
 		More: func(page CustomLocationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CustomLocationsClientListByResourceGroupResponse) (CustomLocationsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomLocationsClient.NewListByResourceGroupPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomLocationsClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -357,13 +357,13 @@ func (client *CustomLocationsClient) NewListByResourceGroupPager(resourceGroupNa
 				return CustomLocationsClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *CustomLocationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CustomLocationsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *CustomLocationsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -399,13 +399,13 @@ func (client *CustomLocationsClient) listByResourceGroupHandleResponse(resp *htt
 // Generated from API version 2021-08-31-preview
 //   - options - CustomLocationsClientListBySubscriptionOptions contains the optional parameters for the CustomLocationsClient.NewListBySubscriptionPager
 //     method.
-func (client *CustomLocationsClient) NewListBySubscriptionPager(options *CustomLocationsClientListBySubscriptionOptions) *runtime.Pager[CustomLocationsClientListBySubscriptionResponse] {
+func (client *CustomLocationsClient) NewListBySubscriptionPager(options *CustomLocationsClientListBySubscriptionOptions) (*runtime.Pager[CustomLocationsClientListBySubscriptionResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListBySubscriptionResponse]{
 		More: func(page CustomLocationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CustomLocationsClientListBySubscriptionResponse) (CustomLocationsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomLocationsClient.NewListBySubscriptionPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomLocationsClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -417,13 +417,13 @@ func (client *CustomLocationsClient) NewListBySubscriptionPager(options *CustomL
 				return CustomLocationsClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *CustomLocationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *CustomLocationsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *CustomLocationsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ExtendedLocation/customLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -456,13 +456,13 @@ func (client *CustomLocationsClient) listBySubscriptionHandleResponse(resp *http
 //   - resourceName - Custom Locations name.
 //   - options - CustomLocationsClientListEnabledResourceTypesOptions contains the optional parameters for the CustomLocationsClient.NewListEnabledResourceTypesPager
 //     method.
-func (client *CustomLocationsClient) NewListEnabledResourceTypesPager(resourceGroupName string, resourceName string, options *CustomLocationsClientListEnabledResourceTypesOptions) *runtime.Pager[CustomLocationsClientListEnabledResourceTypesResponse] {
+func (client *CustomLocationsClient) NewListEnabledResourceTypesPager(resourceGroupName string, resourceName string, options *CustomLocationsClientListEnabledResourceTypesOptions) (*runtime.Pager[CustomLocationsClientListEnabledResourceTypesResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListEnabledResourceTypesResponse]{
 		More: func(page CustomLocationsClientListEnabledResourceTypesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CustomLocationsClientListEnabledResourceTypesResponse) (CustomLocationsClientListEnabledResourceTypesResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomLocationsClient.NewListEnabledResourceTypesPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomLocationsClient.NewListEnabledResourceTypesPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -474,13 +474,13 @@ func (client *CustomLocationsClient) NewListEnabledResourceTypesPager(resourceGr
 				return CustomLocationsClientListEnabledResourceTypesResponse{}, err
 			}
 			return client.listEnabledResourceTypesHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listEnabledResourceTypesCreateRequest creates the ListEnabledResourceTypes request.
-func (client *CustomLocationsClient) listEnabledResourceTypesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientListEnabledResourceTypesOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) listEnabledResourceTypesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *CustomLocationsClientListEnabledResourceTypesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/enabledResourceTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -519,13 +519,13 @@ func (client *CustomLocationsClient) listEnabledResourceTypesHandleResponse(resp
 // Generated from API version 2021-08-31-preview
 //   - options - CustomLocationsClientListOperationsOptions contains the optional parameters for the CustomLocationsClient.NewListOperationsPager
 //     method.
-func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocationsClientListOperationsOptions) *runtime.Pager[CustomLocationsClientListOperationsResponse] {
+func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocationsClientListOperationsOptions) (*runtime.Pager[CustomLocationsClientListOperationsResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListOperationsResponse]{
 		More: func(page CustomLocationsClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *CustomLocationsClientListOperationsResponse) (CustomLocationsClientListOperationsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomLocationsClient.NewListOperationsPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CustomLocationsClient.NewListOperationsPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -537,13 +537,13 @@ func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocat
 				return CustomLocationsClientListOperationsResponse{}, err
 			}
 			return client.listOperationsHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
-func (client *CustomLocationsClient) listOperationsCreateRequest(ctx context.Context, options *CustomLocationsClientListOperationsOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) listOperationsCreateRequest(ctx context.Context, _ *CustomLocationsClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ExtendedLocation/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -596,7 +596,7 @@ func (client *CustomLocationsClient) Update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CustomLocationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters PatchableCustomLocations, options *CustomLocationsClientUpdateOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters PatchableCustomLocations, _ *CustomLocationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -619,9 +619,9 @@ func (client *CustomLocationsClient) updateCreateRequest(ctx context.Context, re
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
+	return nil, err
+}
+;	return req, nil
 }
 
 // updateHandleResponse handles the Update response.
@@ -632,3 +632,4 @@ func (client *CustomLocationsClient) updateHandleResponse(resp *http.Response) (
 	}
 	return result, nil
 }
+
