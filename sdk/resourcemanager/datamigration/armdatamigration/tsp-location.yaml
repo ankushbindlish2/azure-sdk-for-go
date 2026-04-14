@@ -1,0 +1,4 @@
+directory: specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration
+commit: 18614557c6ec96632b3d3431c29e1232268e3cfe
+repo: i-specs
+additionalDirectories: 
