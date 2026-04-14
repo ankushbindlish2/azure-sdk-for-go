@@ -97,7 +97,7 @@ func (client *DatabaseAccountRegionClient) listMetricsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", Filter)
+	reqQP.Set("$filter", filter)
 	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
