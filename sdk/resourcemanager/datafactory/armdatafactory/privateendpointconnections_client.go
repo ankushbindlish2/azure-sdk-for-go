@@ -71,7 +71,7 @@ func (client *PrivateEndPointConnectionsClient) NewListByFactoryPager(resourceGr
 
 // listByFactoryCreateRequest creates the ListByFactory request.
 func (client *PrivateEndPointConnectionsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *PrivateEndPointConnectionsClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndPointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
