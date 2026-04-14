@@ -27,7 +27,7 @@ type ResourceSyncRulesClient struct {
 // NewResourceSyncRulesClient creates a new instance of ResourceSyncRulesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceSyncRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceSyncRulesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *ResourceSyncRulesClient) createOrUpdate(ctx context.Context, resou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ResourceSyncRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters ResourceSyncRule, options *ResourceSyncRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ResourceSyncRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters ResourceSyncRule, _ *ResourceSyncRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules/{childResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -159,7 +159,7 @@ func (client *ResourceSyncRulesClient) Delete(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ResourceSyncRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *ResourceSyncRulesClientDeleteOptions) (*policy.Request, error) {
+func (client *ResourceSyncRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, _ *ResourceSyncRulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules/{childResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -220,7 +220,7 @@ func (client *ResourceSyncRulesClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourceSyncRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *ResourceSyncRulesClientGetOptions) (*policy.Request, error) {
+func (client *ResourceSyncRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, _ *ResourceSyncRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules/{childResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -290,7 +290,7 @@ func (client *ResourceSyncRulesClient) NewListByCustomLocationIDPager(resourceGr
 }
 
 // listByCustomLocationIDCreateRequest creates the ListByCustomLocationID request.
-func (client *ResourceSyncRulesClient) listByCustomLocationIDCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceSyncRulesClientListByCustomLocationIDOptions) (*policy.Request, error) {
+func (client *ResourceSyncRulesClient) listByCustomLocationIDCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceSyncRulesClientListByCustomLocationIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -380,7 +380,7 @@ func (client *ResourceSyncRulesClient) update(ctx context.Context, resourceGroup
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ResourceSyncRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters PatchableResourceSyncRule, options *ResourceSyncRulesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ResourceSyncRulesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters PatchableResourceSyncRule, _ *ResourceSyncRulesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/resourceSyncRules/{childResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

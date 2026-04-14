@@ -5,11 +5,6 @@
 
 package armextendedlocation
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extendedlocation/armextendedlocation"
-	moduleVersion = "v1.3.0-beta.1"
-)
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 

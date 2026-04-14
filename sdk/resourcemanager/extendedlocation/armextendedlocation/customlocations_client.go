@@ -27,7 +27,7 @@ type CustomLocationsClient struct {
 // NewCustomLocationsClient creates a new instance of CustomLocationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCustomLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomLocationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -93,7 +93,7 @@ func (client *CustomLocationsClient) createOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, options *CustomLocationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, _ *CustomLocationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -173,7 +173,7 @@ func (client *CustomLocationsClient) deleteOperation(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomLocationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *CustomLocationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -231,7 +231,7 @@ func (client *CustomLocationsClient) FindTargetResourceGroup(ctx context.Context
 }
 
 // findTargetResourceGroupCreateRequest creates the FindTargetResourceGroup request.
-func (client *CustomLocationsClient) findTargetResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocationFindTargetResourceGroupProperties, options *CustomLocationsClientFindTargetResourceGroupOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) findTargetResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocationFindTargetResourceGroupProperties, _ *CustomLocationsClientFindTargetResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/findTargetResourceGroup"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -298,7 +298,7 @@ func (client *CustomLocationsClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomLocationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientGetOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *CustomLocationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -363,7 +363,7 @@ func (client *CustomLocationsClient) NewListByResourceGroupPager(resourceGroupNa
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *CustomLocationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *CustomLocationsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *CustomLocationsClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -423,7 +423,7 @@ func (client *CustomLocationsClient) NewListBySubscriptionPager(options *CustomL
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *CustomLocationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *CustomLocationsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *CustomLocationsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ExtendedLocation/customLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -480,7 +480,7 @@ func (client *CustomLocationsClient) NewListEnabledResourceTypesPager(resourceGr
 }
 
 // listEnabledResourceTypesCreateRequest creates the ListEnabledResourceTypes request.
-func (client *CustomLocationsClient) listEnabledResourceTypesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientListEnabledResourceTypesOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) listEnabledResourceTypesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *CustomLocationsClientListEnabledResourceTypesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/enabledResourceTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -543,7 +543,7 @@ func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocat
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
-func (client *CustomLocationsClient) listOperationsCreateRequest(ctx context.Context, options *CustomLocationsClientListOperationsOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) listOperationsCreateRequest(ctx context.Context, _ *CustomLocationsClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ExtendedLocation/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -596,7 +596,7 @@ func (client *CustomLocationsClient) Update(ctx context.Context, resourceGroupNa
 }
 
 // updateCreateRequest creates the Update request.
-func (client *CustomLocationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters PatchableCustomLocations, options *CustomLocationsClientUpdateOptions) (*policy.Request, error) {
+func (client *CustomLocationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters PatchableCustomLocations, _ *CustomLocationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

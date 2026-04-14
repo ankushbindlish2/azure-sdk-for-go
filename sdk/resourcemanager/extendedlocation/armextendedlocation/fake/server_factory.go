@@ -16,7 +16,10 @@ import (
 
 // ServerFactory is a fake server for instances of the armextendedlocation.ClientFactory type.
 type ServerFactory struct {
-	CustomLocationsServer   CustomLocationsServer
+	// CustomLocationsServer contains the fakes for client CustomLocationsClient
+	CustomLocationsServer CustomLocationsServer
+
+	// ResourceSyncRulesServer contains the fakes for client ResourceSyncRulesClient
 	ResourceSyncRulesServer ResourceSyncRulesServer
 }
 

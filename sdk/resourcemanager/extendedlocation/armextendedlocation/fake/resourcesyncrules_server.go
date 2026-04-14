@@ -71,29 +71,48 @@ func (r *ResourceSyncRulesServerTransport) Do(req *http.Request) (*http.Response
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ResourceSyncRulesClient.BeginCreateOrUpdate":
-		resp, err = r.dispatchBeginCreateOrUpdate(req)
-	case "ResourceSyncRulesClient.Delete":
-		resp, err = r.dispatchDelete(req)
-	case "ResourceSyncRulesClient.Get":
-		resp, err = r.dispatchGet(req)
-	case "ResourceSyncRulesClient.NewListByCustomLocationIDPager":
-		resp, err = r.dispatchNewListByCustomLocationIDPager(req)
-	case "ResourceSyncRulesClient.BeginUpdate":
-		resp, err = r.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *ResourceSyncRulesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if resourceSyncRulesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = resourceSyncRulesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ResourceSyncRulesClient.BeginCreateOrUpdate":
+				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
+			case "ResourceSyncRulesClient.Delete":
+				res.resp, res.err = r.dispatchDelete(req)
+			case "ResourceSyncRulesClient.Get":
+				res.resp, res.err = r.dispatchGet(req)
+			case "ResourceSyncRulesClient.NewListByCustomLocationIDPager":
+				res.resp, res.err = r.dispatchNewListByCustomLocationIDPager(req)
+			case "ResourceSyncRulesClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *ResourceSyncRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -105,7 +124,7 @@ func (r *ResourceSyncRulesServerTransport) dispatchBeginCreateOrUpdate(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceSyncRules/(?P<childResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armextendedlocation.ResourceSyncRule](req)
@@ -155,7 +174,7 @@ func (r *ResourceSyncRulesServerTransport) dispatchDelete(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceSyncRules/(?P<childResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -192,7 +211,7 @@ func (r *ResourceSyncRulesServerTransport) dispatchGet(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceSyncRules/(?P<childResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -231,7 +250,7 @@ func (r *ResourceSyncRulesServerTransport) dispatchNewListByCustomLocationIDPage
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceSyncRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -272,7 +291,7 @@ func (r *ResourceSyncRulesServerTransport) dispatchBeginUpdate(req *http.Request
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ExtendedLocation/customLocations/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceSyncRules/(?P<childResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armextendedlocation.PatchableResourceSyncRule](req)
@@ -313,4 +332,10 @@ func (r *ResourceSyncRulesServerTransport) dispatchBeginUpdate(req *http.Request
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ResourceSyncRulesServerTransport
+var resourceSyncRulesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }
