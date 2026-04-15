@@ -16,6 +16,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+const featureNotEnabled = "FeatureNotEnabled"
+
 type sessionProvider interface {
 	GetSessionCredentials(ctx context.Context, containerName string) (sessionCredentials, error)
 	ExpireSessionCredentials(containerName string)
@@ -40,7 +42,7 @@ func acquireSession(state sessionState) (creds generated.SessionCredentials, exp
 			if respErr.StatusCode >= 500 {
 				return creds, expiry, errFallbackToBearer
 			}
-			if respErr.StatusCode == http.StatusBadRequest && respErr.ErrorCode == "FeatureNotEnabled" {
+			if respErr.StatusCode == http.StatusBadRequest && respErr.ErrorCode == featureNotEnabled {
 				return creds, expiry, errFallbackToBearer
 			}
 			if respErr.StatusCode == http.StatusForbidden {
