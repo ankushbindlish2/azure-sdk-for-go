@@ -1,5 +1,28 @@
 # Release History
 
+## 2.0.0 (2026-04-15)
+### Breaking Changes
+
+- Type of `EventPropertiesRecommendedActions.Actions` has been changed from `[]*EventPropertiesRecommendedActionsItem` to `[]*EventPropertiesRecommendedActionsActionsItem`
+- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
+- Struct `EventPropertiesRecommendedActionsItem` has been removed
+- Field `OccurredTime` of struct `AvailabilityStatusProperties` has been removed
+- Field `UnavailabilitySummary`, `UnavailableOccurredTime` of struct `AvailabilityStatusPropertiesRecentlyResolved` has been removed
+
+### Features Added
+
+- New value `EventTypeValuesBilling` added to enum type `EventTypeValues`
+- New enum type `EventSubTypeValues` with values `EventSubTypeValuesForeignExchangeRateChange`, `EventSubTypeValuesMeterIDChanges`, `EventSubTypeValuesOverbilling`, `EventSubTypeValuesPriceChanges`, `EventSubTypeValuesRetirement`, `EventSubTypeValuesTaxChanges`, `EventSubTypeValuesUnauthorizedPartyAbuse`, `EventSubTypeValuesUnderbilling`
+- New function `*EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error)`
+- New struct `EventPropertiesRecommendedActionsActionsItem`
+- New field `OccuredTime` in struct `AvailabilityStatusProperties`
+- New field `UnavailableOccuredTime`, `UnavailableSummary` in struct `AvailabilityStatusPropertiesRecentlyResolved`
+- New field `BillingID`, `CurrencyType`, `EventSubType`, `EventTags`, `IsEventSensitive`, `NewRate`, `OldRate` in struct `EventProperties`
+- New field `ImpactedServiceGUID` in struct `Impact`
+- New field `PreviousID`, `Priority`, `ServiceGUID` in struct `MetadataSupportedValueDetail`
+- New field `EventTags` in struct `Update`
+
+
 ## 1.4.0-beta.2 (2024-02-07)
 ### Bugs Fixed
 
