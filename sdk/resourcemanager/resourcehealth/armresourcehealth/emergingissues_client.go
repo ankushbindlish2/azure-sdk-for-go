@@ -25,14 +25,14 @@ type EmergingIssuesClient struct {
 
 // NewEmergingIssuesClient creates a new instance of EmergingIssuesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEmergingIssuesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EmergingIssuesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EmergingIssuesClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -40,7 +40,7 @@ func NewEmergingIssuesClient(credential azcore.TokenCredential, options *arm.Cli
 // Get - Gets Azure services' emerging issues.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - issueName - The name of the emerging issue.
 //   - options - EmergingIssuesClientGetOptions contains the optional parameters for the EmergingIssuesClient.Get method.
 func (client *EmergingIssuesClient) Get(ctx context.Context, issueName IssueNameParameter, options *EmergingIssuesClientGetOptions) (EmergingIssuesClientGetResponse, error) {
@@ -66,7 +66,7 @@ func (client *EmergingIssuesClient) Get(ctx context.Context, issueName IssueName
 }
 
 // getCreateRequest creates the Get request.
-func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueName IssueNameParameter, options *EmergingIssuesClientGetOptions) (*policy.Request, error) {
+func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueName IssueNameParameter, _ *EmergingIssuesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/emergingIssues/{issueName}"
 	if issueName == "" {
 		return nil, errors.New("parameter issueName cannot be empty")
@@ -77,7 +77,7 @@ func (client *EmergingIssuesClient) getCreateRequest(ctx context.Context, issueN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -94,15 +94,15 @@ func (client *EmergingIssuesClient) getHandleResponse(resp *http.Response) (Emer
 
 // NewListPager - Lists Azure services' emerging issues.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - options - EmergingIssuesClientListOptions contains the optional parameters for the EmergingIssuesClient.NewListPager method.
-func (client *EmergingIssuesClient) NewListPager(options *EmergingIssuesClientListOptions) *runtime.Pager[EmergingIssuesClientListResponse] {
+func (client *EmergingIssuesClient) NewListPager(options *EmergingIssuesClientListOptions) (*runtime.Pager[EmergingIssuesClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EmergingIssuesClientListResponse]{
 		More: func(page EmergingIssuesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EmergingIssuesClientListResponse) (EmergingIssuesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EmergingIssuesClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EmergingIssuesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -114,20 +114,20 @@ func (client *EmergingIssuesClient) NewListPager(options *EmergingIssuesClientLi
 				return EmergingIssuesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *EmergingIssuesClient) listCreateRequest(ctx context.Context, options *EmergingIssuesClientListOptions) (*policy.Request, error) {
+func (client *EmergingIssuesClient) listCreateRequest(ctx context.Context, _ *EmergingIssuesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/emergingIssues"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -141,3 +141,4 @@ func (client *EmergingIssuesClient) listHandleResponse(resp *http.Response) (Eme
 	}
 	return result, nil
 }
+

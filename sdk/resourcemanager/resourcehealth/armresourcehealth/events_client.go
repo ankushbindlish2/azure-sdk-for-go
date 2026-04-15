@@ -20,14 +20,14 @@ import (
 // EventsClient contains the methods for the Events group.
 // Don't use this type directly, use NewEventsClient() instead.
 type EventsClient struct {
-	internal       *arm.Client
+	internal *arm.Client
 	subscriptionID string
 }
 
 // NewEventsClient creates a new instance of EventsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EventsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -35,14 +35,14 @@ func NewEventsClient(subscriptionID string, credential azcore.TokenCredential, o
 	}
 	client := &EventsClient{
 		subscriptionID: subscriptionID,
-		internal:       cl,
+	internal: cl,
 	}
 	return client, nil
 }
 
 // NewListBySingleResourcePager - Lists current service health events for given resource.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - resourceURI - The fully qualified ID of the resource, including the resource name and resource type. Currently the API
 //     support not nested and one nesting level resource types :
 //     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
@@ -50,13 +50,13 @@ func NewEventsClient(subscriptionID string, credential azcore.TokenCredential, o
 //     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}
 //   - options - EventsClientListBySingleResourceOptions contains the optional parameters for the EventsClient.NewListBySingleResourcePager
 //     method.
-func (client *EventsClient) NewListBySingleResourcePager(resourceURI string, options *EventsClientListBySingleResourceOptions) *runtime.Pager[EventsClientListBySingleResourceResponse] {
+func (client *EventsClient) NewListBySingleResourcePager(resourceURI string, options *EventsClientListBySingleResourceOptions) (*runtime.Pager[EventsClientListBySingleResourceResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EventsClientListBySingleResourceResponse]{
 		More: func(page EventsClientListBySingleResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EventsClientListBySingleResourceResponse) (EventsClientListBySingleResourceResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventsClient.NewListBySingleResourcePager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventsClient.NewListBySingleResourcePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -68,7 +68,7 @@ func (client *EventsClient) NewListBySingleResourcePager(resourceURI string, opt
 				return EventsClientListBySingleResourceResponse{}, err
 			}
 			return client.listBySingleResourceHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -85,7 +85,7 @@ func (client *EventsClient) listBySingleResourceCreateRequest(ctx context.Contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -102,16 +102,16 @@ func (client *EventsClient) listBySingleResourceHandleResponse(resp *http.Respon
 
 // NewListBySubscriptionIDPager - Lists service health events in the subscription.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - options - EventsClientListBySubscriptionIDOptions contains the optional parameters for the EventsClient.NewListBySubscriptionIDPager
 //     method.
-func (client *EventsClient) NewListBySubscriptionIDPager(options *EventsClientListBySubscriptionIDOptions) *runtime.Pager[EventsClientListBySubscriptionIDResponse] {
+func (client *EventsClient) NewListBySubscriptionIDPager(options *EventsClientListBySubscriptionIDOptions) (*runtime.Pager[EventsClientListBySubscriptionIDResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EventsClientListBySubscriptionIDResponse]{
 		More: func(page EventsClientListBySubscriptionIDResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EventsClientListBySubscriptionIDResponse) (EventsClientListBySubscriptionIDResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventsClient.NewListBySubscriptionIDPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventsClient.NewListBySubscriptionIDPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -123,7 +123,7 @@ func (client *EventsClient) NewListBySubscriptionIDPager(options *EventsClientLi
 				return EventsClientListBySubscriptionIDResponse{}, err
 			}
 			return client.listBySubscriptionIDHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -143,7 +143,7 @@ func (client *EventsClient) listBySubscriptionIDCreateRequest(ctx context.Contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.QueryStartTime != nil {
 		reqQP.Set("queryStartTime", *options.QueryStartTime)
 	}
@@ -163,16 +163,16 @@ func (client *EventsClient) listBySubscriptionIDHandleResponse(resp *http.Respon
 
 // NewListByTenantIDPager - Lists current service health events in the tenant.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - options - EventsClientListByTenantIDOptions contains the optional parameters for the EventsClient.NewListByTenantIDPager
 //     method.
-func (client *EventsClient) NewListByTenantIDPager(options *EventsClientListByTenantIDOptions) *runtime.Pager[EventsClientListByTenantIDResponse] {
+func (client *EventsClient) NewListByTenantIDPager(options *EventsClientListByTenantIDOptions) (*runtime.Pager[EventsClientListByTenantIDResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[EventsClientListByTenantIDResponse]{
 		More: func(page EventsClientListByTenantIDResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *EventsClientListByTenantIDResponse) (EventsClientListByTenantIDResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventsClient.NewListByTenantIDPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EventsClient.NewListByTenantIDPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -184,7 +184,7 @@ func (client *EventsClient) NewListByTenantIDPager(options *EventsClientListByTe
 				return EventsClientListByTenantIDResponse{}, err
 			}
 			return client.listByTenantIDHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
@@ -200,7 +200,7 @@ func (client *EventsClient) listByTenantIDCreateRequest(ctx context.Context, opt
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.QueryStartTime != nil {
 		reqQP.Set("queryStartTime", *options.QueryStartTime)
 	}
@@ -217,3 +217,4 @@ func (client *EventsClient) listByTenantIDHandleResponse(resp *http.Response) (E
 	}
 	return result, nil
 }
+

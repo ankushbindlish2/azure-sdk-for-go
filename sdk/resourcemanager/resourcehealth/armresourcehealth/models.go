@@ -9,690 +9,802 @@ import "time"
 
 // AvailabilityStatus - availabilityStatus of a resource.
 type AvailabilityStatus struct {
-	// Azure Resource Manager Identity for the availabilityStatuses resource.
+// Azure Resource Manager Identity for the availabilityStatuses resource.
 	ID *string
 
-	// Azure Resource Manager geo location of the resource.
+// Azure Resource Manager geo location of the resource.
 	Location *string
 
-	// current.
+// current.
 	Name *string
 
-	// Properties of availability state.
+// Properties of availability state.
 	Properties *AvailabilityStatusProperties
 
-	// Microsoft.ResourceHealth/AvailabilityStatuses.
+// Microsoft.ResourceHealth/AvailabilityStatuses.
 	Type *string
 }
 
 // AvailabilityStatusListResult - The List availabilityStatus operation response.
 type AvailabilityStatusListResult struct {
-	// REQUIRED; The list of availabilityStatuses.
+// REQUIRED; The list of availabilityStatuses.
 	Value []*AvailabilityStatus
 
-	// The URI to fetch the next page of availabilityStatuses. Call ListNext() with this URI to fetch the next page of availabilityStatuses.
+// The URI to fetch the next page of availabilityStatuses. Call ListNext() with this URI to fetch the next page of availabilityStatuses.
 	NextLink *string
 }
 
 // AvailabilityStatusProperties - Properties of availability state.
 type AvailabilityStatusProperties struct {
-	// The Article Id
+// The Article Id
 	ArticleID *string
 
-	// Availability status of the resource. When it is null, this availabilityStatus object represents an availability impacting
-	// event
+// Availability status of the resource. When it is null, this availabilityStatus object represents an availability impacting
+// event
 	AvailabilityState *AvailabilityStateValues
 
-	// When a context field is set to Platform, this field will reflect if the event was planned or unplanned. If the context
-	// field does not have a value of Platform, then this field will be ignored.
+// When a context field is set to Platform, this field will reflect if the event was planned or unplanned. If the context
+// field does not have a value of Platform, then this field will be ignored.
 	Category *string
 
-	// When an event is created, it can either be triggered by a customer or the platform of the resource and this field will
-	// illustrate that. This field is connected to the category field in this object.
+// When an event is created, it can either be triggered by a customer or the platform of the resource and this field will
+// illustrate that. This field is connected to the category field in this object.
 	Context *string
 
-	// Details of the availability status.
+// Details of the availability status.
 	DetailedStatus *string
 
-	// In case of an availability impacting event, it describes the category of a PlatformInitiated health impacting event. Examples
-	// are Planned, Unplanned etc.
+// In case of an availability impacting event, it describes the category of a PlatformInitiated health impacting event. Examples
+// are Planned, Unplanned etc.
 	HealthEventCategory *string
 
-	// In case of an availability impacting event, it describes where the health impacting event was originated. Examples are
-	// PlatformInitiated, UserInitiated etc.
+// In case of an availability impacting event, it describes where the health impacting event was originated. Examples are
+// PlatformInitiated, UserInitiated etc.
 	HealthEventCause *string
 
-	// It is a unique Id that identifies the event
+// It is a unique Id that identifies the event
 	HealthEventID *string
 
-	// In case of an availability impacting event, it describes when the health impacting event was originated. Examples are Lifecycle,
-	// Downtime, Fault Analysis etc.
+// In case of an availability impacting event, it describes when the health impacting event was originated. Examples are Lifecycle,
+// Downtime, Fault Analysis etc.
 	HealthEventType *string
 
-	// Timestamp for when last change in health status occurred.
+// Timestamp for when last change in health status occurred.
 	OccurredTime *time.Time
 
-	// Chronicity of the availability transition.
+// Chronicity of the availability transition.
 	ReasonChronicity *ReasonChronicityTypes
 
-	// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated. Examples
-	// are planned, unplanned, user initiated or an outage etc.
+// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated. Examples
+// are planned, unplanned, user initiated or an outage etc.
 	ReasonType *string
 
-	// An annotation describing a change in the availabilityState to Available from Unavailable with a reasonType of type Unplanned
+// An annotation describing a change in the availabilityState to Available from Unavailable with a reasonType of type Unplanned
 	RecentlyResolved *AvailabilityStatusPropertiesRecentlyResolved
 
-	// Lists actions the user can take based on the current availabilityState of the resource.
+// Lists actions the user can take based on the current availabilityState of the resource.
 	RecommendedActions []*RecommendedAction
 
-	// Timestamp for when the health was last checked.
+// Timestamp for when the health was last checked.
 	ReportedTime *time.Time
 
-	// When the resource's availabilityState is Unavailable and the reasonType is not User Initiated, it provides the date and
-	// time for when the issue is expected to be resolved.
+// When the resource's availabilityState is Unavailable and the reasonType is not User Initiated, it provides the date and
+// time for when the issue is expected to be resolved.
 	ResolutionETA *time.Time
 
-	// When the resource's availabilityState is Unavailable, it provides the Timestamp for when the health impacting event was
-	// received.
+// When the resource's availabilityState is Unavailable, it provides the Timestamp for when the health impacting event was
+// received.
 	RootCauseAttributionTime *time.Time
 
-	// Lists the service impacting events that may be affecting the health of the resource.
+// Lists the service impacting events that may be affecting the health of the resource.
 	ServiceImpactingEvents []*ServiceImpactingEvent
 
-	// Summary description of the availability status.
+// Summary description of the availability status.
 	Summary *string
 
-	// Title description of the availability status.
+// Title description of the availability status.
 	Title *string
 }
 
 // AvailabilityStatusPropertiesRecentlyResolved - An annotation describing a change in the availabilityState to Available
 // from Unavailable with a reasonType of type Unplanned
 type AvailabilityStatusPropertiesRecentlyResolved struct {
-	// Timestamp when the availabilityState changes to Available.
+// Timestamp when the availabilityState changes to Available.
 	ResolvedTime *time.Time
 
-	// Brief description of cause of the resource becoming unavailable.
+// Brief description of cause of the resource becoming unavailable.
 	UnavailabilitySummary *string
 
-	// Timestamp for when the availabilityState changed to Unavailable
+// Timestamp for when the availabilityState changed to Unavailable
 	UnavailableOccurredTime *time.Time
 }
 
 // EmergingIssue - On-going emerging issue from azure status.
 type EmergingIssue struct {
-	// Timestamp for when last time refreshed for ongoing emerging issue.
+// Timestamp for when last time refreshed for ongoing emerging issue.
 	RefreshTimestamp *time.Time
 
-	// The list of emerging issues of active event type.
+// The list of emerging issues of active event type.
 	StatusActiveEvents []*StatusActiveEvent
 
-	// The list of emerging issues of banner type.
+// The list of emerging issues of banner type.
 	StatusBanners []*StatusBanner
 }
 
 // EmergingIssueImpact - Object of the emerging issue impact on services and regions.
 type EmergingIssueImpact struct {
-	// The impacted service id.
+// The impacted service id.
 	ID *string
 
-	// The impacted service name.
+// The impacted service name.
 	Name *string
 
-	// The list of impacted regions for corresponding emerging issues.
+// The list of impacted regions for corresponding emerging issues.
 	Regions []*ImpactedRegion
 }
 
 // EmergingIssueListResult - The list of emerging issues.
 type EmergingIssueListResult struct {
-	// The link used to get the next page of emerging issues.
+// The link used to get the next page of emerging issues.
 	NextLink *string
 
-	// The list of emerging issues.
+// The list of emerging issues.
 	Value []*EmergingIssuesGetResult
 }
 
 // EmergingIssuesGetResult - The Get EmergingIssues operation response.
 type EmergingIssuesGetResult struct {
-	// The emerging issue entity properties.
+// The emerging issue entity properties.
 	Properties *EmergingIssue
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; The name of the resource
+// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ErrorResponse - Error details.
+type ErrorResponse struct {
+// READ-ONLY; The error code.
+	Code *string
+
+// READ-ONLY; The error details.
+	Details *string
+
+// READ-ONLY; The error message.
+	Message *string
 }
 
 // Event - Service health event
 type Event struct {
-	// Properties of event.
+// Properties of event.
 	Properties *EventProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; The name of the resource
+// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // EventImpactedResource - Impacted resource for an event.
 type EventImpactedResource struct {
-	// Properties of impacted resource.
+// Properties of impacted resource.
 	Properties *EventImpactedResourceProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; The name of the resource
+// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // EventImpactedResourceListResult - The List of eventImpactedResources operation response.
 type EventImpactedResourceListResult struct {
-	// REQUIRED; The list of eventImpactedResources.
+// REQUIRED; The list of eventImpactedResources.
 	Value []*EventImpactedResource
 
-	// The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of impacted resource.
+// The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of impacted resource.
 	NextLink *string
 }
 
 // EventImpactedResourceProperties - Properties of impacted resource.
 type EventImpactedResourceProperties struct {
-	// Additional information.
+// Additional information.
 	Info []*KeyValueItem
 
-	// READ-ONLY; End time of maintenance for the impacted resource.
-	MaintenanceEndTime *string
-
-	// READ-ONLY; Start time of maintenance for the impacted resource.
-	MaintenanceStartTime *string
-
-	// READ-ONLY; Resource group name of the impacted resource.
-	ResourceGroup *string
-
-	// READ-ONLY; Resource name of the impacted resource.
-	ResourceName *string
-
-	// READ-ONLY; Status of the impacted resource.
-	Status *string
-
-	// READ-ONLY; Impacted resource region name.
+// READ-ONLY; Impacted resource region name.
 	TargetRegion *string
 
-	// READ-ONLY; Identity for resource within Microsoft cloud.
+// READ-ONLY; Identity for resource within Microsoft cloud.
 	TargetResourceID *string
 
-	// READ-ONLY; Resource type within Microsoft cloud.
+// READ-ONLY; Resource type within Microsoft cloud.
 	TargetResourceType *string
 }
 
 // EventProperties - Properties of event.
 type EventProperties struct {
-	// Additional information
+// Additional information
 	AdditionalInformation *EventPropertiesAdditionalInformation
 
-	// Azure Resource Graph query to fetch the affected resources from their existing Azure Resource Graph locations.
-	ArgQuery *string
-
-	// Article of event.
+// Article of event.
 	Article *EventPropertiesArticle
 
-	// Contains the communication message for the event, that could include summary, root cause and other details.
+// Billing identifier information.
+	BillingID *string
+
+// Billing currency type information. Example: USD, CAD
+	CurrencyType *string
+
+// Contains the communication message for the event, that could include summary, root cause and other details. Use fetchEventDetails
+// endpoint to get description of sensitive events.
 	Description *string
 
-	// duration in seconds
+// duration in seconds
 	Duration *int32
 
-	// Tells if we want to enable or disable Microsoft Support for this event.
+// Tells if we want to enable or disable Microsoft Support for this event.
 	EnableChatWithUs *bool
 
-	// Tells if we want to enable or disable Microsoft Support for this event.
+// Tells if we want to enable or disable Microsoft Support for this event.
 	EnableMicrosoftSupport *bool
 
-	// Level of event.
+// Level of event.
 	EventLevel *EventLevelValues
 
-	// Source of event.
+// Source of event.
 	EventSource *EventSourceValues
 
-	// Sub type of the event. Currently used to determine retirement communications for health advisory events
+// Sub-type of event.
 	EventSubType *EventSubTypeValues
 
-	// Type of event.
+// A list of metadata tags associated with the event. Possible values include: -Action Recommended: Action may be required
+// by you to avoid possible disruptions or mitigate risks for your services. It is
+// recommended to evaluate these actions and the potential impact on your services.
+// * False Positive: After investigation, we've determined your service is healthy and service issues did not impact your
+// services as originally communicated.
+// * Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published
+// generally within 72 hours of mitigation, to summarize what we have learned so
+// far from the still-in-progress investigation.
+// * Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings.
+// Sometimes this requires us to complete an internal retrospective,
+// generally within 14 days of mitigation.
+	EventTags []*string
+
+// Type of event.
 	EventType *EventTypeValues
 
-	// The id of the Incident
+// The id of the Incident
 	ExternalIncidentID *string
 
-	// Frequently asked questions for the service health event.
+// Frequently asked questions for the service health event.
 	Faqs []*Faq
 
-	// Header text of event.
+// Header text of event.
 	Header *string
 
-	// Stage for HIR Document
+// Stage for HIR Document
 	HirStage *string
 
-	// List services impacted by the service health event.
+// List services impacted by the service health event.
 	Impact []*Impact
 
-	// It provides the Timestamp for when the health impacting event resolved.
+// It provides the Timestamp for when the health impacting event resolved.
 	ImpactMitigationTime *time.Time
 
-	// It provides the Timestamp for when the health impacting event started.
+// It provides the Timestamp for when the health impacting event started.
 	ImpactStartTime *time.Time
 
-	// The type of the impact
+// The type of the impact
 	ImpactType *string
 
-	// It provides information if the event is High incident rate event or not.
+// If true the event may contains sensitive data. Use the post events/{trackingId}/fetchEventDetails endpoint to fetch sensitive
+// data see
+// https://learn.microsoft.com/en-us/azure/service-health/security-advisories-elevated-access
+	IsEventSensitive *bool
+
+// It provides information if the event is High incident rate event or not.
 	IsHIR *bool
 
-	// It provides the Timestamp for when the health impacting event was last updated.
+// It provides the Timestamp for when the health impacting event was last updated.
 	LastUpdateTime *time.Time
 
-	// Level of insight.
+// Level of insight.
 	Level *LevelValues
 
-	// Useful links of event.
+// Useful links of event.
 	Links []*Link
 
-	// Unique identifier for planned maintenance event.
-	MaintenanceID *string
+// Billing rate change information - new rate
+	NewRate *float64
 
-	// The type of planned maintenance event.
-	MaintenanceType *string
+// Billing rate change information - old rate
+	OldRate *float64
 
-	// Is true if the event is platform initiated.
+// Is true if the event is platform initiated.
 	PlatformInitiated *bool
 
-	// Priority level of the event. Has value from 0 to 23. 0 is the highest priority. Service issue events have higher priority
-	// followed by planned maintenance and health advisory. Critical events have
-	// higher priority followed by error, warning and informational. Furthermore, active events have higher priority than resolved.
+// Priority level of the event. Has value from 0 to 23. 0 is the highest priority. Service issue events have higher priority
+// followed by planned maintenance and health advisory. Critical events have
+// higher priority followed by error, warning and informational. Furthermore, active events have higher priority than resolved.
 	Priority *int32
 
-	// The reason for the Incident
+// The reason for the Incident
 	Reason *string
 
-	// Recommended actions of event.
+// Recommended actions of event.
 	RecommendedActions *EventPropertiesRecommendedActions
 
-	// Current status of event.
+// Current status of event.
 	Status *EventStatusValues
 
-	// Summary text of event.
+// Summary text of event. Use fetchEventDetails endpoint to get summary of sensitive events.
 	Summary *string
 
-	// Title text of event.
+// Title text of event.
 	Title *string
 }
 
 // EventPropertiesAdditionalInformation - Additional information
 type EventPropertiesAdditionalInformation struct {
-	// Additional information Message
+// Additional information Message
 	Message *string
 }
 
 // EventPropertiesArticle - Article of event.
 type EventPropertiesArticle struct {
-	// Article content of event.
+// Article content of event.
 	ArticleContent *string
 
-	// Article Id
+// Article Id
 	ArticleID *string
 
-	// It provides a map of parameter name and value
+// It provides a map of parameter name and value
 	Parameters any
 }
 
 // EventPropertiesRecommendedActions - Recommended actions of event.
 type EventPropertiesRecommendedActions struct {
-	// Recommended actions for the service health event.
+// Recommended actions for the service health event.
 	Actions []*EventPropertiesRecommendedActionsItem
 
-	// Recommended action locale for the service health event.
+// Recommended action locale for the service health event.
 	LocaleCode *string
 
-	// Recommended action title for the service health event.
+// Recommended action title for the service health event.
 	Message *string
 }
 
 // EventPropertiesRecommendedActionsItem - Recommended action for the service health event.
 type EventPropertiesRecommendedActionsItem struct {
-	// Recommended action text
+// Recommended action text
 	ActionText *string
 
-	// Recommended action group Id for the service health event.
+// Recommended action group Id for the service health event.
 	GroupID *int32
 }
 
 // Events - The List events operation response.
 type Events struct {
-	// REQUIRED; The list of event.
+// REQUIRED; The list of event.
 	Value []*Event
 
-	// The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of events.
+// The URI to fetch the next page of events. Call ListNext() with this URI to fetch the next page of events.
 	NextLink *string
 }
 
 // Faq - Frequently asked question for the service health event
 type Faq struct {
-	// FAQ answer for the service health event.
+// FAQ answer for the service health event.
 	Answer *string
 
-	// FAQ locale for the service health event.
+// FAQ locale for the service health event.
 	LocaleCode *string
 
-	// FAQ question for the service health event.
+// FAQ question for the service health event.
 	Question *string
 }
 
 // Impact - Azure service impacted by the service health event.
 type Impact struct {
-	// List regions impacted by the service health event.
+// List regions impacted by the service health event.
 	ImpactedRegions []*ImpactedServiceRegion
 
-	// Impacted service name.
+// Impacted service name.
 	ImpactedService *string
+
+// Impacted service guid. This is the permanent identifier for the impacted service.
+	ImpactedServiceGUID *string
 }
 
 // ImpactedRegion - Object of impacted region.
 type ImpactedRegion struct {
-	// The impacted region id.
+// The impacted region id.
 	ID *string
 
-	// The impacted region name.
+// The impacted region name.
 	Name *string
+}
+
+// ImpactedResourceStatus - impactedResource with health status
+type ImpactedResourceStatus struct {
+// Properties of impacted resource status.
+	Properties *ImpactedResourceStatusProperties
+
+// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+// READ-ONLY; The name of the resource
+	Name *string
+
+// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ImpactedResourceStatusProperties - Properties of impacted resource status.
+type ImpactedResourceStatusProperties struct {
+// Impacted resource status of the resource.
+	AvailabilityState *AvailabilityStateValues
+
+// Timestamp for when last change in health status occurred.
+	OccurredTime *time.Time
+
+// When the resource's availabilityState is Unavailable, it describes where the health impacting event was originated.
+	ReasonType *ReasonTypeValues
+
+// Summary description of the impacted resource status.
+	Summary *string
+
+// Title description of the impacted resource status.
+	Title *string
 }
 
 // ImpactedServiceRegion - Azure region impacted by the service health event.
 type ImpactedServiceRegion struct {
-	// Impacted region name.
+// Impacted region name.
 	ImpactedRegion *string
 
-	// List subscription impacted by the service health event.
+// List subscription impacted by the service health event.
 	ImpactedSubscriptions []*string
 
-	// List tenant impacted by the service health event.
+// List tenant impacted by the service health event.
 	ImpactedTenants []*string
 
-	// It provides the Timestamp for when the last update for the service health event.
+// It provides the Timestamp for when the last update for the service health event.
 	LastUpdateTime *time.Time
 
-	// Current status of event in the region.
+// Current status of event in the region.
 	Status *EventStatusValues
 
-	// List of updates for given service health event.
+// List of updates for given service health event. Use fetchEventDetails endpoint to get updates of sensitive events.
 	Updates []*Update
 }
 
 // KeyValueItem - Key value tuple.
 type KeyValueItem struct {
-	// READ-ONLY; Key of tuple.
+// READ-ONLY; Key of tuple.
 	Key *string
 
-	// READ-ONLY; Value of tuple.
+// READ-ONLY; Value of tuple.
 	Value *string
 }
 
 // Link - Useful links for service health event.
 type Link struct {
-	// It provides the name of portal extension blade to produce link for given service health event.
+// It provides the name of portal extension blade to produce link for given service health event.
 	BladeName *string
 
-	// Display text of link.
+// Display text of link.
 	DisplayText *LinkDisplayText
 
-	// It provides the name of portal extension to produce link for given service health event.
+// It provides the name of portal extension to produce link for given service health event.
 	ExtensionName *string
 
-	// It provides a map of parameter name and value for portal extension blade to produce lik for given service health event.
+// It provides a map of parameter name and value for portal extension blade to produce lik for given service health event.
 	Parameters any
 
-	// Type of link.
+// Type of link.
 	Type *LinkTypeValues
 }
 
 // LinkDisplayText - Display text of link.
 type LinkDisplayText struct {
-	// Localized display text of link.
+// Localized display text of link.
 	LocalizedValue *string
 
-	// Display text of link.
+// Display text of link.
 	Value *string
 }
 
 // MetadataEntity - The metadata entity contract.
 type MetadataEntity struct {
-	// The metadata entity properties.
+// The metadata entity properties.
 	Properties *MetadataEntityProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; The name of the resource
+// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // MetadataEntityListResult - The list of metadata entities
 type MetadataEntityListResult struct {
-	// The link used to get the next page of metadata.
+// The link used to get the next page of metadata.
 	NextLink *string
 
-	// The list of metadata entities.
+// The list of metadata entities.
 	Value []*MetadataEntity
 }
 
 // MetadataEntityProperties - The metadata entity properties
 type MetadataEntityProperties struct {
-	// The list of scenarios applicable to this metadata entity.
+// The list of scenarios applicable to this metadata entity.
 	ApplicableScenarios []*Scenario
 
-	// The list of keys on which this entity depends on.
+// The list of keys on which this entity depends on.
 	DependsOn []*string
 
-	// The display name.
+// The display name.
 	DisplayName *string
 
-	// The list of supported values.
+// The list of supported values.
 	SupportedValues []*MetadataSupportedValueDetail
 }
 
 // MetadataSupportedValueDetail - The metadata supported value detail.
 type MetadataSupportedValueDetail struct {
-	// The display name.
+// The display name.
 	DisplayName *string
 
-	// The id.
+// The id of the metadata value
 	ID *string
 
-	// The list of associated resource types.
+// The previous value of the id field incase the data has changed.
+	PreviousID *string
+
+// Priority of this metadata supported value. Lower number is given higher preference.
+	Priority *int32
+
+// The list of associated resource types.
 	ResourceTypes []*string
+
+// The permanent guid for the service. Used when the id is a service name.
+	ServiceGUID *string
 }
 
 // Operation available in the Microsoft.ResourceHealth resource provider.
 type Operation struct {
-	// Properties of the operation.
+// Properties of the operation.
 	Display *OperationDisplay
 
-	// Name of the operation.
+// Name of the operation.
 	Name *string
 }
 
 // OperationDisplay - Properties of the operation.
 type OperationDisplay struct {
-	// Description of the operation.
+// Description of the operation.
 	Description *string
 
-	// Operation name.
+// Operation name.
 	Operation *string
 
-	// Provider name.
+// Provider name.
 	Provider *string
 
-	// Resource name.
+// Resource name.
 	Resource *string
 }
 
 // OperationListResult - Lists the operations response.
 type OperationListResult struct {
-	// REQUIRED; List of operations available in the Microsoft.ResourceHealth resource provider.
+// REQUIRED; List of operations available in the Microsoft.ResourceHealth resource provider.
 	Value []*Operation
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+// READ-ONLY; The name of the resource
+	Name *string
+
+// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // RecommendedAction - Lists actions the user can take based on the current availabilityState of the resource.
 type RecommendedAction struct {
-	// Recommended action.
+// Recommended action.
 	Action *string
 
-	// Link to the action
+// Link to the action
 	ActionURL *string
 
-	// the comment for the Action
+// the comment for the Action
 	ActionURLComment *string
 
-	// Substring of action, it describes which text should host the action URL.
+// Substring of action, it describes which text should host the action URL.
 	ActionURLText *string
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+// READ-ONLY; The name of the resource
+	Name *string
+
+// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ServiceImpactingEvent - Lists the service impacting events that may be affecting the health of the resource.
 type ServiceImpactingEvent struct {
-	// Correlation id for the event
+// Correlation id for the event
 	CorrelationID *string
 
-	// Timestamp for when the event started.
+// Timestamp for when the event started.
 	EventStartTime *time.Time
 
-	// Timestamp for when event was submitted/detected.
+// Timestamp for when event was submitted/detected.
 	EventStatusLastModifiedTime *time.Time
 
-	// Properties of the service impacting event.
+// Properties of the service impacting event.
 	IncidentProperties *ServiceImpactingEventIncidentProperties
 
-	// Status of the service impacting event.
+// Status of the service impacting event.
 	Status *ServiceImpactingEventStatus
 }
 
 // ServiceImpactingEventIncidentProperties - Properties of the service impacting event.
 type ServiceImpactingEventIncidentProperties struct {
-	// Type of Event.
+// Type of Event.
 	IncidentType *string
 
-	// Region impacted by the event.
+// Region impacted by the event.
 	Region *string
 
-	// Service impacted by the event.
+// Service impacted by the event.
 	Service *string
 
-	// Title of the incident.
+// Title of the incident.
 	Title *string
 }
 
 // ServiceImpactingEventStatus - Status of the service impacting event.
 type ServiceImpactingEventStatus struct {
-	// Current status of the event
+// Current status of the event
 	Value *string
 }
 
 // StatusActiveEvent - Active event type of emerging issue.
 type StatusActiveEvent struct {
-	// The cloud type of this active event.
+// The cloud type of this active event.
 	Cloud *string
 
-	// The details of active event.
+// The details of active event.
 	Description *string
 
-	// The list of emerging issues impacts.
+// The list of emerging issues impacts.
 	Impacts []*EmergingIssueImpact
 
-	// The last time modified on this banner.
+// The last time modified on this banner.
 	LastModifiedTime *time.Time
 
-	// The boolean value of this active event if published or not.
+// The boolean value of this active event if published or not.
 	Published *bool
 
-	// The severity level of this active event.
+// The severity level of this active event.
 	Severity *SeverityValues
 
-	// The stage of this active event.
+// The stage of this active event.
 	Stage *StageValues
 
-	// The impact start time on this active event.
+// The impact start time on this active event.
 	StartTime *time.Time
 
-	// The active event title.
+// The active event title.
 	Title *string
 
-	// The tracking id of this active event.
+// The tracking id of this active event.
 	TrackingID *string
 }
 
 // StatusBanner - Banner type of emerging issue.
 type StatusBanner struct {
-	// The cloud type of this banner.
+// The cloud type of this banner.
 	Cloud *string
 
-	// The last time modified on this banner.
+// The last time modified on this banner.
 	LastModifiedTime *time.Time
 
-	// The details of banner.
+// The details of banner.
 	Message *string
 
-	// The banner title.
+// The banner title.
 	Title *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-	// The timestamp of resource creation (UTC).
+// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
-	// The identity that created the resource.
+// The identity that created the resource.
 	CreatedBy *string
 
-	// The type of identity that created the resource.
+// The type of identity that created the resource.
 	CreatedByType *CreatedByType
 
-	// The timestamp of resource last modification (UTC)
+// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
 
-	// The identity that last modified the resource.
+// The identity that last modified the resource.
 	LastModifiedBy *string
 
-	// The type of identity that last modified the resource.
+// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
 }
 
 // Update for service health event.
 type Update struct {
-	// Summary text for the given update for the service health event.
+// A list of metadata tags associated with the event. Possible values include: -Action Recommended: Action may be required
+// by you to avoid possible disruptions or mitigate risks for your services. It is
+// recommended to evaluate these actions and the potential impact on your services.
+// * False Positive: After investigation, we've determined your service is healthy and service issues did not impact your
+// services as originally communicated.
+// * Preliminary PIR: For our largest, most impactful service issues a Preliminary Post Incident Review (PIR) is published
+// generally within 72 hours of mitigation, to summarize what we have learned so
+// far from the still-in-progress investigation.
+// * Final PIR: For service issues, a Final Post Incident Review (PIR) may be published to provide additional details or learnings.
+// Sometimes this requires us to complete an internal retrospective,
+// generally within 14 days of mitigation.
+	EventTags []*string
+
+// Summary text for the given update for the service health event.
 	Summary *string
 
-	// It provides the Timestamp for the given update for the service health event.
+// It provides the Timestamp for the given update for the service health event.
 	UpdateDateTime *time.Time
 }
+

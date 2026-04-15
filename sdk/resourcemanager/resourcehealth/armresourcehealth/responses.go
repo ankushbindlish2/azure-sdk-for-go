@@ -7,150 +7,157 @@ package armresourcehealth
 
 // AvailabilityStatusesClientGetByResourceResponse contains the response from method AvailabilityStatusesClient.GetByResource.
 type AvailabilityStatusesClientGetByResourceResponse struct {
-	// availabilityStatus of a resource.
+// availabilityStatus of a resource.
 	AvailabilityStatus
 }
 
 // AvailabilityStatusesClientListByResourceGroupResponse contains the response from method AvailabilityStatusesClient.NewListByResourceGroupPager.
 type AvailabilityStatusesClientListByResourceGroupResponse struct {
-	// The List availabilityStatus operation response.
+// The List availabilityStatus operation response.
 	AvailabilityStatusListResult
 }
 
 // AvailabilityStatusesClientListBySubscriptionIDResponse contains the response from method AvailabilityStatusesClient.NewListBySubscriptionIDPager.
 type AvailabilityStatusesClientListBySubscriptionIDResponse struct {
-	// The List availabilityStatus operation response.
+// The List availabilityStatus operation response.
 	AvailabilityStatusListResult
 }
 
 // AvailabilityStatusesClientListResponse contains the response from method AvailabilityStatusesClient.NewListPager.
 type AvailabilityStatusesClientListResponse struct {
-	// The List availabilityStatus operation response.
+// The List availabilityStatus operation response.
 	AvailabilityStatusListResult
 }
 
 // ChildAvailabilityStatusesClientGetByResourceResponse contains the response from method ChildAvailabilityStatusesClient.GetByResource.
 type ChildAvailabilityStatusesClientGetByResourceResponse struct {
-	// availabilityStatus of a resource.
+// availabilityStatus of a resource.
 	AvailabilityStatus
 }
 
 // ChildAvailabilityStatusesClientListResponse contains the response from method ChildAvailabilityStatusesClient.NewListPager.
 type ChildAvailabilityStatusesClientListResponse struct {
-	// The List availabilityStatus operation response.
+// The List availabilityStatus operation response.
 	AvailabilityStatusListResult
 }
 
 // ChildResourcesClientListResponse contains the response from method ChildResourcesClient.NewListPager.
 type ChildResourcesClientListResponse struct {
-	// The List availabilityStatus operation response.
+// The List availabilityStatus operation response.
 	AvailabilityStatusListResult
 }
 
 // EmergingIssuesClientGetResponse contains the response from method EmergingIssuesClient.Get.
 type EmergingIssuesClientGetResponse struct {
-	// The Get EmergingIssues operation response.
+// The Get EmergingIssues operation response.
 	EmergingIssuesGetResult
 }
 
 // EmergingIssuesClientListResponse contains the response from method EmergingIssuesClient.NewListPager.
 type EmergingIssuesClientListResponse struct {
-	// The list of emerging issues.
+// The list of emerging issues.
 	EmergingIssueListResult
+}
+
+// EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse contains the response from method EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID.
+type EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse struct {
+// Service health event
+	Event
 }
 
 // EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse contains the response from method EventClient.FetchDetailsBySubscriptionIDAndTrackingID.
 type EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse struct {
-	// Service health event
+// Service health event
 	Event
 }
 
 // EventClientFetchDetailsByTenantIDAndTrackingIDResponse contains the response from method EventClient.FetchDetailsByTenantIDAndTrackingID.
 type EventClientFetchDetailsByTenantIDAndTrackingIDResponse struct {
-	// Service health event
+// Service health event
 	Event
 }
 
 // EventClientGetBySubscriptionIDAndTrackingIDResponse contains the response from method EventClient.GetBySubscriptionIDAndTrackingID.
 type EventClientGetBySubscriptionIDAndTrackingIDResponse struct {
-	// Service health event
+// Service health event
 	Event
 }
 
 // EventClientGetByTenantIDAndTrackingIDResponse contains the response from method EventClient.GetByTenantIDAndTrackingID.
 type EventClientGetByTenantIDAndTrackingIDResponse struct {
-	// Service health event
+// Service health event
 	Event
 }
 
 // EventsClientListBySingleResourceResponse contains the response from method EventsClient.NewListBySingleResourcePager.
 type EventsClientListBySingleResourceResponse struct {
-	// The List events operation response.
+// The List events operation response.
 	Events
 }
 
 // EventsClientListBySubscriptionIDResponse contains the response from method EventsClient.NewListBySubscriptionIDPager.
 type EventsClientListBySubscriptionIDResponse struct {
-	// The List events operation response.
+// The List events operation response.
 	Events
 }
 
 // EventsClientListByTenantIDResponse contains the response from method EventsClient.NewListByTenantIDPager.
 type EventsClientListByTenantIDResponse struct {
-	// The List events operation response.
+// The List events operation response.
 	Events
 }
 
 // ImpactedResourcesClientGetByTenantIDResponse contains the response from method ImpactedResourcesClient.GetByTenantID.
 type ImpactedResourcesClientGetByTenantIDResponse struct {
-	// Impacted resource for an event.
+// Impacted resource for an event.
 	EventImpactedResource
 }
 
 // ImpactedResourcesClientGetResponse contains the response from method ImpactedResourcesClient.Get.
 type ImpactedResourcesClientGetResponse struct {
-	// Impacted resource for an event.
+// Impacted resource for an event.
 	EventImpactedResource
 }
 
 // ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse contains the response from method ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager.
 type ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse struct {
-	// The List of eventImpactedResources operation response.
+// The List of eventImpactedResources operation response.
 	EventImpactedResourceListResult
 }
 
 // ImpactedResourcesClientListByTenantIDAndEventIDResponse contains the response from method ImpactedResourcesClient.NewListByTenantIDAndEventIDPager.
 type ImpactedResourcesClientListByTenantIDAndEventIDResponse struct {
-	// The List of eventImpactedResources operation response.
+// The List of eventImpactedResources operation response.
 	EventImpactedResourceListResult
 }
 
 // MetadataClientGetEntityResponse contains the response from method MetadataClient.GetEntity.
 type MetadataClientGetEntityResponse struct {
-	// The metadata entity contract.
+// The metadata entity contract.
 	MetadataEntity
 }
 
 // MetadataClientListResponse contains the response from method MetadataClient.NewListPager.
 type MetadataClientListResponse struct {
-	// The list of metadata entities
+// The list of metadata entities
 	MetadataEntityListResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	// Lists the operations response.
+// Lists the operations response.
 	OperationListResult
 }
 
 // SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse contains the response from method SecurityAdvisoryImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager.
 type SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDResponse struct {
-	// The List of eventImpactedResources operation response.
+// The List of eventImpactedResources operation response.
 	EventImpactedResourceListResult
 }
 
 // SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse contains the response from method SecurityAdvisoryImpactedResourcesClient.NewListByTenantIDAndEventIDPager.
 type SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDResponse struct {
-	// The List of eventImpactedResources operation response.
+// The List of eventImpactedResources operation response.
 	EventImpactedResourceListResult
 }
+

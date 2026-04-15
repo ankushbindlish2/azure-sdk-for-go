@@ -20,7 +20,7 @@ import (
 )
 
 // EmergingIssuesServer is a fake server for instances of the armresourcehealth.EmergingIssuesClient type.
-type EmergingIssuesServer struct {
+type EmergingIssuesServer struct{
 	// Get is the fake for method EmergingIssuesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, issueName armresourcehealth.IssueNameParameter, options *armresourcehealth.EmergingIssuesClientGetOptions) (resp azfake.Responder[armresourcehealth.EmergingIssuesClientGetResponse], errResp azfake.ErrorResponder)
@@ -28,6 +28,7 @@ type EmergingIssuesServer struct {
 	// NewListPager is the fake for method EmergingIssuesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armresourcehealth.EmergingIssuesClientListOptions) (resp azfake.PagerResponder[armresourcehealth.EmergingIssuesClientListResponse])
+
 }
 
 // NewEmergingIssuesServerTransport creates a new instance of EmergingIssuesServerTransport with the provided implementation.
@@ -35,7 +36,7 @@ type EmergingIssuesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEmergingIssuesServerTransport(srv *EmergingIssuesServer) *EmergingIssuesServerTransport {
 	return &EmergingIssuesServerTransport{
-		srv:          srv,
+		srv: srv,
 		newListPager: newTracker[azfake.PagerResponder[armresourcehealth.EmergingIssuesClientListResponse]](),
 	}
 }
@@ -43,7 +44,7 @@ func NewEmergingIssuesServerTransport(srv *EmergingIssuesServer) *EmergingIssues
 // EmergingIssuesServerTransport connects instances of armresourcehealth.EmergingIssuesClient to instances of EmergingIssuesServer.
 // Don't use this type directly, use NewEmergingIssuesServerTransport instead.
 type EmergingIssuesServerTransport struct {
-	srv          *EmergingIssuesServer
+	srv *EmergingIssuesServer
 	newListPager *tracker[azfake.PagerResponder[armresourcehealth.EmergingIssuesClientListResponse]]
 }
 
@@ -55,23 +56,42 @@ func (e *EmergingIssuesServerTransport) Do(req *http.Request) (*http.Response, e
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EmergingIssuesClient.Get":
-		resp, err = e.dispatchGet(req)
-	case "EmergingIssuesClient.NewListPager":
-		resp, err = e.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EmergingIssuesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if emergingIssuesServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = emergingIssuesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EmergingIssuesClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "EmergingIssuesClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *EmergingIssuesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -81,10 +101,10 @@ func (e *EmergingIssuesServerTransport) dispatchGet(req *http.Request) (*http.Re
 	const regexStr = `/providers/Microsoft\.ResourceHealth/emergingIssues/(?P<issueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	issueNameParam, err := parseWithCast(matches[regex.SubexpIndex("issueName")], func(v string) (armresourcehealth.IssueNameParameter, error) {
+	issueNameParam, err := parseWithCast(matches[regex.SubexpIndex("issueName")], func (v string) (armresourcehealth.IssueNameParameter, error) {
 		p, unescapeErr := url.PathUnescape(v)
 		if unescapeErr != nil {
 			return "", unescapeErr
@@ -115,7 +135,7 @@ func (e *EmergingIssuesServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-		resp := e.srv.NewListPager(nil)
+resp := e.srv.NewListPager(nil)
 		newListPager = &resp
 		e.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresourcehealth.EmergingIssuesClientListResponse, createLink func() string) {
@@ -134,4 +154,10 @@ func (e *EmergingIssuesServerTransport) dispatchNewListPager(req *http.Request) 
 		e.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EmergingIssuesServerTransport
+var emergingIssuesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

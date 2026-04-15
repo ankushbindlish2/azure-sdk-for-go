@@ -5,24 +5,19 @@
 
 package armresourcehealth
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcehealth/armresourcehealth"
-	moduleVersion = "v1.4.0-beta.2"
-)
-
 // AvailabilityStateValues - Impacted resource status of the resource.
 type AvailabilityStateValues string
 
 const (
-	AvailabilityStateValuesAvailable   AvailabilityStateValues = "Available"
-	AvailabilityStateValuesDegraded    AvailabilityStateValues = "Degraded"
+	AvailabilityStateValuesAvailable AvailabilityStateValues = "Available"
+	AvailabilityStateValuesDegraded AvailabilityStateValues = "Degraded"
 	AvailabilityStateValuesUnavailable AvailabilityStateValues = "Unavailable"
-	AvailabilityStateValuesUnknown     AvailabilityStateValues = "Unknown"
+	AvailabilityStateValuesUnknown AvailabilityStateValues = "Unknown"
 )
 
 // PossibleAvailabilityStateValuesValues returns the possible values for the AvailabilityStateValues const type.
 func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
-	return []AvailabilityStateValues{
+	return []AvailabilityStateValues{	
 		AvailabilityStateValuesAvailable,
 		AvailabilityStateValuesDegraded,
 		AvailabilityStateValuesUnavailable,
@@ -34,15 +29,15 @@ func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
 type CreatedByType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeApplication CreatedByType = "Application"
+	CreatedByTypeKey CreatedByType = "Key"
 	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
+	return []CreatedByType{	
 		CreatedByTypeApplication,
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
@@ -54,15 +49,15 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type EventLevelValues string
 
 const (
-	EventLevelValuesCritical      EventLevelValues = "Critical"
-	EventLevelValuesError         EventLevelValues = "Error"
+	EventLevelValuesCritical EventLevelValues = "Critical"
+	EventLevelValuesError EventLevelValues = "Error"
 	EventLevelValuesInformational EventLevelValues = "Informational"
-	EventLevelValuesWarning       EventLevelValues = "Warning"
+	EventLevelValuesWarning EventLevelValues = "Warning"
 )
 
 // PossibleEventLevelValuesValues returns the possible values for the EventLevelValues const type.
 func PossibleEventLevelValuesValues() []EventLevelValues {
-	return []EventLevelValues{
+	return []EventLevelValues{	
 		EventLevelValuesCritical,
 		EventLevelValuesError,
 		EventLevelValuesInformational,
@@ -75,12 +70,12 @@ type EventSourceValues string
 
 const (
 	EventSourceValuesResourceHealth EventSourceValues = "ResourceHealth"
-	EventSourceValuesServiceHealth  EventSourceValues = "ServiceHealth"
+	EventSourceValuesServiceHealth EventSourceValues = "ServiceHealth"
 )
 
 // PossibleEventSourceValuesValues returns the possible values for the EventSourceValues const type.
 func PossibleEventSourceValuesValues() []EventSourceValues {
-	return []EventSourceValues{
+	return []EventSourceValues{	
 		EventSourceValuesResourceHealth,
 		EventSourceValuesServiceHealth,
 	}
@@ -90,29 +85,43 @@ func PossibleEventSourceValuesValues() []EventSourceValues {
 type EventStatusValues string
 
 const (
-	EventStatusValuesActive   EventStatusValues = "Active"
+	EventStatusValuesActive EventStatusValues = "Active"
 	EventStatusValuesResolved EventStatusValues = "Resolved"
 )
 
 // PossibleEventStatusValuesValues returns the possible values for the EventStatusValues const type.
 func PossibleEventStatusValuesValues() []EventStatusValues {
-	return []EventStatusValues{
+	return []EventStatusValues{	
 		EventStatusValuesActive,
 		EventStatusValuesResolved,
 	}
 }
 
-// EventSubTypeValues - Sub type of the event. Currently used to determine retirement communications for health advisory events
+// EventSubTypeValues - Sub-type of event.
 type EventSubTypeValues string
 
 const (
+	EventSubTypeValuesForeignExchangeRateChange EventSubTypeValues = "ForeignExchangeRateChange"
+	EventSubTypeValuesMeterIDChanges EventSubTypeValues = "MeterIDChanges"
+	EventSubTypeValuesOverbilling EventSubTypeValues = "Overbilling"
+	EventSubTypeValuesPriceChanges EventSubTypeValues = "PriceChanges"
 	EventSubTypeValuesRetirement EventSubTypeValues = "Retirement"
+	EventSubTypeValuesTaxChanges EventSubTypeValues = "TaxChanges"
+	EventSubTypeValuesUnauthorizedPartyAbuse EventSubTypeValues = "UnauthorizedPartyAbuse"
+	EventSubTypeValuesUnderbilling EventSubTypeValues = "Underbilling"
 )
 
 // PossibleEventSubTypeValuesValues returns the possible values for the EventSubTypeValues const type.
 func PossibleEventSubTypeValuesValues() []EventSubTypeValues {
-	return []EventSubTypeValues{
+	return []EventSubTypeValues{	
+		EventSubTypeValuesForeignExchangeRateChange,
+		EventSubTypeValuesMeterIDChanges,
+		EventSubTypeValuesOverbilling,
+		EventSubTypeValuesPriceChanges,
 		EventSubTypeValuesRetirement,
+		EventSubTypeValuesTaxChanges,
+		EventSubTypeValuesUnauthorizedPartyAbuse,
+		EventSubTypeValuesUnderbilling,
 	}
 }
 
@@ -120,17 +129,19 @@ func PossibleEventSubTypeValuesValues() []EventSubTypeValues {
 type EventTypeValues string
 
 const (
-	EventTypeValuesEmergingIssues     EventTypeValues = "EmergingIssues"
-	EventTypeValuesHealthAdvisory     EventTypeValues = "HealthAdvisory"
+	EventTypeValuesBilling EventTypeValues = "Billing"
+	EventTypeValuesEmergingIssues EventTypeValues = "EmergingIssues"
+	EventTypeValuesHealthAdvisory EventTypeValues = "HealthAdvisory"
 	EventTypeValuesPlannedMaintenance EventTypeValues = "PlannedMaintenance"
-	EventTypeValuesRCA                EventTypeValues = "RCA"
-	EventTypeValuesSecurityAdvisory   EventTypeValues = "SecurityAdvisory"
-	EventTypeValuesServiceIssue       EventTypeValues = "ServiceIssue"
+	EventTypeValuesRCA EventTypeValues = "RCA"
+	EventTypeValuesSecurityAdvisory EventTypeValues = "SecurityAdvisory"
+	EventTypeValuesServiceIssue EventTypeValues = "ServiceIssue"
 )
 
 // PossibleEventTypeValuesValues returns the possible values for the EventTypeValues const type.
 func PossibleEventTypeValuesValues() []EventTypeValues {
-	return []EventTypeValues{
+	return []EventTypeValues{	
+		EventTypeValuesBilling,
 		EventTypeValuesEmergingIssues,
 		EventTypeValuesHealthAdvisory,
 		EventTypeValuesPlannedMaintenance,
@@ -148,7 +159,7 @@ const (
 
 // PossibleIssueNameParameterValues returns the possible values for the IssueNameParameter const type.
 func PossibleIssueNameParameterValues() []IssueNameParameter {
-	return []IssueNameParameter{
+	return []IssueNameParameter{	
 		IssueNameParameterDefault,
 	}
 }
@@ -158,12 +169,12 @@ type LevelValues string
 
 const (
 	LevelValuesCritical LevelValues = "Critical"
-	LevelValuesWarning  LevelValues = "Warning"
+	LevelValuesWarning LevelValues = "Warning"
 )
 
 // PossibleLevelValuesValues returns the possible values for the LevelValues const type.
 func PossibleLevelValuesValues() []LevelValues {
-	return []LevelValues{
+	return []LevelValues{	
 		LevelValuesCritical,
 		LevelValuesWarning,
 	}
@@ -173,13 +184,13 @@ func PossibleLevelValuesValues() []LevelValues {
 type LinkTypeValues string
 
 const (
-	LinkTypeValuesButton    LinkTypeValues = "Button"
+	LinkTypeValuesButton LinkTypeValues = "Button"
 	LinkTypeValuesHyperlink LinkTypeValues = "Hyperlink"
 )
 
 // PossibleLinkTypeValuesValues returns the possible values for the LinkTypeValues const type.
 func PossibleLinkTypeValuesValues() []LinkTypeValues {
-	return []LinkTypeValues{
+	return []LinkTypeValues{	
 		LinkTypeValuesButton,
 		LinkTypeValuesHyperlink,
 	}
@@ -190,14 +201,33 @@ type ReasonChronicityTypes string
 
 const (
 	ReasonChronicityTypesPersistent ReasonChronicityTypes = "Persistent"
-	ReasonChronicityTypesTransient  ReasonChronicityTypes = "Transient"
+	ReasonChronicityTypesTransient ReasonChronicityTypes = "Transient"
 )
 
 // PossibleReasonChronicityTypesValues returns the possible values for the ReasonChronicityTypes const type.
 func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
-	return []ReasonChronicityTypes{
+	return []ReasonChronicityTypes{	
 		ReasonChronicityTypesPersistent,
 		ReasonChronicityTypesTransient,
+	}
+}
+
+// ReasonTypeValues - When the resource's availabilityState is Unavailable, it describes where the health impacting event
+// was originated.
+type ReasonTypeValues string
+
+const (
+	ReasonTypeValuesPlanned ReasonTypeValues = "Planned"
+	ReasonTypeValuesUnplanned ReasonTypeValues = "Unplanned"
+	ReasonTypeValuesUserInitiated ReasonTypeValues = "UserInitiated"
+)
+
+// PossibleReasonTypeValuesValues returns the possible values for the ReasonTypeValues const type.
+func PossibleReasonTypeValuesValues() []ReasonTypeValues {
+	return []ReasonTypeValues{	
+		ReasonTypeValuesPlanned,
+		ReasonTypeValuesUnplanned,
+		ReasonTypeValuesUserInitiated,
 	}
 }
 
@@ -209,7 +239,7 @@ const (
 
 // PossibleScenarioValues returns the possible values for the Scenario const type.
 func PossibleScenarioValues() []Scenario {
-	return []Scenario{
+	return []Scenario{	
 		ScenarioAlerts,
 	}
 }
@@ -218,14 +248,14 @@ func PossibleScenarioValues() []Scenario {
 type SeverityValues string
 
 const (
-	SeverityValuesError       SeverityValues = "Error"
+	SeverityValuesError SeverityValues = "Error"
 	SeverityValuesInformation SeverityValues = "Information"
-	SeverityValuesWarning     SeverityValues = "Warning"
+	SeverityValuesWarning SeverityValues = "Warning"
 )
 
 // PossibleSeverityValuesValues returns the possible values for the SeverityValues const type.
 func PossibleSeverityValuesValues() []SeverityValues {
-	return []SeverityValues{
+	return []SeverityValues{	
 		SeverityValuesError,
 		SeverityValuesInformation,
 		SeverityValuesWarning,
@@ -236,16 +266,17 @@ func PossibleSeverityValuesValues() []SeverityValues {
 type StageValues string
 
 const (
-	StageValuesActive   StageValues = "Active"
+	StageValuesActive StageValues = "Active"
 	StageValuesArchived StageValues = "Archived"
-	StageValuesResolve  StageValues = "Resolve"
+	StageValuesResolve StageValues = "Resolve"
 )
 
 // PossibleStageValuesValues returns the possible values for the StageValues const type.
 func PossibleStageValuesValues() []StageValues {
-	return []StageValues{
+	return []StageValues{	
 		StageValuesActive,
 		StageValuesArchived,
 		StageValuesResolve,
 	}
 }
+
