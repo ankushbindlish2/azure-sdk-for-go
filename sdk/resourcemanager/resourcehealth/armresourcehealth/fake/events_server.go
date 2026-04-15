@@ -19,7 +19,7 @@ import (
 )
 
 // EventsServer is a fake server for instances of the armresourcehealth.EventsClient type.
-type EventsServer struct {
+type EventsServer struct{
 	// NewListBySingleResourcePager is the fake for method EventsClient.NewListBySingleResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySingleResourcePager func(resourceURI string, options *armresourcehealth.EventsClientListBySingleResourceOptions) (resp azfake.PagerResponder[armresourcehealth.EventsClientListBySingleResourceResponse])
@@ -31,6 +31,7 @@ type EventsServer struct {
 	// NewListByTenantIDPager is the fake for method EventsClient.NewListByTenantIDPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByTenantIDPager func(options *armresourcehealth.EventsClientListByTenantIDOptions) (resp azfake.PagerResponder[armresourcehealth.EventsClientListByTenantIDResponse])
+
 }
 
 // NewEventsServerTransport creates a new instance of EventsServerTransport with the provided implementation.
@@ -38,20 +39,20 @@ type EventsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEventsServerTransport(srv *EventsServer) *EventsServerTransport {
 	return &EventsServerTransport{
-		srv:                          srv,
+		srv: srv,
 		newListBySingleResourcePager: newTracker[azfake.PagerResponder[armresourcehealth.EventsClientListBySingleResourceResponse]](),
 		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armresourcehealth.EventsClientListBySubscriptionIDResponse]](),
-		newListByTenantIDPager:       newTracker[azfake.PagerResponder[armresourcehealth.EventsClientListByTenantIDResponse]](),
+		newListByTenantIDPager: newTracker[azfake.PagerResponder[armresourcehealth.EventsClientListByTenantIDResponse]](),
 	}
 }
 
 // EventsServerTransport connects instances of armresourcehealth.EventsClient to instances of EventsServer.
 // Don't use this type directly, use NewEventsServerTransport instead.
 type EventsServerTransport struct {
-	srv                          *EventsServer
+	srv *EventsServer
 	newListBySingleResourcePager *tracker[azfake.PagerResponder[armresourcehealth.EventsClientListBySingleResourceResponse]]
 	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armresourcehealth.EventsClientListBySubscriptionIDResponse]]
-	newListByTenantIDPager       *tracker[azfake.PagerResponder[armresourcehealth.EventsClientListByTenantIDResponse]]
+	newListByTenantIDPager *tracker[azfake.PagerResponder[armresourcehealth.EventsClientListByTenantIDResponse]]
 }
 
 // Do implements the policy.Transporter interface for EventsServerTransport.
@@ -62,25 +63,44 @@ func (e *EventsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EventsClient.NewListBySingleResourcePager":
-		resp, err = e.dispatchNewListBySingleResourcePager(req)
-	case "EventsClient.NewListBySubscriptionIDPager":
-		resp, err = e.dispatchNewListBySubscriptionIDPager(req)
-	case "EventsClient.NewListByTenantIDPager":
-		resp, err = e.dispatchNewListByTenantIDPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EventsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if eventsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = eventsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EventsClient.NewListBySingleResourcePager":
+				res.resp, res.err = e.dispatchNewListBySingleResourcePager(req)
+			case "EventsClient.NewListBySubscriptionIDPager":
+				res.resp, res.err = e.dispatchNewListBySubscriptionIDPager(req)
+			case "EventsClient.NewListByTenantIDPager":
+				res.resp, res.err = e.dispatchNewListByTenantIDPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *EventsServerTransport) dispatchNewListBySingleResourcePager(req *http.Request) (*http.Response, error) {
@@ -89,29 +109,29 @@ func (e *EventsServerTransport) dispatchNewListBySingleResourcePager(req *http.R
 	}
 	newListBySingleResourcePager := e.newListBySingleResourcePager.get(req)
 	if newListBySingleResourcePager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armresourcehealth.EventsClientListBySingleResourceOptions
+	if filterParam != nil {
+		options = &armresourcehealth.EventsClientListBySingleResourceOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armresourcehealth.EventsClientListBySingleResourceOptions
-		if filterParam != nil {
-			options = &armresourcehealth.EventsClientListBySingleResourceOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := e.srv.NewListBySingleResourcePager(resourceURIParam, options)
+	}
+resp := e.srv.NewListBySingleResourcePager(resourceURIParam, options)
 		newListBySingleResourcePager = &resp
 		e.newListBySingleResourcePager.add(req, newListBySingleResourcePager)
 		server.PagerResponderInjectNextLinks(newListBySingleResourcePager, req, func(page *armresourcehealth.EventsClientListBySingleResourceResponse, createLink func() string) {
@@ -138,31 +158,31 @@ func (e *EventsServerTransport) dispatchNewListBySubscriptionIDPager(req *http.R
 	}
 	newListBySubscriptionIDPager := e.newListBySubscriptionIDPager.get(req)
 	if newListBySubscriptionIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	queryStartTimeUnescaped, err := url.QueryUnescape(qp.Get("queryStartTime"))
+	if err != nil {
+		return nil, err
+	}
+	queryStartTimeParam := getOptional(queryStartTimeUnescaped)
+	var options *armresourcehealth.EventsClientListBySubscriptionIDOptions
+	if filterParam != nil || queryStartTimeParam != nil {
+		options = &armresourcehealth.EventsClientListBySubscriptionIDOptions{
+			Filter: filterParam,
+			QueryStartTime: queryStartTimeParam,
 		}
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		queryStartTimeUnescaped, err := url.QueryUnescape(qp.Get("queryStartTime"))
-		if err != nil {
-			return nil, err
-		}
-		queryStartTimeParam := getOptional(queryStartTimeUnescaped)
-		var options *armresourcehealth.EventsClientListBySubscriptionIDOptions
-		if filterParam != nil || queryStartTimeParam != nil {
-			options = &armresourcehealth.EventsClientListBySubscriptionIDOptions{
-				Filter:         filterParam,
-				QueryStartTime: queryStartTimeParam,
-			}
-		}
-		resp := e.srv.NewListBySubscriptionIDPager(options)
+	}
+resp := e.srv.NewListBySubscriptionIDPager(options)
 		newListBySubscriptionIDPager = &resp
 		e.newListBySubscriptionIDPager.add(req, newListBySubscriptionIDPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionIDPager, req, func(page *armresourcehealth.EventsClientListBySubscriptionIDResponse, createLink func() string) {
@@ -189,25 +209,25 @@ func (e *EventsServerTransport) dispatchNewListByTenantIDPager(req *http.Request
 	}
 	newListByTenantIDPager := e.newListByTenantIDPager.get(req)
 	if newListByTenantIDPager == nil {
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	queryStartTimeUnescaped, err := url.QueryUnescape(qp.Get("queryStartTime"))
+	if err != nil {
+		return nil, err
+	}
+	queryStartTimeParam := getOptional(queryStartTimeUnescaped)
+	var options *armresourcehealth.EventsClientListByTenantIDOptions
+	if filterParam != nil || queryStartTimeParam != nil {
+		options = &armresourcehealth.EventsClientListByTenantIDOptions{
+			Filter: filterParam,
+			QueryStartTime: queryStartTimeParam,
 		}
-		filterParam := getOptional(filterUnescaped)
-		queryStartTimeUnescaped, err := url.QueryUnescape(qp.Get("queryStartTime"))
-		if err != nil {
-			return nil, err
-		}
-		queryStartTimeParam := getOptional(queryStartTimeUnescaped)
-		var options *armresourcehealth.EventsClientListByTenantIDOptions
-		if filterParam != nil || queryStartTimeParam != nil {
-			options = &armresourcehealth.EventsClientListByTenantIDOptions{
-				Filter:         filterParam,
-				QueryStartTime: queryStartTimeParam,
-			}
-		}
-		resp := e.srv.NewListByTenantIDPager(options)
+	}
+resp := e.srv.NewListByTenantIDPager(options)
 		newListByTenantIDPager = &resp
 		e.newListByTenantIDPager.add(req, newListByTenantIDPager)
 		server.PagerResponderInjectNextLinks(newListByTenantIDPager, req, func(page *armresourcehealth.EventsClientListByTenantIDResponse, createLink func() string) {
@@ -226,4 +246,10 @@ func (e *EventsServerTransport) dispatchNewListByTenantIDPager(req *http.Request
 		e.newListByTenantIDPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EventsServerTransport
+var eventsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

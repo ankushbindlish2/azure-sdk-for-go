@@ -20,7 +20,7 @@ import (
 )
 
 // AvailabilityStatusesServer is a fake server for instances of the armresourcehealth.AvailabilityStatusesClient type.
-type AvailabilityStatusesServer struct {
+type AvailabilityStatusesServer struct{
 	// GetByResource is the fake for method AvailabilityStatusesClient.GetByResource
 	// HTTP status codes to indicate success: http.StatusOK
 	GetByResource func(ctx context.Context, resourceURI string, options *armresourcehealth.AvailabilityStatusesClientGetByResourceOptions) (resp azfake.Responder[armresourcehealth.AvailabilityStatusesClientGetByResourceResponse], errResp azfake.ErrorResponder)
@@ -36,6 +36,7 @@ type AvailabilityStatusesServer struct {
 	// NewListBySubscriptionIDPager is the fake for method AvailabilityStatusesClient.NewListBySubscriptionIDPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionIDPager func(options *armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDOptions) (resp azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDResponse])
+
 }
 
 // NewAvailabilityStatusesServerTransport creates a new instance of AvailabilityStatusesServerTransport with the provided implementation.
@@ -43,9 +44,9 @@ type AvailabilityStatusesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAvailabilityStatusesServerTransport(srv *AvailabilityStatusesServer) *AvailabilityStatusesServerTransport {
 	return &AvailabilityStatusesServerTransport{
-		srv:                          srv,
-		newListPager:                 newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse]](),
-		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListByResourceGroupResponse]](),
+		srv: srv,
+		newListPager: newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListByResourceGroupResponse]](),
 		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDResponse]](),
 	}
 }
@@ -53,9 +54,9 @@ func NewAvailabilityStatusesServerTransport(srv *AvailabilityStatusesServer) *Av
 // AvailabilityStatusesServerTransport connects instances of armresourcehealth.AvailabilityStatusesClient to instances of AvailabilityStatusesServer.
 // Don't use this type directly, use NewAvailabilityStatusesServerTransport instead.
 type AvailabilityStatusesServerTransport struct {
-	srv                          *AvailabilityStatusesServer
-	newListPager                 *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse]]
-	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListByResourceGroupResponse]]
+	srv *AvailabilityStatusesServer
+	newListPager *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListByResourceGroupResponse]]
 	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDResponse]]
 }
 
@@ -67,27 +68,46 @@ func (a *AvailabilityStatusesServerTransport) Do(req *http.Request) (*http.Respo
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return a.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "AvailabilityStatusesClient.GetByResource":
-		resp, err = a.dispatchGetByResource(req)
-	case "AvailabilityStatusesClient.NewListPager":
-		resp, err = a.dispatchNewListPager(req)
-	case "AvailabilityStatusesClient.NewListByResourceGroupPager":
-		resp, err = a.dispatchNewListByResourceGroupPager(req)
-	case "AvailabilityStatusesClient.NewListBySubscriptionIDPager":
-		resp, err = a.dispatchNewListBySubscriptionIDPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (a *AvailabilityStatusesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if availabilityStatusesServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = availabilityStatusesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "AvailabilityStatusesClient.GetByResource":
+				res.resp, res.err = a.dispatchGetByResource(req)
+			case "AvailabilityStatusesClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AvailabilityStatusesClient.NewListByResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
+			case "AvailabilityStatusesClient.NewListBySubscriptionIDPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionIDPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (a *AvailabilityStatusesServerTransport) dispatchGetByResource(req *http.Request) (*http.Response, error) {
@@ -97,7 +117,7 @@ func (a *AvailabilityStatusesServerTransport) dispatchGetByResource(req *http.Re
 	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses/current`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -143,35 +163,35 @@ func (a *AvailabilityStatusesServerTransport) dispatchNewListPager(req *http.Req
 	}
 	newListPager := a.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	var options *armresourcehealth.AvailabilityStatusesClientListOptions
+	if filterParam != nil || expandParam != nil {
+		options = &armresourcehealth.AvailabilityStatusesClientListOptions{
+			Filter: filterParam,
+			Expand: expandParam,
 		}
-		qp := req.URL.Query()
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(expandUnescaped)
-		var options *armresourcehealth.AvailabilityStatusesClientListOptions
-		if filterParam != nil || expandParam != nil {
-			options = &armresourcehealth.AvailabilityStatusesClientListOptions{
-				Filter: filterParam,
-				Expand: expandParam,
-			}
-		}
-		resp := a.srv.NewListPager(resourceURIParam, options)
+	}
+resp := a.srv.NewListPager(resourceURIParam, options)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armresourcehealth.AvailabilityStatusesClientListResponse, createLink func() string) {
@@ -198,35 +218,35 @@ func (a *AvailabilityStatusesServerTransport) dispatchNewListByResourceGroupPage
 	}
 	newListByResourceGroupPager := a.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	var options *armresourcehealth.AvailabilityStatusesClientListByResourceGroupOptions
+	if filterParam != nil || expandParam != nil {
+		options = &armresourcehealth.AvailabilityStatusesClientListByResourceGroupOptions{
+			Filter: filterParam,
+			Expand: expandParam,
 		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(expandUnescaped)
-		var options *armresourcehealth.AvailabilityStatusesClientListByResourceGroupOptions
-		if filterParam != nil || expandParam != nil {
-			options = &armresourcehealth.AvailabilityStatusesClientListByResourceGroupOptions{
-				Filter: filterParam,
-				Expand: expandParam,
-			}
-		}
-		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+	}
+resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
 		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armresourcehealth.AvailabilityStatusesClientListByResourceGroupResponse, createLink func() string) {
@@ -253,31 +273,31 @@ func (a *AvailabilityStatusesServerTransport) dispatchNewListBySubscriptionIDPag
 	}
 	newListBySubscriptionIDPager := a.newListBySubscriptionIDPager.get(req)
 	if newListBySubscriptionIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/availabilityStatuses`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+	if err != nil {
+		return nil, err
+	}
+	expandParam := getOptional(expandUnescaped)
+	var options *armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDOptions
+	if filterParam != nil || expandParam != nil {
+		options = &armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDOptions{
+			Filter: filterParam,
+			Expand: expandParam,
 		}
-		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(expandUnescaped)
-		var options *armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDOptions
-		if filterParam != nil || expandParam != nil {
-			options = &armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDOptions{
-				Filter: filterParam,
-				Expand: expandParam,
-			}
-		}
-		resp := a.srv.NewListBySubscriptionIDPager(options)
+	}
+resp := a.srv.NewListBySubscriptionIDPager(options)
 		newListBySubscriptionIDPager = &resp
 		a.newListBySubscriptionIDPager.add(req, newListBySubscriptionIDPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionIDPager, req, func(page *armresourcehealth.AvailabilityStatusesClientListBySubscriptionIDResponse, createLink func() string) {
@@ -296,4 +316,10 @@ func (a *AvailabilityStatusesServerTransport) dispatchNewListBySubscriptionIDPag
 		a.newListBySubscriptionIDPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to AvailabilityStatusesServerTransport
+var availabilityStatusesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

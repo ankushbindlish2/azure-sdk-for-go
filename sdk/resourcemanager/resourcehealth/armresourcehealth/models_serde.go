@@ -9,7 +9,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AvailabilityStatus.
@@ -33,19 +35,19 @@ func (a *AvailabilityStatus) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &a.ID)
+				err = unpopulate(val, "ID", &a.ID)
 			delete(rawMsg, key)
 		case "location":
-			err = unpopulate(val, "Location", &a.Location)
+				err = unpopulate(val, "Location", &a.Location)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &a.Name)
+				err = unpopulate(val, "Name", &a.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, "Properties", &a.Properties)
+				err = unpopulate(val, "Properties", &a.Properties)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &a.Type)
+				err = unpopulate(val, "Type", &a.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -73,10 +75,10 @@ func (a *AvailabilityStatusListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &a.NextLink)
+				err = unpopulate(val, "NextLink", &a.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &a.Value)
+				err = unpopulate(val, "Value", &a.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -98,14 +100,14 @@ func (a AvailabilityStatusProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "healthEventCause", a.HealthEventCause)
 	populate(objectMap, "healthEventId", a.HealthEventID)
 	populate(objectMap, "healthEventType", a.HealthEventType)
-	populateDateTimeRFC3339(objectMap, "occuredTime", a.OccurredTime)
+	populateTime[datetime.RFC3339](objectMap, "occuredTime", a.OccurredTime)
 	populate(objectMap, "reasonChronicity", a.ReasonChronicity)
 	populate(objectMap, "reasonType", a.ReasonType)
 	populate(objectMap, "recentlyResolved", a.RecentlyResolved)
 	populate(objectMap, "recommendedActions", a.RecommendedActions)
-	populateDateTimeRFC3339(objectMap, "reportedTime", a.ReportedTime)
-	populateDateTimeRFC3339(objectMap, "resolutionETA", a.ResolutionETA)
-	populateDateTimeRFC3339(objectMap, "rootCauseAttributionTime", a.RootCauseAttributionTime)
+	populateTime[datetime.RFC3339](objectMap, "reportedTime", a.ReportedTime)
+	populateTime[datetime.RFC3339](objectMap, "resolutionETA", a.ResolutionETA)
+	populateTime[datetime.RFC3339](objectMap, "rootCauseAttributionTime", a.RootCauseAttributionTime)
 	populate(objectMap, "serviceImpactingEvents", a.ServiceImpactingEvents)
 	populate(objectMap, "summary", a.Summary)
 	populate(objectMap, "title", a.Title)
@@ -122,64 +124,64 @@ func (a *AvailabilityStatusProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "articleId":
-			err = unpopulate(val, "ArticleID", &a.ArticleID)
+				err = unpopulate(val, "ArticleID", &a.ArticleID)
 			delete(rawMsg, key)
 		case "availabilityState":
-			err = unpopulate(val, "AvailabilityState", &a.AvailabilityState)
+				err = unpopulate(val, "AvailabilityState", &a.AvailabilityState)
 			delete(rawMsg, key)
 		case "category":
-			err = unpopulate(val, "Category", &a.Category)
+				err = unpopulate(val, "Category", &a.Category)
 			delete(rawMsg, key)
 		case "context":
-			err = unpopulate(val, "Context", &a.Context)
+				err = unpopulate(val, "Context", &a.Context)
 			delete(rawMsg, key)
 		case "detailedStatus":
-			err = unpopulate(val, "DetailedStatus", &a.DetailedStatus)
+				err = unpopulate(val, "DetailedStatus", &a.DetailedStatus)
 			delete(rawMsg, key)
 		case "healthEventCategory":
-			err = unpopulate(val, "HealthEventCategory", &a.HealthEventCategory)
+				err = unpopulate(val, "HealthEventCategory", &a.HealthEventCategory)
 			delete(rawMsg, key)
 		case "healthEventCause":
-			err = unpopulate(val, "HealthEventCause", &a.HealthEventCause)
+				err = unpopulate(val, "HealthEventCause", &a.HealthEventCause)
 			delete(rawMsg, key)
 		case "healthEventId":
-			err = unpopulate(val, "HealthEventID", &a.HealthEventID)
+				err = unpopulate(val, "HealthEventID", &a.HealthEventID)
 			delete(rawMsg, key)
 		case "healthEventType":
-			err = unpopulate(val, "HealthEventType", &a.HealthEventType)
+				err = unpopulate(val, "HealthEventType", &a.HealthEventType)
 			delete(rawMsg, key)
 		case "occuredTime":
-			err = unpopulateDateTimeRFC3339(val, "OccurredTime", &a.OccurredTime)
+				err = unpopulateTime[datetime.RFC3339](val, "OccurredTime", &a.OccurredTime)
 			delete(rawMsg, key)
 		case "reasonChronicity":
-			err = unpopulate(val, "ReasonChronicity", &a.ReasonChronicity)
+				err = unpopulate(val, "ReasonChronicity", &a.ReasonChronicity)
 			delete(rawMsg, key)
 		case "reasonType":
-			err = unpopulate(val, "ReasonType", &a.ReasonType)
+				err = unpopulate(val, "ReasonType", &a.ReasonType)
 			delete(rawMsg, key)
 		case "recentlyResolved":
-			err = unpopulate(val, "RecentlyResolved", &a.RecentlyResolved)
+				err = unpopulate(val, "RecentlyResolved", &a.RecentlyResolved)
 			delete(rawMsg, key)
 		case "recommendedActions":
-			err = unpopulate(val, "RecommendedActions", &a.RecommendedActions)
+				err = unpopulate(val, "RecommendedActions", &a.RecommendedActions)
 			delete(rawMsg, key)
 		case "reportedTime":
-			err = unpopulateDateTimeRFC3339(val, "ReportedTime", &a.ReportedTime)
+				err = unpopulateTime[datetime.RFC3339](val, "ReportedTime", &a.ReportedTime)
 			delete(rawMsg, key)
 		case "resolutionETA":
-			err = unpopulateDateTimeRFC3339(val, "ResolutionETA", &a.ResolutionETA)
+				err = unpopulateTime[datetime.RFC3339](val, "ResolutionETA", &a.ResolutionETA)
 			delete(rawMsg, key)
 		case "rootCauseAttributionTime":
-			err = unpopulateDateTimeRFC3339(val, "RootCauseAttributionTime", &a.RootCauseAttributionTime)
+				err = unpopulateTime[datetime.RFC3339](val, "RootCauseAttributionTime", &a.RootCauseAttributionTime)
 			delete(rawMsg, key)
 		case "serviceImpactingEvents":
-			err = unpopulate(val, "ServiceImpactingEvents", &a.ServiceImpactingEvents)
+				err = unpopulate(val, "ServiceImpactingEvents", &a.ServiceImpactingEvents)
 			delete(rawMsg, key)
 		case "summary":
-			err = unpopulate(val, "Summary", &a.Summary)
+				err = unpopulate(val, "Summary", &a.Summary)
 			delete(rawMsg, key)
 		case "title":
-			err = unpopulate(val, "Title", &a.Title)
+				err = unpopulate(val, "Title", &a.Title)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -192,9 +194,9 @@ func (a *AvailabilityStatusProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AvailabilityStatusPropertiesRecentlyResolved.
 func (a AvailabilityStatusPropertiesRecentlyResolved) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "resolvedTime", a.ResolvedTime)
+	populateTime[datetime.RFC3339](objectMap, "resolvedTime", a.ResolvedTime)
 	populate(objectMap, "unavailableSummary", a.UnavailabilitySummary)
-	populateDateTimeRFC3339(objectMap, "unavailableOccuredTime", a.UnavailableOccurredTime)
+	populateTime[datetime.RFC3339](objectMap, "unavailableOccuredTime", a.UnavailableOccurredTime)
 	return json.Marshal(objectMap)
 }
 
@@ -208,13 +210,13 @@ func (a *AvailabilityStatusPropertiesRecentlyResolved) UnmarshalJSON(data []byte
 		var err error
 		switch key {
 		case "resolvedTime":
-			err = unpopulateDateTimeRFC3339(val, "ResolvedTime", &a.ResolvedTime)
+				err = unpopulateTime[datetime.RFC3339](val, "ResolvedTime", &a.ResolvedTime)
 			delete(rawMsg, key)
 		case "unavailableSummary":
-			err = unpopulate(val, "UnavailabilitySummary", &a.UnavailabilitySummary)
+				err = unpopulate(val, "UnavailabilitySummary", &a.UnavailabilitySummary)
 			delete(rawMsg, key)
 		case "unavailableOccuredTime":
-			err = unpopulateDateTimeRFC3339(val, "UnavailableOccurredTime", &a.UnavailableOccurredTime)
+				err = unpopulateTime[datetime.RFC3339](val, "UnavailableOccurredTime", &a.UnavailableOccurredTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -227,7 +229,7 @@ func (a *AvailabilityStatusPropertiesRecentlyResolved) UnmarshalJSON(data []byte
 // MarshalJSON implements the json.Marshaller interface for type EmergingIssue.
 func (e EmergingIssue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "refreshTimestamp", e.RefreshTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "refreshTimestamp", e.RefreshTimestamp)
 	populate(objectMap, "statusActiveEvents", e.StatusActiveEvents)
 	populate(objectMap, "statusBanners", e.StatusBanners)
 	return json.Marshal(objectMap)
@@ -243,13 +245,13 @@ func (e *EmergingIssue) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "refreshTimestamp":
-			err = unpopulateDateTimeRFC3339(val, "RefreshTimestamp", &e.RefreshTimestamp)
+				err = unpopulateTime[datetime.RFC3339](val, "RefreshTimestamp", &e.RefreshTimestamp)
 			delete(rawMsg, key)
 		case "statusActiveEvents":
-			err = unpopulate(val, "StatusActiveEvents", &e.StatusActiveEvents)
+				err = unpopulate(val, "StatusActiveEvents", &e.StatusActiveEvents)
 			delete(rawMsg, key)
 		case "statusBanners":
-			err = unpopulate(val, "StatusBanners", &e.StatusBanners)
+				err = unpopulate(val, "StatusBanners", &e.StatusBanners)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -278,13 +280,13 @@ func (e *EmergingIssueImpact) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &e.ID)
+				err = unpopulate(val, "ID", &e.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &e.Name)
+				err = unpopulate(val, "Name", &e.Name)
 			delete(rawMsg, key)
 		case "regions":
-			err = unpopulate(val, "Regions", &e.Regions)
+				err = unpopulate(val, "Regions", &e.Regions)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -312,10 +314,10 @@ func (e *EmergingIssueListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &e.NextLink)
+				err = unpopulate(val, "NextLink", &e.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &e.Value)
+				err = unpopulate(val, "Value", &e.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -346,19 +348,54 @@ func (e *EmergingIssuesGetResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &e.ID)
+				err = unpopulate(val, "ID", &e.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &e.Name)
+				err = unpopulate(val, "Name", &e.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, "Properties", &e.Properties)
+				err = unpopulate(val, "Properties", &e.Properties)
 			delete(rawMsg, key)
 		case "systemData":
-			err = unpopulate(val, "SystemData", &e.SystemData)
+				err = unpopulate(val, "SystemData", &e.SystemData)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &e.Type)
+				err = unpopulate(val, "Type", &e.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ErrorResponse.
+func (e ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "code", e.Code)
+	populate(objectMap, "details", e.Details)
+	populate(objectMap, "message", e.Message)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorResponse.
+func (e *ErrorResponse) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "code":
+				err = unpopulate(val, "Code", &e.Code)
+			delete(rawMsg, key)
+		case "details":
+				err = unpopulate(val, "Details", &e.Details)
+			delete(rawMsg, key)
+		case "message":
+				err = unpopulate(val, "Message", &e.Message)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -389,19 +426,19 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &e.ID)
+				err = unpopulate(val, "ID", &e.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &e.Name)
+				err = unpopulate(val, "Name", &e.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, "Properties", &e.Properties)
+				err = unpopulate(val, "Properties", &e.Properties)
 			delete(rawMsg, key)
 		case "systemData":
-			err = unpopulate(val, "SystemData", &e.SystemData)
+				err = unpopulate(val, "SystemData", &e.SystemData)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &e.Type)
+				err = unpopulate(val, "Type", &e.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -432,19 +469,19 @@ func (e *EventImpactedResource) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &e.ID)
+				err = unpopulate(val, "ID", &e.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &e.Name)
+				err = unpopulate(val, "Name", &e.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, "Properties", &e.Properties)
+				err = unpopulate(val, "Properties", &e.Properties)
 			delete(rawMsg, key)
 		case "systemData":
-			err = unpopulate(val, "SystemData", &e.SystemData)
+				err = unpopulate(val, "SystemData", &e.SystemData)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &e.Type)
+				err = unpopulate(val, "Type", &e.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -472,10 +509,10 @@ func (e *EventImpactedResourceListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &e.NextLink)
+				err = unpopulate(val, "NextLink", &e.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &e.Value)
+				err = unpopulate(val, "Value", &e.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -489,11 +526,6 @@ func (e *EventImpactedResourceListResult) UnmarshalJSON(data []byte) error {
 func (e EventImpactedResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "info", e.Info)
-	populate(objectMap, "maintenanceEndTime", e.MaintenanceEndTime)
-	populate(objectMap, "maintenanceStartTime", e.MaintenanceStartTime)
-	populate(objectMap, "resourceGroup", e.ResourceGroup)
-	populate(objectMap, "resourceName", e.ResourceName)
-	populate(objectMap, "status", e.Status)
 	populate(objectMap, "targetRegion", e.TargetRegion)
 	populate(objectMap, "targetResourceId", e.TargetResourceID)
 	populate(objectMap, "targetResourceType", e.TargetResourceType)
@@ -510,31 +542,16 @@ func (e *EventImpactedResourceProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "info":
-			err = unpopulate(val, "Info", &e.Info)
-			delete(rawMsg, key)
-		case "maintenanceEndTime":
-			err = unpopulate(val, "MaintenanceEndTime", &e.MaintenanceEndTime)
-			delete(rawMsg, key)
-		case "maintenanceStartTime":
-			err = unpopulate(val, "MaintenanceStartTime", &e.MaintenanceStartTime)
-			delete(rawMsg, key)
-		case "resourceGroup":
-			err = unpopulate(val, "ResourceGroup", &e.ResourceGroup)
-			delete(rawMsg, key)
-		case "resourceName":
-			err = unpopulate(val, "ResourceName", &e.ResourceName)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, "Status", &e.Status)
+				err = unpopulate(val, "Info", &e.Info)
 			delete(rawMsg, key)
 		case "targetRegion":
-			err = unpopulate(val, "TargetRegion", &e.TargetRegion)
+				err = unpopulate(val, "TargetRegion", &e.TargetRegion)
 			delete(rawMsg, key)
 		case "targetResourceId":
-			err = unpopulate(val, "TargetResourceID", &e.TargetResourceID)
+				err = unpopulate(val, "TargetResourceID", &e.TargetResourceID)
 			delete(rawMsg, key)
 		case "targetResourceType":
-			err = unpopulate(val, "TargetResourceType", &e.TargetResourceType)
+				err = unpopulate(val, "TargetResourceType", &e.TargetResourceType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -548,8 +565,9 @@ func (e *EventImpactedResourceProperties) UnmarshalJSON(data []byte) error {
 func (e EventProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "additionalInformation", e.AdditionalInformation)
-	populate(objectMap, "argQuery", e.ArgQuery)
 	populate(objectMap, "article", e.Article)
+	populate(objectMap, "billingId", e.BillingID)
+	populate(objectMap, "currencyType", e.CurrencyType)
 	populate(objectMap, "description", e.Description)
 	populate(objectMap, "duration", e.Duration)
 	populate(objectMap, "enableChatWithUs", e.EnableChatWithUs)
@@ -557,21 +575,23 @@ func (e EventProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "eventLevel", e.EventLevel)
 	populate(objectMap, "eventSource", e.EventSource)
 	populate(objectMap, "eventSubType", e.EventSubType)
+	populate(objectMap, "eventTags", e.EventTags)
 	populate(objectMap, "eventType", e.EventType)
 	populate(objectMap, "externalIncidentId", e.ExternalIncidentID)
 	populate(objectMap, "faqs", e.Faqs)
 	populate(objectMap, "header", e.Header)
 	populate(objectMap, "hirStage", e.HirStage)
 	populate(objectMap, "impact", e.Impact)
-	populateDateTimeRFC3339(objectMap, "impactMitigationTime", e.ImpactMitigationTime)
-	populateDateTimeRFC3339(objectMap, "impactStartTime", e.ImpactStartTime)
+	populateTime[datetime.RFC3339](objectMap, "impactMitigationTime", e.ImpactMitigationTime)
+	populateTime[datetime.RFC3339](objectMap, "impactStartTime", e.ImpactStartTime)
 	populate(objectMap, "impactType", e.ImpactType)
+	populate(objectMap, "isEventSensitive", e.IsEventSensitive)
 	populate(objectMap, "isHIR", e.IsHIR)
-	populateDateTimeRFC3339(objectMap, "lastUpdateTime", e.LastUpdateTime)
+	populateTime[datetime.RFC3339](objectMap, "lastUpdateTime", e.LastUpdateTime)
 	populate(objectMap, "level", e.Level)
 	populate(objectMap, "links", e.Links)
-	populate(objectMap, "maintenanceId", e.MaintenanceID)
-	populate(objectMap, "maintenanceType", e.MaintenanceType)
+	populate(objectMap, "newRate", e.NewRate)
+	populate(objectMap, "oldRate", e.OldRate)
 	populate(objectMap, "platformInitiated", e.PlatformInitiated)
 	populate(objectMap, "priority", e.Priority)
 	populate(objectMap, "reason", e.Reason)
@@ -592,100 +612,109 @@ func (e *EventProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "additionalInformation":
-			err = unpopulate(val, "AdditionalInformation", &e.AdditionalInformation)
-			delete(rawMsg, key)
-		case "argQuery":
-			err = unpopulate(val, "ArgQuery", &e.ArgQuery)
+				err = unpopulate(val, "AdditionalInformation", &e.AdditionalInformation)
 			delete(rawMsg, key)
 		case "article":
-			err = unpopulate(val, "Article", &e.Article)
+				err = unpopulate(val, "Article", &e.Article)
+			delete(rawMsg, key)
+		case "billingId":
+				err = unpopulate(val, "BillingID", &e.BillingID)
+			delete(rawMsg, key)
+		case "currencyType":
+				err = unpopulate(val, "CurrencyType", &e.CurrencyType)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, "Description", &e.Description)
+				err = unpopulate(val, "Description", &e.Description)
 			delete(rawMsg, key)
 		case "duration":
-			err = unpopulate(val, "Duration", &e.Duration)
+				err = unpopulate(val, "Duration", &e.Duration)
 			delete(rawMsg, key)
 		case "enableChatWithUs":
-			err = unpopulate(val, "EnableChatWithUs", &e.EnableChatWithUs)
+				err = unpopulate(val, "EnableChatWithUs", &e.EnableChatWithUs)
 			delete(rawMsg, key)
 		case "enableMicrosoftSupport":
-			err = unpopulate(val, "EnableMicrosoftSupport", &e.EnableMicrosoftSupport)
+				err = unpopulate(val, "EnableMicrosoftSupport", &e.EnableMicrosoftSupport)
 			delete(rawMsg, key)
 		case "eventLevel":
-			err = unpopulate(val, "EventLevel", &e.EventLevel)
+				err = unpopulate(val, "EventLevel", &e.EventLevel)
 			delete(rawMsg, key)
 		case "eventSource":
-			err = unpopulate(val, "EventSource", &e.EventSource)
+				err = unpopulate(val, "EventSource", &e.EventSource)
 			delete(rawMsg, key)
 		case "eventSubType":
-			err = unpopulate(val, "EventSubType", &e.EventSubType)
+				err = unpopulate(val, "EventSubType", &e.EventSubType)
+			delete(rawMsg, key)
+		case "eventTags":
+				err = unpopulate(val, "EventTags", &e.EventTags)
 			delete(rawMsg, key)
 		case "eventType":
-			err = unpopulate(val, "EventType", &e.EventType)
+				err = unpopulate(val, "EventType", &e.EventType)
 			delete(rawMsg, key)
 		case "externalIncidentId":
-			err = unpopulate(val, "ExternalIncidentID", &e.ExternalIncidentID)
+				err = unpopulate(val, "ExternalIncidentID", &e.ExternalIncidentID)
 			delete(rawMsg, key)
 		case "faqs":
-			err = unpopulate(val, "Faqs", &e.Faqs)
+				err = unpopulate(val, "Faqs", &e.Faqs)
 			delete(rawMsg, key)
 		case "header":
-			err = unpopulate(val, "Header", &e.Header)
+				err = unpopulate(val, "Header", &e.Header)
 			delete(rawMsg, key)
 		case "hirStage":
-			err = unpopulate(val, "HirStage", &e.HirStage)
+				err = unpopulate(val, "HirStage", &e.HirStage)
 			delete(rawMsg, key)
 		case "impact":
-			err = unpopulate(val, "Impact", &e.Impact)
+				err = unpopulate(val, "Impact", &e.Impact)
 			delete(rawMsg, key)
 		case "impactMitigationTime":
-			err = unpopulateDateTimeRFC3339(val, "ImpactMitigationTime", &e.ImpactMitigationTime)
+				err = unpopulateTime[datetime.RFC3339](val, "ImpactMitigationTime", &e.ImpactMitigationTime)
 			delete(rawMsg, key)
 		case "impactStartTime":
-			err = unpopulateDateTimeRFC3339(val, "ImpactStartTime", &e.ImpactStartTime)
+				err = unpopulateTime[datetime.RFC3339](val, "ImpactStartTime", &e.ImpactStartTime)
 			delete(rawMsg, key)
 		case "impactType":
-			err = unpopulate(val, "ImpactType", &e.ImpactType)
+				err = unpopulate(val, "ImpactType", &e.ImpactType)
+			delete(rawMsg, key)
+		case "isEventSensitive":
+				err = unpopulate(val, "IsEventSensitive", &e.IsEventSensitive)
 			delete(rawMsg, key)
 		case "isHIR":
-			err = unpopulate(val, "IsHIR", &e.IsHIR)
+				err = unpopulate(val, "IsHIR", &e.IsHIR)
 			delete(rawMsg, key)
 		case "lastUpdateTime":
-			err = unpopulateDateTimeRFC3339(val, "LastUpdateTime", &e.LastUpdateTime)
+				err = unpopulateTime[datetime.RFC3339](val, "LastUpdateTime", &e.LastUpdateTime)
 			delete(rawMsg, key)
 		case "level":
-			err = unpopulate(val, "Level", &e.Level)
+				err = unpopulate(val, "Level", &e.Level)
 			delete(rawMsg, key)
 		case "links":
-			err = unpopulate(val, "Links", &e.Links)
+				err = unpopulate(val, "Links", &e.Links)
 			delete(rawMsg, key)
-		case "maintenanceId":
-			err = unpopulate(val, "MaintenanceID", &e.MaintenanceID)
+		case "newRate":
+				err = unpopulate(val, "NewRate", &e.NewRate)
 			delete(rawMsg, key)
-		case "maintenanceType":
-			err = unpopulate(val, "MaintenanceType", &e.MaintenanceType)
+		case "oldRate":
+				err = unpopulate(val, "OldRate", &e.OldRate)
 			delete(rawMsg, key)
 		case "platformInitiated":
-			err = unpopulate(val, "PlatformInitiated", &e.PlatformInitiated)
+				err = unpopulate(val, "PlatformInitiated", &e.PlatformInitiated)
 			delete(rawMsg, key)
 		case "priority":
-			err = unpopulate(val, "Priority", &e.Priority)
+				err = unpopulate(val, "Priority", &e.Priority)
 			delete(rawMsg, key)
 		case "reason":
-			err = unpopulate(val, "Reason", &e.Reason)
+				err = unpopulate(val, "Reason", &e.Reason)
 			delete(rawMsg, key)
 		case "recommendedActions":
-			err = unpopulate(val, "RecommendedActions", &e.RecommendedActions)
+				err = unpopulate(val, "RecommendedActions", &e.RecommendedActions)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, "Status", &e.Status)
+				err = unpopulate(val, "Status", &e.Status)
 			delete(rawMsg, key)
 		case "summary":
-			err = unpopulate(val, "Summary", &e.Summary)
+				err = unpopulate(val, "Summary", &e.Summary)
 			delete(rawMsg, key)
 		case "title":
-			err = unpopulate(val, "Title", &e.Title)
+				err = unpopulate(val, "Title", &e.Title)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -712,7 +741,7 @@ func (e *EventPropertiesAdditionalInformation) UnmarshalJSON(data []byte) error 
 		var err error
 		switch key {
 		case "message":
-			err = unpopulate(val, "Message", &e.Message)
+				err = unpopulate(val, "Message", &e.Message)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -741,13 +770,13 @@ func (e *EventPropertiesArticle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "articleContent":
-			err = unpopulate(val, "ArticleContent", &e.ArticleContent)
+				err = unpopulate(val, "ArticleContent", &e.ArticleContent)
 			delete(rawMsg, key)
 		case "articleId":
-			err = unpopulate(val, "ArticleID", &e.ArticleID)
+				err = unpopulate(val, "ArticleID", &e.ArticleID)
 			delete(rawMsg, key)
 		case "parameters":
-			err = unpopulate(val, "Parameters", &e.Parameters)
+				err = unpopulate(val, "Parameters", &e.Parameters)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -776,13 +805,13 @@ func (e *EventPropertiesRecommendedActions) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "actions":
-			err = unpopulate(val, "Actions", &e.Actions)
+				err = unpopulate(val, "Actions", &e.Actions)
 			delete(rawMsg, key)
 		case "localeCode":
-			err = unpopulate(val, "LocaleCode", &e.LocaleCode)
+				err = unpopulate(val, "LocaleCode", &e.LocaleCode)
 			delete(rawMsg, key)
 		case "message":
-			err = unpopulate(val, "Message", &e.Message)
+				err = unpopulate(val, "Message", &e.Message)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -810,10 +839,10 @@ func (e *EventPropertiesRecommendedActionsItem) UnmarshalJSON(data []byte) error
 		var err error
 		switch key {
 		case "actionText":
-			err = unpopulate(val, "ActionText", &e.ActionText)
+				err = unpopulate(val, "ActionText", &e.ActionText)
 			delete(rawMsg, key)
 		case "groupId":
-			err = unpopulate(val, "GroupID", &e.GroupID)
+				err = unpopulate(val, "GroupID", &e.GroupID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -841,10 +870,10 @@ func (e *Events) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &e.NextLink)
+				err = unpopulate(val, "NextLink", &e.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &e.Value)
+				err = unpopulate(val, "Value", &e.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -873,13 +902,13 @@ func (f *Faq) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "answer":
-			err = unpopulate(val, "Answer", &f.Answer)
+				err = unpopulate(val, "Answer", &f.Answer)
 			delete(rawMsg, key)
 		case "localeCode":
-			err = unpopulate(val, "LocaleCode", &f.LocaleCode)
+				err = unpopulate(val, "LocaleCode", &f.LocaleCode)
 			delete(rawMsg, key)
 		case "question":
-			err = unpopulate(val, "Question", &f.Question)
+				err = unpopulate(val, "Question", &f.Question)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -894,6 +923,7 @@ func (i Impact) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "impactedRegions", i.ImpactedRegions)
 	populate(objectMap, "impactedService", i.ImpactedService)
+	populate(objectMap, "impactedServiceGuid", i.ImpactedServiceGUID)
 	return json.Marshal(objectMap)
 }
 
@@ -907,10 +937,13 @@ func (i *Impact) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "impactedRegions":
-			err = unpopulate(val, "ImpactedRegions", &i.ImpactedRegions)
+				err = unpopulate(val, "ImpactedRegions", &i.ImpactedRegions)
 			delete(rawMsg, key)
 		case "impactedService":
-			err = unpopulate(val, "ImpactedService", &i.ImpactedService)
+				err = unpopulate(val, "ImpactedService", &i.ImpactedService)
+			delete(rawMsg, key)
+		case "impactedServiceGuid":
+				err = unpopulate(val, "ImpactedServiceGUID", &i.ImpactedServiceGUID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -938,10 +971,96 @@ func (i *ImpactedRegion) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &i.ID)
+				err = unpopulate(val, "ID", &i.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &i.Name)
+				err = unpopulate(val, "Name", &i.Name)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ImpactedResourceStatus.
+func (i ImpactedResourceStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", i.ID)
+	populate(objectMap, "name", i.Name)
+	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "systemData", i.SystemData)
+	populate(objectMap, "type", i.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImpactedResourceStatus.
+func (i *ImpactedResourceStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+				err = unpopulate(val, "ID", &i.ID)
+			delete(rawMsg, key)
+		case "name":
+				err = unpopulate(val, "Name", &i.Name)
+			delete(rawMsg, key)
+		case "properties":
+				err = unpopulate(val, "Properties", &i.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+				err = unpopulate(val, "SystemData", &i.SystemData)
+			delete(rawMsg, key)
+		case "type":
+				err = unpopulate(val, "Type", &i.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ImpactedResourceStatusProperties.
+func (i ImpactedResourceStatusProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "availabilityState", i.AvailabilityState)
+	populateTime[datetime.RFC3339](objectMap, "occurredTime", i.OccurredTime)
+	populate(objectMap, "reasonType", i.ReasonType)
+	populate(objectMap, "summary", i.Summary)
+	populate(objectMap, "title", i.Title)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImpactedResourceStatusProperties.
+func (i *ImpactedResourceStatusProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "availabilityState":
+				err = unpopulate(val, "AvailabilityState", &i.AvailabilityState)
+			delete(rawMsg, key)
+		case "occurredTime":
+				err = unpopulateTime[datetime.RFC3339](val, "OccurredTime", &i.OccurredTime)
+			delete(rawMsg, key)
+		case "reasonType":
+				err = unpopulate(val, "ReasonType", &i.ReasonType)
+			delete(rawMsg, key)
+		case "summary":
+				err = unpopulate(val, "Summary", &i.Summary)
+			delete(rawMsg, key)
+		case "title":
+				err = unpopulate(val, "Title", &i.Title)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -957,7 +1076,7 @@ func (i ImpactedServiceRegion) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "impactedRegion", i.ImpactedRegion)
 	populate(objectMap, "impactedSubscriptions", i.ImpactedSubscriptions)
 	populate(objectMap, "impactedTenants", i.ImpactedTenants)
-	populateDateTimeRFC3339(objectMap, "lastUpdateTime", i.LastUpdateTime)
+	populateTime[datetime.RFC3339](objectMap, "lastUpdateTime", i.LastUpdateTime)
 	populate(objectMap, "status", i.Status)
 	populate(objectMap, "updates", i.Updates)
 	return json.Marshal(objectMap)
@@ -973,22 +1092,22 @@ func (i *ImpactedServiceRegion) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "impactedRegion":
-			err = unpopulate(val, "ImpactedRegion", &i.ImpactedRegion)
+				err = unpopulate(val, "ImpactedRegion", &i.ImpactedRegion)
 			delete(rawMsg, key)
 		case "impactedSubscriptions":
-			err = unpopulate(val, "ImpactedSubscriptions", &i.ImpactedSubscriptions)
+				err = unpopulate(val, "ImpactedSubscriptions", &i.ImpactedSubscriptions)
 			delete(rawMsg, key)
 		case "impactedTenants":
-			err = unpopulate(val, "ImpactedTenants", &i.ImpactedTenants)
+				err = unpopulate(val, "ImpactedTenants", &i.ImpactedTenants)
 			delete(rawMsg, key)
 		case "lastUpdateTime":
-			err = unpopulateDateTimeRFC3339(val, "LastUpdateTime", &i.LastUpdateTime)
+				err = unpopulateTime[datetime.RFC3339](val, "LastUpdateTime", &i.LastUpdateTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, "Status", &i.Status)
+				err = unpopulate(val, "Status", &i.Status)
 			delete(rawMsg, key)
 		case "updates":
-			err = unpopulate(val, "Updates", &i.Updates)
+				err = unpopulate(val, "Updates", &i.Updates)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1016,10 +1135,10 @@ func (k *KeyValueItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "key":
-			err = unpopulate(val, "Key", &k.Key)
+				err = unpopulate(val, "Key", &k.Key)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &k.Value)
+				err = unpopulate(val, "Value", &k.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1050,19 +1169,19 @@ func (l *Link) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "bladeName":
-			err = unpopulate(val, "BladeName", &l.BladeName)
+				err = unpopulate(val, "BladeName", &l.BladeName)
 			delete(rawMsg, key)
 		case "displayText":
-			err = unpopulate(val, "DisplayText", &l.DisplayText)
+				err = unpopulate(val, "DisplayText", &l.DisplayText)
 			delete(rawMsg, key)
 		case "extensionName":
-			err = unpopulate(val, "ExtensionName", &l.ExtensionName)
+				err = unpopulate(val, "ExtensionName", &l.ExtensionName)
 			delete(rawMsg, key)
 		case "parameters":
-			err = unpopulate(val, "Parameters", &l.Parameters)
+				err = unpopulate(val, "Parameters", &l.Parameters)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &l.Type)
+				err = unpopulate(val, "Type", &l.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1090,10 +1209,10 @@ func (l *LinkDisplayText) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "localizedValue":
-			err = unpopulate(val, "LocalizedValue", &l.LocalizedValue)
+				err = unpopulate(val, "LocalizedValue", &l.LocalizedValue)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &l.Value)
+				err = unpopulate(val, "Value", &l.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1124,19 +1243,19 @@ func (m *MetadataEntity) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, "ID", &m.ID)
+				err = unpopulate(val, "ID", &m.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &m.Name)
+				err = unpopulate(val, "Name", &m.Name)
 			delete(rawMsg, key)
 		case "properties":
-			err = unpopulate(val, "Properties", &m.Properties)
+				err = unpopulate(val, "Properties", &m.Properties)
 			delete(rawMsg, key)
 		case "systemData":
-			err = unpopulate(val, "SystemData", &m.SystemData)
+				err = unpopulate(val, "SystemData", &m.SystemData)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, "Type", &m.Type)
+				err = unpopulate(val, "Type", &m.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1164,10 +1283,10 @@ func (m *MetadataEntityListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "nextLink":
-			err = unpopulate(val, "NextLink", &m.NextLink)
+				err = unpopulate(val, "NextLink", &m.NextLink)
 			delete(rawMsg, key)
 		case "value":
-			err = unpopulate(val, "Value", &m.Value)
+				err = unpopulate(val, "Value", &m.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1197,16 +1316,16 @@ func (m *MetadataEntityProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "applicableScenarios":
-			err = unpopulate(val, "ApplicableScenarios", &m.ApplicableScenarios)
+				err = unpopulate(val, "ApplicableScenarios", &m.ApplicableScenarios)
 			delete(rawMsg, key)
 		case "dependsOn":
-			err = unpopulate(val, "DependsOn", &m.DependsOn)
+				err = unpopulate(val, "DependsOn", &m.DependsOn)
 			delete(rawMsg, key)
 		case "displayName":
-			err = unpopulate(val, "DisplayName", &m.DisplayName)
+				err = unpopulate(val, "DisplayName", &m.DisplayName)
 			delete(rawMsg, key)
 		case "supportedValues":
-			err = unpopulate(val, "SupportedValues", &m.SupportedValues)
+				err = unpopulate(val, "SupportedValues", &m.SupportedValues)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1221,7 +1340,10 @@ func (m MetadataSupportedValueDetail) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "displayName", m.DisplayName)
 	populate(objectMap, "id", m.ID)
+	populate(objectMap, "previousId", m.PreviousID)
+	populate(objectMap, "priority", m.Priority)
 	populate(objectMap, "resourceTypes", m.ResourceTypes)
+	populate(objectMap, "serviceGuid", m.ServiceGUID)
 	return json.Marshal(objectMap)
 }
 
@@ -1235,13 +1357,22 @@ func (m *MetadataSupportedValueDetail) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "displayName":
-			err = unpopulate(val, "DisplayName", &m.DisplayName)
+				err = unpopulate(val, "DisplayName", &m.DisplayName)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, "ID", &m.ID)
+				err = unpopulate(val, "ID", &m.ID)
+			delete(rawMsg, key)
+		case "previousId":
+				err = unpopulate(val, "PreviousID", &m.PreviousID)
+			delete(rawMsg, key)
+		case "priority":
+				err = unpopulate(val, "Priority", &m.Priority)
 			delete(rawMsg, key)
 		case "resourceTypes":
-			err = unpopulate(val, "ResourceTypes", &m.ResourceTypes)
+				err = unpopulate(val, "ResourceTypes", &m.ResourceTypes)
+			delete(rawMsg, key)
+		case "serviceGuid":
+				err = unpopulate(val, "ServiceGUID", &m.ServiceGUID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1269,10 +1400,10 @@ func (o *Operation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "display":
-			err = unpopulate(val, "Display", &o.Display)
+				err = unpopulate(val, "Display", &o.Display)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, "Name", &o.Name)
+				err = unpopulate(val, "Name", &o.Name)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1302,16 +1433,16 @@ func (o *OperationDisplay) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "description":
-			err = unpopulate(val, "Description", &o.Description)
+				err = unpopulate(val, "Description", &o.Description)
 			delete(rawMsg, key)
 		case "operation":
-			err = unpopulate(val, "Operation", &o.Operation)
+				err = unpopulate(val, "Operation", &o.Operation)
 			delete(rawMsg, key)
 		case "provider":
-			err = unpopulate(val, "Provider", &o.Provider)
+				err = unpopulate(val, "Provider", &o.Provider)
 			delete(rawMsg, key)
 		case "resource":
-			err = unpopulate(val, "Resource", &o.Resource)
+				err = unpopulate(val, "Resource", &o.Resource)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1338,11 +1469,50 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "value":
-			err = unpopulate(val, "Value", &o.Value)
+				err = unpopulate(val, "Value", &o.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", o, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProxyResource.
+func (p ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "systemData", p.SystemData)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ProxyResource.
+func (p *ProxyResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+				err = unpopulate(val, "ID", &p.ID)
+			delete(rawMsg, key)
+		case "name":
+				err = unpopulate(val, "Name", &p.Name)
+			delete(rawMsg, key)
+		case "systemData":
+				err = unpopulate(val, "SystemData", &p.SystemData)
+			delete(rawMsg, key)
+		case "type":
+				err = unpopulate(val, "Type", &p.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
 		}
 	}
 	return nil
@@ -1368,16 +1538,55 @@ func (r *RecommendedAction) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "action":
-			err = unpopulate(val, "Action", &r.Action)
+				err = unpopulate(val, "Action", &r.Action)
 			delete(rawMsg, key)
 		case "actionUrl":
-			err = unpopulate(val, "ActionURL", &r.ActionURL)
+				err = unpopulate(val, "ActionURL", &r.ActionURL)
 			delete(rawMsg, key)
 		case "_ActionUrl.Comment":
-			err = unpopulate(val, "ActionURLComment", &r.ActionURLComment)
+				err = unpopulate(val, "ActionURLComment", &r.ActionURLComment)
 			delete(rawMsg, key)
 		case "actionUrlText":
-			err = unpopulate(val, "ActionURLText", &r.ActionURLText)
+				err = unpopulate(val, "ActionURLText", &r.ActionURLText)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "systemData", r.SystemData)
+	populate(objectMap, "type", r.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Resource.
+func (r *Resource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+				err = unpopulate(val, "ID", &r.ID)
+			delete(rawMsg, key)
+		case "name":
+				err = unpopulate(val, "Name", &r.Name)
+			delete(rawMsg, key)
+		case "systemData":
+				err = unpopulate(val, "SystemData", &r.SystemData)
+			delete(rawMsg, key)
+		case "type":
+				err = unpopulate(val, "Type", &r.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1391,8 +1600,8 @@ func (r *RecommendedAction) UnmarshalJSON(data []byte) error {
 func (s ServiceImpactingEvent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "correlationId", s.CorrelationID)
-	populateDateTimeRFC3339(objectMap, "eventStartTime", s.EventStartTime)
-	populateDateTimeRFC3339(objectMap, "eventStatusLastModifiedTime", s.EventStatusLastModifiedTime)
+	populateTime[datetime.RFC3339](objectMap, "eventStartTime", s.EventStartTime)
+	populateTime[datetime.RFC3339](objectMap, "eventStatusLastModifiedTime", s.EventStatusLastModifiedTime)
 	populate(objectMap, "incidentProperties", s.IncidentProperties)
 	populate(objectMap, "status", s.Status)
 	return json.Marshal(objectMap)
@@ -1408,19 +1617,19 @@ func (s *ServiceImpactingEvent) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "correlationId":
-			err = unpopulate(val, "CorrelationID", &s.CorrelationID)
+				err = unpopulate(val, "CorrelationID", &s.CorrelationID)
 			delete(rawMsg, key)
 		case "eventStartTime":
-			err = unpopulateDateTimeRFC3339(val, "EventStartTime", &s.EventStartTime)
+				err = unpopulateTime[datetime.RFC3339](val, "EventStartTime", &s.EventStartTime)
 			delete(rawMsg, key)
 		case "eventStatusLastModifiedTime":
-			err = unpopulateDateTimeRFC3339(val, "EventStatusLastModifiedTime", &s.EventStatusLastModifiedTime)
+				err = unpopulateTime[datetime.RFC3339](val, "EventStatusLastModifiedTime", &s.EventStatusLastModifiedTime)
 			delete(rawMsg, key)
 		case "incidentProperties":
-			err = unpopulate(val, "IncidentProperties", &s.IncidentProperties)
+				err = unpopulate(val, "IncidentProperties", &s.IncidentProperties)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, "Status", &s.Status)
+				err = unpopulate(val, "Status", &s.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1450,16 +1659,16 @@ func (s *ServiceImpactingEventIncidentProperties) UnmarshalJSON(data []byte) err
 		var err error
 		switch key {
 		case "incidentType":
-			err = unpopulate(val, "IncidentType", &s.IncidentType)
+				err = unpopulate(val, "IncidentType", &s.IncidentType)
 			delete(rawMsg, key)
 		case "region":
-			err = unpopulate(val, "Region", &s.Region)
+				err = unpopulate(val, "Region", &s.Region)
 			delete(rawMsg, key)
 		case "service":
-			err = unpopulate(val, "Service", &s.Service)
+				err = unpopulate(val, "Service", &s.Service)
 			delete(rawMsg, key)
 		case "title":
-			err = unpopulate(val, "Title", &s.Title)
+				err = unpopulate(val, "Title", &s.Title)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1486,7 +1695,7 @@ func (s *ServiceImpactingEventStatus) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "value":
-			err = unpopulate(val, "Value", &s.Value)
+				err = unpopulate(val, "Value", &s.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1502,11 +1711,11 @@ func (s StatusActiveEvent) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cloud", s.Cloud)
 	populate(objectMap, "description", s.Description)
 	populate(objectMap, "impacts", s.Impacts)
-	populateDateTimeRFC3339(objectMap, "lastModifiedTime", s.LastModifiedTime)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", s.LastModifiedTime)
 	populate(objectMap, "published", s.Published)
 	populate(objectMap, "severity", s.Severity)
 	populate(objectMap, "stage", s.Stage)
-	populateDateTimeRFC3339(objectMap, "startTime", s.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", s.StartTime)
 	populate(objectMap, "title", s.Title)
 	populate(objectMap, "trackingId", s.TrackingID)
 	return json.Marshal(objectMap)
@@ -1522,34 +1731,34 @@ func (s *StatusActiveEvent) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "cloud":
-			err = unpopulate(val, "Cloud", &s.Cloud)
+				err = unpopulate(val, "Cloud", &s.Cloud)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, "Description", &s.Description)
+				err = unpopulate(val, "Description", &s.Description)
 			delete(rawMsg, key)
 		case "impacts":
-			err = unpopulate(val, "Impacts", &s.Impacts)
+				err = unpopulate(val, "Impacts", &s.Impacts)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateDateTimeRFC3339(val, "LastModifiedTime", &s.LastModifiedTime)
+				err = unpopulateTime[datetime.RFC3339](val, "LastModifiedTime", &s.LastModifiedTime)
 			delete(rawMsg, key)
 		case "published":
-			err = unpopulate(val, "Published", &s.Published)
+				err = unpopulate(val, "Published", &s.Published)
 			delete(rawMsg, key)
 		case "severity":
-			err = unpopulate(val, "Severity", &s.Severity)
+				err = unpopulate(val, "Severity", &s.Severity)
 			delete(rawMsg, key)
 		case "stage":
-			err = unpopulate(val, "Stage", &s.Stage)
+				err = unpopulate(val, "Stage", &s.Stage)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateDateTimeRFC3339(val, "StartTime", &s.StartTime)
+				err = unpopulateTime[datetime.RFC3339](val, "StartTime", &s.StartTime)
 			delete(rawMsg, key)
 		case "title":
-			err = unpopulate(val, "Title", &s.Title)
+				err = unpopulate(val, "Title", &s.Title)
 			delete(rawMsg, key)
 		case "trackingId":
-			err = unpopulate(val, "TrackingID", &s.TrackingID)
+				err = unpopulate(val, "TrackingID", &s.TrackingID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1563,7 +1772,7 @@ func (s *StatusActiveEvent) UnmarshalJSON(data []byte) error {
 func (s StatusBanner) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "cloud", s.Cloud)
-	populateDateTimeRFC3339(objectMap, "lastModifiedTime", s.LastModifiedTime)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", s.LastModifiedTime)
 	populate(objectMap, "message", s.Message)
 	populate(objectMap, "title", s.Title)
 	return json.Marshal(objectMap)
@@ -1579,16 +1788,16 @@ func (s *StatusBanner) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "cloud":
-			err = unpopulate(val, "Cloud", &s.Cloud)
+				err = unpopulate(val, "Cloud", &s.Cloud)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateDateTimeRFC3339(val, "LastModifiedTime", &s.LastModifiedTime)
+				err = unpopulateTime[datetime.RFC3339](val, "LastModifiedTime", &s.LastModifiedTime)
 			delete(rawMsg, key)
 		case "message":
-			err = unpopulate(val, "Message", &s.Message)
+				err = unpopulate(val, "Message", &s.Message)
 			delete(rawMsg, key)
 		case "title":
-			err = unpopulate(val, "Title", &s.Title)
+				err = unpopulate(val, "Title", &s.Title)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1601,10 +1810,10 @@ func (s *StatusBanner) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1620,22 +1829,22 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+				err = unpopulateTime[datetime.RFC3339](val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
-			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
+				err = unpopulate(val, "CreatedBy", &s.CreatedBy)
 			delete(rawMsg, key)
 		case "createdByType":
-			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
+				err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+				err = unpopulateTime[datetime.RFC3339](val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
-			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
+				err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
 			delete(rawMsg, key)
 		case "lastModifiedByType":
-			err = unpopulate(val, "LastModifiedByType", &s.LastModifiedByType)
+				err = unpopulate(val, "LastModifiedByType", &s.LastModifiedByType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1648,8 +1857,9 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Update.
 func (u Update) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "eventTags", u.EventTags)
 	populate(objectMap, "summary", u.Summary)
-	populateDateTimeRFC3339(objectMap, "updateDateTime", u.UpdateDateTime)
+	populateTime[datetime.RFC3339](objectMap, "updateDateTime", u.UpdateDateTime)
 	return json.Marshal(objectMap)
 }
 
@@ -1662,11 +1872,14 @@ func (u *Update) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "eventTags":
+				err = unpopulate(val, "EventTags", &u.EventTags)
+			delete(rawMsg, key)
 		case "summary":
-			err = unpopulate(val, "Summary", &u.Summary)
+				err = unpopulate(val, "Summary", &u.Summary)
 			delete(rawMsg, key)
 		case "updateDateTime":
-			err = unpopulateDateTimeRFC3339(val, "UpdateDateTime", &u.UpdateDateTime)
+				err = unpopulateTime[datetime.RFC3339](val, "UpdateDateTime", &u.UpdateDateTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1683,6 +1896,17 @@ func populate(m map[string]any, k string, v any) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
 		m[k] = v
+	}
+}
+
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
 	}
 }
 
@@ -1705,3 +1929,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+}
+

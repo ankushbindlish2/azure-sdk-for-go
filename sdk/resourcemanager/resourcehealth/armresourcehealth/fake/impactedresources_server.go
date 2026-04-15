@@ -20,7 +20,7 @@ import (
 )
 
 // ImpactedResourcesServer is a fake server for instances of the armresourcehealth.ImpactedResourcesClient type.
-type ImpactedResourcesServer struct {
+type ImpactedResourcesServer struct{
 	// Get is the fake for method ImpactedResourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, eventTrackingID string, impactedResourceName string, options *armresourcehealth.ImpactedResourcesClientGetOptions) (resp azfake.Responder[armresourcehealth.ImpactedResourcesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,6 +36,7 @@ type ImpactedResourcesServer struct {
 	// NewListByTenantIDAndEventIDPager is the fake for method ImpactedResourcesClient.NewListByTenantIDAndEventIDPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByTenantIDAndEventIDPager func(eventTrackingID string, options *armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDOptions) (resp azfake.PagerResponder[armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDResponse])
+
 }
 
 // NewImpactedResourcesServerTransport creates a new instance of ImpactedResourcesServerTransport with the provided implementation.
@@ -43,18 +44,18 @@ type ImpactedResourcesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewImpactedResourcesServerTransport(srv *ImpactedResourcesServer) *ImpactedResourcesServerTransport {
 	return &ImpactedResourcesServerTransport{
-		srv:                                    srv,
+		srv: srv,
 		newListBySubscriptionIDAndEventIDPager: newTracker[azfake.PagerResponder[armresourcehealth.ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse]](),
-		newListByTenantIDAndEventIDPager:       newTracker[azfake.PagerResponder[armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDResponse]](),
+		newListByTenantIDAndEventIDPager: newTracker[azfake.PagerResponder[armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDResponse]](),
 	}
 }
 
 // ImpactedResourcesServerTransport connects instances of armresourcehealth.ImpactedResourcesClient to instances of ImpactedResourcesServer.
 // Don't use this type directly, use NewImpactedResourcesServerTransport instead.
 type ImpactedResourcesServerTransport struct {
-	srv                                    *ImpactedResourcesServer
+	srv *ImpactedResourcesServer
 	newListBySubscriptionIDAndEventIDPager *tracker[azfake.PagerResponder[armresourcehealth.ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse]]
-	newListByTenantIDAndEventIDPager       *tracker[azfake.PagerResponder[armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDResponse]]
+	newListByTenantIDAndEventIDPager *tracker[azfake.PagerResponder[armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDResponse]]
 }
 
 // Do implements the policy.Transporter interface for ImpactedResourcesServerTransport.
@@ -65,27 +66,46 @@ func (i *ImpactedResourcesServerTransport) Do(req *http.Request) (*http.Response
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return i.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ImpactedResourcesClient.Get":
-		resp, err = i.dispatchGet(req)
-	case "ImpactedResourcesClient.GetByTenantID":
-		resp, err = i.dispatchGetByTenantID(req)
-	case "ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager":
-		resp, err = i.dispatchNewListBySubscriptionIDAndEventIDPager(req)
-	case "ImpactedResourcesClient.NewListByTenantIDAndEventIDPager":
-		resp, err = i.dispatchNewListByTenantIDAndEventIDPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (i *ImpactedResourcesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if impactedResourcesServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = impactedResourcesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ImpactedResourcesClient.Get":
+				res.resp, res.err = i.dispatchGet(req)
+			case "ImpactedResourcesClient.GetByTenantID":
+				res.resp, res.err = i.dispatchGetByTenantID(req)
+			case "ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager":
+				res.resp, res.err = i.dispatchNewListBySubscriptionIDAndEventIDPager(req)
+			case "ImpactedResourcesClient.NewListByTenantIDAndEventIDPager":
+				res.resp, res.err = i.dispatchNewListByTenantIDAndEventIDPager(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (i *ImpactedResourcesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -95,7 +115,7 @@ func (i *ImpactedResourcesServerTransport) dispatchGet(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources/(?P<impactedResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
@@ -128,7 +148,7 @@ func (i *ImpactedResourcesServerTransport) dispatchGetByTenantID(req *http.Reque
 	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources/(?P<impactedResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
@@ -160,29 +180,29 @@ func (i *ImpactedResourcesServerTransport) dispatchNewListBySubscriptionIDAndEve
 	}
 	newListBySubscriptionIDAndEventIDPager := i.newListBySubscriptionIDAndEventIDPager.get(req)
 	if newListBySubscriptionIDAndEventIDPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armresourcehealth.ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions
+	if filterParam != nil {
+		options = &armresourcehealth.ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armresourcehealth.ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions
-		if filterParam != nil {
-			options = &armresourcehealth.ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := i.srv.NewListBySubscriptionIDAndEventIDPager(eventTrackingIDParam, options)
+	}
+resp := i.srv.NewListBySubscriptionIDAndEventIDPager(eventTrackingIDParam, options)
 		newListBySubscriptionIDAndEventIDPager = &resp
 		i.newListBySubscriptionIDAndEventIDPager.add(req, newListBySubscriptionIDAndEventIDPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionIDAndEventIDPager, req, func(page *armresourcehealth.ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse, createLink func() string) {
@@ -209,29 +229,29 @@ func (i *ImpactedResourcesServerTransport) dispatchNewListByTenantIDAndEventIDPa
 	}
 	newListByTenantIDAndEventIDPager := i.newListByTenantIDAndEventIDPager.get(req)
 	if newListByTenantIDAndEventIDPager == nil {
-		const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	const regexStr = `/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/impactedResources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDOptions
+	if filterParam != nil {
+		options = &armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDOptions{
+			Filter: filterParam,
 		}
-		qp := req.URL.Query()
-		eventTrackingIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventTrackingId")])
-		if err != nil {
-			return nil, err
-		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		var options *armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDOptions
-		if filterParam != nil {
-			options = &armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDOptions{
-				Filter: filterParam,
-			}
-		}
-		resp := i.srv.NewListByTenantIDAndEventIDPager(eventTrackingIDParam, options)
+	}
+resp := i.srv.NewListByTenantIDAndEventIDPager(eventTrackingIDParam, options)
 		newListByTenantIDAndEventIDPager = &resp
 		i.newListByTenantIDAndEventIDPager.add(req, newListByTenantIDAndEventIDPager)
 		server.PagerResponderInjectNextLinks(newListByTenantIDAndEventIDPager, req, func(page *armresourcehealth.ImpactedResourcesClientListByTenantIDAndEventIDResponse, createLink func() string) {
@@ -250,4 +270,10 @@ func (i *ImpactedResourcesServerTransport) dispatchNewListByTenantIDAndEventIDPa
 		i.newListByTenantIDAndEventIDPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ImpactedResourcesServerTransport
+var impactedResourcesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

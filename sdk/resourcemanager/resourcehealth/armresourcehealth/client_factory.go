@@ -14,7 +14,7 @@ import (
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
 	subscriptionID string
-	internal       *arm.Client
+	internal *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
@@ -29,7 +29,7 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}
 	return &ClientFactory{
 		subscriptionID: subscriptionID,
-		internal:       internal,
+		internal: internal,
 	}, nil
 }
 
@@ -37,7 +37,7 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 func (c *ClientFactory) NewAvailabilityStatusesClient() *AvailabilityStatusesClient {
 	return &AvailabilityStatusesClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -66,7 +66,7 @@ func (c *ClientFactory) NewEmergingIssuesClient() *EmergingIssuesClient {
 func (c *ClientFactory) NewEventClient() *EventClient {
 	return &EventClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -74,7 +74,7 @@ func (c *ClientFactory) NewEventClient() *EventClient {
 func (c *ClientFactory) NewEventsClient() *EventsClient {
 	return &EventsClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -82,7 +82,7 @@ func (c *ClientFactory) NewEventsClient() *EventsClient {
 func (c *ClientFactory) NewImpactedResourcesClient() *ImpactedResourcesClient {
 	return &ImpactedResourcesClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
 
@@ -104,6 +104,7 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 func (c *ClientFactory) NewSecurityAdvisoryImpactedResourcesClient() *SecurityAdvisoryImpactedResourcesClient {
 	return &SecurityAdvisoryImpactedResourcesClient{
 		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		internal: c.internal,
 	}
 }
+

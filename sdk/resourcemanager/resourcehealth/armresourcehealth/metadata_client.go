@@ -25,14 +25,14 @@ type MetadataClient struct {
 
 // NewMetadataClient creates a new instance of MetadataClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMetadataClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MetadataClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MetadataClient{
-		internal: cl,
+	internal: cl,
 	}
 	return client, nil
 }
@@ -40,7 +40,7 @@ func NewMetadataClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // GetEntity - Gets the list of metadata entities.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - name - Name of metadata entity.
 //   - options - MetadataClientGetEntityOptions contains the optional parameters for the MetadataClient.GetEntity method.
 func (client *MetadataClient) GetEntity(ctx context.Context, name string, options *MetadataClientGetEntityOptions) (MetadataClientGetEntityResponse, error) {
@@ -66,7 +66,7 @@ func (client *MetadataClient) GetEntity(ctx context.Context, name string, option
 }
 
 // getEntityCreateRequest creates the GetEntity request.
-func (client *MetadataClient) getEntityCreateRequest(ctx context.Context, name string, options *MetadataClientGetEntityOptions) (*policy.Request, error) {
+func (client *MetadataClient) getEntityCreateRequest(ctx context.Context, name string, _ *MetadataClientGetEntityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/metadata/{name}"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -77,7 +77,7 @@ func (client *MetadataClient) getEntityCreateRequest(ctx context.Context, name s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -94,15 +94,15 @@ func (client *MetadataClient) getEntityHandleResponse(resp *http.Response) (Meta
 
 // NewListPager - Gets the list of metadata entities.
 //
-// Generated from API version 2023-10-01-preview
+// Generated from API version 2025-05-01
 //   - options - MetadataClientListOptions contains the optional parameters for the MetadataClient.NewListPager method.
-func (client *MetadataClient) NewListPager(options *MetadataClientListOptions) *runtime.Pager[MetadataClientListResponse] {
+func (client *MetadataClient) NewListPager(options *MetadataClientListOptions) (*runtime.Pager[MetadataClientListResponse]) {
 	return runtime.NewPager(runtime.PagingHandler[MetadataClientListResponse]{
 		More: func(page MetadataClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *MetadataClientListResponse) (MetadataClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetadataClient.NewListPager")
+		ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetadataClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -114,20 +114,20 @@ func (client *MetadataClient) NewListPager(options *MetadataClientListOptions) *
 				return MetadataClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
-		},
+			},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MetadataClient) listCreateRequest(ctx context.Context, options *MetadataClientListOptions) (*policy.Request, error) {
+func (client *MetadataClient) listCreateRequest(ctx context.Context, _ *MetadataClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ResourceHealth/metadata"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -141,3 +141,4 @@ func (client *MetadataClient) listHandleResponse(resp *http.Response) (MetadataC
 	}
 	return result, nil
 }
+

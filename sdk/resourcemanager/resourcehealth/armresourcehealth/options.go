@@ -8,69 +8,69 @@ package armresourcehealth
 // AvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the AvailabilityStatusesClient.GetByResource
 // method.
 type AvailabilityStatusesClientGetByResourceOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // AvailabilityStatusesClientListByResourceGroupOptions contains the optional parameters for the AvailabilityStatusesClient.NewListByResourceGroupPager
 // method.
 type AvailabilityStatusesClientListByResourceGroupOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // AvailabilityStatusesClientListBySubscriptionIDOptions contains the optional parameters for the AvailabilityStatusesClient.NewListBySubscriptionIDPager
 // method.
 type AvailabilityStatusesClientListBySubscriptionIDOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // AvailabilityStatusesClientListOptions contains the optional parameters for the AvailabilityStatusesClient.NewListPager
 // method.
 type AvailabilityStatusesClientListOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // ChildAvailabilityStatusesClientGetByResourceOptions contains the optional parameters for the ChildAvailabilityStatusesClient.GetByResource
 // method.
 type ChildAvailabilityStatusesClientGetByResourceOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // ChildAvailabilityStatusesClientListOptions contains the optional parameters for the ChildAvailabilityStatusesClient.NewListPager
 // method.
 type ChildAvailabilityStatusesClientListOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // ChildResourcesClientListOptions contains the optional parameters for the ChildResourcesClient.NewListPager method.
 type ChildResourcesClientListOptions struct {
-	// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
+// Setting $expand=recommendedactions in url query expands the recommendedactions in the response.
 	Expand *string
 
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
@@ -81,6 +81,12 @@ type EmergingIssuesClientGetOptions struct {
 
 // EmergingIssuesClientListOptions contains the optional parameters for the EmergingIssuesClient.NewListPager method.
 type EmergingIssuesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the
+// EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID method.
+type EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -99,50 +105,50 @@ type EventClientFetchDetailsByTenantIDAndTrackingIDOptions struct {
 // EventClientGetBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetBySubscriptionIDAndTrackingID
 // method.
 type EventClientGetBySubscriptionIDAndTrackingIDOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 
-	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
-	// queryStartTime=7%2F24%2F2020
+// Specifies from when to return events (default is 3 days), based on the lastUpdateTime property. For example, queryStartTime
+// = 7/24/2020 OR queryStartTime=7%2F24%2F2020
 	QueryStartTime *string
 }
 
 // EventClientGetByTenantIDAndTrackingIDOptions contains the optional parameters for the EventClient.GetByTenantIDAndTrackingID
 // method.
 type EventClientGetByTenantIDAndTrackingIDOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 
-	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
-	// queryStartTime=7%2F24%2F2020
+// Specifies from when to return events (default is 3 days), based on the lastUpdateTime property. For example, queryStartTime
+// = 7/24/2020 OR queryStartTime=7%2F24%2F2020
 	QueryStartTime *string
 }
 
 // EventsClientListBySingleResourceOptions contains the optional parameters for the EventsClient.NewListBySingleResourcePager
 // method.
 type EventsClientListBySingleResourceOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // EventsClientListBySubscriptionIDOptions contains the optional parameters for the EventsClient.NewListBySubscriptionIDPager
 // method.
 type EventsClientListBySubscriptionIDOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 
-	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
-	// queryStartTime=7%2F24%2F2020
+// Specifies from when to return events (default is 3 days), based on the lastUpdateTime property. For example, queryStartTime
+// = 7/24/2020 OR queryStartTime=7%2F24%2F2020
 	QueryStartTime *string
 }
 
 // EventsClientListByTenantIDOptions contains the optional parameters for the EventsClient.NewListByTenantIDPager method.
 type EventsClientListByTenantIDOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 
-	// Specifies from when to return events, based on the lastUpdateTime property. For example, queryStartTime = 7/24/2020 OR
-	// queryStartTime=7%2F24%2F2020
+// Specifies from when to return events (default is 3 days), based on the lastUpdateTime property. For example, queryStartTime
+// = 7/24/2020 OR queryStartTime=7%2F24%2F2020
 	QueryStartTime *string
 }
 
@@ -160,14 +166,14 @@ type ImpactedResourcesClientGetOptions struct {
 // ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions contains the optional parameters for the ImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager
 // method.
 type ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // ImpactedResourcesClientListByTenantIDAndEventIDOptions contains the optional parameters for the ImpactedResourcesClient.NewListByTenantIDAndEventIDPager
 // method.
 type ImpactedResourcesClientListByTenantIDAndEventIDOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
@@ -189,13 +195,14 @@ type OperationsClientListOptions struct {
 // SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDOptions contains the optional parameters for the SecurityAdvisoryImpactedResourcesClient.NewListBySubscriptionIDAndEventIDPager
 // method.
 type SecurityAdvisoryImpactedResourcesClientListBySubscriptionIDAndEventIDOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
 
 // SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDOptions contains the optional parameters for the SecurityAdvisoryImpactedResourcesClient.NewListByTenantIDAndEventIDPager
 // method.
 type SecurityAdvisoryImpactedResourcesClientListByTenantIDAndEventIDOptions struct {
-	// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
+// The filter to apply on the operation. For more information please see https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN
 	Filter *string
 }
+

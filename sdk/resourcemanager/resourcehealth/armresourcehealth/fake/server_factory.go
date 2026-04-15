@@ -16,16 +16,36 @@ import (
 
 // ServerFactory is a fake server for instances of the armresourcehealth.ClientFactory type.
 type ServerFactory struct {
-	AvailabilityStatusesServer              AvailabilityStatusesServer
-	ChildAvailabilityStatusesServer         ChildAvailabilityStatusesServer
-	ChildResourcesServer                    ChildResourcesServer
-	EmergingIssuesServer                    EmergingIssuesServer
-	EventServer                             EventServer
-	EventsServer                            EventsServer
-	ImpactedResourcesServer                 ImpactedResourcesServer
-	MetadataServer                          MetadataServer
-	OperationsServer                        OperationsServer
+	// AvailabilityStatusesServer contains the fakes for client AvailabilityStatusesClient
+	AvailabilityStatusesServer AvailabilityStatusesServer
+
+	// ChildAvailabilityStatusesServer contains the fakes for client ChildAvailabilityStatusesClient
+	ChildAvailabilityStatusesServer ChildAvailabilityStatusesServer
+
+	// ChildResourcesServer contains the fakes for client ChildResourcesClient
+	ChildResourcesServer ChildResourcesServer
+
+	// EmergingIssuesServer contains the fakes for client EmergingIssuesClient
+	EmergingIssuesServer EmergingIssuesServer
+
+	// EventServer contains the fakes for client EventClient
+	EventServer EventServer
+
+	// EventsServer contains the fakes for client EventsClient
+	EventsServer EventsServer
+
+	// ImpactedResourcesServer contains the fakes for client ImpactedResourcesClient
+	ImpactedResourcesServer ImpactedResourcesServer
+
+	// MetadataServer contains the fakes for client MetadataClient
+	MetadataServer MetadataServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// SecurityAdvisoryImpactedResourcesServer contains the fakes for client SecurityAdvisoryImpactedResourcesClient
 	SecurityAdvisoryImpactedResourcesServer SecurityAdvisoryImpactedResourcesServer
+
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -40,17 +60,17 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armresourcehealth.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                       *ServerFactory
-	trMu                                      sync.Mutex
-	trAvailabilityStatusesServer              *AvailabilityStatusesServerTransport
-	trChildAvailabilityStatusesServer         *ChildAvailabilityStatusesServerTransport
-	trChildResourcesServer                    *ChildResourcesServerTransport
-	trEmergingIssuesServer                    *EmergingIssuesServerTransport
-	trEventServer                             *EventServerTransport
-	trEventsServer                            *EventsServerTransport
-	trImpactedResourcesServer                 *ImpactedResourcesServerTransport
-	trMetadataServer                          *MetadataServerTransport
-	trOperationsServer                        *OperationsServerTransport
+	srv *ServerFactory
+	trMu sync.Mutex
+	trAvailabilityStatusesServer *AvailabilityStatusesServerTransport
+	trChildAvailabilityStatusesServer *ChildAvailabilityStatusesServerTransport
+	trChildResourcesServer *ChildResourcesServerTransport
+	trEmergingIssuesServer *EmergingIssuesServerTransport
+	trEventServer *EventServerTransport
+	trEventsServer *EventsServerTransport
+	trImpactedResourcesServer *ImpactedResourcesServerTransport
+	trMetadataServer *MetadataServerTransport
+	trOperationsServer *OperationsServerTransport
 	trSecurityAdvisoryImpactedResourcesServer *SecurityAdvisoryImpactedResourcesServerTransport
 }
 
@@ -68,24 +88,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AvailabilityStatusesClient":
-		initServer(s, &s.trAvailabilityStatusesServer, func() *AvailabilityStatusesServerTransport {
-			return NewAvailabilityStatusesServerTransport(&s.srv.AvailabilityStatusesServer)
-		})
+		initServer(s, &s.trAvailabilityStatusesServer, func() *AvailabilityStatusesServerTransport { return NewAvailabilityStatusesServerTransport(&s.srv.AvailabilityStatusesServer) })
 		resp, err = s.trAvailabilityStatusesServer.Do(req)
 	case "ChildAvailabilityStatusesClient":
-		initServer(s, &s.trChildAvailabilityStatusesServer, func() *ChildAvailabilityStatusesServerTransport {
-			return NewChildAvailabilityStatusesServerTransport(&s.srv.ChildAvailabilityStatusesServer)
-		})
+		initServer(s, &s.trChildAvailabilityStatusesServer, func() *ChildAvailabilityStatusesServerTransport { return NewChildAvailabilityStatusesServerTransport(&s.srv.ChildAvailabilityStatusesServer) })
 		resp, err = s.trChildAvailabilityStatusesServer.Do(req)
 	case "ChildResourcesClient":
-		initServer(s, &s.trChildResourcesServer, func() *ChildResourcesServerTransport {
-			return NewChildResourcesServerTransport(&s.srv.ChildResourcesServer)
-		})
+		initServer(s, &s.trChildResourcesServer, func() *ChildResourcesServerTransport { return NewChildResourcesServerTransport(&s.srv.ChildResourcesServer) })
 		resp, err = s.trChildResourcesServer.Do(req)
 	case "EmergingIssuesClient":
-		initServer(s, &s.trEmergingIssuesServer, func() *EmergingIssuesServerTransport {
-			return NewEmergingIssuesServerTransport(&s.srv.EmergingIssuesServer)
-		})
+		initServer(s, &s.trEmergingIssuesServer, func() *EmergingIssuesServerTransport { return NewEmergingIssuesServerTransport(&s.srv.EmergingIssuesServer) })
 		resp, err = s.trEmergingIssuesServer.Do(req)
 	case "EventClient":
 		initServer(s, &s.trEventServer, func() *EventServerTransport { return NewEventServerTransport(&s.srv.EventServer) })
@@ -94,9 +106,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		initServer(s, &s.trEventsServer, func() *EventsServerTransport { return NewEventsServerTransport(&s.srv.EventsServer) })
 		resp, err = s.trEventsServer.Do(req)
 	case "ImpactedResourcesClient":
-		initServer(s, &s.trImpactedResourcesServer, func() *ImpactedResourcesServerTransport {
-			return NewImpactedResourcesServerTransport(&s.srv.ImpactedResourcesServer)
-		})
+		initServer(s, &s.trImpactedResourcesServer, func() *ImpactedResourcesServerTransport { return NewImpactedResourcesServerTransport(&s.srv.ImpactedResourcesServer) })
 		resp, err = s.trImpactedResourcesServer.Do(req)
 	case "MetadataClient":
 		initServer(s, &s.trMetadataServer, func() *MetadataServerTransport { return NewMetadataServerTransport(&s.srv.MetadataServer) })
@@ -105,9 +115,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "SecurityAdvisoryImpactedResourcesClient":
-		initServer(s, &s.trSecurityAdvisoryImpactedResourcesServer, func() *SecurityAdvisoryImpactedResourcesServerTransport {
-			return NewSecurityAdvisoryImpactedResourcesServerTransport(&s.srv.SecurityAdvisoryImpactedResourcesServer)
-		})
+		initServer(s, &s.trSecurityAdvisoryImpactedResourcesServer, func() *SecurityAdvisoryImpactedResourcesServerTransport { return NewSecurityAdvisoryImpactedResourcesServerTransport(&s.srv.SecurityAdvisoryImpactedResourcesServer) })
 		resp, err = s.trSecurityAdvisoryImpactedResourcesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
