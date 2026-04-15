@@ -1,0 +1,4 @@
+directory: specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/HanaOnAzure
+commit: 9ad4806a6f5a846cbdf702f2437977aa64254683
+repo: i-specs
+additionalDirectories: 
