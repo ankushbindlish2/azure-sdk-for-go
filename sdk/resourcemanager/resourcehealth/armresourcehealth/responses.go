@@ -58,8 +58,8 @@ type EmergingIssuesClientListResponse struct {
 	EmergingIssueListResult
 }
 
-// EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse contains the response from method EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID.
-type EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse struct {
+// EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse contains the response from method EventClient.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID.
+type EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse struct {
 	// Service health event
 	Event
 }

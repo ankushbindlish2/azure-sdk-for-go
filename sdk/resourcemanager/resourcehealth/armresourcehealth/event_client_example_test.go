@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2025-05-01/Event_fetchBillingCommunicationDetailsBySubscriptionIdAndTrackingId.json
-func ExampleEventClient_FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID() {
+func ExampleEventClient_FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,14 +23,14 @@ func ExampleEventClient_FetchBilllingCommunicationDetailsBySubscriptionIDAndTrac
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventClient().FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx, "eventTrackingId", nil)
+	res, err := clientFactory.NewEventClient().FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx, "eventTrackingId", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresourcehealth.EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{
+	// res = armresourcehealth.EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{
 	// 	Event: &armresourcehealth.Event{
 	// 		Name: to.Ptr("{eventTrackingId}"),
 	// 		Type: to.Ptr("/providers/Microsoft.ResourceHealth/events"),
@@ -117,7 +117,7 @@ func ExampleEventClient_FetchBilllingCommunicationDetailsBySubscriptionIDAndTrac
 	// 			OldRate: to.Ptr[float64](0.88),
 	// 			Priority: to.Ptr[int32](2),
 	// 			RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
-	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsActionsItem{
+	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
 	// 					{
 	// 						ActionText: to.Ptr("action 1"),
 	// 						GroupID: to.Ptr[int32](23243),
@@ -262,7 +262,7 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 			},
 	// 			Priority: to.Ptr[int32](2),
 	// 			RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
-	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsActionsItem{
+	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
 	// 					{
 	// 						ActionText: to.Ptr("action 1"),
 	// 						GroupID: to.Ptr[int32](23243),
@@ -376,7 +376,7 @@ func ExampleEventClient_FetchDetailsByTenantIDAndTrackingID() {
 	// 			},
 	// 			Priority: to.Ptr[int32](2),
 	// 			RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
-	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsActionsItem{
+	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
 	// 					{
 	// 						ActionText: to.Ptr("action 1"),
 	// 						GroupID: to.Ptr[int32](23243),
@@ -523,7 +523,7 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 			},
 	// 			Priority: to.Ptr[int32](2),
 	// 			RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
-	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsActionsItem{
+	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
 	// 					{
 	// 						ActionText: to.Ptr("action 1"),
 	// 						GroupID: to.Ptr[int32](23243),
@@ -639,7 +639,7 @@ func ExampleEventClient_GetByTenantIDAndTrackingID() {
 	// 			},
 	// 			Priority: to.Ptr[int32](2),
 	// 			RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
-	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsActionsItem{
+	// 				Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
 	// 					{
 	// 						ActionText: to.Ptr("action 1"),
 	// 						GroupID: to.Ptr[int32](23243),

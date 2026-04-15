@@ -141,7 +141,7 @@ func ExampleEventsClient_NewListBySingleResourcePager() {
 		// 					},
 		// 					Priority: to.Ptr[int32](2),
 		// 					RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
-		// 						Actions: []*armresourcehealth.EventPropertiesRecommendedActionsActionsItem{
+		// 						Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
 		// 							{
 		// 								ActionText: to.Ptr("action 1"),
 		// 								GroupID: to.Ptr[int32](23243),
@@ -298,7 +298,7 @@ func ExampleEventsClient_NewListBySubscriptionIDPager() {
 		// 					},
 		// 					Priority: to.Ptr[int32](2),
 		// 					RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
-		// 						Actions: []*armresourcehealth.EventPropertiesRecommendedActionsActionsItem{
+		// 						Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
 		// 							{
 		// 								ActionText: to.Ptr("action 1"),
 		// 								GroupID: to.Ptr[int32](23243),
@@ -424,7 +424,7 @@ func ExampleEventsClient_NewListByTenantIDPager() {
 		// 					},
 		// 					Priority: to.Ptr[int32](2),
 		// 					RecommendedActions: &armresourcehealth.EventPropertiesRecommendedActions{
-		// 						Actions: []*armresourcehealth.EventPropertiesRecommendedActionsActionsItem{
+		// 						Actions: []*armresourcehealth.EventPropertiesRecommendedActionsItem{
 		// 							{
 		// 								ActionText: to.Ptr("action 1"),
 		// 								GroupID: to.Ptr[int32](23243),

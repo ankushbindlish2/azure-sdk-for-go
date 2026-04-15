@@ -40,7 +40,7 @@ func ExampleChildAvailabilityStatusesClient_GetByResource() {
 	// 		Properties: &armresourcehealth.AvailabilityStatusProperties{
 	// 			AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 	// 			DetailedStatus: to.Ptr(""),
-	// 			OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
+	// 			OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
 	// 			ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 	// 			ReasonType: to.Ptr(""),
 	// 			RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -95,7 +95,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 					DetailedStatus: to.Ptr(""),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:37:44Z"); return t}()),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 					ReasonType: to.Ptr(""),
 		// 					RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -122,7 +122,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 					DetailedStatus: to.Ptr(""),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:36:03Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T23:36:03Z"); return t}()),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 					ReasonType: to.Ptr("Customer Initiated"),
 		// 					RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -150,7 +150,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 					DetailedStatus: to.Ptr(""),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:32:12Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:32:12Z"); return t}()),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 					ReasonType: to.Ptr(""),
 		// 					RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -176,7 +176,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 					DetailedStatus: to.Ptr(""),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:30:23Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-30T22:30:23Z"); return t}()),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 					ReasonType: to.Ptr("Customer Initiated"),
 		// 					RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -204,7 +204,7 @@ func ExampleChildAvailabilityStatusesClient_NewListPager() {
 		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesAvailable),
 		// 					DetailedStatus: to.Ptr(""),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-21T00:00:00Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-21T00:00:00Z"); return t}()),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesTransient),
 		// 					ReasonType: to.Ptr(""),
 		// 					RecommendedActions: []*armresourcehealth.RecommendedAction{

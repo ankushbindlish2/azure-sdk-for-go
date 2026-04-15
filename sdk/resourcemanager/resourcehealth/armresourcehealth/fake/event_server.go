@@ -19,9 +19,9 @@ import (
 
 // EventServer is a fake server for instances of the armresourcehealth.EventClient type.
 type EventServer struct {
-	// FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID is the fake for method EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID
+	// FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID is the fake for method EventClient.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID
 	// HTTP status codes to indicate success: http.StatusOK
-	FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID func(ctx context.Context, eventTrackingID string, options *armresourcehealth.EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (resp azfake.Responder[armresourcehealth.EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse], errResp azfake.ErrorResponder)
+	FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID func(ctx context.Context, eventTrackingID string, options *armresourcehealth.EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (resp azfake.Responder[armresourcehealth.EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse], errResp azfake.ErrorResponder)
 
 	// FetchDetailsBySubscriptionIDAndTrackingID is the fake for method EventClient.FetchDetailsBySubscriptionIDAndTrackingID
 	// HTTP status codes to indicate success: http.StatusOK
@@ -76,8 +76,8 @@ func (e *EventServerTransport) dispatchToMethodFake(req *http.Request, method st
 		}
 		if !intercepted {
 			switch method {
-			case "EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID":
-				res.resp, res.err = e.dispatchFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(req)
+			case "EventClient.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID":
+				res.resp, res.err = e.dispatchFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID(req)
 			case "EventClient.FetchDetailsBySubscriptionIDAndTrackingID":
 				res.resp, res.err = e.dispatchFetchDetailsBySubscriptionIDAndTrackingID(req)
 			case "EventClient.FetchDetailsByTenantIDAndTrackingID":
@@ -105,9 +105,9 @@ func (e *EventServerTransport) dispatchToMethodFake(req *http.Request, method st
 	}
 }
 
-func (e *EventServerTransport) dispatchFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(req *http.Request) (*http.Response, error) {
-	if e.srv.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID == nil {
-		return nil, &nonRetriableError{errors.New("fake for method FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID not implemented")}
+func (e *EventServerTransport) dispatchFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID(req *http.Request) (*http.Response, error) {
+	if e.srv.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ResourceHealth/events/(?P<eventTrackingId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchBillingCommunicationDetails`
 	regex := regexp.MustCompile(regexStr)
@@ -119,7 +119,7 @@ func (e *EventServerTransport) dispatchFetchBilllingCommunicationDetailsBySubscr
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := e.srv.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(req.Context(), eventTrackingIDParam, nil)
+	respr, errRespr := e.srv.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID(req.Context(), eventTrackingIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

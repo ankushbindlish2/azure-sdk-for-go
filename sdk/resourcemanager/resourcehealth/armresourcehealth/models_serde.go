@@ -99,7 +99,7 @@ func (a AvailabilityStatusProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "healthEventCause", a.HealthEventCause)
 	populate(objectMap, "healthEventId", a.HealthEventID)
 	populate(objectMap, "healthEventType", a.HealthEventType)
-	populateTime[datetime.RFC3339](objectMap, "occuredTime", a.OccuredTime)
+	populateTime[datetime.RFC3339](objectMap, "occuredTime", a.OccurredTime)
 	populate(objectMap, "reasonChronicity", a.ReasonChronicity)
 	populate(objectMap, "reasonType", a.ReasonType)
 	populate(objectMap, "recentlyResolved", a.RecentlyResolved)
@@ -150,7 +150,7 @@ func (a *AvailabilityStatusProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "HealthEventType", &a.HealthEventType)
 			delete(rawMsg, key)
 		case "occuredTime":
-			err = unpopulateTime[datetime.RFC3339](val, "OccuredTime", &a.OccuredTime)
+			err = unpopulateTime[datetime.RFC3339](val, "OccurredTime", &a.OccurredTime)
 			delete(rawMsg, key)
 		case "reasonChronicity":
 			err = unpopulate(val, "ReasonChronicity", &a.ReasonChronicity)
@@ -194,8 +194,8 @@ func (a *AvailabilityStatusProperties) UnmarshalJSON(data []byte) error {
 func (a AvailabilityStatusPropertiesRecentlyResolved) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTime[datetime.RFC3339](objectMap, "resolvedTime", a.ResolvedTime)
-	populateTime[datetime.RFC3339](objectMap, "unavailableOccuredTime", a.UnavailableOccuredTime)
-	populate(objectMap, "unavailableSummary", a.UnavailableSummary)
+	populate(objectMap, "unavailableSummary", a.UnavailabilitySummary)
+	populateTime[datetime.RFC3339](objectMap, "unavailableOccuredTime", a.UnavailableOccurredTime)
 	return json.Marshal(objectMap)
 }
 
@@ -211,11 +211,11 @@ func (a *AvailabilityStatusPropertiesRecentlyResolved) UnmarshalJSON(data []byte
 		case "resolvedTime":
 			err = unpopulateTime[datetime.RFC3339](val, "ResolvedTime", &a.ResolvedTime)
 			delete(rawMsg, key)
-		case "unavailableOccuredTime":
-			err = unpopulateTime[datetime.RFC3339](val, "UnavailableOccuredTime", &a.UnavailableOccuredTime)
-			delete(rawMsg, key)
 		case "unavailableSummary":
-			err = unpopulate(val, "UnavailableSummary", &a.UnavailableSummary)
+			err = unpopulate(val, "UnavailabilitySummary", &a.UnavailabilitySummary)
+			delete(rawMsg, key)
+		case "unavailableOccuredTime":
+			err = unpopulateTime[datetime.RFC3339](val, "UnavailableOccurredTime", &a.UnavailableOccurredTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -785,16 +785,16 @@ func (e *EventPropertiesRecommendedActions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EventPropertiesRecommendedActionsActionsItem.
-func (e EventPropertiesRecommendedActionsActionsItem) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type EventPropertiesRecommendedActionsItem.
+func (e EventPropertiesRecommendedActionsItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "actionText", e.ActionText)
 	populate(objectMap, "groupId", e.GroupID)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventPropertiesRecommendedActionsActionsItem.
-func (e *EventPropertiesRecommendedActionsActionsItem) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EventPropertiesRecommendedActionsItem.
+func (e *EventPropertiesRecommendedActionsItem) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", e, err)

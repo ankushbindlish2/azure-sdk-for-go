@@ -67,7 +67,7 @@ type AvailabilityStatusProperties struct {
 	HealthEventType *string
 
 	// Timestamp for when last change in health status occurred.
-	OccuredTime *time.Time
+	OccurredTime *time.Time
 
 	// Chronicity of the availability transition.
 	ReasonChronicity *ReasonChronicityTypes
@@ -109,11 +109,11 @@ type AvailabilityStatusPropertiesRecentlyResolved struct {
 	// Timestamp when the availabilityState changes to Available.
 	ResolvedTime *time.Time
 
-	// Timestamp for when the availabilityState changed to Unavailable
-	UnavailableOccuredTime *time.Time
-
 	// Brief description of cause of the resource becoming unavailable.
-	UnavailableSummary *string
+	UnavailabilitySummary *string
+
+	// Timestamp for when the availabilityState changed to Unavailable
+	UnavailableOccurredTime *time.Time
 }
 
 // EmergingIssue - On-going emerging issue from azure status.
@@ -368,7 +368,7 @@ type EventPropertiesArticle struct {
 // EventPropertiesRecommendedActions - Recommended actions of event.
 type EventPropertiesRecommendedActions struct {
 	// Recommended actions for the service health event.
-	Actions []*EventPropertiesRecommendedActionsActionsItem
+	Actions []*EventPropertiesRecommendedActionsItem
 
 	// Recommended action locale for the service health event.
 	LocaleCode *string
@@ -377,8 +377,8 @@ type EventPropertiesRecommendedActions struct {
 	Message *string
 }
 
-// EventPropertiesRecommendedActionsActionsItem - Recommended action for the service health event.
-type EventPropertiesRecommendedActionsActionsItem struct {
+// EventPropertiesRecommendedActionsItem - Recommended action for the service health event.
+type EventPropertiesRecommendedActionsItem struct {
 	// Recommended action text
 	ActionText *string
 

@@ -42,7 +42,7 @@ func ExampleAvailabilityStatusesClient_GetByResource() {
 	// 			Category: to.Ptr("Unplanned"),
 	// 			Context: to.Ptr("Platform Initiated"),
 	// 			DetailedStatus: to.Ptr("Disk problems are preventing us from automatically recovering your virtual machine"),
-	// 			OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+	// 			OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 	// 			ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 	// 			ReasonType: to.Ptr("Unplanned"),
 	// 			RecommendedActions: []*armresourcehealth.RecommendedAction{
@@ -106,7 +106,7 @@ func ExampleAvailabilityStatusesClient_NewListPager() {
 		// 					Category: to.Ptr("Unplanned"),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 					DetailedStatus: to.Ptr("Disk problems are preventing us from automatically recovering your virtual machine"),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 					ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-05-04T14:11:29.7598931Z"); return t}()),
 		// 					RootCauseAttributionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:13:00Z"); return t}()),
 		// 					ResolutionETA: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:37:00Z"); return t}()),
@@ -138,7 +138,7 @@ func ExampleAvailabilityStatusesClient_NewListPager() {
 		// 					Summary: to.Ptr("This virtual machine is running normally"),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 					DetailedStatus: to.Ptr("There aren’t any known Azure platform problems affecting this virtual machine"),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-28T16:23:00Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-28T16:23:00Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
@@ -187,12 +187,12 @@ func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 		// 					Category: to.Ptr("Unplanned"),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 					DetailedStatus: to.Ptr("We have not seen any issues with your virtual machine"),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 					ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-05-04T14:11:29.7598931Z"); return t}()),
 		// 					RecentlyResolved: &armresourcehealth.AvailabilityStatusPropertiesRecentlyResolved{
-		// 						UnavailableOccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:48:00Z"); return t}()),
+		// 						UnavailableOccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:48:00Z"); return t}()),
 		// 						ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:49:00Z"); return t}()),
-		// 						UnavailableSummary: to.Ptr("We are sorry your SQL database is unavailable"),
+		// 						UnavailabilitySummary: to.Ptr("We are sorry your SQL database is unavailable"),
 		// 					},
 		// 					RecommendedActions: []*armresourcehealth.RecommendedAction{
 		// 						{
@@ -215,7 +215,7 @@ func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 		// 					ReasonType: to.Ptr("Unplanned"),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 					DetailedStatus: to.Ptr("Diskproblemsarepreventingusfromautomaticallyrecoveringyourvirtualmachine"),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 					ReportedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-05-04T14:11:29.7598931Z"); return t}()),
 		// 					RootCauseAttributionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:13:00Z"); return t}()),
 		// 					ResolutionETA: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:37:00Z"); return t}()),
@@ -277,13 +277,13 @@ func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 		// 					Category: to.Ptr("Unplanned"),
 		// 					Context: to.Ptr("Platform Initiated"),
 		// 					DetailedStatus: to.Ptr("We have not seen any issues with your virtual machine"),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 					ReasonType: to.Ptr("Unplanned"),
 		// 					RecentlyResolved: &armresourcehealth.AvailabilityStatusPropertiesRecentlyResolved{
 		// 						ResolvedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:49:00Z"); return t}()),
-		// 						UnavailableOccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:48:00Z"); return t}()),
-		// 						UnavailableSummary: to.Ptr("We are sorry your SQL database is unavailable"),
+		// 						UnavailableOccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-28T00:48:00Z"); return t}()),
+		// 						UnavailabilitySummary: to.Ptr("We are sorry your SQL database is unavailable"),
 		// 					},
 		// 					RecommendedActions: []*armresourcehealth.RecommendedAction{
 		// 						{
@@ -305,7 +305,7 @@ func ExampleAvailabilityStatusesClient_NewListBySubscriptionIDPager() {
 		// 				Properties: &armresourcehealth.AvailabilityStatusProperties{
 		// 					AvailabilityState: to.Ptr(armresourcehealth.AvailabilityStateValuesUnavailable),
 		// 					DetailedStatus: to.Ptr("Diskproblemsarepreventingusfromautomaticallyrecoveringyourvirtualmachine"),
-		// 					OccuredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
+		// 					OccurredTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-29T09:12:00Z"); return t}()),
 		// 					ReasonChronicity: to.Ptr(armresourcehealth.ReasonChronicityTypesPersistent),
 		// 					ReasonType: to.Ptr("Unplanned"),
 		// 					RecommendedActions: []*armresourcehealth.RecommendedAction{

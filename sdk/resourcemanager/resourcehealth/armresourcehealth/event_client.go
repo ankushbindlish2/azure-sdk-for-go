@@ -39,38 +39,38 @@ func NewEventClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID - Service health event details specific in the subscription
+// FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID - Service health event details specific in the subscription
 // by event tracking id. This can be used to fetch sensitive properties for Billing event type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-05-01
 //   - eventTrackingID - Event Id which uniquely identifies ServiceHealth event.
-//   - options - EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters
-//     for the EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID method.
-func (client *EventClient) FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error) {
+//   - options - EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters
+//     for the EventClient.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID method.
+func (client *EventClient) FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error) {
 	var err error
-	const operationName = "EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID"
+	const operationName = "EventClient.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
+	req, err := client.fetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx, eventTrackingID, options)
 	if err != nil {
-		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
+		return EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
+		return EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
+		return EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
-	resp, err := client.fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp)
+	resp, err := client.fetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp)
 	return resp, err
 }
 
-// fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest creates the FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID request.
-func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
+// fetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest creates the FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID request.
+func (client *EventClient) fetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest(ctx context.Context, eventTrackingID string, _ *EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchBillingCommunicationDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -91,11 +91,11 @@ func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndT
 	return req, nil
 }
 
-// fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse handles the FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID response.
-func (client *EventClient) fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error) {
-	result := EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}
+// fetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse handles the FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID response.
+func (client *EventClient) fetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(resp *http.Response) (EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error) {
+	result := EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Event); err != nil {
-		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
+		return EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
 	return result, nil
 }
