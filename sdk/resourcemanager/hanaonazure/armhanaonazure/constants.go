@@ -5,27 +5,22 @@
 
 package armhanaonazure
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure"
-	moduleVersion = "v0.7.0"
-)
-
 // HanaProvisioningStatesEnum - State of provisioning of the HanaInstance
 type HanaProvisioningStatesEnum string
 
 const (
-	HanaProvisioningStatesEnumAccepted  HanaProvisioningStatesEnum = "Accepted"
-	HanaProvisioningStatesEnumCreating  HanaProvisioningStatesEnum = "Creating"
-	HanaProvisioningStatesEnumDeleting  HanaProvisioningStatesEnum = "Deleting"
-	HanaProvisioningStatesEnumFailed    HanaProvisioningStatesEnum = "Failed"
+	HanaProvisioningStatesEnumAccepted HanaProvisioningStatesEnum = "Accepted"
+	HanaProvisioningStatesEnumCreating HanaProvisioningStatesEnum = "Creating"
+	HanaProvisioningStatesEnumDeleting HanaProvisioningStatesEnum = "Deleting"
+	HanaProvisioningStatesEnumFailed HanaProvisioningStatesEnum = "Failed"
 	HanaProvisioningStatesEnumMigrating HanaProvisioningStatesEnum = "Migrating"
 	HanaProvisioningStatesEnumSucceeded HanaProvisioningStatesEnum = "Succeeded"
-	HanaProvisioningStatesEnumUpdating  HanaProvisioningStatesEnum = "Updating"
+	HanaProvisioningStatesEnumUpdating HanaProvisioningStatesEnum = "Updating"
 )
 
 // PossibleHanaProvisioningStatesEnumValues returns the possible values for the HanaProvisioningStatesEnum const type.
 func PossibleHanaProvisioningStatesEnumValues() []HanaProvisioningStatesEnum {
-	return []HanaProvisioningStatesEnum{
+	return []HanaProvisioningStatesEnum{	
 		HanaProvisioningStatesEnumAccepted,
 		HanaProvisioningStatesEnumCreating,
 		HanaProvisioningStatesEnumDeleting,
@@ -35,3 +30,4 @@ func PossibleHanaProvisioningStatesEnumValues() []HanaProvisioningStatesEnum {
 		HanaProvisioningStatesEnumUpdating,
 	}
 }
+

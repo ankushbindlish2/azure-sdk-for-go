@@ -16,9 +16,15 @@ import (
 
 // ServerFactory is a fake server for instances of the armhanaonazure.ClientFactory type.
 type ServerFactory struct {
-	OperationsServer        OperationsServer
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// ProviderInstancesServer contains the fakes for client ProviderInstancesClient
 	ProviderInstancesServer ProviderInstancesServer
-	SapMonitorsServer       SapMonitorsServer
+
+	// SapMonitorsServer contains the fakes for client SapMonitorsClient
+	SapMonitorsServer SapMonitorsServer
+
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -33,11 +39,11 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armhanaonazure.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                       *ServerFactory
-	trMu                      sync.Mutex
-	trOperationsServer        *OperationsServerTransport
+	srv *ServerFactory
+	trMu sync.Mutex
+	trOperationsServer *OperationsServerTransport
 	trProviderInstancesServer *ProviderInstancesServerTransport
-	trSapMonitorsServer       *SapMonitorsServerTransport
+	trSapMonitorsServer *SapMonitorsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -57,9 +63,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ProviderInstancesClient":
-		initServer(s, &s.trProviderInstancesServer, func() *ProviderInstancesServerTransport {
-			return NewProviderInstancesServerTransport(&s.srv.ProviderInstancesServer)
-		})
+		initServer(s, &s.trProviderInstancesServer, func() *ProviderInstancesServerTransport { return NewProviderInstancesServerTransport(&s.srv.ProviderInstancesServer) })
 		resp, err = s.trProviderInstancesServer.Do(req)
 	case "SapMonitorsClient":
 		initServer(s, &s.trSapMonitorsServer, func() *SapMonitorsServerTransport { return NewSapMonitorsServerTransport(&s.srv.SapMonitorsServer) })

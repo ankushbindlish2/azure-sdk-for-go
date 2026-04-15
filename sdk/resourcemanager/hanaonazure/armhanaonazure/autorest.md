@@ -4,9 +4,10 @@
 
 ``` yaml
 azure-arm: true
+tag: package-2020-02-07-preview
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hanaonazure/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/hanaonazure/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/62caf4074cd51f01a53c40f25dbe2c66e868dd81/specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/HanaOnAzure/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/62caf4074cd51f01a53c40f25dbe2c66e868dd81/specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/HanaOnAzure/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
 module-version: 0.7.0
 

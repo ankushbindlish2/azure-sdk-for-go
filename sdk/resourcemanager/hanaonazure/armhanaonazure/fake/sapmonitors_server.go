@@ -20,7 +20,7 @@ import (
 )
 
 // SapMonitorsServer is a fake server for instances of the armhanaonazure.SapMonitorsClient type.
-type SapMonitorsServer struct {
+type SapMonitorsServer struct{
 	// BeginCreate is the fake for method SapMonitorsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, sapMonitorName string, sapMonitorParameter armhanaonazure.SapMonitor, options *armhanaonazure.SapMonitorsClientBeginCreateOptions) (resp azfake.PollerResponder[armhanaonazure.SapMonitorsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -40,6 +40,7 @@ type SapMonitorsServer struct {
 	// Update is the fake for method SapMonitorsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, sapMonitorName string, tagsParameter armhanaonazure.Tags, options *armhanaonazure.SapMonitorsClientUpdateOptions) (resp azfake.Responder[armhanaonazure.SapMonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 }
 
 // NewSapMonitorsServerTransport creates a new instance of SapMonitorsServerTransport with the provided implementation.
@@ -47,9 +48,9 @@ type SapMonitorsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSapMonitorsServerTransport(srv *SapMonitorsServer) *SapMonitorsServerTransport {
 	return &SapMonitorsServerTransport{
-		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armhanaonazure.SapMonitorsClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armhanaonazure.SapMonitorsClientDeleteResponse]](),
+		srv: srv,
+		beginCreate: newTracker[azfake.PollerResponder[armhanaonazure.SapMonitorsClientCreateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armhanaonazure.SapMonitorsClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armhanaonazure.SapMonitorsClientListResponse]](),
 	}
 }
@@ -57,9 +58,9 @@ func NewSapMonitorsServerTransport(srv *SapMonitorsServer) *SapMonitorsServerTra
 // SapMonitorsServerTransport connects instances of armhanaonazure.SapMonitorsClient to instances of SapMonitorsServer.
 // Don't use this type directly, use NewSapMonitorsServerTransport instead.
 type SapMonitorsServerTransport struct {
-	srv          *SapMonitorsServer
-	beginCreate  *tracker[azfake.PollerResponder[armhanaonazure.SapMonitorsClientCreateResponse]]
-	beginDelete  *tracker[azfake.PollerResponder[armhanaonazure.SapMonitorsClientDeleteResponse]]
+	srv *SapMonitorsServer
+	beginCreate *tracker[azfake.PollerResponder[armhanaonazure.SapMonitorsClientCreateResponse]]
+	beginDelete *tracker[azfake.PollerResponder[armhanaonazure.SapMonitorsClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armhanaonazure.SapMonitorsClientListResponse]]
 }
 
@@ -71,29 +72,48 @@ func (s *SapMonitorsServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SapMonitorsClient.BeginCreate":
-		resp, err = s.dispatchBeginCreate(req)
-	case "SapMonitorsClient.BeginDelete":
-		resp, err = s.dispatchBeginDelete(req)
-	case "SapMonitorsClient.Get":
-		resp, err = s.dispatchGet(req)
-	case "SapMonitorsClient.NewListPager":
-		resp, err = s.dispatchNewListPager(req)
-	case "SapMonitorsClient.Update":
-		resp, err = s.dispatchUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SapMonitorsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		 if sapMonitorsServerTransportInterceptor != nil {
+			 res.resp, res.err, intercepted = sapMonitorsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SapMonitorsClient.BeginCreate":
+				res.resp, res.err = s.dispatchBeginCreate(req)
+			case "SapMonitorsClient.BeginDelete":
+				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "SapMonitorsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SapMonitorsClient.NewListPager":
+				res.resp, res.err = s.dispatchNewListPager(req)
+			case "SapMonitorsClient.Update":
+				res.resp, res.err = s.dispatchUpdate(req)
+				default:
+		res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SapMonitorsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -102,28 +122,28 @@ func (s *SapMonitorsServerTransport) dispatchBeginCreate(req *http.Request) (*ht
 	}
 	beginCreate := s.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HanaOnAzure/sapMonitors/(?P<sapMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armhanaonazure.SapMonitor](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		sapMonitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sapMonitorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginCreate(req.Context(), resourceGroupNameParam, sapMonitorNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HanaOnAzure/sapMonitors/(?P<sapMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armhanaonazure.SapMonitor](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	sapMonitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sapMonitorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginCreate(req.Context(), resourceGroupNameParam, sapMonitorNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginCreate = &respr
 		s.beginCreate.add(req, beginCreate)
 	}
@@ -150,24 +170,24 @@ func (s *SapMonitorsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HanaOnAzure/sapMonitors/(?P<sapMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		sapMonitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sapMonitorName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginDelete(req.Context(), resourceGroupNameParam, sapMonitorNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HanaOnAzure/sapMonitors/(?P<sapMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	sapMonitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("sapMonitorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.BeginDelete(req.Context(), resourceGroupNameParam, sapMonitorNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
 		beginDelete = &respr
 		s.beginDelete.add(req, beginDelete)
 	}
@@ -195,7 +215,7 @@ func (s *SapMonitorsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HanaOnAzure/sapMonitors/(?P<sapMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -227,13 +247,13 @@ func (s *SapMonitorsServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	newListPager := s.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HanaOnAzure/sapMonitors`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HanaOnAzure/sapMonitors`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+resp := s.srv.NewListPager(nil)
 		newListPager = &resp
 		s.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armhanaonazure.SapMonitorsClientListResponse, createLink func() string) {
@@ -261,7 +281,7 @@ func (s *SapMonitorsServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HanaOnAzure/sapMonitors/(?P<sapMonitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armhanaonazure.Tags](req)
@@ -289,4 +309,10 @@ func (s *SapMonitorsServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SapMonitorsServerTransport
+var sapMonitorsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }
