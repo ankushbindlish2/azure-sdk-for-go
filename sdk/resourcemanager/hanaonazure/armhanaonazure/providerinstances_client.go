@@ -28,7 +28,7 @@ type ProviderInstancesClient struct {
 //   - subscriptionID - Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
 //     the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProviderInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderInstancesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,8 +41,7 @@ func NewProviderInstancesClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// BeginCreate - Creates a provider instance for the specified subscription, resource group, SapMonitor name, and resource
-// name.
+// BeginCreate - The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-02-07-preview
@@ -69,7 +68,7 @@ func (client *ProviderInstancesClient) BeginCreate(ctx context.Context, resource
 	}
 }
 
-// Create - Creates a provider instance for the specified subscription, resource group, SapMonitor name, and resource name.
+// Create - The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-02-07-preview
@@ -95,7 +94,7 @@ func (client *ProviderInstancesClient) create(ctx context.Context, resourceGroup
 }
 
 // createCreateRequest creates the Create request.
-func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesClientBeginCreateOptions) (*policy.Request, error) {
+func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, _ *ProviderInstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances/{providerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -127,8 +126,7 @@ func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// BeginDelete - Deletes a provider instance for the specified subscription, resource group, SapMonitor name, and resource
-// name.
+// BeginDelete - The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-02-07-preview
@@ -154,7 +152,7 @@ func (client *ProviderInstancesClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes a provider instance for the specified subscription, resource group, SapMonitor name, and resource name.
+// Delete - The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-02-07-preview
@@ -180,7 +178,7 @@ func (client *ProviderInstancesClient) deleteOperation(ctx context.Context, reso
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, _ *ProviderInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances/{providerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -209,8 +207,7 @@ func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// Get - Gets properties of a provider instance for the specified subscription, resource group, SapMonitor name, and resource
-// name.
+// Get - The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2020-02-07-preview
@@ -241,7 +238,7 @@ func (client *ProviderInstancesClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *ProviderInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, options *ProviderInstancesClientGetOptions) (*policy.Request, error) {
+func (client *ProviderInstancesClient) getCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, providerInstanceName string, _ *ProviderInstancesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances/{providerInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -279,8 +276,7 @@ func (client *ProviderInstancesClient) getHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// NewListPager - Gets a list of provider instances in the specified SAP monitor. The operations returns various properties
-// of each provider instances.
+// NewListPager - The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 //
 // Generated from API version 2020-02-07-preview
 //   - resourceGroupName - Name of the resource group.
@@ -311,7 +307,7 @@ func (client *ProviderInstancesClient) NewListPager(resourceGroupName string, sa
 }
 
 // listCreateRequest creates the List request.
-func (client *ProviderInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, options *ProviderInstancesClientListOptions) (*policy.Request, error) {
+func (client *ProviderInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, _ *ProviderInstancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}/providerInstances"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

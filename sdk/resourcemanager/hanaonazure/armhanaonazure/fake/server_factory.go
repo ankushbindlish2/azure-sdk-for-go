@@ -16,9 +16,14 @@ import (
 
 // ServerFactory is a fake server for instances of the armhanaonazure.ClientFactory type.
 type ServerFactory struct {
-	OperationsServer        OperationsServer
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// ProviderInstancesServer contains the fakes for client ProviderInstancesClient
 	ProviderInstancesServer ProviderInstancesServer
-	SapMonitorsServer       SapMonitorsServer
+
+	// SapMonitorsServer contains the fakes for client SapMonitorsClient
+	SapMonitorsServer SapMonitorsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
