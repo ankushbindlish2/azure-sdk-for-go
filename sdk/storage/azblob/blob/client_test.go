@@ -11,11 +11,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -3938,13 +3940,6 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	proxyURL, err := url.Parse("http://127.0.0.1:8888")
-	_require.NoError(err)
-
-	transport := &http.Transport{
-		Proxy: http.ProxyURL(proxyURL),
-	}
-
 	// Create service client with TokenCredential
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
@@ -3971,9 +3966,6 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 
 	// Create blob client with TokenCredential
 	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			Transport: &http.Client{Transport: transport},
-		},
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			ContainerName: containerName,
@@ -3993,4 +3985,419 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	_require.NoError(err)
 
 	_require.Equal(uploadData, downloadedData)
+}
+
+func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsConcurrentDownloads() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	// Create service client with SharedKeyCredential for setup
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	_require.NoError(err)
+
+	// Create container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create multiple blobs for concurrent download
+	const numBlobs = 5
+	uploadData := []byte("test data for concurrent session download")
+	blobNames := make([]string, numBlobs)
+
+	for i := 0; i < numBlobs; i++ {
+		blobNames[i] = fmt.Sprintf("%s-blob-%d", testcommon.GenerateBlobName(testName), i)
+		bbClient := containerClient.NewBlockBlobClient(blobNames[i])
+		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(uploadData)), nil)
+		_require.NoError(err)
+	}
+
+	// Create a policy to track session requests
+	sessionTracker := &sessionRequestTracker{}
+
+	// Create service client with TokenCredential and SessionOptions
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			PerRetryPolicies: []policy.Policy{sessionTracker},
+		},
+		SessionOptions: service.SessionOptions{
+			Mode:          service.SessionModeSingleContainer,
+			ContainerName: containerName,
+			AccountName:   accountName,
+		},
+	})
+	_require.NoError(err)
+
+	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
+
+	// Perform concurrent downloads
+	var wg sync.WaitGroup
+	errChan := make(chan error, numBlobs)
+
+	for i := 0; i < numBlobs; i++ {
+		wg.Add(1)
+		go func(blobName string) {
+			defer wg.Done()
+			sessionBlobClient := sessionContClient.NewBlobClient(blobName)
+			resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			downloadedData, err := io.ReadAll(resp.Body)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			_ = resp.Body.Close()
+			if !bytes.Equal(uploadData, downloadedData) {
+				errChan <- fmt.Errorf("downloaded data mismatch for blob %s", blobName)
+			}
+		}(blobNames[i])
+	}
+
+	wg.Wait()
+	close(errChan)
+
+	for err := range errChan {
+		_require.NoError(err)
+	}
+
+	// Verify that only one CreateSession call was made (session should be cached)
+	sessionTracker.mu.Lock()
+	createSessionCount := sessionTracker.createSessionCount
+	sessionAuthCount := sessionTracker.sessionAuthCount
+	sessionTracker.mu.Unlock()
+
+	_require.Equal(1, createSessionCount, "Expected exactly one CreateSession call due to caching")
+	_require.Equal(numBlobs, sessionAuthCount, "Expected all downloads to use session authentication")
+}
+
+func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDownloadBuffer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	// Create service client with SharedKeyCredential for setup
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	_require.NoError(err)
+
+	// Create container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create a large blob (10 MB to trigger chunked download)
+	blobName := testcommon.GenerateBlobName(testName)
+	const fileSize = 10 * 1024 * 1024 // 10 MB
+	uploadData := make([]byte, fileSize)
+	for i := range uploadData {
+		uploadData[i] = byte(i % 256)
+	}
+
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(uploadData)), nil)
+	_require.NoError(err)
+
+	// Enable azcore logging
+	log.SetEvents(log.EventRequest, log.EventResponse)
+	log.SetListener(func(event log.Event, msg string) {
+		s.T().Logf("[%s] %s", event, msg)
+	})
+	defer log.SetListener(nil)
+
+	// Create a policy to track session requests
+	sessionTracker := &sessionRequestTracker{}
+	// Create a custom transport that dials to a specific IP address
+	//customTransport := &http.Transport{
+	//	DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+	//		// Extract the port from the original address
+	//		_, port, err := net.SplitHostPort(addr)
+	//		if err != nil {
+	//			port = "443" // Default HTTPS port
+	//		}
+	//		// Dial to the specific IP address
+	//		dialer := &net.Dialer{}
+	//		return dialer.DialContext(ctx, network, net.JoinHostPort("172.30.128.1", port))
+	//	},
+	//}
+	// Create service client with TokenCredential and SessionOptions
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			PerRetryPolicies: []policy.Policy{sessionTracker},
+			//Transport:        &http.Client{Transport: customTransport},
+		},
+		SessionOptions: service.SessionOptions{
+			Mode:          service.SessionModeSingleContainer,
+			ContainerName: containerName,
+			AccountName:   accountName,
+		},
+	})
+	_require.NoError(err)
+
+	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
+	sessionBlobClient := sessionContClient.NewBlobClient(blobName)
+
+	// Download to buffer with small block size to trigger multiple chunks
+	buffer := make([]byte, fileSize)
+	downloaded, err := sessionBlobClient.DownloadBuffer(context.Background(), buffer, &blob.DownloadBufferOptions{
+		BlockSize:   4 * 1024 * 1024, // 4 MB blocks
+		Concurrency: 2,
+	})
+	_require.NoError(err)
+	_require.Equal(int64(fileSize), downloaded)
+	_require.Equal(uploadData, buffer)
+
+	// Verify session was used
+	sessionTracker.mu.Lock()
+	createSessionCount := sessionTracker.createSessionCount
+	sessionAuthCount := sessionTracker.sessionAuthCount
+	sessionTracker.mu.Unlock()
+
+	_require.Equal(1, createSessionCount, "Expected exactly one CreateSession call")
+	_require.Greater(sessionAuthCount, 0, "Expected at least one request with session authentication")
+}
+
+func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDownloadFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	// Create service client with SharedKeyCredential for setup
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	_require.NoError(err)
+
+	// Create container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create a large blob (10 MB to trigger chunked download)
+	blobName := testcommon.GenerateBlobName(testName)
+	const fileSize = 10 * 1024 * 1024 // 10 MB
+	uploadData := make([]byte, fileSize)
+	for i := range uploadData {
+		uploadData[i] = byte(i % 256)
+	}
+
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(uploadData)), nil)
+	_require.NoError(err)
+
+	// Create a policy to track session requests
+	sessionTracker := &sessionRequestTracker{}
+	// Create a custom transport that dials to a specific IP address
+	customTransport := &http.Transport{
+		DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+			// Extract the port from the original address
+			_, port, err := net.SplitHostPort(addr)
+			if err != nil {
+				port = "443" // Default HTTPS port
+			}
+			// Dial to the specific IP address
+			dialer := &net.Dialer{}
+			return dialer.DialContext(ctx, network, net.JoinHostPort("10.0.6.206", port))
+		},
+	}
+	// Create service client with TokenCredential and SessionOptions
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			PerRetryPolicies: []policy.Policy{sessionTracker},
+			Transport:        &http.Client{Transport: customTransport},
+		},
+		SessionOptions: service.SessionOptions{
+			Mode:          service.SessionModeSingleContainer,
+			ContainerName: containerName,
+			AccountName:   accountName,
+		},
+	})
+	_require.NoError(err)
+
+	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
+	sessionBlobClient := sessionContClient.NewBlobClient(blobName)
+
+	// Create temp file for download
+	tmpFile, err := os.CreateTemp("", "session-download-test-*")
+	_require.NoError(err)
+	defer func() {
+		_ = tmpFile.Close()
+		_ = os.Remove(tmpFile.Name())
+	}()
+
+	// Download to file with small block size to trigger multiple chunks
+	downloaded, err := sessionBlobClient.DownloadFile(context.Background(), tmpFile, &blob.DownloadFileOptions{
+		BlockSize:   4 * 1024 * 1024, // 4 MB blocks
+		Concurrency: 2,
+	})
+	_require.NoError(err)
+	_require.Equal(int64(fileSize), downloaded)
+
+	// Verify file content
+	_, err = tmpFile.Seek(0, 0)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(tmpFile)
+	_require.NoError(err)
+	_require.Equal(uploadData, downloadedData)
+
+	// Verify session was used
+	sessionTracker.mu.Lock()
+	createSessionCount := sessionTracker.createSessionCount
+	sessionAuthCount := sessionTracker.sessionAuthCount
+	sessionTracker.mu.Unlock()
+
+	_require.Equal(1, createSessionCount, "Expected exactly one CreateSession call")
+	_require.Greater(sessionAuthCount, 0, "Expected at least one request with session authentication")
+}
+
+func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpiration() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	// Create service client with SharedKeyCredential for setup
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	_require.NoError(err)
+
+	// Create container
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := svcClient.NewContainerClient(containerName)
+	//containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create blob
+	blobName := testcommon.GenerateBlobName(testName)
+	uploadData := []byte("test data for session expiration test")
+
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(uploadData)), nil)
+	_require.NoError(err)
+
+	// Enable azcore logging
+	log.SetEvents(log.EventRequest, log.EventResponse)
+	log.SetListener(func(event log.Event, msg string) {
+		s.T().Logf("[%s] %s", event, msg)
+	})
+	defer log.SetListener(nil)
+
+	// Create a policy to track session requests
+	sessionTracker := &sessionRequestTracker{}
+
+	// Create service client with TokenCredential and SessionOptions
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			PerRetryPolicies: []policy.Policy{sessionTracker},
+		},
+		SessionOptions: service.SessionOptions{
+			Mode:          service.SessionModeSingleContainer,
+			AccountName:   accountName,
+			ContainerName: containerName,
+		},
+	})
+	_require.NoError(err)
+
+	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
+	sessionBlobClient := sessionContClient.NewBlobClient(blobName)
+
+	// Issue reads every 30 seconds for 6 minutes (13 reads total: 0s, 30s, 60s, ... 360s)
+	const readInterval = 30 * time.Second
+	const totalDuration = 6 * time.Minute
+	numReads := int(totalDuration/readInterval) + 1
+
+	s.T().Logf("Starting session expiration test: %d reads over %v", numReads, totalDuration)
+
+	for i := 0; i < numReads; i++ {
+		if i > 0 {
+			s.T().Logf("Waiting %v before read %d...", readInterval, i+1)
+			time.Sleep(readInterval)
+		}
+
+		s.T().Logf("Issuing read %d/%d at %v", i+1, numReads, time.Now().Format(time.RFC3339))
+
+		resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
+		_require.NoError(err)
+
+		downloadedData, err := io.ReadAll(resp.Body)
+		_require.NoError(err)
+		err = resp.Body.Close()
+		_require.NoError(err)
+
+		_require.Equal(uploadData, downloadedData)
+
+		// Log current session counts
+		sessionTracker.mu.Lock()
+		currentCreateCount := sessionTracker.createSessionCount
+		currentAuthCount := sessionTracker.sessionAuthCount
+		sessionTracker.mu.Unlock()
+		s.T().Logf("After read %d: CreateSession calls=%d, Session auth requests=%d", i+1, currentCreateCount, currentAuthCount)
+	}
+
+	// Verify session was created at least twice (initial + after expiration)
+	sessionTracker.mu.Lock()
+	createSessionCount := sessionTracker.createSessionCount
+	sessionAuthCount := sessionTracker.sessionAuthCount
+	sessionTracker.mu.Unlock()
+
+	s.T().Logf("Final counts: CreateSession calls=%d, Session auth requests=%d", createSessionCount, sessionAuthCount)
+
+	_require.GreaterOrEqual(createSessionCount, 2, "Expected at least 2 CreateSession calls due to session expiration (sessions expire after ~5 minutes)")
+	_require.Equal(numReads, sessionAuthCount, "Expected all reads to use session authentication")
+}
+
+// sessionRequestTracker is a pipeline policy that tracks session-related requests
+type sessionRequestTracker struct {
+	mu                 sync.Mutex
+	createSessionCount int
+	sessionAuthCount   int
+}
+
+func (p *sessionRequestTracker) Do(req *policy.Request) (*http.Response, error) {
+	p.mu.Lock()
+
+	// Check if this is a CreateSession request (POST with comp=session)
+	if req.Raw().Method == http.MethodPost && req.Raw().URL.Query().Get("comp") == "session" {
+		p.createSessionCount++
+	}
+
+	// Check if this request uses session authentication (Authorization header starts with "Session ")
+	authHeader := req.Raw().Header.Get("Authorization")
+	if strings.HasPrefix(authHeader, "Session ") {
+		p.sessionAuthCount++
+	}
+
+	p.mu.Unlock()
+
+	return req.Next()
 }

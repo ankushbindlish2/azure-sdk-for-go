@@ -22,8 +22,6 @@ const sessionExpiring = "session_expiring"
 const sessionRevoking = "session_revoking"
 const sessionUnavailable = "SessionOperationsTemporarilyUnavailable"
 
-type sessionCredentials = generated.SessionCredentials
-
 type sessionPolicy struct {
 	bearerTokenPolicy policy.Policy
 	opts              SessionOptions
@@ -131,13 +129,8 @@ func (p *sessionPolicy) retryWithNewSession(req *policy.Request, containerName s
 }
 
 func (p *sessionPolicy) applySessionReq(req *policy.Request, sessionCreds sessionCredentials) (*http.Response, error) {
-	var key, token string
-	if sessionCreds.SessionKey != nil {
-		key = *sessionCreds.SessionKey
-	}
-	if sessionCreds.SessionToken != nil {
-		token = *sessionCreds.SessionToken
-	}
+	key := sessionCreds.key
+	token := sessionCreds.token
 	cred, err := NewSharedKeyCredential(p.opts.AccountName, key)
 	if err != nil {
 		return nil, err

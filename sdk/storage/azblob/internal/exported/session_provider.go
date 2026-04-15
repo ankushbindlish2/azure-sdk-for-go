@@ -27,13 +27,19 @@ type sessionProvider interface {
 // and the caller should fall back to bearer token authentication.
 var errFallbackToBearer = errors.New("container does not support sessions, fallback to bearer token")
 
+type sessionCredentials struct {
+	token  string
+	key    string
+	expiry time.Time
+}
+
 type sessionState struct {
 	client *generated.ContainerClient
 	ctx    context.Context
 }
 
 // acquireSession is the function called by temporal.Resource to create a new session.
-func acquireSession(state sessionState) (creds generated.SessionCredentials, expiry time.Time, err error) {
+func acquireSession(state sessionState) (creds sessionCredentials, expiry time.Time, err error) {
 	resp, err := state.client.CreateSession(state.ctx, generated.CreateSessionConfiguration{AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC)}, nil)
 	// Fall back to using bearer token if session is unable to be created
 	if err != nil {
@@ -55,11 +61,26 @@ func acquireSession(state sessionState) (creds generated.SessionCredentials, exp
 	if resp.Expiration != nil {
 		expiry = *resp.Expiration
 	}
+	var token, key string
 	if resp.Credentials != nil {
-		creds = *resp.Credentials
+		if resp.Credentials.SessionToken != nil {
+			token = *resp.Credentials.SessionToken
+		}
+		if resp.Credentials.SessionKey != nil {
+			key = *resp.Credentials.SessionKey
+		}
 	}
 
-	return creds, expiry, err
+	return sessionCredentials{
+		token:  token,
+		key:    key,
+		expiry: expiry,
+	}, expiry, err
+}
+
+func shouldRefreshSession(resource sessionCredentials, _ sessionState) bool {
+	// call time.Now() instead of using Get's value so ShouldRefresh doesn't need a time.Time parameter
+	return resource.expiry.Add(-30 * time.Second).Before(time.Now())
 }
 
 // singleContainerProvider caches a session for a single container using a temporal resource.
@@ -75,10 +96,14 @@ func newSingleContainerProvider(client *generated.ServiceClient, containerName s
 	containerURL := runtime.JoinPaths(client.Endpoint(), containerName)
 	cc := generated.NewContainerClient(containerURL, client.InternalClient())
 
+	resource := temporal.NewResourceWithOptions(acquireSession, temporal.ResourceOptions[sessionCredentials, sessionState]{
+		ShouldRefresh: shouldRefreshSession,
+	})
+
 	return &singleContainerProvider{
 		client:        cc,
 		containerName: containerName,
-		resource:      temporal.NewResource(acquireSession),
+		resource:      resource,
 	}
 }
 
