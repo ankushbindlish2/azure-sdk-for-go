@@ -9,7 +9,7 @@
 
 - New value `EventTypeValuesBilling` added to enum type `EventTypeValues`
 - New enum type `EventSubTypeValues` with values `EventSubTypeValuesForeignExchangeRateChange`, `EventSubTypeValuesMeterIDChanges`, `EventSubTypeValuesOverbilling`, `EventSubTypeValuesPriceChanges`, `EventSubTypeValuesRetirement`, `EventSubTypeValuesTaxChanges`, `EventSubTypeValuesUnauthorizedPartyAbuse`, `EventSubTypeValuesUnderbilling`
-- New function `*EventClient.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error)`
+- New function `*EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error)`
 - New field `BillingID`, `CurrencyType`, `EventSubType`, `EventTags`, `IsEventSensitive`, `NewRate`, `OldRate` in struct `EventProperties`
 - New field `ImpactedServiceGUID` in struct `Impact`
 - New field `PreviousID`, `Priority`, `ServiceGUID` in struct `MetadataSupportedValueDetail`

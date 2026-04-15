@@ -83,9 +83,9 @@ type EmergingIssuesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the
-// EventClient.FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID method.
-type EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions struct {
+// EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions contains the optional parameters for the
+// EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID method.
+type EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions struct {
 	// placeholder for future optional parameters
 }
 

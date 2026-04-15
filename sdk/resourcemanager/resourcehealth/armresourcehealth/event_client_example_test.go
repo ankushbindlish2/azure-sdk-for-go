@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2025-05-01/Event_fetchBillingCommunicationDetailsBySubscriptionIdAndTrackingId.json
-func ExampleEventClient_FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID() {
+func ExampleEventClient_FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,14 +23,14 @@ func ExampleEventClient_FetchBillingCommunicationDetailsBySubscriptionIDAndTrack
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEventClient().FetchBillingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx, "eventTrackingId", nil)
+	res, err := clientFactory.NewEventClient().FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx, "eventTrackingId", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresourcehealth.EventClientFetchBillingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{
+	// res = armresourcehealth.EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{
 	// 	Event: &armresourcehealth.Event{
 	// 		Name: to.Ptr("{eventTrackingId}"),
 	// 		Type: to.Ptr("/providers/Microsoft.ResourceHealth/events"),
