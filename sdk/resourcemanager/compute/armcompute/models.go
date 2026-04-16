@@ -3819,29 +3819,6 @@ type OSProfileProvisioningData struct {
 	CustomData *string
 }
 
-// Operation - REST API Operation
-//
-// Details of a REST API operation, returned from the Resource Provider Operations API
-type Operation struct {
-	// Localized display information for this particular operation.
-	Display *OperationDisplay
-
-	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType
-
-	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
-	// Resource Manager/control-plane operations.
-	IsDataAction *bool
-
-	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
-	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string
-
-	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-	// value is "user,system"
-	Origin *Origin
-}
-
 // OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
@@ -3864,10 +3841,33 @@ type OperationDisplay struct {
 // get the next set of results.
 type OperationListResult struct {
 	// REQUIRED; The Operation items on this page
-	Value []*Operation
+	Value []*OperationValue
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// OperationValue - REST API Operation
+//
+// Details of a REST API operation, returned from the Resource Provider Operations API
+type OperationValue struct {
+	// Localized display information for this particular operation.
+	Display *OperationDisplay
+
+	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
+	// Resource Manager/control-plane operations.
+	IsDataAction *bool
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
+	Name *string
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
 // OrchestrationServiceStateInput - The input for OrchestrationServiceState
