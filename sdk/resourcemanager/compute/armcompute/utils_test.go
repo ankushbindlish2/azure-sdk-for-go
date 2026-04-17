@@ -26,7 +26,7 @@ func run(m *testing.M) int {
 	return m.Run()
 }
 
-func startRecording(t *testing.T) func() {
+func startRecording(t *testing.T) {
 	testutil.StartRecording(t, pathToPackage)
 	err := recording.SetDefaultMatcher(t, &recording.SetDefaultMatcherOptions{
 		IgnoredQueryParameters: []string{"api-version"},
@@ -35,5 +35,4 @@ func startRecording(t *testing.T) func() {
 	if err != nil {
 		t.Fatalf("Failed to set default matcher: %v", err)
 	}
-	return func() { testutil.StopRecording(t) }
 }
