@@ -1,0 +1,19 @@
+{
+  "apiVersions": {
+    "Microsoft.DataCollection": "2024-03-11",
+    "Microsoft.PrivateLinkScopes": "2023-06-01-preview",
+    "Microsoft.AutoScale": "2022-10-01",
+    "Microsoft.ActivityLogs": "2015-04-01",
+    "Microsoft.Metrics": "2024-02-01",
+    "Microsoft.ServiceDiagnosticsSettings": "2016-09-01",
+    "Microsoft.AlertRulesIncidents": "2016-03-01",
+    "Microsoft.LogProfiles": "2016-03-01",
+    "Microsoft.ActivityLogAlerts": "2023-01-01-preview",
+    "Microsoft.MetricAlert": "2024-03-01-preview",
+    "Microsoft.ScheduledQueryRule": "2025-01-01-preview",
+    "Microsoft.MetricBaselines": "2019-03-01",
+    "Microsoft.ActionGroups": "2024-10-01-preview",
+    "Microsoft.NetworkSecurityPerimeter": "2021-10-01"
+  },
+  "emitterVersion": "0.10.6"
+}
