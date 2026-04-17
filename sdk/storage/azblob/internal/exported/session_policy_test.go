@@ -9,9 +9,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
-	"sync"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -305,81 +303,6 @@ func TestCanUseSession(t *testing.T) {
 	}
 }
 
-// TestHandleSessionRefresh_TriggersRefresh tests that session refresh is triggered when session_expiring or session_revoking header is present.
-func TestHandleSessionRefresh_TriggersRefresh(t *testing.T) {
-	tests := []struct {
-		name        string
-		headerValue string
-	}{
-		{"SessionExpiring", "session_expiring"},
-		{"SessionRevoking", "session_revoking"},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			var wg sync.WaitGroup
-			wg.Add(1)
-
-			mockProvider := &mockSessionProvider{
-				getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
-					wg.Done()
-					return sessionCredentials{}, nil
-				},
-			}
-
-			pol := &sessionPolicy{
-				opts:     SessionOptions{AccountName: "testaccount"},
-				provider: mockProvider,
-			}
-
-			resp := &http.Response{
-				StatusCode: http.StatusOK,
-				Header:     make(http.Header),
-			}
-			// Use direct map assignment to set header with exact key (getHeader uses direct map access)
-			resp.Header[shared.HeaderXmsAuthInfo] = []string{tt.headerValue}
-
-			pol.handleSessionRefresh(resp, "testcontainer")
-
-			// Wait for refresh goroutine to complete
-			done := make(chan struct{})
-			go func() {
-				wg.Wait()
-				close(done)
-			}()
-
-			select {
-			case <-done:
-				// Success - refresh was triggered
-			case <-time.After(5 * time.Second):
-				t.Fatal("expected refresh to be triggered")
-			}
-		})
-	}
-}
-
-// TestHandleSessionRefresh_NoRefresh tests that no refresh is triggered for normal responses.
-func TestHandleSessionRefresh_NoRefresh(t *testing.T) {
-	mockProvider := &mockSessionProvider{}
-
-	pol := &sessionPolicy{
-		opts:     SessionOptions{AccountName: "testaccount"},
-		provider: mockProvider,
-	}
-
-	resp := &http.Response{
-		StatusCode: http.StatusOK,
-		Header:     make(http.Header),
-	}
-
-	pol.handleSessionRefresh(resp, "testcontainer")
-
-	// Give some time for any potential goroutine to start
-	time.Sleep(100 * time.Millisecond)
-
-	require.Equal(t, 0, mockProvider.getCalls)
-}
-
 // TestHandleSessionError_NonResponseError tests that non-ResponseError errors are passed through.
 func TestHandleSessionError_NonResponseError(t *testing.T) {
 	pol := &sessionPolicy{
@@ -522,8 +445,8 @@ func TestApplySessionReq_SetsAuthorizationHeader(t *testing.T) {
 	}
 
 	creds := sessionCredentials{
-		SessionKey:   &sessionKey,
-		SessionToken: &sessionToken,
+		key:   sessionKey,
+		token: sessionToken,
 	}
 
 	// Create a pipeline with our policy that will call applySessionReq
@@ -575,7 +498,8 @@ func (r *recordingTransport) Do(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
-// TestHandleSessionError_Unauthorized_TriggersRetry tests that 401 triggers retry with new session.
+// TestHandleSessionError_Unauthorized_TriggersRetry tests that 401 with a matching
+// WWW-Authenticate header triggers retry with a new session.
 func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
 	sessionKey := "dGVzdC1rZXk=" // base64 encoded "test-key"
 	sessionToken := "new-token"
@@ -586,8 +510,8 @@ func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
 		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
 			callCount++
 			return sessionCredentials{
-				SessionKey:   &sessionKey,
-				SessionToken: &sessionToken,
+				key:   sessionKey,
+				token: sessionToken,
 			}, nil
 		},
 		expireFn: func(containerName string) {
@@ -629,8 +553,16 @@ func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
 		StatusCode: http.StatusUnauthorized,
 		ErrorCode:  "AuthenticationFailed",
 	}
+	unauthorizedResp := &http.Response{
+		StatusCode: http.StatusUnauthorized,
+		Header:     make(http.Header),
+	}
+	// handleSessionError now requires a WWW-Authenticate header instructing the client
+	// to create a new session in order to trigger retryWithNewSession.
+	unauthorizedResp.Header.Set("WWW-Authenticate", `Bearer error="invalid_token", error_description="Please create a new session"`)
+
 	testPolicy.originalErr = originalErr
-	testPolicy.originalResp = &http.Response{StatusCode: http.StatusUnauthorized}
+	testPolicy.originalResp = unauthorizedResp
 
 	resp, err := pl.Do(req)
 	require.NoError(t, err)
@@ -638,6 +570,62 @@ func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, expireCalled)
 	require.Equal(t, 1, callCount)
+}
+
+// TestHandleSessionError_Unauthorized_NoChallenge tests that a 401 response without
+// the "Please create a new session" WWW-Authenticate challenge is passed through unchanged.
+func TestHandleSessionError_Unauthorized_NoChallenge(t *testing.T) {
+	expireCalled := false
+	mockProvider := &mockSessionProvider{
+		expireFn: func(containerName string) {
+			expireCalled = true
+		},
+	}
+
+	pol := &sessionPolicy{
+		opts:     SessionOptions{AccountName: "testaccount"},
+		provider: mockProvider,
+	}
+
+	originalErr := &azcore.ResponseError{
+		StatusCode: http.StatusUnauthorized,
+		ErrorCode:  "AuthenticationFailed",
+	}
+
+	tests := []struct {
+		name             string
+		wwwAuthenticate  string
+		setWWWAuthHeader bool
+	}{
+		{
+			name:             "NoWWWAuthenticateHeader",
+			setWWWAuthHeader: false,
+		},
+		{
+			name:             "WWWAuthenticateWithoutCreateSessionHint",
+			wwwAuthenticate:  `Bearer error="invalid_token"`,
+			setWWWAuthHeader: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			resp := &http.Response{
+				StatusCode: http.StatusUnauthorized,
+				Header:     make(http.Header),
+			}
+			if tt.setWWWAuthHeader {
+				resp.Header.Set("WWW-Authenticate", tt.wwwAuthenticate)
+			}
+
+			retResp, retErr := pol.handleSessionError(nil, resp, originalErr, "testcontainer")
+			require.Equal(t, resp, retResp)
+			require.Equal(t, originalErr, retErr)
+			require.False(t, expireCalled)
+			require.Equal(t, 0, mockProvider.getCalls)
+			require.Equal(t, 0, mockProvider.expireCalls)
+		})
+	}
 }
 
 // testRetryPolicy is a helper policy for testing handleSessionError with 401.
@@ -661,8 +649,8 @@ func TestIntegration_SessionPolicy_SuccessfulRequest(t *testing.T) {
 		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
 			require.Equal(t, "testcontainer", containerName)
 			return sessionCredentials{
-				SessionKey:   &sessionKey,
-				SessionToken: &sessionToken,
+				key:   sessionKey,
+				token: sessionToken,
 			}, nil
 		},
 	}
@@ -738,68 +726,6 @@ func TestIntegration_SessionPolicy_FallbackToBearer(t *testing.T) {
 	require.Equal(t, 1, bearerPolicy.doCalls)
 }
 
-// TestHandleSessionRefresh_ConcurrentRefresh tests that only one goroutine refreshes at a time.
-func TestHandleSessionRefresh_ConcurrentRefresh(t *testing.T) {
-	var mu sync.Mutex
-	refreshCount := 0
-	refreshStarted := make(chan struct{})
-	refreshComplete := make(chan struct{})
-
-	mockProvider := &mockSessionProvider{
-		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
-			mu.Lock()
-			refreshCount++
-			mu.Unlock()
-			// Signal that refresh has started, but only once
-			select {
-			case refreshStarted <- struct{}{}:
-			default:
-			}
-			<-refreshComplete
-			return sessionCredentials{}, nil
-		},
-	}
-
-	pol := &sessionPolicy{
-		opts:     SessionOptions{AccountName: "testaccount"},
-		provider: mockProvider,
-	}
-
-	resp := &http.Response{
-		StatusCode: http.StatusOK,
-		Header:     make(http.Header),
-	}
-	// Use direct map assignment to set header with exact key (getHeader uses direct map access)
-	resp.Header[shared.HeaderXmsAuthInfo] = []string{"session_expiring"}
-
-	// Trigger first refresh
-	pol.handleSessionRefresh(resp, "testcontainer")
-
-	// Wait for first refresh to start with timeout
-	select {
-	case <-refreshStarted:
-		// First refresh has started
-	case <-time.After(5 * time.Second):
-		t.Fatal("first refresh did not start")
-	}
-
-	// Try to trigger another refresh while first is in progress (should be skipped due to TryLock)
-	pol.handleSessionRefresh(resp, "testcontainer")
-	pol.handleSessionRefresh(resp, "testcontainer")
-
-	// Allow first refresh to complete
-	close(refreshComplete)
-
-	// Give time for mutex to be released and any potential extra goroutines to execute
-	time.Sleep(100 * time.Millisecond)
-
-	// Only one refresh should have occurred because TryLock prevents concurrent refreshes
-	mu.Lock()
-	count := refreshCount
-	mu.Unlock()
-	require.Equal(t, 1, count)
-}
-
 // TestDoWithSession_ProviderError tests doWithSession when provider returns an error.
 func TestDoWithSession_ProviderError(t *testing.T) {
 	expectedErr := errors.New("provider error")
@@ -829,8 +755,8 @@ func TestDoWithSession_Success(t *testing.T) {
 	mockProvider := &mockSessionProvider{
 		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
 			return sessionCredentials{
-				SessionKey:   &sessionKey,
-				SessionToken: &sessionToken,
+				key:   sessionKey,
+				token: sessionToken,
 			}, nil
 		},
 	}
@@ -888,8 +814,7 @@ func TestApplySessionReq_NilSessionKey(t *testing.T) {
 	req := createTestPolicyRequest(t, http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
 
 	creds := sessionCredentials{
-		SessionKey:   nil,
-		SessionToken: &sessionToken,
+		token: sessionToken,
 	}
 
 	// Should fail because session key is empty (invalid base64)
@@ -910,8 +835,7 @@ func TestApplySessionReq_NilSessionToken(t *testing.T) {
 	}
 
 	creds := sessionCredentials{
-		SessionKey:   &sessionKey,
-		SessionToken: nil,
+		key: sessionKey,
 	}
 
 	// Create a pipeline with our policy that will call applySessionReq

@@ -4,12 +4,10 @@
 package exported
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"net/http"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -18,15 +16,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
-const sessionExpiring = "session_expiring"
-const sessionRevoking = "session_revoking"
 const sessionUnavailable = "SessionOperationsTemporarilyUnavailable"
 
 type sessionPolicy struct {
 	bearerTokenPolicy policy.Policy
 	opts              SessionOptions
 	provider          sessionProvider
-	refreshMu         sync.Mutex
 }
 
 func NewSessionPolicy(opts SessionOptions, bearerTokenPolicy policy.Policy, oauthServiceClient *generated.ServiceClient) (policy.Policy, error) {
@@ -72,27 +67,10 @@ func (p *sessionPolicy) doWithSession(req *policy.Request, containerName string)
 
 	resp, err := p.applySessionReq(req, sessionCreds)
 	if err == nil {
-		p.handleSessionRefresh(resp, containerName)
 		return resp, nil
 	}
 
 	return p.handleSessionError(req, resp, err, containerName)
-}
-
-func (p *sessionPolicy) handleSessionRefresh(resp *http.Response, containerName string) {
-	authInfo := getHeader(shared.HeaderXmsAuthInfo, resp.Header)
-	if strings.Contains(authInfo, sessionExpiring) || strings.Contains(authInfo, sessionRevoking) {
-		// Use TryLock to ensure only one goroutine attempts refresh at a time
-		if !p.refreshMu.TryLock() {
-			return
-		}
-		go func() {
-			defer p.refreshMu.Unlock()
-			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-			defer cancel()
-			_, _ = p.provider.GetSessionCredentials(ctx, containerName)
-		}()
-	}
 }
 
 func (p *sessionPolicy) handleSessionError(req *policy.Request, resp *http.Response, err error, containerName string) (*http.Response, error) {
@@ -110,7 +88,9 @@ func (p *sessionPolicy) handleSessionError(req *policy.Request, resp *http.Respo
 	}
 
 	if resp.StatusCode == http.StatusUnauthorized {
-		return p.retryWithNewSession(req, containerName)
+		if wwwAuthenticate := resp.Header.Get("WWW-Authenticate"); wwwAuthenticate != "" && strings.Contains(wwwAuthenticate, "Please create a new session") {
+			return p.retryWithNewSession(req, containerName)
+		}
 	}
 
 	return resp, err

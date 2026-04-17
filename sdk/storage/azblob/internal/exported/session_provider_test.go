@@ -67,8 +67,8 @@ func TestAcquireSession_Success(t *testing.T) {
 
 	creds, exp, err := acquireSession(state)
 	require.NoError(t, err)
-	require.Equal(t, "test-key", *creds.SessionKey)
-	require.Equal(t, "test-token", *creds.SessionToken)
+	require.Equal(t, "test-key", creds.key)
+	require.Equal(t, "test-token", creds.token)
 	require.Equal(t, expiration.Format(time.RFC1123), exp.Format(time.RFC1123))
 }
 
@@ -199,8 +199,8 @@ func TestSingleContainerProvider_GetSessionCredentials_MatchingContainer(t *test
 
 	creds, err := provider.GetSessionCredentials(context.Background(), "mycontainer")
 	require.NoError(t, err)
-	require.Equal(t, "test-key", *creds.SessionKey)
-	require.Equal(t, "test-token", *creds.SessionToken)
+	require.Equal(t, "test-key", creds.key)
+	require.Equal(t, "test-token", creds.token)
 }
 
 func TestSingleContainerProvider_GetSessionCredentials_MismatchedContainer(t *testing.T) {
@@ -247,7 +247,7 @@ func TestSingleContainerProvider_ExpireSessionCredentials_MatchingContainer(t *t
 	// Get initial session
 	creds1, err := provider.GetSessionCredentials(context.Background(), "mycontainer")
 	require.NoError(t, err)
-	require.Equal(t, "first-key", *creds1.SessionKey)
+	require.Equal(t, "first-key", creds1.key)
 
 	// Expire the session
 	provider.ExpireSessionCredentials("mycontainer")
@@ -255,7 +255,7 @@ func TestSingleContainerProvider_ExpireSessionCredentials_MatchingContainer(t *t
 	// Get a new session after expiry
 	creds2, err := provider.GetSessionCredentials(context.Background(), "mycontainer")
 	require.NoError(t, err)
-	require.Equal(t, "second-key", *creds2.SessionKey)
+	require.Equal(t, "second-key", creds2.key)
 
 	// Verify two requests were made
 	require.Equal(t, 2, srv.Requests())
@@ -282,7 +282,7 @@ func TestSingleContainerProvider_ExpireSessionCredentials_MismatchedContainer(t 
 	// Get initial session
 	creds1, err := provider.GetSessionCredentials(context.Background(), "mycontainer")
 	require.NoError(t, err)
-	require.Equal(t, "test-key", *creds1.SessionKey)
+	require.Equal(t, "test-key", creds1.key)
 
 	// Attempt to expire with a different container name - should have no effect
 	provider.ExpireSessionCredentials("othercontainer")
@@ -290,7 +290,7 @@ func TestSingleContainerProvider_ExpireSessionCredentials_MismatchedContainer(t 
 	// Get session again - should return cached value, not make a new request
 	creds2, err := provider.GetSessionCredentials(context.Background(), "mycontainer")
 	require.NoError(t, err)
-	require.Equal(t, "test-key", *creds2.SessionKey)
+	require.Equal(t, "test-key", creds2.key)
 
 	// Verify only one request was made (session was not expired)
 	require.Equal(t, 1, srv.Requests())
@@ -317,7 +317,7 @@ func TestSingleContainerProvider_SessionCaching(t *testing.T) {
 	for i := 0; i < 5; i++ {
 		creds, err := provider.GetSessionCredentials(context.Background(), "mycontainer")
 		require.NoError(t, err)
-		require.Equal(t, "test-key", *creds.SessionKey)
+		require.Equal(t, "test-key", creds.key)
 	}
 
 	// Only one request should have been made (session is cached)
