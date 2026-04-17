@@ -30,7 +30,7 @@ type DiskAccessTestSuite struct {
 }
 
 func (testsuite *DiskAccessTestSuite) SetupSuite() {
-	startRecording(testsuite.T())
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())

@@ -36,7 +36,7 @@ type VirtualMachineTestSuite struct {
 }
 
 func (testsuite *VirtualMachineTestSuite) SetupSuite() {
-	startRecording(testsuite.T())
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())

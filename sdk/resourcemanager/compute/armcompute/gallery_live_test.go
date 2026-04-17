@@ -32,7 +32,7 @@ type GalleryTestSuite struct {
 }
 
 func (testsuite *GalleryTestSuite) SetupSuite() {
-	startRecording(testsuite.T())
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())

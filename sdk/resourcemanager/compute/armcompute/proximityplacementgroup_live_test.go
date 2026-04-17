@@ -30,7 +30,7 @@ type ProximityPlacementGroupTestSuite struct {
 }
 
 func (testsuite *ProximityPlacementGroupTestSuite) SetupSuite() {
-	startRecording(testsuite.T())
+	testutil.StartRecording(testsuite.T(), pathToPackage)
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
