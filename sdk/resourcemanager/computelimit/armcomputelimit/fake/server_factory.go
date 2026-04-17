@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armcomputelimit.ClientFactory type.
 type ServerFactory struct {
+	// FeaturesServer contains the fakes for client FeaturesClient
+	FeaturesServer FeaturesServer
+
 	// GuestSubscriptionsServer contains the fakes for client GuestSubscriptionsClient
 	GuestSubscriptionsServer GuestSubscriptionsServer
 
@@ -39,6 +42,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                        *ServerFactory
 	trMu                       sync.Mutex
+	trFeaturesServer           *FeaturesServerTransport
 	trGuestSubscriptionsServer *GuestSubscriptionsServerTransport
 	trOperationsServer         *OperationsServerTransport
 	trSharedLimitsServer       *SharedLimitsServerTransport
@@ -57,6 +61,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "FeaturesClient":
+		initServer(&s.trMu, &s.trFeaturesServer, func() *FeaturesServerTransport { return NewFeaturesServerTransport(&s.srv.FeaturesServer) })
+		resp, err = s.trFeaturesServer.Do(req)
 	case "GuestSubscriptionsClient":
 		initServer(&s.trMu, &s.trGuestSubscriptionsServer, func() *GuestSubscriptionsServerTransport {
 			return NewGuestSubscriptionsServerTransport(&s.srv.GuestSubscriptionsServer)
