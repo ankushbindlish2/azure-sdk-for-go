@@ -9,7 +9,7 @@ package armmonitor
 // Call the interface's GetMetricAlertCriteria() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *MetricAlertCriteria, *MetricAlertMultipleResourceMultipleMetricCriteria, *MetricAlertSingleResourceMultipleMetricCriteria,
-// - *WebtestLocationAvailabilityCriteria
+// - *PromQLCriteria, *WebtestLocationAvailabilityCriteria
 type MetricAlertCriteriaClassification interface {
 	// GetMetricAlertCriteria returns the MetricAlertCriteria content of the underlying type.
 	GetMetricAlertCriteria() *MetricAlertCriteria
@@ -24,29 +24,11 @@ type MultiMetricCriteriaClassification interface {
 	GetMultiMetricCriteria() *MultiMetricCriteria
 }
 
-// RuleActionClassification provides polymorphic access to related types.
-// Call the interface's GetRuleAction() method to access the common type.
+// MultiPromQLCriteriaClassification provides polymorphic access to related types.
+// Call the interface's GetMultiPromQLCriteria() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *RuleAction, *RuleEmailAction, *RuleWebhookAction
-type RuleActionClassification interface {
-	// GetRuleAction returns the RuleAction content of the underlying type.
-	GetRuleAction() *RuleAction
-}
-
-// RuleConditionClassification provides polymorphic access to related types.
-// Call the interface's GetRuleCondition() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *LocationThresholdRuleCondition, *ManagementEventRuleCondition, *RuleCondition, *ThresholdRuleCondition
-type RuleConditionClassification interface {
-	// GetRuleCondition returns the RuleCondition content of the underlying type.
-	GetRuleCondition() *RuleCondition
-}
-
-// RuleDataSourceClassification provides polymorphic access to related types.
-// Call the interface's GetRuleDataSource() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *RuleDataSource, *RuleManagementEventDataSource, *RuleMetricDataSource
-type RuleDataSourceClassification interface {
-	// GetRuleDataSource returns the RuleDataSource content of the underlying type.
-	GetRuleDataSource() *RuleDataSource
+// - *DynamicPromQLCriteria, *MultiPromQLCriteria, *StaticPromQLCriteria
+type MultiPromQLCriteriaClassification interface {
+	// GetMultiPromQLCriteria returns the MultiPromQLCriteria content of the underlying type.
+	GetMultiPromQLCriteria() *MultiPromQLCriteria
 }

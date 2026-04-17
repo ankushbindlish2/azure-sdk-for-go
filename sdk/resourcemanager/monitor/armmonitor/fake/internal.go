@@ -12,6 +12,11 @@ import (
 	"sync"
 )
 
+type result struct {
+	resp *http.Response
+	err  error
+}
+
 type nonRetriableError struct {
 	error
 }
@@ -27,14 +32,6 @@ func contains[T comparable](s []T, v T) bool {
 		}
 	}
 	return false
-}
-
-func getHeaderValue(h http.Header, k string) string {
-	v := h[k]
-	if len(v) == 0 {
-		return ""
-	}
-	return v[0]
 }
 
 func getOptional[T any](v T) *T {

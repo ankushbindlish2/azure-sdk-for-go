@@ -27,6 +27,12 @@ type ActionGroupsClientEnableReceiverResponse struct {
 	// placeholder for future response values
 }
 
+// ActionGroupsClientGetNSPResponse contains the response from method ActionGroupsClient.GetNSP.
+type ActionGroupsClientGetNSPResponse struct {
+	// Network security perimeter (NSP) configuration resource
+	NetworkSecurityPerimeterConfiguration
+}
+
 // ActionGroupsClientGetResponse contains the response from method ActionGroupsClient.Get.
 type ActionGroupsClientGetResponse struct {
 	// An action group resource.
@@ -49,6 +55,17 @@ type ActionGroupsClientListByResourceGroupResponse struct {
 type ActionGroupsClientListBySubscriptionIDResponse struct {
 	// A list of action groups.
 	ActionGroupList
+}
+
+// ActionGroupsClientListNSPResponse contains the response from method ActionGroupsClient.NewListNSPPager.
+type ActionGroupsClientListNSPResponse struct {
+	// Result of a list NSP (network security perimeter) configurations request.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// ActionGroupsClientReconcileNSPResponse contains the response from method ActionGroupsClient.BeginReconcileNSP.
+type ActionGroupsClientReconcileNSPResponse struct {
+	// placeholder for future response values
 }
 
 // ActionGroupsClientUpdateResponse contains the response from method ActionGroupsClient.Update.
@@ -110,41 +127,6 @@ type AlertRuleIncidentsClientListByAlertRuleResponse struct {
 	IncidentListResult
 }
 
-// AlertRulesClientCreateOrUpdateResponse contains the response from method AlertRulesClient.CreateOrUpdate.
-type AlertRulesClientCreateOrUpdateResponse struct {
-	// The alert rule resource.
-	AlertRuleResource
-}
-
-// AlertRulesClientDeleteResponse contains the response from method AlertRulesClient.Delete.
-type AlertRulesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// AlertRulesClientGetResponse contains the response from method AlertRulesClient.Get.
-type AlertRulesClientGetResponse struct {
-	// The alert rule resource.
-	AlertRuleResource
-}
-
-// AlertRulesClientListByResourceGroupResponse contains the response from method AlertRulesClient.NewListByResourceGroupPager.
-type AlertRulesClientListByResourceGroupResponse struct {
-	// Represents a collection of alert rule resources.
-	AlertRuleResourceCollection
-}
-
-// AlertRulesClientListBySubscriptionResponse contains the response from method AlertRulesClient.NewListBySubscriptionPager.
-type AlertRulesClientListBySubscriptionResponse struct {
-	// Represents a collection of alert rule resources.
-	AlertRuleResourceCollection
-}
-
-// AlertRulesClientUpdateResponse contains the response from method AlertRulesClient.Update.
-type AlertRulesClientUpdateResponse struct {
-	// The alert rule resource.
-	AlertRuleResource
-}
-
 // AutoscaleSettingsClientCreateOrUpdateResponse contains the response from method AutoscaleSettingsClient.CreateOrUpdate.
 type AutoscaleSettingsClientCreateOrUpdateResponse struct {
 	// The autoscale setting resource.
@@ -180,41 +162,6 @@ type AutoscaleSettingsClientUpdateResponse struct {
 	AutoscaleSettingResource
 }
 
-// AzureMonitorWorkspacesClientCreateResponse contains the response from method AzureMonitorWorkspacesClient.Create.
-type AzureMonitorWorkspacesClientCreateResponse struct {
-	// An Azure Monitor Workspace definition
-	AzureMonitorWorkspaceResource
-}
-
-// AzureMonitorWorkspacesClientDeleteResponse contains the response from method AzureMonitorWorkspacesClient.Delete.
-type AzureMonitorWorkspacesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// AzureMonitorWorkspacesClientGetResponse contains the response from method AzureMonitorWorkspacesClient.Get.
-type AzureMonitorWorkspacesClientGetResponse struct {
-	// An Azure Monitor Workspace definition
-	AzureMonitorWorkspaceResource
-}
-
-// AzureMonitorWorkspacesClientListByResourceGroupResponse contains the response from method AzureMonitorWorkspacesClient.NewListByResourceGroupPager.
-type AzureMonitorWorkspacesClientListByResourceGroupResponse struct {
-	// A pageable list of resources
-	AzureMonitorWorkspaceResourceListResult
-}
-
-// AzureMonitorWorkspacesClientListBySubscriptionResponse contains the response from method AzureMonitorWorkspacesClient.NewListBySubscriptionPager.
-type AzureMonitorWorkspacesClientListBySubscriptionResponse struct {
-	// A pageable list of resources
-	AzureMonitorWorkspaceResourceListResult
-}
-
-// AzureMonitorWorkspacesClientUpdateResponse contains the response from method AzureMonitorWorkspacesClient.Update.
-type AzureMonitorWorkspacesClientUpdateResponse struct {
-	// An Azure Monitor Workspace definition
-	AzureMonitorWorkspaceResource
-}
-
 // BaselinesClientListResponse contains the response from method BaselinesClient.NewListPager.
 type BaselinesClientListResponse struct {
 	// A list of metric baselines.
@@ -230,6 +177,12 @@ type DataCollectionEndpointsClientCreateResponse struct {
 // DataCollectionEndpointsClientDeleteResponse contains the response from method DataCollectionEndpointsClient.Delete.
 type DataCollectionEndpointsClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// DataCollectionEndpointsClientGetNSPResponse contains the response from method DataCollectionEndpointsClient.GetNSP.
+type DataCollectionEndpointsClientGetNSPResponse struct {
+	// Network security perimeter (NSP) configuration resource
+	NetworkSecurityPerimeterConfiguration
 }
 
 // DataCollectionEndpointsClientGetResponse contains the response from method DataCollectionEndpointsClient.Get.
@@ -248,6 +201,17 @@ type DataCollectionEndpointsClientListByResourceGroupResponse struct {
 type DataCollectionEndpointsClientListBySubscriptionResponse struct {
 	// A pageable list of resources.
 	DataCollectionEndpointResourceListResult
+}
+
+// DataCollectionEndpointsClientListNSPResponse contains the response from method DataCollectionEndpointsClient.NewListNSPPager.
+type DataCollectionEndpointsClientListNSPResponse struct {
+	// Result of a list NSP (network security perimeter) configurations request.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// DataCollectionEndpointsClientReconcileNSPResponse contains the response from method DataCollectionEndpointsClient.BeginReconcileNSP.
+type DataCollectionEndpointsClientReconcileNSPResponse struct {
+	// placeholder for future response values
 }
 
 // DataCollectionEndpointsClientUpdateResponse contains the response from method DataCollectionEndpointsClient.Update.
@@ -326,48 +290,6 @@ type DataCollectionRulesClientUpdateResponse struct {
 	DataCollectionRuleResource
 }
 
-// DiagnosticSettingsCategoryClientGetResponse contains the response from method DiagnosticSettingsCategoryClient.Get.
-type DiagnosticSettingsCategoryClientGetResponse struct {
-	// The diagnostic settings category resource.
-	DiagnosticSettingsCategoryResource
-}
-
-// DiagnosticSettingsCategoryClientListResponse contains the response from method DiagnosticSettingsCategoryClient.NewListPager.
-type DiagnosticSettingsCategoryClientListResponse struct {
-	// Represents a collection of diagnostic setting category resources.
-	DiagnosticSettingsCategoryResourceCollection
-}
-
-// DiagnosticSettingsClientCreateOrUpdateResponse contains the response from method DiagnosticSettingsClient.CreateOrUpdate.
-type DiagnosticSettingsClientCreateOrUpdateResponse struct {
-	// The diagnostic setting resource.
-	DiagnosticSettingsResource
-}
-
-// DiagnosticSettingsClientDeleteResponse contains the response from method DiagnosticSettingsClient.Delete.
-type DiagnosticSettingsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DiagnosticSettingsClientGetResponse contains the response from method DiagnosticSettingsClient.Get.
-type DiagnosticSettingsClientGetResponse struct {
-	// The diagnostic setting resource.
-	DiagnosticSettingsResource
-}
-
-// DiagnosticSettingsClientListResponse contains the response from method DiagnosticSettingsClient.NewListPager.
-type DiagnosticSettingsClientListResponse struct {
-	// Represents a collection of alert rule resources.
-	DiagnosticSettingsResourceCollection
-}
-
-// EventCategoriesClientListResponse contains the response from method EventCategoriesClient.NewListPager.
-type EventCategoriesClientListResponse struct {
-	// A collection of event categories. Currently possible values are: Administrative, Security, ServiceHealth, Alert, Recommendation,
-	// Policy.
-	EventCategoryCollection
-}
-
 // LogProfilesClientCreateOrUpdateResponse contains the response from method LogProfilesClient.CreateOrUpdate.
 type LogProfilesClientCreateOrUpdateResponse struct {
 	// The log profile resource.
@@ -444,53 +366,22 @@ type MetricAlertsStatusClientListResponse struct {
 	MetricAlertStatusCollection
 }
 
-// MetricDefinitionsClientListAtSubscriptionScopeResponse contains the response from method MetricDefinitionsClient.NewListAtSubscriptionScopePager.
-type MetricDefinitionsClientListAtSubscriptionScopeResponse struct {
-	// Represents collection of metric definitions.
-	SubscriptionScopeMetricDefinitionCollection
-}
-
-// MetricDefinitionsClientListResponse contains the response from method MetricDefinitionsClient.NewListPager.
-type MetricDefinitionsClientListResponse struct {
-	// Represents collection of metric definitions.
-	MetricDefinitionCollection
-}
-
-// MetricNamespacesClientListResponse contains the response from method MetricNamespacesClient.NewListPager.
-type MetricNamespacesClientListResponse struct {
-	// Represents collection of metric namespaces.
-	MetricNamespaceCollection
-}
-
 // MetricsClientListAtSubscriptionScopePostResponse contains the response from method MetricsClient.ListAtSubscriptionScopePost.
 type MetricsClientListAtSubscriptionScopePostResponse struct {
-	// The response to a subscription scope metrics query.
-	SubscriptionScopeMetricResponse
+	// The response to a metrics query.
+	Response
 }
 
 // MetricsClientListAtSubscriptionScopeResponse contains the response from method MetricsClient.ListAtSubscriptionScope.
 type MetricsClientListAtSubscriptionScopeResponse struct {
-	// The response to a subscription scope metrics query.
-	SubscriptionScopeMetricResponse
+	// The response to a metrics query.
+	Response
 }
 
 // MetricsClientListResponse contains the response from method MetricsClient.List.
 type MetricsClientListResponse struct {
 	// The response to a metrics query.
 	Response
-}
-
-// OperationsClientListResponse contains the response from method OperationsClient.List.
-type OperationsClientListResponse struct {
-	// Result of the request to list Microsoft.Insights operations. It contains a list of operations and a URL link to get the
-	// next set of results.
-	OperationListResult
-}
-
-// OperationsForMonitorClientListResponse contains the response from method OperationsForMonitorClient.NewListPager.
-type OperationsForMonitorClientListResponse struct {
-	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
-	OperationListResultAutoGenerated
 }
 
 // PredictiveMetricClientGetResponse contains the response from method PredictiveMetricClient.Get.
@@ -598,6 +489,23 @@ type PrivateLinkScopesClientUpdateTagsResponse struct {
 	AzureMonitorPrivateLinkScope
 }
 
+// ScheduledQueryRuleClientGetNSPResponse contains the response from method ScheduledQueryRuleClient.GetNSP.
+type ScheduledQueryRuleClientGetNSPResponse struct {
+	// Network security perimeter (NSP) configuration resource
+	NetworkSecurityPerimeterConfiguration
+}
+
+// ScheduledQueryRuleClientListNSPResponse contains the response from method ScheduledQueryRuleClient.NewListNSPPager.
+type ScheduledQueryRuleClientListNSPResponse struct {
+	// Result of a list NSP (network security perimeter) configurations request.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// ScheduledQueryRuleClientReconcileNSPResponse contains the response from method ScheduledQueryRuleClient.BeginReconcileNSP.
+type ScheduledQueryRuleClientReconcileNSPResponse struct {
+	// placeholder for future response values
+}
+
 // ScheduledQueryRulesClientCreateOrUpdateResponse contains the response from method ScheduledQueryRulesClient.CreateOrUpdate.
 type ScheduledQueryRulesClientCreateOrUpdateResponse struct {
 	// The scheduled query rule resource.
@@ -633,43 +541,20 @@ type ScheduledQueryRulesClientUpdateResponse struct {
 	ScheduledQueryRuleResource
 }
 
-// TenantActionGroupsClientCreateOrUpdateResponse contains the response from method TenantActionGroupsClient.CreateOrUpdate.
-type TenantActionGroupsClientCreateOrUpdateResponse struct {
-	// A tenant action group resource.
-	TenantActionGroupResource
+// ServiceDiagnosticSettingsClientCreateOrUpdateResponse contains the response from method ServiceDiagnosticSettingsClient.CreateOrUpdate.
+type ServiceDiagnosticSettingsClientCreateOrUpdateResponse struct {
+	// Description of a service diagnostic setting
+	ServiceDiagnosticSettingsResource
 }
 
-// TenantActionGroupsClientDeleteResponse contains the response from method TenantActionGroupsClient.Delete.
-type TenantActionGroupsClientDeleteResponse struct {
-	// placeholder for future response values
+// ServiceDiagnosticSettingsClientGetResponse contains the response from method ServiceDiagnosticSettingsClient.Get.
+type ServiceDiagnosticSettingsClientGetResponse struct {
+	// Description of a service diagnostic setting
+	ServiceDiagnosticSettingsResource
 }
 
-// TenantActionGroupsClientGetResponse contains the response from method TenantActionGroupsClient.Get.
-type TenantActionGroupsClientGetResponse struct {
-	// A tenant action group resource.
-	TenantActionGroupResource
-}
-
-// TenantActionGroupsClientListByManagementGroupIDResponse contains the response from method TenantActionGroupsClient.NewListByManagementGroupIDPager.
-type TenantActionGroupsClientListByManagementGroupIDResponse struct {
-	// A list of tenant action groups.
-	TenantActionGroupList
-}
-
-// TenantActionGroupsClientUpdateResponse contains the response from method TenantActionGroupsClient.Update.
-type TenantActionGroupsClientUpdateResponse struct {
-	// A tenant action group resource.
-	TenantActionGroupResource
-}
-
-// TenantActivityLogsClientListResponse contains the response from method TenantActivityLogsClient.NewListPager.
-type TenantActivityLogsClientListResponse struct {
-	// Represents collection of events.
-	EventDataCollection
-}
-
-// VMInsightsClientGetOnboardingStatusResponse contains the response from method VMInsightsClient.GetOnboardingStatus.
-type VMInsightsClientGetOnboardingStatusResponse struct {
-	// VM Insights onboarding status for a resource.
-	VMInsightsOnboardingStatus
+// ServiceDiagnosticSettingsClientUpdateResponse contains the response from method ServiceDiagnosticSettingsClient.Update.
+type ServiceDiagnosticSettingsClientUpdateResponse struct {
+	// Description of a service diagnostic setting
+	ServiceDiagnosticSettingsResource
 }

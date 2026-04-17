@@ -27,7 +27,7 @@ type AlertRuleIncidentsClient struct {
 // NewAlertRuleIncidentsClient creates a new instance of AlertRuleIncidentsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertRuleIncidentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertRuleIncidentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -71,7 +71,7 @@ func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertRuleIncidentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsClientGetOptions) (*policy.Request, error) {
+func (client *AlertRuleIncidentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, _ *AlertRuleIncidentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}/incidents/{incidentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -141,7 +141,7 @@ func (client *AlertRuleIncidentsClient) NewListByAlertRulePager(resourceGroupNam
 }
 
 // listByAlertRuleCreateRequest creates the ListByAlertRule request.
-func (client *AlertRuleIncidentsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRuleIncidentsClientListByAlertRuleOptions) (*policy.Request, error) {
+func (client *AlertRuleIncidentsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, _ *AlertRuleIncidentsClientListByAlertRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}/incidents"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

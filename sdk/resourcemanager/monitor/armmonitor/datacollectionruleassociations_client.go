@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -27,7 +28,7 @@ type DataCollectionRuleAssociationsClient struct {
 // NewDataCollectionRuleAssociationsClient creates a new instance of DataCollectionRuleAssociationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionRuleAssociationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +44,7 @@ func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential a
 // Create - Creates or updates an association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceURI - The identifier of the resource.
 //   - associationName - The name of the association. The name is case insensitive.
 //   - options - DataCollectionRuleAssociationsClientCreateOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Create
@@ -83,7 +84,7 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -107,7 +108,7 @@ func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *h
 // Delete - Deletes an association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceURI - The identifier of the resource.
 //   - associationName - The name of the association. The name is case insensitive.
 //   - options - DataCollectionRuleAssociationsClientDeleteOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Delete
@@ -134,7 +135,7 @@ func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientDeleteOptions) (*policy.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx context.Context, resourceURI string, associationName string, _ *DataCollectionRuleAssociationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{associationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if associationName == "" {
@@ -146,7 +147,7 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -155,7 +156,7 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 // Get - Returns the specified association.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceURI - The identifier of the resource.
 //   - associationName - The name of the association. The name is case insensitive.
 //   - options - DataCollectionRuleAssociationsClientGetOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Get
@@ -183,7 +184,7 @@ func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, res
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientGetOptions) (*policy.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context.Context, resourceURI string, associationName string, _ *DataCollectionRuleAssociationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{associationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if associationName == "" {
@@ -195,7 +196,7 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +213,7 @@ func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http
 
 // NewListByDataCollectionEndpointPager - Lists associations for the specified data collection endpoint.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
 //   - options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
@@ -241,7 +242,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpo
 }
 
 // listByDataCollectionEndpointCreateRequest creates the ListByDataCollectionEndpoint request.
-func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpointCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) (*policy.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpointCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, _ *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/associations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -260,7 +261,7 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +278,7 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 
 // NewListByResourcePager - Lists associations for the specified resource.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceURI - The identifier of the resource.
 //   - options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByResourcePager
 //     method.
@@ -305,7 +306,7 @@ func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resou
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
-func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) (*policy.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, _ *DataCollectionRuleAssociationsClientListByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -313,7 +314,7 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +331,7 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse
 
 // NewListByRulePager - Lists associations for the specified data collection rule.
 //
-// Generated from API version 2022-06-01
+// Generated from API version 2024-03-11
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 //   - options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByRulePager
@@ -378,7 +379,13 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01")
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skipToken", *options.SkipToken)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-03-11")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
