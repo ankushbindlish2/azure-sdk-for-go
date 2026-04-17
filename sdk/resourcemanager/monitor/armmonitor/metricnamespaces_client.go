@@ -23,7 +23,7 @@ type MetricNamespacesClient struct {
 
 // NewMetricNamespacesClient creates a new instance of MetricNamespacesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricNamespacesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -37,7 +37,7 @@ func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.C
 
 // NewListPager - Lists the metric namespaces for the resource.
 //
-// Generated from API version 2017-12-01-preview
+// Generated from API version 2024-02-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.NewListPager
 //     method.
@@ -74,7 +74,7 @@ func (client *MetricNamespacesClient) listCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2017-12-01-preview")
+	reqQP.Set("api-version", "2024-02-01")
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}

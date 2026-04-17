@@ -22,7 +22,7 @@ type TenantActivityLogsClient struct {
 
 // NewTenantActivityLogsClient creates a new instance of TenantActivityLogsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantActivityLogsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -73,13 +73,13 @@ func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2015-04-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Select != nil {
 		reqQP.Set("$select", *options.Select)
 	}
+	reqQP.Set("api-version", "2015-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

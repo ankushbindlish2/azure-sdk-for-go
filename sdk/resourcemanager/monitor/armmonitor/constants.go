@@ -5,11 +5,6 @@
 
 package armmonitor
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
-	moduleVersion = "v0.11.0"
-)
-
 // AccessMode - Access mode types.
 type AccessMode string
 
@@ -26,21 +21,25 @@ func PossibleAccessModeValues() []AccessMode {
 	}
 }
 
-// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-type ActionType string
+// AccessRuleDirection - Direction of Access Rule
+type AccessRuleDirection string
 
 const (
-	ActionTypeInternal ActionType = "Internal"
+	// AccessRuleDirectionInbound - Applies to inbound network traffic to the secured resources.
+	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
+	// AccessRuleDirectionOutbound - Applies to outbound network traffic from the secured resources
+	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
 )
 
-// PossibleActionTypeValues returns the possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
-		ActionTypeInternal,
+// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
+func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
+	return []AccessRuleDirection{
+		AccessRuleDirectionInbound,
+		AccessRuleDirectionOutbound,
 	}
 }
 
-// AggregationType - the aggregation type of the metric.
+// AggregationType - The aggregation type of the metric.
 type AggregationType string
 
 const (
@@ -64,7 +63,7 @@ func PossibleAggregationTypeValues() []AggregationType {
 	}
 }
 
-// AggregationTypeEnum - the criteria time aggregation types.
+// AggregationTypeEnum - The criteria time aggregation types. Previously undocumented values might be returned
 type AggregationTypeEnum string
 
 const (
@@ -127,22 +126,6 @@ func PossibleBaselineSensitivityValues() []BaselineSensitivity {
 	}
 }
 
-// CategoryType - The type of the diagnostic settings category.
-type CategoryType string
-
-const (
-	CategoryTypeLogs    CategoryType = "Logs"
-	CategoryTypeMetrics CategoryType = "Metrics"
-)
-
-// PossibleCategoryTypeValues returns the possible values for the CategoryType const type.
-func PossibleCategoryTypeValues() []CategoryType {
-	return []CategoryType{
-		CategoryTypeLogs,
-		CategoryTypeMetrics,
-	}
-}
-
 // ComparisonOperationType - the operator that is used to compare the metric data and the threshold.
 type ComparisonOperationType string
 
@@ -167,11 +150,12 @@ func PossibleComparisonOperationTypeValues() []ComparisonOperationType {
 	}
 }
 
-// ConditionOperator - Operators allowed in the rule condition.
+// ConditionOperator - The criteria operator. Relevant and required only for rules of the kind LogAlert.
 type ConditionOperator string
 
 const (
 	ConditionOperatorEquals             ConditionOperator = "Equals"
+	ConditionOperatorGreaterOrLessThan  ConditionOperator = "GreaterOrLessThan"
 	ConditionOperatorGreaterThan        ConditionOperator = "GreaterThan"
 	ConditionOperatorGreaterThanOrEqual ConditionOperator = "GreaterThanOrEqual"
 	ConditionOperatorLessThan           ConditionOperator = "LessThan"
@@ -182,6 +166,7 @@ const (
 func PossibleConditionOperatorValues() []ConditionOperator {
 	return []ConditionOperator{
 		ConditionOperatorEquals,
+		ConditionOperatorGreaterOrLessThan,
 		ConditionOperatorGreaterThan,
 		ConditionOperatorGreaterThanOrEqual,
 		ConditionOperatorLessThan,
@@ -209,7 +194,7 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// CriterionType - Specifies the type of threshold criteria
+// CriterionType - Specifies the type of threshold criteria. Previously undocumented values might be returned
 type CriterionType string
 
 const (
@@ -222,23 +207,6 @@ func PossibleCriterionTypeValues() []CriterionType {
 	return []CriterionType{
 		CriterionTypeDynamicThresholdCriterion,
 		CriterionTypeStaticThresholdCriterion,
-	}
-}
-
-// DataStatus - The status of VM Insights data from the resource. When reported as present the data array will contain information
-// about the data containers to which data for the specified resource is being routed.
-type DataStatus string
-
-const (
-	DataStatusNotPresent DataStatus = "notPresent"
-	DataStatusPresent    DataStatus = "present"
-)
-
-// PossibleDataStatusValues returns the possible values for the DataStatus const type.
-func PossibleDataStatusValues() []DataStatus {
-	return []DataStatus{
-		DataStatusNotPresent,
-		DataStatusPresent,
 	}
 }
 
@@ -258,7 +226,8 @@ func PossibleDimensionOperatorValues() []DimensionOperator {
 	}
 }
 
-// DynamicThresholdOperator - The operator used to compare the metric value against the threshold.
+// DynamicThresholdOperator - The operator used to compare the metric value against the threshold. Previously undocumented
+// values might be returned
 type DynamicThresholdOperator string
 
 const (
@@ -277,7 +246,7 @@ func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
 }
 
 // DynamicThresholdSensitivity - The extent of deviation required to trigger an alert. This will affect how tight the threshold
-// is to the metric series pattern.
+// is to the metric series pattern. Previously undocumented values might be returned
 type DynamicThresholdSensitivity string
 
 const (
@@ -317,21 +286,70 @@ func PossibleEventLevelValues() []EventLevel {
 	}
 }
 
-// IdentityType - Type of managed service identity.
+// IdentityType - Type of managed service identity. Previously undocumented values might be returned
 type IdentityType string
 
 const (
-	IdentityTypeNone           IdentityType = "None"
-	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-	IdentityTypeUserAssigned   IdentityType = "UserAssigned"
+	IdentityTypeNone                       IdentityType = "None"
+	IdentityTypeNone                       IdentityType = "None"
+	IdentityTypeSystemAssigned             IdentityType = "SystemAssigned"
+	IdentityTypeSystemAssigned             IdentityType = "SystemAssigned"
+	IdentityTypeSystemAssignedUserAssigned IdentityType = "SystemAssigned, UserAssigned"
+	IdentityTypeUserAssigned               IdentityType = "UserAssigned"
+	IdentityTypeUserAssigned               IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
 		IdentityTypeNone,
+		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
+		IdentityTypeSystemAssigned,
+		IdentityTypeSystemAssignedUserAssigned,
 		IdentityTypeUserAssigned,
+		IdentityTypeUserAssigned,
+	}
+}
+
+// IncidentManagementService - The incident management service type
+type IncidentManagementService string
+
+const (
+	IncidentManagementServiceIcm IncidentManagementService = "Icm"
+)
+
+// PossibleIncidentManagementServiceValues returns the possible values for the IncidentManagementService const type.
+func PossibleIncidentManagementServiceValues() []IncidentManagementService {
+	return []IncidentManagementService{
+		IncidentManagementServiceIcm,
+	}
+}
+
+// IssueType - Type of issue
+type IssueType string
+
+const (
+	// IssueTypeConfigurationPropagationFailure - An error occurred while applying the network security perimeter (NSP) configuration.
+	IssueTypeConfigurationPropagationFailure IssueType = "ConfigurationPropagationFailure"
+	// IssueTypeMissingIdentityConfiguration - An managed identity hasn't been associated with the resource. The resource will
+	// still be able to validate inbound traffic from the network security perimeter (NSP) or matching inbound access rules, but
+	// it won't be able to perform outbound access as a member of the NSP.
+	IssueTypeMissingIdentityConfiguration IssueType = "MissingIdentityConfiguration"
+	// IssueTypeMissingPerimeterConfiguration - A network connectivity issue is happening on the resource which could be addressed
+	// either by adding new resources to the network security perimeter (NSP) or by modifying access rules.
+	IssueTypeMissingPerimeterConfiguration IssueType = "MissingPerimeterConfiguration"
+	// IssueTypeUnknown - Unknown issue type
+	IssueTypeUnknown IssueType = "Unknown"
+)
+
+// PossibleIssueTypeValues returns the possible values for the IssueType const type.
+func PossibleIssueTypeValues() []IssueType {
+	return []IssueType{
+		IssueTypeConfigurationPropagationFailure,
+		IssueTypeMissingIdentityConfiguration,
+		IssueTypeMissingPerimeterConfiguration,
+		IssueTypeUnknown,
 	}
 }
 
@@ -339,8 +357,9 @@ func PossibleIdentityTypeValues() []IdentityType {
 type Kind string
 
 const (
-	KindLogAlert    Kind = "LogAlert"
-	KindLogToMetric Kind = "LogToMetric"
+	KindLogAlert       Kind = "LogAlert"
+	KindLogToMetric    Kind = "LogToMetric"
+	KindSimpleLogAlert Kind = "SimpleLogAlert"
 )
 
 // PossibleKindValues returns the possible values for the Kind const type.
@@ -348,6 +367,25 @@ func PossibleKindValues() []Kind {
 	return []Kind{
 		KindLogAlert,
 		KindLogToMetric,
+		KindSimpleLogAlert,
+	}
+}
+
+// KnownAgentSettingName - The name of the setting. Must be part of the list of supported settings
+type KnownAgentSettingName string
+
+const (
+	KnownAgentSettingNameMaxDiskQuotaInMB                  KnownAgentSettingName = "MaxDiskQuotaInMB"
+	KnownAgentSettingNameTags                              KnownAgentSettingName = "Tags"
+	KnownAgentSettingNameUseTimeReceivedForForwardedEvents KnownAgentSettingName = "UseTimeReceivedForForwardedEvents"
+)
+
+// PossibleKnownAgentSettingNameValues returns the possible values for the KnownAgentSettingName const type.
+func PossibleKnownAgentSettingNameValues() []KnownAgentSettingName {
+	return []KnownAgentSettingName{
+		KnownAgentSettingNameMaxDiskQuotaInMB,
+		KnownAgentSettingNameTags,
+		KnownAgentSettingNameUseTimeReceivedForForwardedEvents,
 	}
 }
 
@@ -502,6 +540,44 @@ func PossibleKnownDataFlowStreamsValues() []KnownDataFlowStreams {
 	}
 }
 
+// KnownEtwProviderDataSourceLogLevel - Minimal level of detail to be logged
+type KnownEtwProviderDataSourceLogLevel string
+
+const (
+	KnownEtwProviderDataSourceLogLevelCritical      KnownEtwProviderDataSourceLogLevel = "Critical"
+	KnownEtwProviderDataSourceLogLevelError         KnownEtwProviderDataSourceLogLevel = "Error"
+	KnownEtwProviderDataSourceLogLevelInformational KnownEtwProviderDataSourceLogLevel = "Informational"
+	KnownEtwProviderDataSourceLogLevelVerbose       KnownEtwProviderDataSourceLogLevel = "Verbose"
+	KnownEtwProviderDataSourceLogLevelWarning       KnownEtwProviderDataSourceLogLevel = "Warning"
+)
+
+// PossibleKnownEtwProviderDataSourceLogLevelValues returns the possible values for the KnownEtwProviderDataSourceLogLevel const type.
+func PossibleKnownEtwProviderDataSourceLogLevelValues() []KnownEtwProviderDataSourceLogLevel {
+	return []KnownEtwProviderDataSourceLogLevel{
+		KnownEtwProviderDataSourceLogLevelCritical,
+		KnownEtwProviderDataSourceLogLevelError,
+		KnownEtwProviderDataSourceLogLevelInformational,
+		KnownEtwProviderDataSourceLogLevelVerbose,
+		KnownEtwProviderDataSourceLogLevelWarning,
+	}
+}
+
+// KnownEtwProviderType - Provider type specification: By Manifest GUID or by Event Source name
+type KnownEtwProviderType string
+
+const (
+	KnownEtwProviderTypeEventSource KnownEtwProviderType = "EventSource"
+	KnownEtwProviderTypeManifest    KnownEtwProviderType = "Manifest"
+)
+
+// PossibleKnownEtwProviderTypeValues returns the possible values for the KnownEtwProviderType const type.
+func PossibleKnownEtwProviderTypeValues() []KnownEtwProviderType {
+	return []KnownEtwProviderType{
+		KnownEtwProviderTypeEventSource,
+		KnownEtwProviderTypeManifest,
+	}
+}
+
 type KnownExtensionDataSourceStreams string
 
 const (
@@ -581,13 +657,75 @@ func PossibleKnownLogFileTextSettingsRecordStartTimestampFormatValues() []KnownL
 type KnownLogFilesDataSourceFormat string
 
 const (
+	KnownLogFilesDataSourceFormatJSON KnownLogFilesDataSourceFormat = "json"
 	KnownLogFilesDataSourceFormatText KnownLogFilesDataSourceFormat = "text"
 )
 
 // PossibleKnownLogFilesDataSourceFormatValues returns the possible values for the KnownLogFilesDataSourceFormat const type.
 func PossibleKnownLogFilesDataSourceFormatValues() []KnownLogFilesDataSourceFormat {
 	return []KnownLogFilesDataSourceFormat{
+		KnownLogFilesDataSourceFormatJSON,
 		KnownLogFilesDataSourceFormatText,
+	}
+}
+
+type KnownOtelLogsDataSourceStreams string
+
+const (
+	KnownOtelLogsDataSourceStreamsMicrosoftOTelLogs KnownOtelLogsDataSourceStreams = "Microsoft-OTel-Logs"
+)
+
+// PossibleKnownOtelLogsDataSourceStreamsValues returns the possible values for the KnownOtelLogsDataSourceStreams const type.
+func PossibleKnownOtelLogsDataSourceStreamsValues() []KnownOtelLogsDataSourceStreams {
+	return []KnownOtelLogsDataSourceStreams{
+		KnownOtelLogsDataSourceStreamsMicrosoftOTelLogs,
+	}
+}
+
+type KnownOtelLogsDirectDataSourceStreams string
+
+const (
+	KnownOtelLogsDirectDataSourceStreamsMicrosoftOTelLogs KnownOtelLogsDirectDataSourceStreams = "Microsoft-OTel-Logs"
+)
+
+// PossibleKnownOtelLogsDirectDataSourceStreamsValues returns the possible values for the KnownOtelLogsDirectDataSourceStreams const type.
+func PossibleKnownOtelLogsDirectDataSourceStreamsValues() []KnownOtelLogsDirectDataSourceStreams {
+	return []KnownOtelLogsDirectDataSourceStreams{
+		KnownOtelLogsDirectDataSourceStreamsMicrosoftOTelLogs,
+	}
+}
+
+type KnownOtelTracesDataSourceStreams string
+
+const (
+	KnownOtelTracesDataSourceStreamsMicrosoftOTelTracesEvents    KnownOtelTracesDataSourceStreams = "Microsoft-OTel-Traces-Events"
+	KnownOtelTracesDataSourceStreamsMicrosoftOTelTracesResources KnownOtelTracesDataSourceStreams = "Microsoft-OTel-Traces-Resources"
+	KnownOtelTracesDataSourceStreamsMicrosoftOTelTracesSpans     KnownOtelTracesDataSourceStreams = "Microsoft-OTel-Traces-Spans"
+)
+
+// PossibleKnownOtelTracesDataSourceStreamsValues returns the possible values for the KnownOtelTracesDataSourceStreams const type.
+func PossibleKnownOtelTracesDataSourceStreamsValues() []KnownOtelTracesDataSourceStreams {
+	return []KnownOtelTracesDataSourceStreams{
+		KnownOtelTracesDataSourceStreamsMicrosoftOTelTracesEvents,
+		KnownOtelTracesDataSourceStreamsMicrosoftOTelTracesResources,
+		KnownOtelTracesDataSourceStreamsMicrosoftOTelTracesSpans,
+	}
+}
+
+type KnownOtelTracesDirectDataSourceStreams string
+
+const (
+	KnownOtelTracesDirectDataSourceStreamsMicrosoftOTelTracesEvents    KnownOtelTracesDirectDataSourceStreams = "Microsoft-OTel-Traces-Events"
+	KnownOtelTracesDirectDataSourceStreamsMicrosoftOTelTracesResources KnownOtelTracesDirectDataSourceStreams = "Microsoft-OTel-Traces-Resources"
+	KnownOtelTracesDirectDataSourceStreamsMicrosoftOTelTracesSpans     KnownOtelTracesDirectDataSourceStreams = "Microsoft-OTel-Traces-Spans"
+)
+
+// PossibleKnownOtelTracesDirectDataSourceStreamsValues returns the possible values for the KnownOtelTracesDirectDataSourceStreams const type.
+func PossibleKnownOtelTracesDirectDataSourceStreamsValues() []KnownOtelTracesDirectDataSourceStreams {
+	return []KnownOtelTracesDirectDataSourceStreams{
+		KnownOtelTracesDirectDataSourceStreamsMicrosoftOTelTracesEvents,
+		KnownOtelTracesDirectDataSourceStreamsMicrosoftOTelTracesResources,
+		KnownOtelTracesDirectDataSourceStreamsMicrosoftOTelTracesSpans,
 	}
 }
 
@@ -603,6 +741,19 @@ func PossibleKnownPerfCounterDataSourceStreamsValues() []KnownPerfCounterDataSou
 	return []KnownPerfCounterDataSourceStreams{
 		KnownPerfCounterDataSourceStreamsMicrosoftInsightsMetrics,
 		KnownPerfCounterDataSourceStreamsMicrosoftPerf,
+	}
+}
+
+type KnownPerformanceCountersOTelDataSourceStreams string
+
+const (
+	KnownPerformanceCountersOTelDataSourceStreamsMicrosoftOtelPerfMetrics KnownPerformanceCountersOTelDataSourceStreams = "Microsoft-OtelPerfMetrics"
+)
+
+// PossibleKnownPerformanceCountersOTelDataSourceStreamsValues returns the possible values for the KnownPerformanceCountersOTelDataSourceStreams const type.
+func PossibleKnownPerformanceCountersOTelDataSourceStreamsValues() []KnownPerformanceCountersOTelDataSourceStreams {
+	return []KnownPerformanceCountersOTelDataSourceStreams{
+		KnownPerformanceCountersOTelDataSourceStreamsMicrosoftOtelPerfMetrics,
 	}
 }
 
@@ -638,14 +789,34 @@ func PossibleKnownPublicNetworkAccessOptionsValues() []KnownPublicNetworkAccessO
 	}
 }
 
+// KnownStorageBlobLookupType - The type of lookup to perform on the blob
+type KnownStorageBlobLookupType string
+
+const (
+	KnownStorageBlobLookupTypeCidr   KnownStorageBlobLookupType = "Cidr"
+	KnownStorageBlobLookupTypeString KnownStorageBlobLookupType = "String"
+)
+
+// PossibleKnownStorageBlobLookupTypeValues returns the possible values for the KnownStorageBlobLookupType const type.
+func PossibleKnownStorageBlobLookupTypeValues() []KnownStorageBlobLookupType {
+	return []KnownStorageBlobLookupType{
+		KnownStorageBlobLookupTypeCidr,
+		KnownStorageBlobLookupTypeString,
+	}
+}
+
 type KnownSyslogDataSourceFacilityNames string
 
 const (
+	KnownSyslogDataSourceFacilityNamesAlert    KnownSyslogDataSourceFacilityNames = "alert"
 	KnownSyslogDataSourceFacilityNamesAsterisk KnownSyslogDataSourceFacilityNames = "*"
+	KnownSyslogDataSourceFacilityNamesAudit    KnownSyslogDataSourceFacilityNames = "audit"
 	KnownSyslogDataSourceFacilityNamesAuth     KnownSyslogDataSourceFacilityNames = "auth"
 	KnownSyslogDataSourceFacilityNamesAuthpriv KnownSyslogDataSourceFacilityNames = "authpriv"
+	KnownSyslogDataSourceFacilityNamesClock    KnownSyslogDataSourceFacilityNames = "clock"
 	KnownSyslogDataSourceFacilityNamesCron     KnownSyslogDataSourceFacilityNames = "cron"
 	KnownSyslogDataSourceFacilityNamesDaemon   KnownSyslogDataSourceFacilityNames = "daemon"
+	KnownSyslogDataSourceFacilityNamesFtp      KnownSyslogDataSourceFacilityNames = "ftp"
 	KnownSyslogDataSourceFacilityNamesKern     KnownSyslogDataSourceFacilityNames = "kern"
 	KnownSyslogDataSourceFacilityNamesLocal0   KnownSyslogDataSourceFacilityNames = "local0"
 	KnownSyslogDataSourceFacilityNamesLocal1   KnownSyslogDataSourceFacilityNames = "local1"
@@ -659,6 +830,8 @@ const (
 	KnownSyslogDataSourceFacilityNamesMail     KnownSyslogDataSourceFacilityNames = "mail"
 	KnownSyslogDataSourceFacilityNamesMark     KnownSyslogDataSourceFacilityNames = "mark"
 	KnownSyslogDataSourceFacilityNamesNews     KnownSyslogDataSourceFacilityNames = "news"
+	KnownSyslogDataSourceFacilityNamesNopri    KnownSyslogDataSourceFacilityNames = "nopri"
+	KnownSyslogDataSourceFacilityNamesNtp      KnownSyslogDataSourceFacilityNames = "ntp"
 	KnownSyslogDataSourceFacilityNamesSyslog   KnownSyslogDataSourceFacilityNames = "syslog"
 	KnownSyslogDataSourceFacilityNamesUser     KnownSyslogDataSourceFacilityNames = "user"
 	KnownSyslogDataSourceFacilityNamesUucp     KnownSyslogDataSourceFacilityNames = "uucp"
@@ -667,11 +840,15 @@ const (
 // PossibleKnownSyslogDataSourceFacilityNamesValues returns the possible values for the KnownSyslogDataSourceFacilityNames const type.
 func PossibleKnownSyslogDataSourceFacilityNamesValues() []KnownSyslogDataSourceFacilityNames {
 	return []KnownSyslogDataSourceFacilityNames{
+		KnownSyslogDataSourceFacilityNamesAlert,
 		KnownSyslogDataSourceFacilityNamesAsterisk,
+		KnownSyslogDataSourceFacilityNamesAudit,
 		KnownSyslogDataSourceFacilityNamesAuth,
 		KnownSyslogDataSourceFacilityNamesAuthpriv,
+		KnownSyslogDataSourceFacilityNamesClock,
 		KnownSyslogDataSourceFacilityNamesCron,
 		KnownSyslogDataSourceFacilityNamesDaemon,
+		KnownSyslogDataSourceFacilityNamesFtp,
 		KnownSyslogDataSourceFacilityNamesKern,
 		KnownSyslogDataSourceFacilityNamesLocal0,
 		KnownSyslogDataSourceFacilityNamesLocal1,
@@ -685,6 +862,8 @@ func PossibleKnownSyslogDataSourceFacilityNamesValues() []KnownSyslogDataSourceF
 		KnownSyslogDataSourceFacilityNamesMail,
 		KnownSyslogDataSourceFacilityNamesMark,
 		KnownSyslogDataSourceFacilityNamesNews,
+		KnownSyslogDataSourceFacilityNamesNopri,
+		KnownSyslogDataSourceFacilityNamesNtp,
 		KnownSyslogDataSourceFacilityNamesSyslog,
 		KnownSyslogDataSourceFacilityNamesUser,
 		KnownSyslogDataSourceFacilityNamesUucp,
@@ -748,6 +927,23 @@ func PossibleKnownWindowsEventLogDataSourceStreamsValues() []KnownWindowsEventLo
 	}
 }
 
+type KnownWindowsFirewallLogsDataSourceProfileFilter string
+
+const (
+	KnownWindowsFirewallLogsDataSourceProfileFilterDomain  KnownWindowsFirewallLogsDataSourceProfileFilter = "Domain"
+	KnownWindowsFirewallLogsDataSourceProfileFilterPrivate KnownWindowsFirewallLogsDataSourceProfileFilter = "Private"
+	KnownWindowsFirewallLogsDataSourceProfileFilterPublic  KnownWindowsFirewallLogsDataSourceProfileFilter = "Public"
+)
+
+// PossibleKnownWindowsFirewallLogsDataSourceProfileFilterValues returns the possible values for the KnownWindowsFirewallLogsDataSourceProfileFilter const type.
+func PossibleKnownWindowsFirewallLogsDataSourceProfileFilterValues() []KnownWindowsFirewallLogsDataSourceProfileFilter {
+	return []KnownWindowsFirewallLogsDataSourceProfileFilter{
+		KnownWindowsFirewallLogsDataSourceProfileFilterDomain,
+		KnownWindowsFirewallLogsDataSourceProfileFilterPrivate,
+		KnownWindowsFirewallLogsDataSourceProfileFilterPublic,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -768,7 +964,7 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// MetricAggregationType - the aggregation type of the metric.
+// MetricAggregationType - The aggregation type of the metric.
 type MetricAggregationType string
 
 const (
@@ -857,19 +1053,33 @@ func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 type MetricUnit string
 
 const (
-	MetricUnitBitsPerSecond  MetricUnit = "BitsPerSecond"
-	MetricUnitByteSeconds    MetricUnit = "ByteSeconds"
-	MetricUnitBytes          MetricUnit = "Bytes"
+	// MetricUnitBitsPerSecond - Rate unit of binary digits per second.
+	MetricUnitBitsPerSecond MetricUnit = "BitsPerSecond"
+	// MetricUnitByteSeconds - Unit of data transfer or storage. It is the size of the data in bytes multiplied by the time it
+	// takes to transfer or store the data in seconds.
+	MetricUnitByteSeconds MetricUnit = "ByteSeconds"
+	// MetricUnitBytes - Unit of memory in bytes.
+	MetricUnitBytes MetricUnit = "Bytes"
+	// MetricUnitBytesPerSecond - Rate unit of memory in bytes per second.
 	MetricUnitBytesPerSecond MetricUnit = "BytesPerSecond"
-	MetricUnitCores          MetricUnit = "Cores"
-	MetricUnitCount          MetricUnit = "Count"
+	// MetricUnitCores - Unit of processing power.
+	MetricUnitCores MetricUnit = "Cores"
+	// MetricUnitCount - Unit of raw quantity.
+	MetricUnitCount MetricUnit = "Count"
+	// MetricUnitCountPerSecond - Rate unit of raw quantity per second.
 	MetricUnitCountPerSecond MetricUnit = "CountPerSecond"
-	MetricUnitMilliCores     MetricUnit = "MilliCores"
-	MetricUnitMilliSeconds   MetricUnit = "MilliSeconds"
-	MetricUnitNanoCores      MetricUnit = "NanoCores"
-	MetricUnitPercent        MetricUnit = "Percent"
-	MetricUnitSeconds        MetricUnit = "Seconds"
-	MetricUnitUnspecified    MetricUnit = "Unspecified"
+	// MetricUnitMilliCores - Unit of processing power in 1/1000th of a CPU core.
+	MetricUnitMilliCores MetricUnit = "MilliCores"
+	// MetricUnitMilliSeconds - Unit of time in 1/1000th of a second.
+	MetricUnitMilliSeconds MetricUnit = "MilliSeconds"
+	// MetricUnitNanoCores - Unit of processing power in one billionth of a CPU core.
+	MetricUnitNanoCores MetricUnit = "NanoCores"
+	// MetricUnitPercent - Percentage unit.
+	MetricUnitPercent MetricUnit = "Percent"
+	// MetricUnitSeconds - Unit of time in seconds.
+	MetricUnitSeconds MetricUnit = "Seconds"
+	// MetricUnitUnspecified - No specified unit.
+	MetricUnitUnspecified MetricUnit = "Unspecified"
 )
 
 // PossibleMetricUnitValues returns the possible values for the MetricUnit const type.
@@ -909,11 +1119,39 @@ func PossibleNamespaceClassificationValues() []NamespaceClassification {
 	}
 }
 
-// Odatatype - specifies the type of the alert criteria.
+// NetworkSecurityPerimeterConfigurationProvisioningState - Provisioning state of a network security perimeter configuration
+// that is being created or updated.
+type NetworkSecurityPerimeterConfigurationProvisioningState string
+
+const (
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted  NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled  NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating  NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting  NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed    NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating  NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
+func PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues() []NetworkSecurityPerimeterConfigurationProvisioningState {
+	return []NetworkSecurityPerimeterConfigurationProvisioningState{
+		NetworkSecurityPerimeterConfigurationProvisioningStateAccepted,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCanceled,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCreating,
+		NetworkSecurityPerimeterConfigurationProvisioningStateDeleting,
+		NetworkSecurityPerimeterConfigurationProvisioningStateFailed,
+		NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded,
+		NetworkSecurityPerimeterConfigurationProvisioningStateUpdating,
+	}
+}
+
+// Odatatype - Specifies the type of the alert criteria. Previously undocumented values might be returned
 type Odatatype string
 
 const (
 	OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria Odatatype = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+	OdatatypeMicrosoftAzureMonitorPromQLCriteria                         Odatatype = "Microsoft.Azure.Monitor.PromQLCriteria"
 	OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria   Odatatype = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
 	OdatatypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria    Odatatype = "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria"
 )
@@ -922,31 +1160,13 @@ const (
 func PossibleOdatatypeValues() []Odatatype {
 	return []Odatatype{
 		OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria,
+		OdatatypeMicrosoftAzureMonitorPromQLCriteria,
 		OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria,
 		OdatatypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria,
 	}
 }
 
-// OnboardingStatus - The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription,
-// is considered onboarded if at least one resource under it is onboarded.
-type OnboardingStatus string
-
-const (
-	OnboardingStatusNotOnboarded OnboardingStatus = "notOnboarded"
-	OnboardingStatusOnboarded    OnboardingStatus = "onboarded"
-	OnboardingStatusUnknown      OnboardingStatus = "unknown"
-)
-
-// PossibleOnboardingStatusValues returns the possible values for the OnboardingStatus const type.
-func PossibleOnboardingStatusValues() []OnboardingStatus {
-	return []OnboardingStatus{
-		OnboardingStatusNotOnboarded,
-		OnboardingStatusOnboarded,
-		OnboardingStatusUnknown,
-	}
-}
-
-// Operator - the criteria operator.
+// Operator - The criteria operator. Previously undocumented values might be returned
 type Operator string
 
 const (
@@ -965,25 +1185,6 @@ func PossibleOperatorValues() []Operator {
 		OperatorGreaterThanOrEqual,
 		OperatorLessThan,
 		OperatorLessThanOrEqual,
-	}
-}
-
-// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
-// value is "user,system"
-type Origin string
-
-const (
-	OriginSystem     Origin = "system"
-	OriginUser       Origin = "user"
-	OriginUserSystem Origin = "user,system"
-)
-
-// PossibleOriginValues returns the possible values for the Origin const type.
-func PossibleOriginValues() []Origin {
-	return []Origin{
-		OriginSystem,
-		OriginUser,
-		OriginUserSystem,
 	}
 }
 
@@ -1043,43 +1244,24 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
-// ProvisioningState - The provisioning state of the Azure Monitor workspace. Set to Succeeded if everything is healthy.
-type ProvisioningState string
+// PrivateLinkScopeProvisioningState - Current state of this PrivateLinkScope: whether or not is has been provisioned within
+// the resource group it is defined. Users cannot change this value but are able to read from it.
+type PrivateLinkScopeProvisioningState string
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	PrivateLinkScopeProvisioningStateCanceled  PrivateLinkScopeProvisioningState = "Canceled"
+	PrivateLinkScopeProvisioningStateDeleting  PrivateLinkScopeProvisioningState = "Deleting"
+	PrivateLinkScopeProvisioningStateFailed    PrivateLinkScopeProvisioningState = "Failed"
+	PrivateLinkScopeProvisioningStateSucceeded PrivateLinkScopeProvisioningState = "Succeeded"
 )
 
-// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
-		ProvisioningStateCanceled,
-		ProvisioningStateCreating,
-		ProvisioningStateDeleting,
-		ProvisioningStateFailed,
-		ProvisioningStateSucceeded,
-	}
-}
-
-// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled.
-type PublicNetworkAccess string
-
-const (
-	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
-	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
-)
-
-// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
-		PublicNetworkAccessDisabled,
-		PublicNetworkAccessEnabled,
-		PublicNetworkAccessSecuredByPerimeter,
+// PossiblePrivateLinkScopeProvisioningStateValues returns the possible values for the PrivateLinkScopeProvisioningState const type.
+func PossiblePrivateLinkScopeProvisioningStateValues() []PrivateLinkScopeProvisioningState {
+	return []PrivateLinkScopeProvisioningState{
+		PrivateLinkScopeProvisioningStateCanceled,
+		PrivateLinkScopeProvisioningStateDeleting,
+		PrivateLinkScopeProvisioningStateFailed,
+		PrivateLinkScopeProvisioningStateSucceeded,
 	}
 }
 
@@ -1131,6 +1313,29 @@ func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	}
 }
 
+// ResourceAssociationAccessMode - Access mode of the resource association
+type ResourceAssociationAccessMode string
+
+const (
+	// ResourceAssociationAccessModeAudit - Audit access mode - traffic to the resource that fails access checks is logged but
+	// not blocked
+	ResourceAssociationAccessModeAudit ResourceAssociationAccessMode = "Audit"
+	// ResourceAssociationAccessModeEnforced - Enforced access mode - traffic to the resource that failed access checks is blocked
+	ResourceAssociationAccessModeEnforced ResourceAssociationAccessMode = "Enforced"
+	// ResourceAssociationAccessModeLearning - Learning access mode - traffic to the resource is enabled for analysis but not
+	// blocked
+	ResourceAssociationAccessModeLearning ResourceAssociationAccessMode = "Learning"
+)
+
+// PossibleResourceAssociationAccessModeValues returns the possible values for the ResourceAssociationAccessMode const type.
+func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMode {
+	return []ResourceAssociationAccessMode{
+		ResourceAssociationAccessModeAudit,
+		ResourceAssociationAccessModeEnforced,
+		ResourceAssociationAccessModeLearning,
+	}
+}
+
 type ResultType string
 
 const (
@@ -1143,6 +1348,27 @@ func PossibleResultTypeValues() []ResultType {
 	return []ResultType{
 		ResultTypeData,
 		ResultTypeMetadata,
+	}
+}
+
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
+type SKUTier string
+
+const (
+	SKUTierBasic    SKUTier = "Basic"
+	SKUTierFree     SKUTier = "Free"
+	SKUTierPremium  SKUTier = "Premium"
+	SKUTierStandard SKUTier = "Standard"
+)
+
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
+func PossibleSKUTierValues() []SKUTier {
+	return []SKUTier{
+		SKUTierBasic,
+		SKUTierFree,
+		SKUTierPremium,
+		SKUTierStandard,
 	}
 }
 
@@ -1201,6 +1427,58 @@ func PossibleScaleTypeValues() []ScaleType {
 	}
 }
 
+// ScopedResourceKind - The kind of scoped Azure monitor resource.
+type ScopedResourceKind string
+
+const (
+	ScopedResourceKindMetrics  ScopedResourceKind = "Metrics"
+	ScopedResourceKindResource ScopedResourceKind = "Resource"
+)
+
+// PossibleScopedResourceKindValues returns the possible values for the ScopedResourceKind const type.
+func PossibleScopedResourceKindValues() []ScopedResourceKind {
+	return []ScopedResourceKind{
+		ScopedResourceKindMetrics,
+		ScopedResourceKindResource,
+	}
+}
+
+// ScopedResourceProvisioningState - State of the Azure monitor resource.
+type ScopedResourceProvisioningState string
+
+const (
+	ScopedResourceProvisioningStateCanceled     ScopedResourceProvisioningState = "Canceled"
+	ScopedResourceProvisioningStateFailed       ScopedResourceProvisioningState = "Failed"
+	ScopedResourceProvisioningStateProvisioning ScopedResourceProvisioningState = "Provisioning"
+	ScopedResourceProvisioningStateSucceeded    ScopedResourceProvisioningState = "Succeeded"
+)
+
+// PossibleScopedResourceProvisioningStateValues returns the possible values for the ScopedResourceProvisioningState const type.
+func PossibleScopedResourceProvisioningStateValues() []ScopedResourceProvisioningState {
+	return []ScopedResourceProvisioningState{
+		ScopedResourceProvisioningStateCanceled,
+		ScopedResourceProvisioningStateFailed,
+		ScopedResourceProvisioningStateProvisioning,
+		ScopedResourceProvisioningStateSucceeded,
+	}
+}
+
+// Severity - Severity of the issue.
+type Severity string
+
+const (
+	SeverityError   Severity = "Error"
+	SeverityWarning Severity = "Warning"
+)
+
+// PossibleSeverityValues returns the possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{
+		SeverityError,
+		SeverityWarning,
+	}
+}
+
 // TimeAggregation - Aggregation type. Relevant and required only for rules of the kind LogAlert.
 type TimeAggregation string
 
@@ -1220,28 +1498,6 @@ func PossibleTimeAggregationValues() []TimeAggregation {
 		TimeAggregationMaximum,
 		TimeAggregationMinimum,
 		TimeAggregationTotal,
-	}
-}
-
-// TimeAggregationOperator - Aggregation operators allowed in a rule.
-type TimeAggregationOperator string
-
-const (
-	TimeAggregationOperatorAverage TimeAggregationOperator = "Average"
-	TimeAggregationOperatorLast    TimeAggregationOperator = "Last"
-	TimeAggregationOperatorMaximum TimeAggregationOperator = "Maximum"
-	TimeAggregationOperatorMinimum TimeAggregationOperator = "Minimum"
-	TimeAggregationOperatorTotal   TimeAggregationOperator = "Total"
-)
-
-// PossibleTimeAggregationOperatorValues returns the possible values for the TimeAggregationOperator const type.
-func PossibleTimeAggregationOperatorValues() []TimeAggregationOperator {
-	return []TimeAggregationOperator{
-		TimeAggregationOperatorAverage,
-		TimeAggregationOperatorLast,
-		TimeAggregationOperatorMaximum,
-		TimeAggregationOperatorMinimum,
-		TimeAggregationOperatorTotal,
 	}
 }
 
@@ -1267,43 +1523,5 @@ func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 		TimeAggregationTypeMaximum,
 		TimeAggregationTypeMinimum,
 		TimeAggregationTypeTotal,
-	}
-}
-
-// Unit - The unit of the metric.
-type Unit string
-
-const (
-	UnitBitsPerSecond  Unit = "BitsPerSecond"
-	UnitByteSeconds    Unit = "ByteSeconds"
-	UnitBytes          Unit = "Bytes"
-	UnitBytesPerSecond Unit = "BytesPerSecond"
-	UnitCores          Unit = "Cores"
-	UnitCount          Unit = "Count"
-	UnitCountPerSecond Unit = "CountPerSecond"
-	UnitMilliCores     Unit = "MilliCores"
-	UnitMilliSeconds   Unit = "MilliSeconds"
-	UnitNanoCores      Unit = "NanoCores"
-	UnitPercent        Unit = "Percent"
-	UnitSeconds        Unit = "Seconds"
-	UnitUnspecified    Unit = "Unspecified"
-)
-
-// PossibleUnitValues returns the possible values for the Unit const type.
-func PossibleUnitValues() []Unit {
-	return []Unit{
-		UnitBitsPerSecond,
-		UnitByteSeconds,
-		UnitBytes,
-		UnitBytesPerSecond,
-		UnitCores,
-		UnitCount,
-		UnitCountPerSecond,
-		UnitMilliCores,
-		UnitMilliSeconds,
-		UnitNanoCores,
-		UnitPercent,
-		UnitSeconds,
-		UnitUnspecified,
 	}
 }

@@ -27,7 +27,7 @@ type MetricDefinitionsClient struct {
 // NewMetricDefinitionsClient creates a new instance of MetricDefinitionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMetricDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetricDefinitionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewMetricDefinitionsClient(subscriptionID string, credential azcore.TokenCr
 
 // NewListPager - Lists the metric definitions for the resource.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2024-02-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.NewListPager
 //     method.
@@ -79,7 +79,7 @@ func (client *MetricDefinitionsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2024-02-01")
 	if options != nil && options.Metricnamespace != nil {
 		reqQP.Set("metricnamespace", *options.Metricnamespace)
 	}
@@ -99,7 +99,7 @@ func (client *MetricDefinitionsClient) listHandleResponse(resp *http.Response) (
 
 // NewListAtSubscriptionScopePager - Lists the metric definitions for the subscription.
 //
-// Generated from API version 2021-05-01
+// Generated from API version 2024-02-01
 //   - region - The region where the metrics you want reside.
 //   - options - MetricDefinitionsClientListAtSubscriptionScopeOptions contains the optional parameters for the MetricDefinitionsClient.NewListAtSubscriptionScopePager
 //     method.
@@ -139,11 +139,11 @@ func (client *MetricDefinitionsClient) listAtSubscriptionScopeCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
-	reqQP.Set("region", region)
+	reqQP.Set("api-version", "2024-02-01")
 	if options != nil && options.Metricnamespace != nil {
 		reqQP.Set("metricnamespace", *options.Metricnamespace)
 	}
+	reqQP.Set("region", region)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

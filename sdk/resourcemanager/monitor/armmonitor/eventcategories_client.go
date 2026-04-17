@@ -22,7 +22,7 @@ type EventCategoriesClient struct {
 
 // NewEventCategoriesClient creates a new instance of EventCategoriesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EventCategoriesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -65,7 +65,7 @@ func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClient
 }
 
 // listCreateRequest creates the List request.
-func (client *EventCategoriesClient) listCreateRequest(ctx context.Context, options *EventCategoriesClientListOptions) (*policy.Request, error) {
+func (client *EventCategoriesClient) listCreateRequest(ctx context.Context, _ *EventCategoriesClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Insights/eventcategories"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
