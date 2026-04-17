@@ -39,7 +39,7 @@ type RestorePointTestSuite struct {
 }
 
 func (testsuite *RestorePointTestSuite) SetupSuite() {
-	testutil.StartRecording(testsuite.T(), pathToPackage)
+	startRecording(testsuite.T())
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
