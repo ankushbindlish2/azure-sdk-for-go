@@ -43,7 +43,7 @@ func NewFederatedIdentityCredentialsClient(subscriptionID string, credential azc
 // CreateOrUpdate - Create or update a federated identity credential under the specified user assigned identity.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-30
+// Generated from API version 2025-05-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the identity resource.
 //   - federatedIdentityCredentialResourceName - The name of the federated identity credential resource.
@@ -96,7 +96,7 @@ func (client *FederatedIdentityCredentialsClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30")
+	reqQP.Set("api-version", "2025-05-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -118,7 +118,7 @@ func (client *FederatedIdentityCredentialsClient) createOrUpdateHandleResponse(r
 // Delete - Deletes the federated identity credential.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-30
+// Generated from API version 2025-05-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the identity resource.
 //   - federatedIdentityCredentialResourceName - The name of the federated identity credential resource.
@@ -169,7 +169,7 @@ func (client *FederatedIdentityCredentialsClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30")
+	reqQP.Set("api-version", "2025-05-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -177,7 +177,7 @@ func (client *FederatedIdentityCredentialsClient) deleteCreateRequest(ctx contex
 // Get - Gets the federated identity credential.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-30
+// Generated from API version 2025-05-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the identity resource.
 //   - federatedIdentityCredentialResourceName - The name of the federated identity credential resource.
@@ -229,7 +229,7 @@ func (client *FederatedIdentityCredentialsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30")
+	reqQP.Set("api-version", "2025-05-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +246,7 @@ func (client *FederatedIdentityCredentialsClient) getHandleResponse(resp *http.R
 
 // NewListPager - Lists all the federated identity credentials under the specified user assigned identity.
 //
-// Generated from API version 2024-11-30
+// Generated from API version 2025-05-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the identity resource.
 //   - options - FederatedIdentityCredentialsClientListOptions contains the optional parameters for the FederatedIdentityCredentialsClient.NewListPager
@@ -300,7 +300,7 @@ func (client *FederatedIdentityCredentialsClient) listCreateRequest(ctx context.
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-11-30")
+	reqQP.Set("api-version", "2025-05-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
