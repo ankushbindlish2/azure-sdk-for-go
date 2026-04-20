@@ -274,35 +274,34 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewListByPrivateLinkScopePager - Gets all private endpoint connections on a private link scope.
+// ListByPrivateLinkScope - Gets all private endpoint connections on a private link scope.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - scopeName - The name of the Azure Monitor PrivateLinkScope resource.
-//   - options - PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager
+//   - options - PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByPrivateLinkScope
 //     method.
-func (client *PrivateEndpointConnectionsClient) NewListByPrivateLinkScopePager(resourceGroupName string, scopeName string, options *PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse]{
-		More: func(page PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse) (PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager")
-			req, err := client.listByPrivateLinkScopeCreateRequest(ctx, resourceGroupName, scopeName, options)
-			if err != nil {
-				return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listByPrivateLinkScopeHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *PrivateEndpointConnectionsClient) ListByPrivateLinkScope(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions) (PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse, error) {
+	var err error
+	const operationName = "PrivateEndpointConnectionsClient.ListByPrivateLinkScope"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listByPrivateLinkScopeCreateRequest(ctx, resourceGroupName, scopeName, options)
+	if err != nil {
+		return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, err
+	}
+	resp, err := client.listByPrivateLinkScopeHandleResponse(httpResp)
+	return resp, err
 }
 
 // listByPrivateLinkScopeCreateRequest creates the ListByPrivateLinkScope request.

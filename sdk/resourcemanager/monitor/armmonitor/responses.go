@@ -360,13 +360,13 @@ type MetricAlertsClientUpdateResponse struct {
 	MetricAlertResource
 }
 
-// MetricAlertsStatusClientListByNameResponse contains the response from method MetricAlertsStatusClient.NewListByNamePager.
+// MetricAlertsStatusClientListByNameResponse contains the response from method MetricAlertsStatusClient.ListByName.
 type MetricAlertsStatusClientListByNameResponse struct {
 	// Represents a collection of alert rule resources.
 	MetricAlertStatusCollection
 }
 
-// MetricAlertsStatusClientListResponse contains the response from method MetricAlertsStatusClient.NewListPager.
+// MetricAlertsStatusClientListResponse contains the response from method MetricAlertsStatusClient.List.
 type MetricAlertsStatusClientListResponse struct {
 	// Represents a collection of alert rule resources.
 	MetricAlertStatusCollection
@@ -431,14 +431,9 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse contains the response from method PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager.
+// PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse contains the response from method PrivateEndpointConnectionsClient.ListByPrivateLinkScope.
 type PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse struct {
-	// List of private endpoint connections associated with the specified resource before version v6.
-	// This model represents the standard `PrivateEndpointConnectionResourceListResult` envelope for versions v3, v4, and v5.
-	// It has been deprecated for v6 and beyond.
-	// Note: This is only intended for use with versions before v6. Do not use this if you are already on CommonTypes.Version.v6
-	// or beyond.
-	// If you are migrating to v6 or above, use `PrivateEndpointConnectionResourceListResult` directly.
+	// List of private endpoint connection associated with the specified storage account
 	PrivateEndpointConnectionListResult
 }
 

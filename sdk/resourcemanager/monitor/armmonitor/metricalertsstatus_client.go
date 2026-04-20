@@ -39,35 +39,33 @@ func NewMetricAlertsStatusClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
-// NewListPager - Retrieve an alert rule status.
+// List - Retrieve an alert rule status.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ruleName - The name of the rule.
-//   - options - MetricAlertsStatusClientListOptions contains the optional parameters for the MetricAlertsStatusClient.NewListPager
-//     method.
-func (client *MetricAlertsStatusClient) NewListPager(resourceGroupName string, ruleName string, options *MetricAlertsStatusClientListOptions) *runtime.Pager[MetricAlertsStatusClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[MetricAlertsStatusClientListResponse]{
-		More: func(page MetricAlertsStatusClientListResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *MetricAlertsStatusClientListResponse) (MetricAlertsStatusClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricAlertsStatusClient.NewListPager")
-			req, err := client.listCreateRequest(ctx, resourceGroupName, ruleName, options)
-			if err != nil {
-				return MetricAlertsStatusClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MetricAlertsStatusClientListResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MetricAlertsStatusClientListResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+//   - options - MetricAlertsStatusClientListOptions contains the optional parameters for the MetricAlertsStatusClient.List method.
+func (client *MetricAlertsStatusClient) List(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsStatusClientListOptions) (MetricAlertsStatusClientListResponse, error) {
+	var err error
+	const operationName = "MetricAlertsStatusClient.List"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCreateRequest(ctx, resourceGroupName, ruleName, options)
+	if err != nil {
+		return MetricAlertsStatusClientListResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return MetricAlertsStatusClientListResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return MetricAlertsStatusClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -105,36 +103,35 @@ func (client *MetricAlertsStatusClient) listHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListByNamePager - Retrieve an alert rule status.
+// ListByName - Retrieve an alert rule status.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2024-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ruleName - The name of the rule.
 //   - statusName - The name of the status.
-//   - options - MetricAlertsStatusClientListByNameOptions contains the optional parameters for the MetricAlertsStatusClient.NewListByNamePager
+//   - options - MetricAlertsStatusClientListByNameOptions contains the optional parameters for the MetricAlertsStatusClient.ListByName
 //     method.
-func (client *MetricAlertsStatusClient) NewListByNamePager(resourceGroupName string, ruleName string, statusName string, options *MetricAlertsStatusClientListByNameOptions) *runtime.Pager[MetricAlertsStatusClientListByNameResponse] {
-	return runtime.NewPager(runtime.PagingHandler[MetricAlertsStatusClientListByNameResponse]{
-		More: func(page MetricAlertsStatusClientListByNameResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *MetricAlertsStatusClientListByNameResponse) (MetricAlertsStatusClientListByNameResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MetricAlertsStatusClient.NewListByNamePager")
-			req, err := client.listByNameCreateRequest(ctx, resourceGroupName, ruleName, statusName, options)
-			if err != nil {
-				return MetricAlertsStatusClientListByNameResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return MetricAlertsStatusClientListByNameResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return MetricAlertsStatusClientListByNameResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listByNameHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *MetricAlertsStatusClient) ListByName(ctx context.Context, resourceGroupName string, ruleName string, statusName string, options *MetricAlertsStatusClientListByNameOptions) (MetricAlertsStatusClientListByNameResponse, error) {
+	var err error
+	const operationName = "MetricAlertsStatusClient.ListByName"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listByNameCreateRequest(ctx, resourceGroupName, ruleName, statusName, options)
+	if err != nil {
+		return MetricAlertsStatusClientListByNameResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return MetricAlertsStatusClientListByNameResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return MetricAlertsStatusClientListByNameResponse{}, err
+	}
+	resp, err := client.listByNameHandleResponse(httpResp)
+	return resp, err
 }
 
 // listByNameCreateRequest creates the ListByName request.

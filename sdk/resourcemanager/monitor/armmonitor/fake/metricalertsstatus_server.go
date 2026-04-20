@@ -5,6 +5,7 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
@@ -18,32 +19,26 @@ import (
 
 // MetricAlertsStatusServer is a fake server for instances of the armmonitor.MetricAlertsStatusClient type.
 type MetricAlertsStatusServer struct {
-	// NewListPager is the fake for method MetricAlertsStatusClient.NewListPager
+	// List is the fake for method MetricAlertsStatusClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, ruleName string, options *armmonitor.MetricAlertsStatusClientListOptions) (resp azfake.PagerResponder[armmonitor.MetricAlertsStatusClientListResponse])
+	List func(ctx context.Context, resourceGroupName string, ruleName string, options *armmonitor.MetricAlertsStatusClientListOptions) (resp azfake.Responder[armmonitor.MetricAlertsStatusClientListResponse], errResp azfake.ErrorResponder)
 
-	// NewListByNamePager is the fake for method MetricAlertsStatusClient.NewListByNamePager
+	// ListByName is the fake for method MetricAlertsStatusClient.ListByName
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByNamePager func(resourceGroupName string, ruleName string, statusName string, options *armmonitor.MetricAlertsStatusClientListByNameOptions) (resp azfake.PagerResponder[armmonitor.MetricAlertsStatusClientListByNameResponse])
+	ListByName func(ctx context.Context, resourceGroupName string, ruleName string, statusName string, options *armmonitor.MetricAlertsStatusClientListByNameOptions) (resp azfake.Responder[armmonitor.MetricAlertsStatusClientListByNameResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMetricAlertsStatusServerTransport creates a new instance of MetricAlertsStatusServerTransport with the provided implementation.
 // The returned MetricAlertsStatusServerTransport instance is connected to an instance of armmonitor.MetricAlertsStatusClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMetricAlertsStatusServerTransport(srv *MetricAlertsStatusServer) *MetricAlertsStatusServerTransport {
-	return &MetricAlertsStatusServerTransport{
-		srv:                srv,
-		newListPager:       newTracker[azfake.PagerResponder[armmonitor.MetricAlertsStatusClientListResponse]](),
-		newListByNamePager: newTracker[azfake.PagerResponder[armmonitor.MetricAlertsStatusClientListByNameResponse]](),
-	}
+	return &MetricAlertsStatusServerTransport{srv: srv}
 }
 
 // MetricAlertsStatusServerTransport connects instances of armmonitor.MetricAlertsStatusClient to instances of MetricAlertsStatusServer.
 // Don't use this type directly, use NewMetricAlertsStatusServerTransport instead.
 type MetricAlertsStatusServerTransport struct {
-	srv                *MetricAlertsStatusServer
-	newListPager       *tracker[azfake.PagerResponder[armmonitor.MetricAlertsStatusClientListResponse]]
-	newListByNamePager *tracker[azfake.PagerResponder[armmonitor.MetricAlertsStatusClientListByNameResponse]]
+	srv *MetricAlertsStatusServer
 }
 
 // Do implements the policy.Transporter interface for MetricAlertsStatusServerTransport.
@@ -69,10 +64,10 @@ func (m *MetricAlertsStatusServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
-			case "MetricAlertsStatusClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
-			case "MetricAlertsStatusClient.NewListByNamePager":
-				res.resp, res.err = m.dispatchNewListByNamePager(req)
+			case "MetricAlertsStatusClient.List":
+				res.resp, res.err = m.dispatchList(req)
+			case "MetricAlertsStatusClient.ListByName":
+				res.resp, res.err = m.dispatchListByName(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -92,82 +87,72 @@ func (m *MetricAlertsStatusServerTransport) dispatchToMethodFake(req *http.Reque
 	}
 }
 
-func (m *MetricAlertsStatusServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (m *MetricAlertsStatusServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
+	if m.srv.List == nil {
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	newListPager := m.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListPager(resourceGroupNameParam, ruleNameParam, nil)
-		newListPager = &resp
-		m.newListPager.add(req, newListPager)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListPager) {
-		m.newListPager.remove(req)
+	respr, errRespr := m.srv.List(req.Context(), resourceGroupNameParam, ruleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MetricAlertStatusCollection, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
 
-func (m *MetricAlertsStatusServerTransport) dispatchNewListByNamePager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListByNamePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByNamePager not implemented")}
+func (m *MetricAlertsStatusServerTransport) dispatchListByName(req *http.Request) (*http.Response, error) {
+	if m.srv.ListByName == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListByName not implemented")}
 	}
-	newListByNamePager := m.newListByNamePager.get(req)
-	if newListByNamePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status/(?P<statusName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
-		if err != nil {
-			return nil, err
-		}
-		statusNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("statusName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListByNamePager(resourceGroupNameParam, ruleNameParam, statusNameParam, nil)
-		newListByNamePager = &resp
-		m.newListByNamePager.add(req, newListByNamePager)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/metricAlerts/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/status/(?P<statusName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListByNamePager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListByNamePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListByNamePager) {
-		m.newListByNamePager.remove(req)
+	statusNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("statusName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.ListByName(req.Context(), resourceGroupNameParam, ruleNameParam, statusNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MetricAlertStatusCollection, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

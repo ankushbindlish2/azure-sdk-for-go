@@ -382,13 +382,13 @@ type MetricAlertsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MetricAlertsStatusClientListByNameOptions contains the optional parameters for the MetricAlertsStatusClient.NewListByNamePager
+// MetricAlertsStatusClientListByNameOptions contains the optional parameters for the MetricAlertsStatusClient.ListByName
 // method.
 type MetricAlertsStatusClientListByNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MetricAlertsStatusClientListOptions contains the optional parameters for the MetricAlertsStatusClient.NewListPager method.
+// MetricAlertsStatusClientListOptions contains the optional parameters for the MetricAlertsStatusClient.List method.
 type MetricAlertsStatusClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -607,7 +607,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager
+// PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByPrivateLinkScope
 // method.
 type PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions struct {
 	// placeholder for future optional parameters
