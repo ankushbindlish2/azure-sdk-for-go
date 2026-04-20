@@ -65,11 +65,11 @@ func (testsuite *AttestationTestSuite) Prepare() {
 	fmt.Println("Call operation: AttestationProviders_Create")
 	providersClient, err := armattestation.NewProvidersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = providersClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.providerName, armattestation.ServiceCreationParams{
+	providersClientCreateResponse, err := providersClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.providerName, armattestation.ServiceCreationParams{
 		Location: to.Ptr(testsuite.location),
 	}, nil)
 	testsuite.Require().NoError(err)
-	testsuite.attestationId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Attestation/attestationProviders/%s", testsuite.subscriptionId, testsuite.resourceGroupName, testsuite.providerName)
+	testsuite.attestationId = *providersClientCreateResponse.ID
 }
 
 // Microsoft.Attestation/attestationProviders/{providerName}
@@ -267,9 +267,10 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 	for privateEndpointConnectionsClientNewListPager.More() {
 		nextResult, err := privateEndpointConnectionsClientNewListPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-		testsuite.Require().NotEmpty(nextResult.Value)
-		privateEndpointConnectionName = fmt.Sprintf("epattestation.%s", testsuite.subscriptionId)
-		privateEndpointConnectionId = fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Attestation/attestationProviders/%s/privateEndpointConnections/%s", testsuite.subscriptionId, testsuite.resourceGroupName, testsuite.providerName, privateEndpointConnectionName)
+
+		privateEndpointConnectionId = *nextResult.Value[0].ID
+
+		privateEndpointConnectionName = *nextResult.Value[0].Name
 		break
 	}
 
