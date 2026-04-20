@@ -65,6 +65,8 @@ type AccessRuleProperties struct {
 	Subscriptions *AccessRulePropertiesSubscriptionsItem
 }
 
+// AccessRulePropertiesSubscriptionsItem - we add this model in order to replace subscriptions model in CommonTypes with this
+// model via alternateType decorator
 type AccessRulePropertiesSubscriptionsItem struct {
 	// The fully qualified Azure resource ID of the subscription e.g. ('/subscriptions/00000000-0000-0000-0000-000000000000')
 	ID *string
@@ -91,20 +93,14 @@ type ActionDetail struct {
 	SubState *string
 }
 
-// ActionGroup - A pointer to an Azure Action Group.
+// ActionGroup - An Azure action group.
 type ActionGroup struct {
-	// REQUIRED; REQUIRED; The resource ID of the Action Group. This cannot be null or empty.
-	ActionGroupID *string
-
-	// REQUIRED; REQUIRED; Indicates whether this action group is enabled. If an action group is not enabled, then none of its
-	// receivers will receive communications.
+	// REQUIRED; Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers
+	// will receive communications.
 	Enabled *bool
 
-	// REQUIRED; REQUIRED; The short name of the action group. This will be used in SMS messages.
+	// REQUIRED; The short name of the action group. This will be used in SMS messages.
 	GroupShortName *string
-
-	// Predefined list of properties and configuration items for the action group.
-	ActionProperties map[string]*string
 
 	// The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are
 	// supported.
@@ -139,65 +135,6 @@ type ActionGroup struct {
 
 	// The list of voice receivers that are part of this action group.
 	VoiceReceivers []*VoiceReceiver
-
-	// the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload.
-	WebhookProperties map[string]*string
-
-	// The list of webhook receivers that are part of this action group.
-	WebhookReceivers []*WebhookReceiver
-}
-
-// ActionGroup - A pointer to an Azure Action Group.
-type ActionGroup struct {
-	// REQUIRED; REQUIRED; The resource ID of the Action Group. This cannot be null or empty.
-	ActionGroupID *string
-
-	// REQUIRED; REQUIRED; Indicates whether this action group is enabled. If an action group is not enabled, then none of its
-	// receivers will receive communications.
-	Enabled *bool
-
-	// REQUIRED; REQUIRED; The short name of the action group. This will be used in SMS messages.
-	GroupShortName *string
-
-	// Predefined list of properties and configuration items for the action group.
-	ActionProperties map[string]*string
-
-	// The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are
-	// supported.
-	ArmRoleReceivers []*ArmRoleReceiver
-
-	// The list of AutomationRunbook receivers that are part of this action group.
-	AutomationRunbookReceivers []*AutomationRunbookReceiver
-
-	// The list of AzureAppPush receivers that are part of this action group.
-	AzureAppPushReceivers []*AzureAppPushReceiver
-
-	// The list of azure function receivers that are part of this action group.
-	AzureFunctionReceivers []*AzureFunctionReceiver
-
-	// The list of email receivers that are part of this action group.
-	EmailReceivers []*EmailReceiver
-
-	// The list of event hub receivers that are part of this action group.
-	EventHubReceivers []*EventHubReceiver
-
-	// The list of incident receivers that are part of this action group.
-	IncidentReceivers []*IncidentReceiver
-
-	// The list of ITSM receivers that are part of this action group.
-	ItsmReceivers []*ItsmReceiver
-
-	// The list of logic app receivers that are part of this action group.
-	LogicAppReceivers []*LogicAppReceiver
-
-	// The list of SMS receivers that are part of this action group.
-	SmsReceivers []*SmsReceiver
-
-	// The list of voice receivers that are part of this action group.
-	VoiceReceivers []*VoiceReceiver
-
-	// the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload.
-	WebhookProperties map[string]*string
 
 	// The list of webhook receivers that are part of this action group.
 	WebhookReceivers []*WebhookReceiver
@@ -260,7 +197,7 @@ type ActionGroupResource struct {
 // ActionList - A list of Activity Log Alert rule actions.
 type ActionList struct {
 	// The list of the Action Groups.
-	ActionGroups []*ActionGroup
+	ActionGroups []*ActivityLogAlertActionGroup
 }
 
 // Actions to invoke when the alert fires.
@@ -273,6 +210,18 @@ type Actions struct {
 
 	// The properties of an alert payload.
 	CustomProperties map[string]*string
+}
+
+// ActivityLogAlertActionGroup - A pointer to an Azure Action Group.
+type ActivityLogAlertActionGroup struct {
+	// REQUIRED; The resource ID of the Action Group. This cannot be null or empty.
+	ActionGroupID *string
+
+	// Predefined list of properties and configuration items for the action group.
+	ActionProperties map[string]*string
+
+	// the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload.
+	WebhookProperties map[string]*string
 }
 
 // ActivityLogAlertResource - An Activity Log Alert rule resource.
@@ -1641,59 +1590,17 @@ type HTTPRequestInfo struct {
 
 // Identity for the resource.
 type Identity struct {
-	// REQUIRED; REQUIRED; Type of managed service identity. Previously undocumented values might be returned
+	// REQUIRED; Type of managed service identity.
 	Type *IdentityType
-
-	// REQUIRED; REQUIRED; Type of managed service identity.
-	Type *IdentityType
-
-	// The list of user identities associated with the resource. The user identity dictionary key references will be Azure resource
-	// ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserIdentityProperties
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentityProperties
 
-	// READ-ONLY; READ-ONLY; The principal ID of resource identity.
+	// READ-ONLY; The principal ID of resource identity.
 	PrincipalID *string
 
-	// READ-ONLY; READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string
-
-	// READ-ONLY; READ-ONLY; The tenant ID of resource.
-	TenantID *string
-
-	// READ-ONLY; READ-ONLY; The tenant ID of resource.
-	TenantID *string
-}
-
-// Identity for the resource.
-type Identity struct {
-	// REQUIRED; REQUIRED; Type of managed service identity. Previously undocumented values might be returned
-	Type *IdentityType
-
-	// REQUIRED; REQUIRED; Type of managed service identity.
-	Type *IdentityType
-
-	// The list of user identities associated with the resource. The user identity dictionary key references will be Azure resource
-	// ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserIdentityProperties
-
-	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
-	// ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserIdentityProperties
-
-	// READ-ONLY; READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string
-
-	// READ-ONLY; READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string
-
-	// READ-ONLY; READ-ONLY; The tenant ID of resource.
-	TenantID *string
-
-	// READ-ONLY; READ-ONLY; The tenant ID of resource.
+	// READ-ONLY; The tenant ID of resource.
 	TenantID *string
 }
 
@@ -1790,31 +1697,10 @@ type ItsmReceiver struct {
 
 // LocalizableString - The localizable string class.
 type LocalizableString struct {
-	// REQUIRED; REQUIRED; the invariant value.
-	Value *string
-
-	// REQUIRED; REQUIRED; The invariant value.
+	// REQUIRED; the invariant value.
 	Value *string
 
 	// the locale specific value.
-	LocalizedValue *string
-
-	// The display name.
-	LocalizedValue *string
-}
-
-// LocalizableString - The localizable string class.
-type LocalizableString struct {
-	// REQUIRED; REQUIRED; the invariant value.
-	Value *string
-
-	// REQUIRED; REQUIRED; The invariant value.
-	Value *string
-
-	// the locale specific value.
-	LocalizedValue *string
-
-	// The display name.
 	LocalizedValue *string
 }
 
@@ -3005,76 +2891,22 @@ type PrivateEndpointConnection struct {
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties
 
-	// The private endpoint connection properties
-	Properties *PrivateEndpointConnectionProperties
-
-	// READ-ONLY; READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; READ-ONLY; The name of the resource
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-
-	// READ-ONLY; READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// PrivateEndpointConnection - The Private Endpoint Connection resource.
-type PrivateEndpointConnection struct {
-	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties
-
-	// The private endpoint connection properties
-	Properties *PrivateEndpointConnectionProperties
-
-	// READ-ONLY; READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-
-	// READ-ONLY; READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PrivateEndpointConnectionListResult - List of private endpoint connections associated with the specified resource before
-// version v6.
-// This model represents the standard `PrivateEndpointConnectionResourceListResult` envelope for versions v3, v4, and v5.
-// It has been deprecated for v6 and beyond.
-// Note: This is only intended for use with versions before v6. Do not use this if you are already on CommonTypes.Version.v6
-// or beyond.
-// If you are migrating to v6 or above, use `PrivateEndpointConnectionResourceListResult` directly.
+// PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
-	// Array of private endpoint connections.
+	// Array of private endpoint connections
 	Value []*PrivateEndpointConnection
 }
 
@@ -3350,31 +3182,10 @@ type Response struct {
 
 // RetentionPolicy - Specifies the retention policy for the log.
 type RetentionPolicy struct {
-	// REQUIRED; REQUIRED; the number of days for the retention in days. A value of 0 will retain the events indefinitely.
+	// REQUIRED; the number of days for the retention in days. A value of 0 will retain the events indefinitely.
 	Days *int32
 
-	// REQUIRED; REQUIRED; the number of days for the retention in days. A value of 0 will retain the events indefinitely.
-	Days *int32
-
-	// REQUIRED; REQUIRED; a value indicating whether the retention policy is enabled.
-	Enabled *bool
-
-	// REQUIRED; REQUIRED; a value indicating whether the retention policy is enabled.
-	Enabled *bool
-}
-
-// RetentionPolicy - Specifies the retention policy for the log.
-type RetentionPolicy struct {
-	// REQUIRED; REQUIRED; the number of days for the retention in days. A value of 0 will retain the events indefinitely.
-	Days *int32
-
-	// REQUIRED; REQUIRED; the number of days for the retention in days. A value of 0 will retain the events indefinitely.
-	Days *int32
-
-	// REQUIRED; REQUIRED; a value indicating whether the retention policy is enabled.
-	Enabled *bool
-
-	// REQUIRED; REQUIRED; a value indicating whether the retention policy is enabled.
+	// REQUIRED; a value indicating whether the retention policy is enabled.
 	Enabled *bool
 }
 
@@ -4037,31 +3848,10 @@ type UserAssignedIdentity struct {
 
 // UserIdentityProperties - Properties of the user assigned identity.
 type UserIdentityProperties struct {
-	// READ-ONLY; READ-ONLY; The client ID of resource identity.
+	// READ-ONLY; The client ID of resource identity.
 	ClientID *string
 
-	// READ-ONLY; READ-ONLY; The client id of user assigned identity.
-	ClientID *string
-
-	// READ-ONLY; READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string
-
-	// READ-ONLY; READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string
-}
-
-// UserIdentityProperties - Properties of the user assigned identity.
-type UserIdentityProperties struct {
-	// READ-ONLY; READ-ONLY; The client ID of resource identity.
-	ClientID *string
-
-	// READ-ONLY; READ-ONLY; The client id of user assigned identity.
-	ClientID *string
-
-	// READ-ONLY; READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string
-
-	// READ-ONLY; READ-ONLY; The principal id of user assigned identity.
+	// READ-ONLY; The principal ID of resource identity.
 	PrincipalID *string
 }
 

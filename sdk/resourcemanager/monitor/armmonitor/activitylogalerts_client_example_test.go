@@ -28,7 +28,7 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 		Properties: &armmonitor.AlertRuleProperties{
 			Description: to.Ptr("Description of sample Activity Log Alert rule."),
 			Actions: &armmonitor.ActionList{
-				ActionGroups: []*armmonitor.ActionGroup{
+				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 					{
 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup"),
 						ActionProperties: map[string]*string{
@@ -74,7 +74,7 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 	// 		Properties: &armmonitor.AlertRuleProperties{
 	// 			Description: to.Ptr("Description of sample Activity Log Alert rule."),
 	// 			Actions: &armmonitor.ActionList{
-	// 				ActionGroups: []*armmonitor.ActionGroup{
+	// 				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 	// 					{
 	// 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/microsoft.insights/actionGroups/SampleActionGroup"),
 	// 						ActionProperties: map[string]*string{
@@ -125,7 +125,7 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 		Properties: &armmonitor.AlertRuleProperties{
 			Description: to.Ptr("Description of sample Activity Log Alert rule with 'anyOf' condition."),
 			Actions: &armmonitor.ActionList{
-				ActionGroups: []*armmonitor.ActionGroup{
+				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 					{
 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup"),
 						ActionProperties: map[string]*string{
@@ -179,7 +179,7 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 	// 		Properties: &armmonitor.AlertRuleProperties{
 	// 			Description: to.Ptr("Description of sample Activity Log Alert rule with 'anyOf' condition."),
 	// 			Actions: &armmonitor.ActionList{
-	// 				ActionGroups: []*armmonitor.ActionGroup{
+	// 				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 	// 					{
 	// 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup"),
 	// 						ActionProperties: map[string]*string{
@@ -238,7 +238,7 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 		Properties: &armmonitor.AlertRuleProperties{
 			Description: to.Ptr("Description of sample Activity Log Alert rule with 'containsAny'."),
 			Actions: &armmonitor.ActionList{
-				ActionGroups: []*armmonitor.ActionGroup{
+				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 					{
 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup"),
 						ActionProperties: map[string]*string{
@@ -287,7 +287,7 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 	// 		Properties: &armmonitor.AlertRuleProperties{
 	// 			Description: to.Ptr("Description of sample Activity Log Alert rule with 'containsAny'."),
 	// 			Actions: &armmonitor.ActionList{
-	// 				ActionGroups: []*armmonitor.ActionGroup{
+	// 				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 	// 					{
 	// 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup"),
 	// 						ActionProperties: map[string]*string{
@@ -341,7 +341,7 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 		Properties: &armmonitor.AlertRuleProperties{
 			Description: to.Ptr("Description of sample Activity Log Alert service health rule on tenant level events."),
 			Actions: &armmonitor.ActionList{
-				ActionGroups: []*armmonitor.ActionGroup{
+				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 					{
 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup"),
 						ActionProperties: map[string]*string{
@@ -381,7 +381,7 @@ func ExampleActivityLogAlertsClient_CreateOrUpdate_createOrUpdateAnActivityLogAl
 	// 		Properties: &armmonitor.AlertRuleProperties{
 	// 			Description: to.Ptr("Description of sample Activity Log Alert service health rule on tenant level events."),
 	// 			Actions: &armmonitor.ActionList{
-	// 				ActionGroups: []*armmonitor.ActionGroup{
+	// 				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 	// 					{
 	// 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/microsoft.insights/actionGroups/SampleActionGroup"),
 	// 						ActionProperties: map[string]*string{
@@ -459,7 +459,7 @@ func ExampleActivityLogAlertsClient_Get() {
 	// 		Properties: &armmonitor.AlertRuleProperties{
 	// 			Description: to.Ptr("Description of sample Activity Log Alert rule."),
 	// 			Actions: &armmonitor.ActionList{
-	// 				ActionGroups: []*armmonitor.ActionGroup{
+	// 				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 	// 					{
 	// 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/microsoft.insights/actionGroups/SampleActionGroup"),
 	// 						ActionProperties: map[string]*string{
@@ -527,7 +527,7 @@ func ExampleActivityLogAlertsClient_NewListByResourceGroupPager() {
 		// 				Properties: &armmonitor.AlertRuleProperties{
 		// 					Description: to.Ptr("Description of sample Activity Log Alert rule."),
 		// 					Actions: &armmonitor.ActionList{
-		// 						ActionGroups: []*armmonitor.ActionGroup{
+		// 						ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 		// 							{
 		// 								ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/microsoft.insights/actionGroups/SampleActionGroup"),
 		// 								ActionProperties: map[string]*string{
@@ -567,7 +567,7 @@ func ExampleActivityLogAlertsClient_NewListByResourceGroupPager() {
 		// 				Properties: &armmonitor.AlertRuleProperties{
 		// 					Description: to.Ptr("Description of sample Activity Log Alert rule."),
 		// 					Actions: &armmonitor.ActionList{
-		// 						ActionGroups: []*armmonitor.ActionGroup{
+		// 						ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 		// 							{
 		// 								ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/microsoft.insights/actionGroups/SampleActionGroup"),
 		// 								ActionProperties: map[string]*string{
@@ -637,7 +637,7 @@ func ExampleActivityLogAlertsClient_NewListBySubscriptionIDPager() {
 		// 				Properties: &armmonitor.AlertRuleProperties{
 		// 					Description: to.Ptr("Description of sample Activity Log Alert rule."),
 		// 					Actions: &armmonitor.ActionList{
-		// 						ActionGroups: []*armmonitor.ActionGroup{
+		// 						ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 		// 							{
 		// 								ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup1/providers/microsoft.insights/actionGroups/SampleActionGroup"),
 		// 								ActionProperties: map[string]*string{
@@ -677,7 +677,7 @@ func ExampleActivityLogAlertsClient_NewListBySubscriptionIDPager() {
 		// 				Properties: &armmonitor.AlertRuleProperties{
 		// 					Description: to.Ptr("Description of sample Activity Log Alert rule."),
 		// 					Actions: &armmonitor.ActionList{
-		// 						ActionGroups: []*armmonitor.ActionGroup{
+		// 						ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 		// 							{
 		// 								ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup2/providers/microsoft.insights/actionGroups/SampleActionGroup"),
 		// 								ActionProperties: map[string]*string{
@@ -749,7 +749,7 @@ func ExampleActivityLogAlertsClient_Update() {
 	// 		Properties: &armmonitor.AlertRuleProperties{
 	// 			Description: to.Ptr("Description of sample Activity Log Alert rule."),
 	// 			Actions: &armmonitor.ActionList{
-	// 				ActionGroups: []*armmonitor.ActionGroup{
+	// 				ActionGroups: []*armmonitor.ActivityLogAlertActionGroup{
 	// 					{
 	// 						ActionGroupID: to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/microsoft.insights/actionGroups/SampleActionGroup"),
 	// 						ActionProperties: map[string]*string{

@@ -31,9 +31,9 @@ type PrivateEndpointConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, scopeName string, privateEndpointConnectionName string, options *armmonitor.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armmonitor.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByPrivateLinkScopePager is the fake for method PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager
+	// ListByPrivateLinkScope is the fake for method PrivateEndpointConnectionsClient.ListByPrivateLinkScope
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByPrivateLinkScopePager func(resourceGroupName string, scopeName string, options *armmonitor.PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions) (resp azfake.PagerResponder[armmonitor.PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse])
+	ListByPrivateLinkScope func(ctx context.Context, resourceGroupName string, scopeName string, options *armmonitor.PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions) (resp azfake.Responder[armmonitor.PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -41,20 +41,18 @@ type PrivateEndpointConnectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnectionsServer) *PrivateEndpointConnectionsServerTransport {
 	return &PrivateEndpointConnectionsServerTransport{
-		srv:                            srv,
-		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armmonitor.PrivateEndpointConnectionsClientCreateOrUpdateResponse]](),
-		beginDelete:                    newTracker[azfake.PollerResponder[armmonitor.PrivateEndpointConnectionsClientDeleteResponse]](),
-		newListByPrivateLinkScopePager: newTracker[azfake.PagerResponder[armmonitor.PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armmonitor.PrivateEndpointConnectionsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armmonitor.PrivateEndpointConnectionsClientDeleteResponse]](),
 	}
 }
 
 // PrivateEndpointConnectionsServerTransport connects instances of armmonitor.PrivateEndpointConnectionsClient to instances of PrivateEndpointConnectionsServer.
 // Don't use this type directly, use NewPrivateEndpointConnectionsServerTransport instead.
 type PrivateEndpointConnectionsServerTransport struct {
-	srv                            *PrivateEndpointConnectionsServer
-	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armmonitor.PrivateEndpointConnectionsClientCreateOrUpdateResponse]]
-	beginDelete                    *tracker[azfake.PollerResponder[armmonitor.PrivateEndpointConnectionsClientDeleteResponse]]
-	newListByPrivateLinkScopePager *tracker[azfake.PagerResponder[armmonitor.PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse]]
+	srv                 *PrivateEndpointConnectionsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armmonitor.PrivateEndpointConnectionsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armmonitor.PrivateEndpointConnectionsClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.
@@ -86,8 +84,8 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *ht
 				res.resp, res.err = p.dispatchBeginDelete(req)
 			case "PrivateEndpointConnectionsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
-			case "PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager":
-				res.resp, res.err = p.dispatchNewListByPrivateLinkScopePager(req)
+			case "PrivateEndpointConnectionsClient.ListByPrivateLinkScope":
+				res.resp, res.err = p.dispatchListByPrivateLinkScope(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -244,40 +242,35 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGet(req *http.Reques
 	return resp, nil
 }
 
-func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListByPrivateLinkScopePager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByPrivateLinkScopePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByPrivateLinkScopePager not implemented")}
+func (p *PrivateEndpointConnectionsServerTransport) dispatchListByPrivateLinkScope(req *http.Request) (*http.Response, error) {
+	if p.srv.ListByPrivateLinkScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListByPrivateLinkScope not implemented")}
 	}
-	newListByPrivateLinkScopePager := p.newListByPrivateLinkScopePager.get(req)
-	if newListByPrivateLinkScopePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		scopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByPrivateLinkScopePager(resourceGroupNameParam, scopeNameParam, nil)
-		newListByPrivateLinkScopePager = &resp
-		p.newListByPrivateLinkScopePager.add(req, newListByPrivateLinkScopePager)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/privateLinkScopes/(?P<scopeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListByPrivateLinkScopePager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByPrivateLinkScopePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	scopeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scopeName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListByPrivateLinkScopePager) {
-		p.newListByPrivateLinkScopePager.remove(req)
+	respr, errRespr := p.srv.ListByPrivateLinkScope(req.Context(), resourceGroupNameParam, scopeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnectionListResult, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

@@ -126,7 +126,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 }
 
 // Generated from example definition: 2023-06-01-preview/PrivateEndpointConnectionList.json
-func ExamplePrivateEndpointConnectionsClient_NewListByPrivateLinkScopePager() {
+func ExamplePrivateEndpointConnectionsClient_ListByPrivateLinkScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -136,54 +136,49 @@ func ExamplePrivateEndpointConnectionsClient_NewListByPrivateLinkScopePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPrivateEndpointConnectionsClient().NewListByPrivateLinkScopePager("MyResourceGroup", "MyPrivateLinkScope", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmonitor.PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{
-		// 	PrivateEndpointConnectionListResult: armmonitor.PrivateEndpointConnectionListResult{
-		// 		Value: []*armmonitor.PrivateEndpointConnection{
-		// 			{
-		// 				Name: to.Ptr("private-endpoint-connection-name"),
-		// 				Type: to.Ptr("Microsoft.Insights/privateLinkScopes/privateEndpointConnections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/privateEndpointConnections/private-endpoint-connection-name-2"),
-		// 				Properties: &armmonitor.PrivateEndpointConnectionProperties{
-		// 					PrivateEndpoint: &armmonitor.PrivateEndpoint{
-		// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
-		// 					},
-		// 					PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
-		// 						Description: to.Ptr("Auto-approved"),
-		// 						ActionsRequired: to.Ptr("None"),
-		// 						Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("private-endpoint-connection-name-2"),
-		// 				Type: to.Ptr("Microsoft.Insights/privateLinkScopes/privateEndpointConnections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/privateEndpointConnections/private-endpoint-connection-name-2"),
-		// 				Properties: &armmonitor.PrivateEndpointConnectionProperties{
-		// 					PrivateEndpoint: &armmonitor.PrivateEndpoint{
-		// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name-2"),
-		// 					},
-		// 					PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
-		// 						Description: to.Ptr("Please approve my connection."),
-		// 						ActionsRequired: to.Ptr("None"),
-		// 						Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusPending),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewPrivateEndpointConnectionsClient().ListByPrivateLinkScope(ctx, "MyResourceGroup", "MyPrivateLinkScope", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmonitor.PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{
+	// 	PrivateEndpointConnectionListResult: &armmonitor.PrivateEndpointConnectionListResult{
+	// 		Value: []*armmonitor.PrivateEndpointConnection{
+	// 			{
+	// 				Name: to.Ptr("private-endpoint-connection-name"),
+	// 				Type: to.Ptr("Microsoft.Insights/privateLinkScopes/privateEndpointConnections"),
+	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/privateEndpointConnections/private-endpoint-connection-name-2"),
+	// 				Properties: &armmonitor.PrivateEndpointConnectionProperties{
+	// 					PrivateEndpoint: &armmonitor.PrivateEndpoint{
+	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name"),
+	// 					},
+	// 					PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+	// 						Description: to.Ptr("Auto-approved"),
+	// 						ActionsRequired: to.Ptr("None"),
+	// 						Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusApproved),
+	// 					},
+	// 					ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 				},
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("private-endpoint-connection-name-2"),
+	// 				Type: to.Ptr("Microsoft.Insights/privateLinkScopes/privateEndpointConnections"),
+	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/privateEndpointConnections/private-endpoint-connection-name-2"),
+	// 				Properties: &armmonitor.PrivateEndpointConnectionProperties{
+	// 					PrivateEndpoint: &armmonitor.PrivateEndpoint{
+	// 						ID: to.Ptr("/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-Network/providers/Microsoft.Network/privateEndpoints/private-endpoint-name-2"),
+	// 					},
+	// 					PrivateLinkServiceConnectionState: &armmonitor.PrivateLinkServiceConnectionState{
+	// 						Description: to.Ptr("Please approve my connection."),
+	// 						ActionsRequired: to.Ptr("None"),
+	// 						Status: to.Ptr(armmonitor.PrivateEndpointServiceConnectionStatusPending),
+	// 					},
+	// 					ProvisioningState: to.Ptr(armmonitor.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
 }

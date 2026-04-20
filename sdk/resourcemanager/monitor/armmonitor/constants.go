@@ -248,24 +248,6 @@ func PossibleCriterionTypeValues() []CriterionType {
 	}
 }
 
-// CriterionType - Specifies the type of threshold criteria. Previously undocumented values might be returned
-type CriterionType string
-
-const (
-	// CriterionTypeDynamicThresholdCriterion - DynamicThresholdCriterion
-	CriterionTypeDynamicThresholdCriterion CriterionType = "DynamicThresholdCriterion"
-	// CriterionTypeStaticThresholdCriterion - StaticThresholdCriterion
-	CriterionTypeStaticThresholdCriterion CriterionType = "StaticThresholdCriterion"
-)
-
-// PossibleCriterionTypeValues returns the possible values for the CriterionType const type.
-func PossibleCriterionTypeValues() []CriterionType {
-	return []CriterionType{
-		CriterionTypeDynamicThresholdCriterion,
-		CriterionTypeStaticThresholdCriterion,
-	}
-}
-
 // DimensionOperator - Operator for dimension values
 type DimensionOperator string
 
@@ -355,28 +337,7 @@ func PossibleEventLevelValues() []EventLevel {
 	}
 }
 
-// IdentityType - Type of managed service identity. Previously undocumented values might be returned
-type IdentityType string
-
-const (
-	// IdentityTypeNone - None
-	IdentityTypeNone IdentityType = "None"
-	// IdentityTypeSystemAssigned - SystemAssigned
-	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
-	// IdentityTypeUserAssigned - UserAssigned
-	IdentityTypeUserAssigned IdentityType = "UserAssigned"
-)
-
-// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
-		IdentityTypeNone,
-		IdentityTypeSystemAssigned,
-		IdentityTypeUserAssigned,
-	}
-}
-
-// IdentityType - Type of managed service identity. Previously undocumented values might be returned
+// IdentityType - Type of managed service identity.
 type IdentityType string
 
 const (
@@ -1607,23 +1568,6 @@ func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMo
 		ResourceAssociationAccessModeAudit,
 		ResourceAssociationAccessModeEnforced,
 		ResourceAssociationAccessModeLearning,
-	}
-}
-
-type ResultType string
-
-const (
-	// ResultTypeData - Data
-	ResultTypeData ResultType = "Data"
-	// ResultTypeMetadata - Metadata
-	ResultTypeMetadata ResultType = "Metadata"
-)
-
-// PossibleResultTypeValues returns the possible values for the ResultType const type.
-func PossibleResultTypeValues() []ResultType {
-	return []ResultType{
-		ResultTypeData,
-		ResultTypeMetadata,
 	}
 }
 
