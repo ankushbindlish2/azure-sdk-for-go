@@ -25,8 +25,6 @@ func PossibleComplianceStateValues() []ComplianceState {
 	}
 }
 
-<<<<<<< Updated upstream
-=======
 type ComponentPolicyStatesResource string
 
 const (
@@ -41,7 +39,6 @@ func PossibleComponentPolicyStatesResourceValues() []ComponentPolicyStatesResour
 	}
 }
 
->>>>>>> Stashed changes
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -90,8 +87,6 @@ func PossibleFieldRestrictionResultValues() []FieldRestrictionResult {
 	}
 }
 
-<<<<<<< Updated upstream
-=======
 type PolicyEventsResourceType string
 
 const (
@@ -151,7 +146,6 @@ func PossiblePolicyTrackedResourcesResourceTypeValues() []PolicyTrackedResources
 	}
 }
 
->>>>>>> Stashed changes
 // ResourceDiscoveryMode - The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
 type ResourceDiscoveryMode string
 

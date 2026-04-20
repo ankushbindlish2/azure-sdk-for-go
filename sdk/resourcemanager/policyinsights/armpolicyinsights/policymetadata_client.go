@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -90,8 +91,6 @@ func (client *PolicyMetadataClient) getResourceHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
-<<<<<<< Updated upstream
-=======
 
 // NewListPager - Get a list of the policy metadata resources.
 //
@@ -145,4 +144,3 @@ func (client *PolicyMetadataClient) listHandleResponse(resp *http.Response) (Pol
 	}
 	return result, nil
 }
->>>>>>> Stashed changes

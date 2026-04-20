@@ -11,10 +11,12 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // RemediationsServer is a fake server for instances of the armpolicyinsights.RemediationsClient type.
@@ -82,8 +84,6 @@ type RemediationsServer struct {
 	// GetAtSubscription is the fake for method RemediationsClient.GetAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAtSubscription func(ctx context.Context, remediationName string, options *armpolicyinsights.RemediationsClientGetAtSubscriptionOptions) (resp azfake.Responder[armpolicyinsights.RemediationsClientGetAtSubscriptionResponse], errResp azfake.ErrorResponder)
-<<<<<<< Updated upstream
-=======
 
 	// NewListDeploymentsAtManagementGroupPager is the fake for method RemediationsClient.NewListDeploymentsAtManagementGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -116,20 +116,37 @@ type RemediationsServer struct {
 	// NewListForSubscriptionPager is the fake for method RemediationsClient.NewListForSubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForSubscriptionPager func(options *armpolicyinsights.RemediationsClientListForSubscriptionOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListForSubscriptionResponse])
->>>>>>> Stashed changes
 }
 
 // NewRemediationsServerTransport creates a new instance of RemediationsServerTransport with the provided implementation.
 // The returned RemediationsServerTransport instance is connected to an instance of armpolicyinsights.RemediationsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRemediationsServerTransport(srv *RemediationsServer) *RemediationsServerTransport {
-	return &RemediationsServerTransport{srv: srv}
+	return &RemediationsServerTransport{
+		srv:                                      srv,
+		newListDeploymentsAtManagementGroupPager: newTracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtManagementGroupResponse]](),
+		newListDeploymentsAtResourcePager:        newTracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtResourceResponse]](),
+		newListDeploymentsAtResourceGroupPager:   newTracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtResourceGroupResponse]](),
+		newListDeploymentsAtSubscriptionPager:    newTracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtSubscriptionResponse]](),
+		newListForManagementGroupPager:           newTracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListForManagementGroupResponse]](),
+		newListForResourcePager:                  newTracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListForResourceResponse]](),
+		newListForResourceGroupPager:             newTracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListForResourceGroupResponse]](),
+		newListForSubscriptionPager:              newTracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListForSubscriptionResponse]](),
+	}
 }
 
 // RemediationsServerTransport connects instances of armpolicyinsights.RemediationsClient to instances of RemediationsServer.
 // Don't use this type directly, use NewRemediationsServerTransport instead.
 type RemediationsServerTransport struct {
-	srv *RemediationsServer
+	srv                                      *RemediationsServer
+	newListDeploymentsAtManagementGroupPager *tracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtManagementGroupResponse]]
+	newListDeploymentsAtResourcePager        *tracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtResourceResponse]]
+	newListDeploymentsAtResourceGroupPager   *tracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtResourceGroupResponse]]
+	newListDeploymentsAtSubscriptionPager    *tracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtSubscriptionResponse]]
+	newListForManagementGroupPager           *tracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListForManagementGroupResponse]]
+	newListForResourcePager                  *tracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListForResourceResponse]]
+	newListForResourceGroupPager             *tracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListForResourceGroupResponse]]
+	newListForSubscriptionPager              *tracker[azfake.PagerResponder[armpolicyinsights.RemediationsClientListForSubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for RemediationsServerTransport.
@@ -187,6 +204,22 @@ func (r *RemediationsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = r.dispatchGetAtResourceGroup(req)
 			case "RemediationsClient.GetAtSubscription":
 				res.resp, res.err = r.dispatchGetAtSubscription(req)
+			case "RemediationsClient.NewListDeploymentsAtManagementGroupPager":
+				res.resp, res.err = r.dispatchNewListDeploymentsAtManagementGroupPager(req)
+			case "RemediationsClient.NewListDeploymentsAtResourcePager":
+				res.resp, res.err = r.dispatchNewListDeploymentsAtResourcePager(req)
+			case "RemediationsClient.NewListDeploymentsAtResourceGroupPager":
+				res.resp, res.err = r.dispatchNewListDeploymentsAtResourceGroupPager(req)
+			case "RemediationsClient.NewListDeploymentsAtSubscriptionPager":
+				res.resp, res.err = r.dispatchNewListDeploymentsAtSubscriptionPager(req)
+			case "RemediationsClient.NewListForManagementGroupPager":
+				res.resp, res.err = r.dispatchNewListForManagementGroupPager(req)
+			case "RemediationsClient.NewListForResourcePager":
+				res.resp, res.err = r.dispatchNewListForResourcePager(req)
+			case "RemediationsClient.NewListForResourceGroupPager":
+				res.resp, res.err = r.dispatchNewListForResourceGroupPager(req)
+			case "RemediationsClient.NewListForSubscriptionPager":
+				res.resp, res.err = r.dispatchNewListForSubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -734,8 +767,6 @@ func (r *RemediationsServerTransport) dispatchGetAtSubscription(req *http.Reques
 	return resp, nil
 }
 
-<<<<<<< Updated upstream
-=======
 func (r *RemediationsServerTransport) dispatchNewListDeploymentsAtManagementGroupPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListDeploymentsAtManagementGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListDeploymentsAtManagementGroupPager not implemented")}
@@ -1232,7 +1263,6 @@ func (r *RemediationsServerTransport) dispatchNewListForSubscriptionPager(req *h
 	return resp, nil
 }
 
->>>>>>> Stashed changes
 // set this to conditionally intercept incoming requests to RemediationsServerTransport
 var remediationsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error

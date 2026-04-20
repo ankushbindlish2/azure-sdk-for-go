@@ -11,16 +11,17 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
+	"time"
 )
 
 // PolicyStatesServer is a fake server for instances of the armpolicyinsights.PolicyStatesClient type.
 type PolicyStatesServer struct {
-<<<<<<< Updated upstream
-=======
 	// NewListQueryResultsForManagementGroupPager is the fake for method PolicyStatesClient.NewListQueryResultsForManagementGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListQueryResultsForManagementGroupPager func(policyStatesResource armpolicyinsights.PolicyStatesResource, managementGroupName string, options *armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupResponse])
@@ -85,7 +86,6 @@ type PolicyStatesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	SummarizeForSubscriptionLevelPolicyAssignment func(ctx context.Context, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, policyAssignmentName string, options *armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse], errResp azfake.ErrorResponder)
 
->>>>>>> Stashed changes
 	// BeginTriggerResourceGroupEvaluation is the fake for method PolicyStatesClient.BeginTriggerResourceGroupEvaluation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginTriggerResourceGroupEvaluation func(ctx context.Context, resourceGroupName string, options *armpolicyinsights.PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions) (resp azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerResourceGroupEvaluationResponse], errResp azfake.ErrorResponder)
@@ -100,18 +100,34 @@ type PolicyStatesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPolicyStatesServerTransport(srv *PolicyStatesServer) *PolicyStatesServerTransport {
 	return &PolicyStatesServerTransport{
-		srv:                                 srv,
-		beginTriggerResourceGroupEvaluation: newTracker[azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerResourceGroupEvaluationResponse]](),
-		beginTriggerSubscriptionEvaluation:  newTracker[azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerSubscriptionEvaluationResponse]](),
+		srv: srv,
+		newListQueryResultsForManagementGroupPager:                    newTracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupResponse]](),
+		newListQueryResultsForPolicyDefinitionPager:                   newTracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForPolicyDefinitionResponse]](),
+		newListQueryResultsForPolicySetDefinitionPager:                newTracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse]](),
+		newListQueryResultsForResourcePager:                           newTracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceResponse]](),
+		newListQueryResultsForResourceGroupPager:                      newTracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupResponse]](),
+		newListQueryResultsForResourceGroupLevelPolicyAssignmentPager: newTracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]](),
+		newListQueryResultsForSubscriptionPager:                       newTracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionResponse]](),
+		newListQueryResultsForSubscriptionLevelPolicyAssignmentPager:  newTracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]](),
+		beginTriggerResourceGroupEvaluation:                           newTracker[azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerResourceGroupEvaluationResponse]](),
+		beginTriggerSubscriptionEvaluation:                            newTracker[azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerSubscriptionEvaluationResponse]](),
 	}
 }
 
 // PolicyStatesServerTransport connects instances of armpolicyinsights.PolicyStatesClient to instances of PolicyStatesServer.
 // Don't use this type directly, use NewPolicyStatesServerTransport instead.
 type PolicyStatesServerTransport struct {
-	srv                                 *PolicyStatesServer
-	beginTriggerResourceGroupEvaluation *tracker[azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerResourceGroupEvaluationResponse]]
-	beginTriggerSubscriptionEvaluation  *tracker[azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerSubscriptionEvaluationResponse]]
+	srv                                                           *PolicyStatesServer
+	newListQueryResultsForManagementGroupPager                    *tracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupResponse]]
+	newListQueryResultsForPolicyDefinitionPager                   *tracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForPolicyDefinitionResponse]]
+	newListQueryResultsForPolicySetDefinitionPager                *tracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse]]
+	newListQueryResultsForResourcePager                           *tracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceResponse]]
+	newListQueryResultsForResourceGroupPager                      *tracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupResponse]]
+	newListQueryResultsForResourceGroupLevelPolicyAssignmentPager *tracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]]
+	newListQueryResultsForSubscriptionPager                       *tracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionResponse]]
+	newListQueryResultsForSubscriptionLevelPolicyAssignmentPager  *tracker[azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]]
+	beginTriggerResourceGroupEvaluation                           *tracker[azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerResourceGroupEvaluationResponse]]
+	beginTriggerSubscriptionEvaluation                            *tracker[azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerSubscriptionEvaluationResponse]]
 }
 
 // Do implements the policy.Transporter interface for PolicyStatesServerTransport.
@@ -137,6 +153,38 @@ func (p *PolicyStatesServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "PolicyStatesClient.NewListQueryResultsForManagementGroupPager":
+				res.resp, res.err = p.dispatchNewListQueryResultsForManagementGroupPager(req)
+			case "PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager":
+				res.resp, res.err = p.dispatchNewListQueryResultsForPolicyDefinitionPager(req)
+			case "PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager":
+				res.resp, res.err = p.dispatchNewListQueryResultsForPolicySetDefinitionPager(req)
+			case "PolicyStatesClient.NewListQueryResultsForResourcePager":
+				res.resp, res.err = p.dispatchNewListQueryResultsForResourcePager(req)
+			case "PolicyStatesClient.NewListQueryResultsForResourceGroupPager":
+				res.resp, res.err = p.dispatchNewListQueryResultsForResourceGroupPager(req)
+			case "PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager":
+				res.resp, res.err = p.dispatchNewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(req)
+			case "PolicyStatesClient.NewListQueryResultsForSubscriptionPager":
+				res.resp, res.err = p.dispatchNewListQueryResultsForSubscriptionPager(req)
+			case "PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager":
+				res.resp, res.err = p.dispatchNewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(req)
+			case "PolicyStatesClient.SummarizeForManagementGroup":
+				res.resp, res.err = p.dispatchSummarizeForManagementGroup(req)
+			case "PolicyStatesClient.SummarizeForPolicyDefinition":
+				res.resp, res.err = p.dispatchSummarizeForPolicyDefinition(req)
+			case "PolicyStatesClient.SummarizeForPolicySetDefinition":
+				res.resp, res.err = p.dispatchSummarizeForPolicySetDefinition(req)
+			case "PolicyStatesClient.SummarizeForResource":
+				res.resp, res.err = p.dispatchSummarizeForResource(req)
+			case "PolicyStatesClient.SummarizeForResourceGroup":
+				res.resp, res.err = p.dispatchSummarizeForResourceGroup(req)
+			case "PolicyStatesClient.SummarizeForResourceGroupLevelPolicyAssignment":
+				res.resp, res.err = p.dispatchSummarizeForResourceGroupLevelPolicyAssignment(req)
+			case "PolicyStatesClient.SummarizeForSubscription":
+				res.resp, res.err = p.dispatchSummarizeForSubscription(req)
+			case "PolicyStatesClient.SummarizeForSubscriptionLevelPolicyAssignment":
+				res.resp, res.err = p.dispatchSummarizeForSubscriptionLevelPolicyAssignment(req)
 			case "PolicyStatesClient.BeginTriggerResourceGroupEvaluation":
 				res.resp, res.err = p.dispatchBeginTriggerResourceGroupEvaluation(req)
 			case "PolicyStatesClient.BeginTriggerSubscriptionEvaluation":
@@ -160,8 +208,6 @@ func (p *PolicyStatesServerTransport) dispatchToMethodFake(req *http.Request, me
 	}
 }
 
-<<<<<<< Updated upstream
-=======
 func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForManagementGroupPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListQueryResultsForManagementGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForManagementGroupPager not implemented")}
@@ -1768,7 +1814,6 @@ func (p *PolicyStatesServerTransport) dispatchSummarizeForSubscriptionLevelPolic
 	return resp, nil
 }
 
->>>>>>> Stashed changes
 func (p *PolicyStatesServerTransport) dispatchBeginTriggerResourceGroupEvaluation(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginTriggerResourceGroupEvaluation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerResourceGroupEvaluation not implemented")}

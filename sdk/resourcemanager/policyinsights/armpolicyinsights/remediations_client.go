@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -1050,8 +1051,6 @@ func (client *RemediationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
-<<<<<<< Updated upstream
-=======
 
 // NewListDeploymentsAtManagementGroupPager - Gets all deployments for a remediation at management group scope.
 //
@@ -1556,4 +1555,3 @@ func (client *RemediationsClient) listForSubscriptionHandleResponse(resp *http.R
 	}
 	return result, nil
 }
->>>>>>> Stashed changes

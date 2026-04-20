@@ -40,8 +40,6 @@ func (c *ClientFactory) NewAttestationsClient() *AttestationsClient {
 	}
 }
 
-<<<<<<< Updated upstream
-=======
 // NewComponentPolicyStatesClient creates a new instance of ComponentPolicyStatesClient.
 func (c *ClientFactory) NewComponentPolicyStatesClient() *ComponentPolicyStatesClient {
 	return &ComponentPolicyStatesClient{
@@ -50,7 +48,6 @@ func (c *ClientFactory) NewComponentPolicyStatesClient() *ComponentPolicyStatesC
 	}
 }
 
->>>>>>> Stashed changes
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -58,8 +55,6 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-<<<<<<< Updated upstream
-=======
 // NewPolicyEventsClient creates a new instance of PolicyEventsClient.
 func (c *ClientFactory) NewPolicyEventsClient() *PolicyEventsClient {
 	return &PolicyEventsClient{
@@ -68,7 +63,6 @@ func (c *ClientFactory) NewPolicyEventsClient() *PolicyEventsClient {
 	}
 }
 
->>>>>>> Stashed changes
 // NewPolicyMetadataClient creates a new instance of PolicyMetadataClient.
 func (c *ClientFactory) NewPolicyMetadataClient() *PolicyMetadataClient {
 	return &PolicyMetadataClient{
@@ -87,8 +81,6 @@ func (c *ClientFactory) NewPolicyRestrictionsClient() *PolicyRestrictionsClient 
 // NewPolicyStatesClient creates a new instance of PolicyStatesClient.
 func (c *ClientFactory) NewPolicyStatesClient() *PolicyStatesClient {
 	return &PolicyStatesClient{
-<<<<<<< Updated upstream
-=======
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -97,7 +89,6 @@ func (c *ClientFactory) NewPolicyStatesClient() *PolicyStatesClient {
 // NewPolicyTrackedResourcesClient creates a new instance of PolicyTrackedResourcesClient.
 func (c *ClientFactory) NewPolicyTrackedResourcesClient() *PolicyTrackedResourcesClient {
 	return &PolicyTrackedResourcesClient{
->>>>>>> Stashed changes
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

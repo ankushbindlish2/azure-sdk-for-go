@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -611,8 +612,6 @@ func (client *AttestationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
-<<<<<<< Updated upstream
-=======
 
 // NewListForResourcePager - Gets all attestations for a resource.
 //
@@ -801,4 +800,3 @@ func (client *AttestationsClient) listForSubscriptionHandleResponse(resp *http.R
 	}
 	return result, nil
 }
->>>>>>> Stashed changes

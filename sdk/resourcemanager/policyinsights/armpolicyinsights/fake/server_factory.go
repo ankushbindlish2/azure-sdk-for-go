@@ -18,8 +18,14 @@ type ServerFactory struct {
 	// AttestationsServer contains the fakes for client AttestationsClient
 	AttestationsServer AttestationsServer
 
+	// ComponentPolicyStatesServer contains the fakes for client ComponentPolicyStatesClient
+	ComponentPolicyStatesServer ComponentPolicyStatesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// PolicyEventsServer contains the fakes for client PolicyEventsClient
+	PolicyEventsServer PolicyEventsServer
 
 	// PolicyMetadataServer contains the fakes for client PolicyMetadataClient
 	PolicyMetadataServer PolicyMetadataServer
@@ -29,6 +35,9 @@ type ServerFactory struct {
 
 	// PolicyStatesServer contains the fakes for client PolicyStatesClient
 	PolicyStatesServer PolicyStatesServer
+
+	// PolicyTrackedResourcesServer contains the fakes for client PolicyTrackedResourcesClient
+	PolicyTrackedResourcesServer PolicyTrackedResourcesServer
 
 	// RemediationsServer contains the fakes for client RemediationsClient
 	RemediationsServer RemediationsServer
@@ -46,14 +55,17 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armpolicyinsights.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                        *ServerFactory
-	trMu                       sync.Mutex
-	trAttestationsServer       *AttestationsServerTransport
-	trOperationsServer         *OperationsServerTransport
-	trPolicyMetadataServer     *PolicyMetadataServerTransport
-	trPolicyRestrictionsServer *PolicyRestrictionsServerTransport
-	trPolicyStatesServer       *PolicyStatesServerTransport
-	trRemediationsServer       *RemediationsServerTransport
+	srv                            *ServerFactory
+	trMu                           sync.Mutex
+	trAttestationsServer           *AttestationsServerTransport
+	trComponentPolicyStatesServer  *ComponentPolicyStatesServerTransport
+	trOperationsServer             *OperationsServerTransport
+	trPolicyEventsServer           *PolicyEventsServerTransport
+	trPolicyMetadataServer         *PolicyMetadataServerTransport
+	trPolicyRestrictionsServer     *PolicyRestrictionsServerTransport
+	trPolicyStatesServer           *PolicyStatesServerTransport
+	trPolicyTrackedResourcesServer *PolicyTrackedResourcesServerTransport
+	trRemediationsServer           *RemediationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -72,11 +84,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AttestationsClient":
 		initServer(&s.trMu, &s.trAttestationsServer, func() *AttestationsServerTransport { return NewAttestationsServerTransport(&s.srv.AttestationsServer) })
 		resp, err = s.trAttestationsServer.Do(req)
-<<<<<<< Updated upstream
-	case "OperationsClient":
-		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
-		resp, err = s.trOperationsServer.Do(req)
-=======
 	case "ComponentPolicyStatesClient":
 		initServer(&s.trMu, &s.trComponentPolicyStatesServer, func() *ComponentPolicyStatesServerTransport {
 			return NewComponentPolicyStatesServerTransport(&s.srv.ComponentPolicyStatesServer)
@@ -88,7 +95,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PolicyEventsClient":
 		initServer(&s.trMu, &s.trPolicyEventsServer, func() *PolicyEventsServerTransport { return NewPolicyEventsServerTransport(&s.srv.PolicyEventsServer) })
 		resp, err = s.trPolicyEventsServer.Do(req)
->>>>>>> Stashed changes
 	case "PolicyMetadataClient":
 		initServer(&s.trMu, &s.trPolicyMetadataServer, func() *PolicyMetadataServerTransport {
 			return NewPolicyMetadataServerTransport(&s.srv.PolicyMetadataServer)
@@ -102,14 +108,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PolicyStatesClient":
 		initServer(&s.trMu, &s.trPolicyStatesServer, func() *PolicyStatesServerTransport { return NewPolicyStatesServerTransport(&s.srv.PolicyStatesServer) })
 		resp, err = s.trPolicyStatesServer.Do(req)
-<<<<<<< Updated upstream
-=======
 	case "PolicyTrackedResourcesClient":
 		initServer(&s.trMu, &s.trPolicyTrackedResourcesServer, func() *PolicyTrackedResourcesServerTransport {
 			return NewPolicyTrackedResourcesServerTransport(&s.srv.PolicyTrackedResourcesServer)
 		})
 		resp, err = s.trPolicyTrackedResourcesServer.Do(req)
->>>>>>> Stashed changes
 	case "RemediationsClient":
 		initServer(&s.trMu, &s.trRemediationsServer, func() *RemediationsServerTransport { return NewRemediationsServerTransport(&s.srv.RemediationsServer) })
 		resp, err = s.trRemediationsServer.Do(req)

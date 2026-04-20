@@ -33,8 +33,6 @@ type AttestationEvidence struct {
 	SourceURI *string
 }
 
-<<<<<<< Updated upstream
-=======
 // AttestationListResult - List of attestations.
 type AttestationListResult struct {
 	// READ-ONLY; The Attestation items on this page
@@ -44,7 +42,6 @@ type AttestationListResult struct {
 	NextLink *string
 }
 
->>>>>>> Stashed changes
 // AttestationProperties - The properties of an attestation resource.
 type AttestationProperties struct {
 	// REQUIRED; The resource ID of the policy assignment that the attestation is setting the state for.
@@ -148,8 +145,6 @@ type CheckRestrictionsResultContentEvaluationResult struct {
 	PolicyEvaluations []*PolicyEvaluationResult
 }
 
-<<<<<<< Updated upstream
-=======
 // ComplianceDetail - The compliance state rollup.
 type ComplianceDetail struct {
 	// The compliance state.
@@ -369,7 +364,6 @@ type ErrorDefinition struct {
 	Target *string
 }
 
->>>>>>> Stashed changes
 // ExpressionEvaluationDetails - Evaluation details of policy language expressions.
 type ExpressionEvaluationDetails struct {
 	// Expression evaluated.
@@ -478,10 +472,76 @@ type PendingField struct {
 	Values []*string
 }
 
+// PolicyAssignmentSummary - Policy assignment summary.
+type PolicyAssignmentSummary struct {
+	// Policy assignment ID.
+	PolicyAssignmentID *string
+
+	// Policy definitions summary.
+	PolicyDefinitions []*PolicyDefinitionSummary
+
+	// Policy definition group summary.
+	PolicyGroups []*PolicyGroupSummary
+
+	// Policy set definition ID, if the policy assignment is for a policy set.
+	PolicySetDefinitionID *string
+
+	// Compliance summary for the policy assignment.
+	Results *SummaryResults
+}
+
+// PolicyDefinitionSummary - Policy definition summary.
+type PolicyDefinitionSummary struct {
+	// Policy effect, i.e. policy definition action.
+	Effect *string
+
+	// Policy definition group names.
+	PolicyDefinitionGroupNames []*string
+
+	// Policy definition ID.
+	PolicyDefinitionID *string
+
+	// Policy definition reference ID.
+	PolicyDefinitionReferenceID *string
+
+	// Compliance summary for the policy definition.
+	Results *SummaryResults
+}
+
+// PolicyDetails - The policy details.
+type PolicyDetails struct {
+	// READ-ONLY; The display name of the policy assignment.
+	PolicyAssignmentDisplayName *string
+
+	// READ-ONLY; The ID of the policy assignment.
+	PolicyAssignmentID *string
+
+	// READ-ONLY; The scope of the policy assignment.
+	PolicyAssignmentScope *string
+
+	// READ-ONLY; The ID of the policy definition.
+	PolicyDefinitionID *string
+
+	// READ-ONLY; The policy definition reference ID within the policy set definition.
+	PolicyDefinitionReferenceID *string
+
+	// READ-ONLY; The ID of the policy set definition.
+	PolicySetDefinitionID *string
+}
+
 // PolicyEffectDetails - The details of the effect that was applied to the resource.
 type PolicyEffectDetails struct {
 	// READ-ONLY; The effect that was applied to the resource. http://aka.ms/policyeffects
 	PolicyEffect *string
+}
+
+// PolicyEvaluationDetails - Policy evaluation details.
+type PolicyEvaluationDetails struct {
+	// Details of the evaluated expressions.
+	EvaluatedExpressions []*ExpressionEvaluationDetails
+
+	// Evaluation details of IfNotExists effect.
+	IfNotExistsDetails *IfNotExistsEvaluationDetails
 }
 
 // PolicyEvaluationResult - The result of a non-compliant policy evaluation against the given resource content.
@@ -500,8 +560,6 @@ type PolicyEvaluationResult struct {
 	PolicyInfo *PolicyReference
 }
 
-<<<<<<< Updated upstream
-=======
 // PolicyEvent - Policy event record.
 type PolicyEvent struct {
 	AdditionalProperties map[string]any
@@ -624,7 +682,6 @@ type PolicyGroupSummary struct {
 	Results *SummaryResults
 }
 
->>>>>>> Stashed changes
 // PolicyMetadata - Policy metadata resource definition.
 type PolicyMetadata struct {
 	// Properties of the policy metadata.
@@ -643,8 +700,6 @@ type PolicyMetadata struct {
 	Type *string
 }
 
-<<<<<<< Updated upstream
-=======
 // PolicyMetadataCollection - Collection of policy metadata resources.
 type PolicyMetadataCollection struct {
 	// READ-ONLY; The SlimPolicyMetadata items on this page
@@ -654,7 +709,6 @@ type PolicyMetadataCollection struct {
 	NextLink *string
 }
 
->>>>>>> Stashed changes
 // PolicyMetadataProperties - The properties of the policy metadata.
 type PolicyMetadataProperties struct {
 	// READ-ONLY; Url for getting additional content about the resource metadata.
@@ -682,6 +736,27 @@ type PolicyMetadataProperties struct {
 	Title *string
 }
 
+// PolicyMetadataSlimProperties - The properties of the policy metadata, excluding properties containing large strings
+type PolicyMetadataSlimProperties struct {
+	// READ-ONLY; Url for getting additional content about the resource metadata.
+	AdditionalContentURL *string
+
+	// READ-ONLY; The category of the policy metadata.
+	Category *string
+
+	// READ-ONLY; Additional metadata.
+	Metadata any
+
+	// READ-ONLY; The policy metadata identifier.
+	MetadataID *string
+
+	// READ-ONLY; The owner of the policy metadata.
+	Owner *string
+
+	// READ-ONLY; The title of the policy metadata.
+	Title *string
+}
+
 // PolicyReference - Resource identifiers for a policy.
 type PolicyReference struct {
 	// READ-ONLY; The resource identifier of the policy assignment.
@@ -697,8 +772,6 @@ type PolicyReference struct {
 	PolicySetDefinitionID *string
 }
 
-<<<<<<< Updated upstream
-=======
 // PolicyState - Policy state record.
 type PolicyState struct {
 	AdditionalProperties map[string]any
@@ -849,7 +922,6 @@ type PolicyTrackedResourcesQueryResults struct {
 	Value []*PolicyTrackedResource
 }
 
->>>>>>> Stashed changes
 // Remediation - The remediation definition.
 type Remediation struct {
 	// Properties for the remediation.
@@ -868,6 +940,30 @@ type Remediation struct {
 	Type *string
 }
 
+// RemediationDeployment - Details of a single deployment created by the remediation.
+type RemediationDeployment struct {
+	// READ-ONLY; The time at which the remediation was created.
+	CreatedOn *time.Time
+
+	// READ-ONLY; Resource ID of the template deployment that will remediate the resource.
+	DeploymentID *string
+
+	// READ-ONLY; Error encountered while remediated the resource.
+	Error *ErrorDefinition
+
+	// READ-ONLY; The time at which the remediation deployment was last updated.
+	LastUpdatedOn *time.Time
+
+	// READ-ONLY; Resource ID of the resource that is being remediated by the deployment.
+	RemediatedResourceID *string
+
+	// READ-ONLY; Location of the resource that is being remediated.
+	ResourceLocation *string
+
+	// READ-ONLY; Status of the remediation deployment.
+	Status *string
+}
+
 // RemediationDeploymentSummary - The deployment status summary for all deployments created by the remediation.
 type RemediationDeploymentSummary struct {
 	// READ-ONLY; The number of deployments required by the remediation that have failed.
@@ -880,8 +976,6 @@ type RemediationDeploymentSummary struct {
 	TotalDeployments *int32
 }
 
-<<<<<<< Updated upstream
-=======
 // RemediationDeploymentsListResult - List of deployments for a remediation.
 type RemediationDeploymentsListResult struct {
 	// READ-ONLY; The RemediationDeployment items on this page
@@ -891,7 +985,6 @@ type RemediationDeploymentsListResult struct {
 	NextLink *string
 }
 
->>>>>>> Stashed changes
 // RemediationFilters - The filters that will be applied to determine which resources to remediate.
 type RemediationFilters struct {
 	// The resource locations that will be remediated.
@@ -902,8 +995,6 @@ type RemediationFilters struct {
 	ResourceIDs []*string
 }
 
-<<<<<<< Updated upstream
-=======
 // RemediationListResult - List of remediations.
 type RemediationListResult struct {
 	// READ-ONLY; The Remediation items on this page
@@ -913,7 +1004,6 @@ type RemediationListResult struct {
 	NextLink *string
 }
 
->>>>>>> Stashed changes
 // RemediationProperties - The remediation properties.
 type RemediationProperties struct {
 	// The remediation failure threshold settings
@@ -967,8 +1057,6 @@ type RemediationPropertiesFailureThreshold struct {
 	Percentage *float32
 }
 
-<<<<<<< Updated upstream
-=======
 // SlimPolicyMetadata - Slim version of policy metadata resource definition, excluding properties with large strings
 type SlimPolicyMetadata struct {
 	// Properties of the policy metadata.
@@ -1034,7 +1122,6 @@ type SummaryResults struct {
 	ResourceDetails []*ComplianceDetail
 }
 
->>>>>>> Stashed changes
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -1054,4 +1141,26 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// TrackedResourceModificationDetails - The details of the policy triggered deployment that created or modified the tracked
+// resource.
+type TrackedResourceModificationDetails struct {
+	// READ-ONLY; The ID of the deployment that created or modified the tracked resource.
+	DeploymentID *string
+
+	// READ-ONLY; Timestamp of the deployment that created or modified the tracked resource.
+	DeploymentTime *time.Time
+
+	// READ-ONLY; The details of the policy that created or modified the tracked resource.
+	PolicyDetails *PolicyDetails
+}
+
+// TypedErrorInfo - Scenario specific error details.
+type TypedErrorInfo struct {
+	// READ-ONLY; The scenario specific error details.
+	Info any
+
+	// READ-ONLY; The type of included error details.
+	Type *string
 }

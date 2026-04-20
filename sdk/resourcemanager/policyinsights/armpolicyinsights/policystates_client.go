@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -40,8 +41,6 @@ func NewPolicyStatesClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-<<<<<<< Updated upstream
-=======
 // NewListQueryResultsForManagementGroupPager - Queries policy states for the resources under the management group.
 //
 // Generated from API version 2024-10-01
@@ -1339,7 +1338,6 @@ func (client *PolicyStatesClient) summarizeForSubscriptionLevelPolicyAssignmentH
 	return result, nil
 }
 
->>>>>>> Stashed changes
 // BeginTriggerResourceGroupEvaluation - Triggers a policy evaluation scan for all the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //

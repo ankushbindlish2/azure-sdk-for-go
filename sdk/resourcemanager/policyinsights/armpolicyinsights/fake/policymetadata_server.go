@@ -11,10 +11,12 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // PolicyMetadataServer is a fake server for instances of the armpolicyinsights.PolicyMetadataClient type.
@@ -22,26 +24,27 @@ type PolicyMetadataServer struct {
 	// GetResource is the fake for method PolicyMetadataClient.GetResource
 	// HTTP status codes to indicate success: http.StatusOK
 	GetResource func(ctx context.Context, resourceName string, options *armpolicyinsights.PolicyMetadataClientGetResourceOptions) (resp azfake.Responder[armpolicyinsights.PolicyMetadataClientGetResourceResponse], errResp azfake.ErrorResponder)
-<<<<<<< Updated upstream
-=======
 
 	// NewListPager is the fake for method PolicyMetadataClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armpolicyinsights.PolicyMetadataClientListOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyMetadataClientListResponse])
->>>>>>> Stashed changes
 }
 
 // NewPolicyMetadataServerTransport creates a new instance of PolicyMetadataServerTransport with the provided implementation.
 // The returned PolicyMetadataServerTransport instance is connected to an instance of armpolicyinsights.PolicyMetadataClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPolicyMetadataServerTransport(srv *PolicyMetadataServer) *PolicyMetadataServerTransport {
-	return &PolicyMetadataServerTransport{srv: srv}
+	return &PolicyMetadataServerTransport{
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armpolicyinsights.PolicyMetadataClientListResponse]](),
+	}
 }
 
 // PolicyMetadataServerTransport connects instances of armpolicyinsights.PolicyMetadataClient to instances of PolicyMetadataServer.
 // Don't use this type directly, use NewPolicyMetadataServerTransport instead.
 type PolicyMetadataServerTransport struct {
-	srv *PolicyMetadataServer
+	srv          *PolicyMetadataServer
+	newListPager *tracker[azfake.PagerResponder[armpolicyinsights.PolicyMetadataClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PolicyMetadataServerTransport.
@@ -69,6 +72,8 @@ func (p *PolicyMetadataServerTransport) dispatchToMethodFake(req *http.Request, 
 			switch method {
 			case "PolicyMetadataClient.GetResource":
 				res.resp, res.err = p.dispatchGetResource(req)
+			case "PolicyMetadataClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -117,8 +122,6 @@ func (p *PolicyMetadataServerTransport) dispatchGetResource(req *http.Request) (
 	return resp, nil
 }
 
-<<<<<<< Updated upstream
-=======
 func (p *PolicyMetadataServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if p.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
@@ -167,7 +170,6 @@ func (p *PolicyMetadataServerTransport) dispatchNewListPager(req *http.Request) 
 	return resp, nil
 }
 
->>>>>>> Stashed changes
 // set this to conditionally intercept incoming requests to PolicyMetadataServerTransport
 var policyMetadataServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error

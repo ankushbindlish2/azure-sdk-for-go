@@ -11,10 +11,12 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // AttestationsServer is a fake server for instances of the armpolicyinsights.AttestationsClient type.
@@ -54,8 +56,6 @@ type AttestationsServer struct {
 	// GetAtSubscription is the fake for method AttestationsClient.GetAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAtSubscription func(ctx context.Context, attestationName string, options *armpolicyinsights.AttestationsClientGetAtSubscriptionOptions) (resp azfake.Responder[armpolicyinsights.AttestationsClientGetAtSubscriptionResponse], errResp azfake.ErrorResponder)
-<<<<<<< Updated upstream
-=======
 
 	// NewListForResourcePager is the fake for method AttestationsClient.NewListForResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -68,7 +68,6 @@ type AttestationsServer struct {
 	// NewListForSubscriptionPager is the fake for method AttestationsClient.NewListForSubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListForSubscriptionPager func(options *armpolicyinsights.AttestationsClientListForSubscriptionOptions) (resp azfake.PagerResponder[armpolicyinsights.AttestationsClientListForSubscriptionResponse])
->>>>>>> Stashed changes
 }
 
 // NewAttestationsServerTransport creates a new instance of AttestationsServerTransport with the provided implementation.
@@ -80,6 +79,9 @@ func NewAttestationsServerTransport(srv *AttestationsServer) *AttestationsServer
 		beginCreateOrUpdateAtResource:      newTracker[azfake.PollerResponder[armpolicyinsights.AttestationsClientCreateOrUpdateAtResourceResponse]](),
 		beginCreateOrUpdateAtResourceGroup: newTracker[azfake.PollerResponder[armpolicyinsights.AttestationsClientCreateOrUpdateAtResourceGroupResponse]](),
 		beginCreateOrUpdateAtSubscription:  newTracker[azfake.PollerResponder[armpolicyinsights.AttestationsClientCreateOrUpdateAtSubscriptionResponse]](),
+		newListForResourcePager:            newTracker[azfake.PagerResponder[armpolicyinsights.AttestationsClientListForResourceResponse]](),
+		newListForResourceGroupPager:       newTracker[azfake.PagerResponder[armpolicyinsights.AttestationsClientListForResourceGroupResponse]](),
+		newListForSubscriptionPager:        newTracker[azfake.PagerResponder[armpolicyinsights.AttestationsClientListForSubscriptionResponse]](),
 	}
 }
 
@@ -90,6 +92,9 @@ type AttestationsServerTransport struct {
 	beginCreateOrUpdateAtResource      *tracker[azfake.PollerResponder[armpolicyinsights.AttestationsClientCreateOrUpdateAtResourceResponse]]
 	beginCreateOrUpdateAtResourceGroup *tracker[azfake.PollerResponder[armpolicyinsights.AttestationsClientCreateOrUpdateAtResourceGroupResponse]]
 	beginCreateOrUpdateAtSubscription  *tracker[azfake.PollerResponder[armpolicyinsights.AttestationsClientCreateOrUpdateAtSubscriptionResponse]]
+	newListForResourcePager            *tracker[azfake.PagerResponder[armpolicyinsights.AttestationsClientListForResourceResponse]]
+	newListForResourceGroupPager       *tracker[azfake.PagerResponder[armpolicyinsights.AttestationsClientListForResourceGroupResponse]]
+	newListForSubscriptionPager        *tracker[azfake.PagerResponder[armpolicyinsights.AttestationsClientListForSubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AttestationsServerTransport.
@@ -133,6 +138,12 @@ func (a *AttestationsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = a.dispatchGetAtResourceGroup(req)
 			case "AttestationsClient.GetAtSubscription":
 				res.resp, res.err = a.dispatchGetAtSubscription(req)
+			case "AttestationsClient.NewListForResourcePager":
+				res.resp, res.err = a.dispatchNewListForResourcePager(req)
+			case "AttestationsClient.NewListForResourceGroupPager":
+				res.resp, res.err = a.dispatchNewListForResourceGroupPager(req)
+			case "AttestationsClient.NewListForSubscriptionPager":
+				res.resp, res.err = a.dispatchNewListForSubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -482,8 +493,6 @@ func (a *AttestationsServerTransport) dispatchGetAtSubscription(req *http.Reques
 	return resp, nil
 }
 
-<<<<<<< Updated upstream
-=======
 func (a *AttestationsServerTransport) dispatchNewListForResourcePager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListForResourcePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListForResourcePager not implemented")}
@@ -672,7 +681,6 @@ func (a *AttestationsServerTransport) dispatchNewListForSubscriptionPager(req *h
 	return resp, nil
 }
 
->>>>>>> Stashed changes
 // set this to conditionally intercept incoming requests to AttestationsServerTransport
 var attestationsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error

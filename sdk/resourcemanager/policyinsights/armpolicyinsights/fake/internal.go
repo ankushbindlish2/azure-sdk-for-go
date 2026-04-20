@@ -7,6 +7,7 @@ package fake
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
+	"reflect"
 	"sync"
 )
 
@@ -32,14 +33,10 @@ func contains[T comparable](s []T, v T) bool {
 	return false
 }
 
-func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
-	mu.Lock()
-	if *dst == nil {
-		*dst = src()
+func getOptional[T any](v T) *T {
+	if reflect.ValueOf(v).IsZero() {
+		return nil
 	}
-<<<<<<< Updated upstream
-	mu.Unlock()
-=======
 	return &v
 }
 
@@ -68,7 +65,6 @@ func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) 
 		return *new(T), err
 	}
 	return t, err
->>>>>>> Stashed changes
 }
 
 func newTracker[T any]() *tracker[T] {

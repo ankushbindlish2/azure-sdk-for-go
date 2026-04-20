@@ -4,6 +4,8 @@
 
 package armpolicyinsights
 
+import "time"
+
 // AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions contains the optional parameters for the AttestationsClient.BeginCreateOrUpdateAtResourceGroup
 // method.
 type AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions struct {
@@ -60,8 +62,6 @@ type AttestationsClientGetAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-<<<<<<< Updated upstream
-=======
 // AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.NewListForResourceGroupPager
 // method.
 type AttestationsClientListForResourceGroupOptions struct {
@@ -245,14 +245,11 @@ type ComponentPolicyStatesClientListQueryResultsForSubscriptionOptions struct {
 	Top *int32
 }
 
->>>>>>> Stashed changes
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-<<<<<<< Updated upstream
-=======
 // PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForManagementGroupPager
 // method.
 type PolicyEventsClientListQueryResultsForManagementGroupOptions struct {
@@ -480,21 +477,17 @@ type PolicyEventsClientListQueryResultsForSubscriptionOptions struct {
 	Top *int32
 }
 
->>>>>>> Stashed changes
 // PolicyMetadataClientGetResourceOptions contains the optional parameters for the PolicyMetadataClient.GetResource method.
 type PolicyMetadataClientGetResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-<<<<<<< Updated upstream
-=======
 // PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.NewListPager method.
 type PolicyMetadataClientListOptions struct {
 	// Maximum number of records to return.
 	Top *int32
 }
 
->>>>>>> Stashed changes
 // PolicyRestrictionsClientCheckAtManagementGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtManagementGroupScope
 // method.
 type PolicyRestrictionsClientCheckAtManagementGroupScopeOptions struct {
@@ -527,8 +520,6 @@ type PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions struct {
 	ResumeToken string
 }
 
-<<<<<<< Updated upstream
-=======
 // PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForManagementGroupPager
 // method.
 type PolicyStatesClientListQueryResultsForManagementGroupOptions struct {
@@ -924,7 +915,6 @@ type PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions struct {
 	Top *int32
 }
 
->>>>>>> Stashed changes
 // RemediationsClientCancelAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CancelAtManagementGroup
 // method.
 type RemediationsClientCancelAtManagementGroupOptions struct {
@@ -1019,8 +1009,6 @@ type RemediationsClientGetAtResourceOptions struct {
 type RemediationsClientGetAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
-<<<<<<< Updated upstream
-=======
 
 // RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtManagementGroupPager
 // method.
@@ -1089,4 +1077,3 @@ type RemediationsClientListForSubscriptionOptions struct {
 	// Maximum number of records to return.
 	Top *int32
 }
->>>>>>> Stashed changes
