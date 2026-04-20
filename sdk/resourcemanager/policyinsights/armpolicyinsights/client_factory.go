@@ -12,38 +12,35 @@ import (
 // ClientFactory is a client factory used to create any client in this module.
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
-	subscriptionID string
-	internal       *arm.Client
+	internal *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
+func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
 	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID,
-		internal:       internal,
+		internal: internal,
 	}, nil
 }
 
 // NewAttestationsClient creates a new instance of AttestationsClient.
-func (c *ClientFactory) NewAttestationsClient() *AttestationsClient {
+func (c *ClientFactory) NewAttestationsClient(subscriptionID string) *AttestationsClient {
 	return &AttestationsClient{
-		subscriptionID: c.subscriptionID,
+		subscriptionID: subscriptionID,
 		internal:       c.internal,
 	}
 }
 
 // NewComponentPolicyStatesClient creates a new instance of ComponentPolicyStatesClient.
-func (c *ClientFactory) NewComponentPolicyStatesClient() *ComponentPolicyStatesClient {
+func (c *ClientFactory) NewComponentPolicyStatesClient(subscriptionID string) *ComponentPolicyStatesClient {
 	return &ComponentPolicyStatesClient{
-		subscriptionID: c.subscriptionID,
+		subscriptionID: subscriptionID,
 		internal:       c.internal,
 	}
 }
@@ -56,9 +53,9 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 }
 
 // NewPolicyEventsClient creates a new instance of PolicyEventsClient.
-func (c *ClientFactory) NewPolicyEventsClient() *PolicyEventsClient {
+func (c *ClientFactory) NewPolicyEventsClient(subscriptionID string) *PolicyEventsClient {
 	return &PolicyEventsClient{
-		subscriptionID: c.subscriptionID,
+		subscriptionID: subscriptionID,
 		internal:       c.internal,
 	}
 }
@@ -71,33 +68,33 @@ func (c *ClientFactory) NewPolicyMetadataClient() *PolicyMetadataClient {
 }
 
 // NewPolicyRestrictionsClient creates a new instance of PolicyRestrictionsClient.
-func (c *ClientFactory) NewPolicyRestrictionsClient() *PolicyRestrictionsClient {
+func (c *ClientFactory) NewPolicyRestrictionsClient(subscriptionID string) *PolicyRestrictionsClient {
 	return &PolicyRestrictionsClient{
-		subscriptionID: c.subscriptionID,
+		subscriptionID: subscriptionID,
 		internal:       c.internal,
 	}
 }
 
 // NewPolicyStatesClient creates a new instance of PolicyStatesClient.
-func (c *ClientFactory) NewPolicyStatesClient() *PolicyStatesClient {
+func (c *ClientFactory) NewPolicyStatesClient(subscriptionID string) *PolicyStatesClient {
 	return &PolicyStatesClient{
-		subscriptionID: c.subscriptionID,
+		subscriptionID: subscriptionID,
 		internal:       c.internal,
 	}
 }
 
 // NewPolicyTrackedResourcesClient creates a new instance of PolicyTrackedResourcesClient.
-func (c *ClientFactory) NewPolicyTrackedResourcesClient() *PolicyTrackedResourcesClient {
+func (c *ClientFactory) NewPolicyTrackedResourcesClient(subscriptionID string) *PolicyTrackedResourcesClient {
 	return &PolicyTrackedResourcesClient{
-		subscriptionID: c.subscriptionID,
+		subscriptionID: subscriptionID,
 		internal:       c.internal,
 	}
 }
 
 // NewRemediationsClient creates a new instance of RemediationsClient.
-func (c *ClientFactory) NewRemediationsClient() *RemediationsClient {
+func (c *ClientFactory) NewRemediationsClient(subscriptionID string) *RemediationsClient {
 	return &RemediationsClient{
-		subscriptionID: c.subscriptionID,
+		subscriptionID: subscriptionID,
 		internal:       c.internal,
 	}
 }
