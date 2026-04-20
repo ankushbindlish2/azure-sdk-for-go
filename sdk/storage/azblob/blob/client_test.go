@@ -3985,6 +3985,122 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	_require.Equal(uploadData, downloadedData)
 }
 
+func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	uploadData := []byte("test data for session mode off")
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(uploadData)), nil)
+	_require.NoError(err)
+
+	sessionTracker := &authRequestTracker{}
+
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			PerRetryPolicies: []policy.Policy{sessionTracker},
+		},
+		SessionOptions: service.SessionOptions{
+			Mode: service.SessionModeOff,
+		},
+	})
+	_require.NoError(err)
+
+	sessionBlobClient := sessionSvcClient.NewContainerClient(containerName).NewBlobClient(blobName)
+	resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_ = resp.Body.Close()
+	_require.Equal(uploadData, downloadedData)
+
+	sessionTracker.mu.Lock()
+	createSessionCount := sessionTracker.createSessionCount
+	sessionAuthCount := sessionTracker.sessionAuthCount
+	sessionTracker.mu.Unlock()
+
+	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when SessionModeOff")
+	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when SessionModeOff")
+}
+
+func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionDifferentContainerName() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	uploadData := []byte("test data for different container session")
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(uploadData)), nil)
+	_require.NoError(err)
+
+	sessionTracker := &authRequestTracker{}
+
+	// Configure SessionOptions with a different container name than the one being accessed
+	differentContainerName := testcommon.GenerateContainerName(testName + "other")
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			PerRetryPolicies: []policy.Policy{sessionTracker},
+		},
+		SessionOptions: service.SessionOptions{
+			Mode:          service.SessionModeSingleContainer,
+			ContainerName: differentContainerName,
+			AccountName:   accountName,
+		},
+	})
+	_require.NoError(err)
+
+	sessionBlobClient := sessionSvcClient.NewContainerClient(containerName).NewBlobClient(blobName)
+	resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_ = resp.Body.Close()
+	_require.Equal(uploadData, downloadedData)
+
+	sessionTracker.mu.Lock()
+	createSessionCount := sessionTracker.createSessionCount
+	sessionAuthCount := sessionTracker.sessionAuthCount
+	sessionTracker.mu.Unlock()
+
+	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when container name does not match")
+	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when container name does not match")
+}
+
 func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsConcurrentDownloads() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -4458,6 +4574,10 @@ func (s *BlobUnrecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUses
 	}, nil)
 	_require.NoError(err)
 
+	// Get Tags
+	_, err = sessionBlobClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+
 	tracker.mu.Lock()
 	createSessionCount := tracker.createSessionCount
 	sessionAuthCount := tracker.sessionAuthCount
@@ -4466,7 +4586,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUses
 
 	_require.Equal(createSessionCount, 1, "expected a session to be created")
 	_require.Equal(sessionAuthCount, 1, "expected GET call to use session auth")
-	_require.Equal(bearerAuthCount, 3, "expected non-GET and create session REST calls to use bearer auth")
+	_require.Equal(bearerAuthCount, 4, "expected non-GET and create session REST calls to use bearer auth")
 }
 
 // authRequestTracker is a pipeline policy that tracks session-related and bearer token requests.

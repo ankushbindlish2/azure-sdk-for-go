@@ -498,8 +498,7 @@ func (r *recordingTransport) Do(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
-// TestHandleSessionError_Unauthorized_TriggersRetry tests that 401 with a matching
-// WWW-Authenticate header triggers retry with a new session.
+// TestHandleSessionError_Unauthorized_TriggersRetry tests that a 401 response triggers retry with a new session.
 func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
 	sessionKey := "dGVzdC1rZXk=" // base64 encoded "test-key"
 	sessionToken := "new-token"
@@ -557,9 +556,6 @@ func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
 		StatusCode: http.StatusUnauthorized,
 		Header:     make(http.Header),
 	}
-	// handleSessionError now requires a WWW-Authenticate header instructing the client
-	// to create a new session in order to trigger retryWithNewSession.
-	unauthorizedResp.Header.Set("WWW-Authenticate", `Bearer error="invalid_token", error_description="Please create a new session"`)
 
 	testPolicy.originalErr = originalErr
 	testPolicy.originalResp = unauthorizedResp
@@ -570,62 +566,6 @@ func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, expireCalled)
 	require.Equal(t, 1, callCount)
-}
-
-// TestHandleSessionError_Unauthorized_NoChallenge tests that a 401 response without
-// the "Please create a new session" WWW-Authenticate challenge is passed through unchanged.
-func TestHandleSessionError_Unauthorized_NoChallenge(t *testing.T) {
-	expireCalled := false
-	mockProvider := &mockSessionProvider{
-		expireFn: func(containerName string) {
-			expireCalled = true
-		},
-	}
-
-	pol := &sessionPolicy{
-		opts:     SessionOptions{AccountName: "testaccount"},
-		provider: mockProvider,
-	}
-
-	originalErr := &azcore.ResponseError{
-		StatusCode: http.StatusUnauthorized,
-		ErrorCode:  "AuthenticationFailed",
-	}
-
-	tests := []struct {
-		name             string
-		wwwAuthenticate  string
-		setWWWAuthHeader bool
-	}{
-		{
-			name:             "NoWWWAuthenticateHeader",
-			setWWWAuthHeader: false,
-		},
-		{
-			name:             "WWWAuthenticateWithoutCreateSessionHint",
-			wwwAuthenticate:  `Bearer error="invalid_token"`,
-			setWWWAuthHeader: true,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			resp := &http.Response{
-				StatusCode: http.StatusUnauthorized,
-				Header:     make(http.Header),
-			}
-			if tt.setWWWAuthHeader {
-				resp.Header.Set("WWW-Authenticate", tt.wwwAuthenticate)
-			}
-
-			retResp, retErr := pol.handleSessionError(nil, resp, originalErr, "testcontainer")
-			require.Equal(t, resp, retResp)
-			require.Equal(t, originalErr, retErr)
-			require.False(t, expireCalled)
-			require.Equal(t, 0, mockProvider.getCalls)
-			require.Equal(t, 0, mockProvider.expireCalls)
-		})
-	}
 }
 
 // testRetryPolicy is a helper policy for testing handleSessionError with 401.

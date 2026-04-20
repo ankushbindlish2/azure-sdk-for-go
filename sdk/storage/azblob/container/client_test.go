@@ -3549,16 +3549,6 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateSession() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	//proxyURL, err := url.Parse("http://127.0.0.1:8888")
-	//_require.NoError(err)
-	//
-	//transport := &http.Transport{
-	//	Proxy: http.ProxyURL(proxyURL),
-	//}
-	//
-	//options := &service.ClientOptions{}
-	//options.Transport = &http.Client{Transport: transport}
-
 	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
 	_require.NoError(err)
 
@@ -3675,4 +3665,19 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionWithDifferentCon
 
 	// Sessions for different containers should be independent
 	_require.NotEqual(*resp1.ID, *resp2.ID)
+}
+
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionWithSharedKeyFails() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	_, err = containerClient.CreateSession(context.Background(), nil)
+	_require.Error(err)
 }

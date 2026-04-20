@@ -88,9 +88,7 @@ func (p *sessionPolicy) handleSessionError(req *policy.Request, resp *http.Respo
 	}
 
 	if resp.StatusCode == http.StatusUnauthorized {
-		if wwwAuthenticate := resp.Header.Get("WWW-Authenticate"); wwwAuthenticate != "" && strings.Contains(wwwAuthenticate, "Please create a new session") {
-			return p.retryWithNewSession(req, containerName)
-		}
+		return p.retryWithNewSession(req, containerName)
 	}
 
 	return resp, err
