@@ -90,3 +90,59 @@ func (client *PolicyMetadataClient) getResourceHandleResponse(resp *http.Respons
 	}
 	return result, nil
 }
+<<<<<<< Updated upstream
+=======
+
+// NewListPager - Get a list of the policy metadata resources.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.NewListPager method.
+func (client *PolicyMetadataClient) NewListPager(options *PolicyMetadataClientListOptions) *runtime.Pager[PolicyMetadataClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyMetadataClientListResponse]{
+		More: func(page PolicyMetadataClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyMetadataClientListResponse) (PolicyMetadataClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyMetadataClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, options)
+			}, nil)
+			if err != nil {
+				return PolicyMetadataClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *PolicyMetadataClient) listCreateRequest(ctx context.Context, options *PolicyMetadataClientListOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.PolicyInsights/policyMetadata"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *PolicyMetadataClient) listHandleResponse(resp *http.Response) (PolicyMetadataClientListResponse, error) {
+	result := PolicyMetadataClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyMetadataCollection); err != nil {
+		return PolicyMetadataClientListResponse{}, err
+	}
+	return result, nil
+}
+>>>>>>> Stashed changes

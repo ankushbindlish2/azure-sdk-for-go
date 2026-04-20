@@ -19,6 +19,73 @@ import (
 
 // PolicyStatesServer is a fake server for instances of the armpolicyinsights.PolicyStatesClient type.
 type PolicyStatesServer struct {
+<<<<<<< Updated upstream
+=======
+	// NewListQueryResultsForManagementGroupPager is the fake for method PolicyStatesClient.NewListQueryResultsForManagementGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListQueryResultsForManagementGroupPager func(policyStatesResource armpolicyinsights.PolicyStatesResource, managementGroupName string, options *armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupResponse])
+
+	// NewListQueryResultsForPolicyDefinitionPager is the fake for method PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListQueryResultsForPolicyDefinitionPager func(policyStatesResource armpolicyinsights.PolicyStatesResource, policyDefinitionName string, options *armpolicyinsights.PolicyStatesClientListQueryResultsForPolicyDefinitionOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForPolicyDefinitionResponse])
+
+	// NewListQueryResultsForPolicySetDefinitionPager is the fake for method PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListQueryResultsForPolicySetDefinitionPager func(policyStatesResource armpolicyinsights.PolicyStatesResource, policySetDefinitionName string, options *armpolicyinsights.PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse])
+
+	// NewListQueryResultsForResourcePager is the fake for method PolicyStatesClient.NewListQueryResultsForResourcePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListQueryResultsForResourcePager func(policyStatesResource armpolicyinsights.PolicyStatesResource, resourceID string, options *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceResponse])
+
+	// NewListQueryResultsForResourceGroupPager is the fake for method PolicyStatesClient.NewListQueryResultsForResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListQueryResultsForResourceGroupPager func(resourceGroupName string, policyStatesResource armpolicyinsights.PolicyStatesResource, options *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupResponse])
+
+	// NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager is the fake for method PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager func(resourceGroupName string, policyStatesResource armpolicyinsights.PolicyStatesResource, policyAssignmentName string, options *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse])
+
+	// NewListQueryResultsForSubscriptionPager is the fake for method PolicyStatesClient.NewListQueryResultsForSubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListQueryResultsForSubscriptionPager func(policyStatesResource armpolicyinsights.PolicyStatesResource, options *armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionResponse])
+
+	// NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager is the fake for method PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager func(policyStatesResource armpolicyinsights.PolicyStatesResource, policyAssignmentName string, options *armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse])
+
+	// SummarizeForManagementGroup is the fake for method PolicyStatesClient.SummarizeForManagementGroup
+	// HTTP status codes to indicate success: http.StatusOK
+	SummarizeForManagementGroup func(ctx context.Context, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, managementGroupName string, options *armpolicyinsights.PolicyStatesClientSummarizeForManagementGroupOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForManagementGroupResponse], errResp azfake.ErrorResponder)
+
+	// SummarizeForPolicyDefinition is the fake for method PolicyStatesClient.SummarizeForPolicyDefinition
+	// HTTP status codes to indicate success: http.StatusOK
+	SummarizeForPolicyDefinition func(ctx context.Context, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, policyDefinitionName string, options *armpolicyinsights.PolicyStatesClientSummarizeForPolicyDefinitionOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForPolicyDefinitionResponse], errResp azfake.ErrorResponder)
+
+	// SummarizeForPolicySetDefinition is the fake for method PolicyStatesClient.SummarizeForPolicySetDefinition
+	// HTTP status codes to indicate success: http.StatusOK
+	SummarizeForPolicySetDefinition func(ctx context.Context, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, policySetDefinitionName string, options *armpolicyinsights.PolicyStatesClientSummarizeForPolicySetDefinitionOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForPolicySetDefinitionResponse], errResp azfake.ErrorResponder)
+
+	// SummarizeForResource is the fake for method PolicyStatesClient.SummarizeForResource
+	// HTTP status codes to indicate success: http.StatusOK
+	SummarizeForResource func(ctx context.Context, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, resourceID string, options *armpolicyinsights.PolicyStatesClientSummarizeForResourceOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForResourceResponse], errResp azfake.ErrorResponder)
+
+	// SummarizeForResourceGroup is the fake for method PolicyStatesClient.SummarizeForResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK
+	SummarizeForResourceGroup func(ctx context.Context, resourceGroupName string, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, options *armpolicyinsights.PolicyStatesClientSummarizeForResourceGroupOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForResourceGroupResponse], errResp azfake.ErrorResponder)
+
+	// SummarizeForResourceGroupLevelPolicyAssignment is the fake for method PolicyStatesClient.SummarizeForResourceGroupLevelPolicyAssignment
+	// HTTP status codes to indicate success: http.StatusOK
+	SummarizeForResourceGroupLevelPolicyAssignment func(ctx context.Context, resourceGroupName string, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, policyAssignmentName string, options *armpolicyinsights.PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse], errResp azfake.ErrorResponder)
+
+	// SummarizeForSubscription is the fake for method PolicyStatesClient.SummarizeForSubscription
+	// HTTP status codes to indicate success: http.StatusOK
+	SummarizeForSubscription func(ctx context.Context, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, options *armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionResponse], errResp azfake.ErrorResponder)
+
+	// SummarizeForSubscriptionLevelPolicyAssignment is the fake for method PolicyStatesClient.SummarizeForSubscriptionLevelPolicyAssignment
+	// HTTP status codes to indicate success: http.StatusOK
+	SummarizeForSubscriptionLevelPolicyAssignment func(ctx context.Context, policyStatesSummaryResource armpolicyinsights.PolicyStatesSummaryResourceType, policyAssignmentName string, options *armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions) (resp azfake.Responder[armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse], errResp azfake.ErrorResponder)
+
+>>>>>>> Stashed changes
 	// BeginTriggerResourceGroupEvaluation is the fake for method PolicyStatesClient.BeginTriggerResourceGroupEvaluation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginTriggerResourceGroupEvaluation func(ctx context.Context, resourceGroupName string, options *armpolicyinsights.PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions) (resp azfake.PollerResponder[armpolicyinsights.PolicyStatesClientTriggerResourceGroupEvaluationResponse], errResp azfake.ErrorResponder)
@@ -93,6 +160,1615 @@ func (p *PolicyStatesServerTransport) dispatchToMethodFake(req *http.Request, me
 	}
 }
 
+<<<<<<< Updated upstream
+=======
+func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForManagementGroupPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListQueryResultsForManagementGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForManagementGroupPager not implemented")}
+	}
+	newListQueryResultsForManagementGroupPager := p.newListQueryResultsForManagementGroupPager.get(req)
+	if newListQueryResultsForManagementGroupPager == nil {
+		const regexStr = `/providers/(?P<managementGroupsNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		policyStatesResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesResource")], func(v string) (armpolicyinsights.PolicyStatesResource, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpolicyinsights.PolicyStatesResource(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		managementGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+		if err != nil {
+			return nil, err
+		}
+		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+		if err != nil {
+			return nil, err
+		}
+		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		applyUnescaped, err := url.QueryUnescape(qp.Get("$apply"))
+		if err != nil {
+			return nil, err
+		}
+		applyParam := getOptional(applyUnescaped)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupOptions
+		if topParam != nil || orderByParam != nil || selectParam != nil || fromParam != nil || toParam != nil || filterParam != nil || applyParam != nil || skipTokenParam != nil {
+			options = &armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupOptions{
+				Top:       topParam,
+				OrderBy:   orderByParam,
+				Select:    selectParam,
+				From:      fromParam,
+				To:        toParam,
+				Filter:    filterParam,
+				Apply:     applyParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListQueryResultsForManagementGroupPager(policyStatesResourceParam, managementGroupNameParam, options)
+		newListQueryResultsForManagementGroupPager = &resp
+		p.newListQueryResultsForManagementGroupPager.add(req, newListQueryResultsForManagementGroupPager)
+		server.PagerResponderInjectNextLinks(newListQueryResultsForManagementGroupPager, req, func(page *armpolicyinsights.PolicyStatesClientListQueryResultsForManagementGroupResponse, createLink func() string) {
+			page.ODataNextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListQueryResultsForManagementGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListQueryResultsForManagementGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListQueryResultsForManagementGroupPager) {
+		p.newListQueryResultsForManagementGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForPolicyDefinitionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListQueryResultsForPolicyDefinitionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForPolicyDefinitionPager not implemented")}
+	}
+	newListQueryResultsForPolicyDefinitionPager := p.newListQueryResultsForPolicyDefinitionPager.get(req)
+	if newListQueryResultsForPolicyDefinitionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		policyStatesResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesResource")], func(v string) (armpolicyinsights.PolicyStatesResource, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpolicyinsights.PolicyStatesResource(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		policyDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyDefinitionName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+		if err != nil {
+			return nil, err
+		}
+		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+		if err != nil {
+			return nil, err
+		}
+		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		applyUnescaped, err := url.QueryUnescape(qp.Get("$apply"))
+		if err != nil {
+			return nil, err
+		}
+		applyParam := getOptional(applyUnescaped)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armpolicyinsights.PolicyStatesClientListQueryResultsForPolicyDefinitionOptions
+		if topParam != nil || orderByParam != nil || selectParam != nil || fromParam != nil || toParam != nil || filterParam != nil || applyParam != nil || skipTokenParam != nil {
+			options = &armpolicyinsights.PolicyStatesClientListQueryResultsForPolicyDefinitionOptions{
+				Top:       topParam,
+				OrderBy:   orderByParam,
+				Select:    selectParam,
+				From:      fromParam,
+				To:        toParam,
+				Filter:    filterParam,
+				Apply:     applyParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListQueryResultsForPolicyDefinitionPager(policyStatesResourceParam, policyDefinitionNameParam, options)
+		newListQueryResultsForPolicyDefinitionPager = &resp
+		p.newListQueryResultsForPolicyDefinitionPager.add(req, newListQueryResultsForPolicyDefinitionPager)
+		server.PagerResponderInjectNextLinks(newListQueryResultsForPolicyDefinitionPager, req, func(page *armpolicyinsights.PolicyStatesClientListQueryResultsForPolicyDefinitionResponse, createLink func() string) {
+			page.ODataNextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListQueryResultsForPolicyDefinitionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListQueryResultsForPolicyDefinitionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListQueryResultsForPolicyDefinitionPager) {
+		p.newListQueryResultsForPolicyDefinitionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForPolicySetDefinitionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListQueryResultsForPolicySetDefinitionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForPolicySetDefinitionPager not implemented")}
+	}
+	newListQueryResultsForPolicySetDefinitionPager := p.newListQueryResultsForPolicySetDefinitionPager.get(req)
+	if newListQueryResultsForPolicySetDefinitionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		policyStatesResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesResource")], func(v string) (armpolicyinsights.PolicyStatesResource, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpolicyinsights.PolicyStatesResource(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		policySetDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policySetDefinitionName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+		if err != nil {
+			return nil, err
+		}
+		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+		if err != nil {
+			return nil, err
+		}
+		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		applyUnescaped, err := url.QueryUnescape(qp.Get("$apply"))
+		if err != nil {
+			return nil, err
+		}
+		applyParam := getOptional(applyUnescaped)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armpolicyinsights.PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions
+		if topParam != nil || orderByParam != nil || selectParam != nil || fromParam != nil || toParam != nil || filterParam != nil || applyParam != nil || skipTokenParam != nil {
+			options = &armpolicyinsights.PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions{
+				Top:       topParam,
+				OrderBy:   orderByParam,
+				Select:    selectParam,
+				From:      fromParam,
+				To:        toParam,
+				Filter:    filterParam,
+				Apply:     applyParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListQueryResultsForPolicySetDefinitionPager(policyStatesResourceParam, policySetDefinitionNameParam, options)
+		newListQueryResultsForPolicySetDefinitionPager = &resp
+		p.newListQueryResultsForPolicySetDefinitionPager.add(req, newListQueryResultsForPolicySetDefinitionPager)
+		server.PagerResponderInjectNextLinks(newListQueryResultsForPolicySetDefinitionPager, req, func(page *armpolicyinsights.PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse, createLink func() string) {
+			page.ODataNextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListQueryResultsForPolicySetDefinitionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListQueryResultsForPolicySetDefinitionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListQueryResultsForPolicySetDefinitionPager) {
+		p.newListQueryResultsForPolicySetDefinitionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForResourcePager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListQueryResultsForResourcePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForResourcePager not implemented")}
+	}
+	newListQueryResultsForResourcePager := p.newListQueryResultsForResourcePager.get(req)
+	if newListQueryResultsForResourcePager == nil {
+		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		policyStatesResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesResource")], func(v string) (armpolicyinsights.PolicyStatesResource, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpolicyinsights.PolicyStatesResource(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+		if err != nil {
+			return nil, err
+		}
+		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+		if err != nil {
+			return nil, err
+		}
+		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		applyUnescaped, err := url.QueryUnescape(qp.Get("$apply"))
+		if err != nil {
+			return nil, err
+		}
+		applyParam := getOptional(applyUnescaped)
+		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
+		if err != nil {
+			return nil, err
+		}
+		expandParam := getOptional(expandUnescaped)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceOptions
+		if topParam != nil || orderByParam != nil || selectParam != nil || fromParam != nil || toParam != nil || filterParam != nil || applyParam != nil || expandParam != nil || skipTokenParam != nil {
+			options = &armpolicyinsights.PolicyStatesClientListQueryResultsForResourceOptions{
+				Top:       topParam,
+				OrderBy:   orderByParam,
+				Select:    selectParam,
+				From:      fromParam,
+				To:        toParam,
+				Filter:    filterParam,
+				Apply:     applyParam,
+				Expand:    expandParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListQueryResultsForResourcePager(policyStatesResourceParam, resourceIDParam, options)
+		newListQueryResultsForResourcePager = &resp
+		p.newListQueryResultsForResourcePager.add(req, newListQueryResultsForResourcePager)
+		server.PagerResponderInjectNextLinks(newListQueryResultsForResourcePager, req, func(page *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceResponse, createLink func() string) {
+			page.ODataNextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListQueryResultsForResourcePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListQueryResultsForResourcePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListQueryResultsForResourcePager) {
+		p.newListQueryResultsForResourcePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListQueryResultsForResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForResourceGroupPager not implemented")}
+	}
+	newListQueryResultsForResourceGroupPager := p.newListQueryResultsForResourceGroupPager.get(req)
+	if newListQueryResultsForResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		policyStatesResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesResource")], func(v string) (armpolicyinsights.PolicyStatesResource, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpolicyinsights.PolicyStatesResource(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+		if err != nil {
+			return nil, err
+		}
+		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+		if err != nil {
+			return nil, err
+		}
+		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		applyUnescaped, err := url.QueryUnescape(qp.Get("$apply"))
+		if err != nil {
+			return nil, err
+		}
+		applyParam := getOptional(applyUnescaped)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupOptions
+		if topParam != nil || orderByParam != nil || selectParam != nil || fromParam != nil || toParam != nil || filterParam != nil || applyParam != nil || skipTokenParam != nil {
+			options = &armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupOptions{
+				Top:       topParam,
+				OrderBy:   orderByParam,
+				Select:    selectParam,
+				From:      fromParam,
+				To:        toParam,
+				Filter:    filterParam,
+				Apply:     applyParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListQueryResultsForResourceGroupPager(resourceGroupNameParam, policyStatesResourceParam, options)
+		newListQueryResultsForResourceGroupPager = &resp
+		p.newListQueryResultsForResourceGroupPager.add(req, newListQueryResultsForResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListQueryResultsForResourceGroupPager, req, func(page *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupResponse, createLink func() string) {
+			page.ODataNextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListQueryResultsForResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListQueryResultsForResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListQueryResultsForResourceGroupPager) {
+		p.newListQueryResultsForResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager not implemented")}
+	}
+	newListQueryResultsForResourceGroupLevelPolicyAssignmentPager := p.newListQueryResultsForResourceGroupLevelPolicyAssignmentPager.get(req)
+	if newListQueryResultsForResourceGroupLevelPolicyAssignmentPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		policyStatesResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesResource")], func(v string) (armpolicyinsights.PolicyStatesResource, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpolicyinsights.PolicyStatesResource(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		policyAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+		if err != nil {
+			return nil, err
+		}
+		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+		if err != nil {
+			return nil, err
+		}
+		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		applyUnescaped, err := url.QueryUnescape(qp.Get("$apply"))
+		if err != nil {
+			return nil, err
+		}
+		applyParam := getOptional(applyUnescaped)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions
+		if topParam != nil || orderByParam != nil || selectParam != nil || fromParam != nil || toParam != nil || filterParam != nil || applyParam != nil || skipTokenParam != nil {
+			options = &armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions{
+				Top:       topParam,
+				OrderBy:   orderByParam,
+				Select:    selectParam,
+				From:      fromParam,
+				To:        toParam,
+				Filter:    filterParam,
+				Apply:     applyParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(resourceGroupNameParam, policyStatesResourceParam, policyAssignmentNameParam, options)
+		newListQueryResultsForResourceGroupLevelPolicyAssignmentPager = &resp
+		p.newListQueryResultsForResourceGroupLevelPolicyAssignmentPager.add(req, newListQueryResultsForResourceGroupLevelPolicyAssignmentPager)
+		server.PagerResponderInjectNextLinks(newListQueryResultsForResourceGroupLevelPolicyAssignmentPager, req, func(page *armpolicyinsights.PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse, createLink func() string) {
+			page.ODataNextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListQueryResultsForResourceGroupLevelPolicyAssignmentPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListQueryResultsForResourceGroupLevelPolicyAssignmentPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListQueryResultsForResourceGroupLevelPolicyAssignmentPager) {
+		p.newListQueryResultsForResourceGroupLevelPolicyAssignmentPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForSubscriptionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListQueryResultsForSubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForSubscriptionPager not implemented")}
+	}
+	newListQueryResultsForSubscriptionPager := p.newListQueryResultsForSubscriptionPager.get(req)
+	if newListQueryResultsForSubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		policyStatesResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesResource")], func(v string) (armpolicyinsights.PolicyStatesResource, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpolicyinsights.PolicyStatesResource(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+		if err != nil {
+			return nil, err
+		}
+		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+		if err != nil {
+			return nil, err
+		}
+		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		applyUnescaped, err := url.QueryUnescape(qp.Get("$apply"))
+		if err != nil {
+			return nil, err
+		}
+		applyParam := getOptional(applyUnescaped)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionOptions
+		if topParam != nil || orderByParam != nil || selectParam != nil || fromParam != nil || toParam != nil || filterParam != nil || applyParam != nil || skipTokenParam != nil {
+			options = &armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionOptions{
+				Top:       topParam,
+				OrderBy:   orderByParam,
+				Select:    selectParam,
+				From:      fromParam,
+				To:        toParam,
+				Filter:    filterParam,
+				Apply:     applyParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListQueryResultsForSubscriptionPager(policyStatesResourceParam, options)
+		newListQueryResultsForSubscriptionPager = &resp
+		p.newListQueryResultsForSubscriptionPager.add(req, newListQueryResultsForSubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListQueryResultsForSubscriptionPager, req, func(page *armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionResponse, createLink func() string) {
+			page.ODataNextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListQueryResultsForSubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListQueryResultsForSubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListQueryResultsForSubscriptionPager) {
+		p.newListQueryResultsForSubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchNewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager not implemented")}
+	}
+	newListQueryResultsForSubscriptionLevelPolicyAssignmentPager := p.newListQueryResultsForSubscriptionLevelPolicyAssignmentPager.get(req)
+	if newListQueryResultsForSubscriptionLevelPolicyAssignmentPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryResults`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		policyStatesResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesResource")], func(v string) (armpolicyinsights.PolicyStatesResource, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpolicyinsights.PolicyStatesResource(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		policyAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		orderByUnescaped, err := url.QueryUnescape(qp.Get("$orderby"))
+		if err != nil {
+			return nil, err
+		}
+		orderByParam := getOptional(orderByUnescaped)
+		selectUnescaped, err := url.QueryUnescape(qp.Get("$select"))
+		if err != nil {
+			return nil, err
+		}
+		selectParam := getOptional(selectUnescaped)
+		fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+		if err != nil {
+			return nil, err
+		}
+		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+		if err != nil {
+			return nil, err
+		}
+		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		applyUnescaped, err := url.QueryUnescape(qp.Get("$apply"))
+		if err != nil {
+			return nil, err
+		}
+		applyParam := getOptional(applyUnescaped)
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions
+		if topParam != nil || orderByParam != nil || selectParam != nil || fromParam != nil || toParam != nil || filterParam != nil || applyParam != nil || skipTokenParam != nil {
+			options = &armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions{
+				Top:       topParam,
+				OrderBy:   orderByParam,
+				Select:    selectParam,
+				From:      fromParam,
+				To:        toParam,
+				Filter:    filterParam,
+				Apply:     applyParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := p.srv.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(policyStatesResourceParam, policyAssignmentNameParam, options)
+		newListQueryResultsForSubscriptionLevelPolicyAssignmentPager = &resp
+		p.newListQueryResultsForSubscriptionLevelPolicyAssignmentPager.add(req, newListQueryResultsForSubscriptionLevelPolicyAssignmentPager)
+		server.PagerResponderInjectNextLinks(newListQueryResultsForSubscriptionLevelPolicyAssignmentPager, req, func(page *armpolicyinsights.PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse, createLink func() string) {
+			page.ODataNextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListQueryResultsForSubscriptionLevelPolicyAssignmentPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListQueryResultsForSubscriptionLevelPolicyAssignmentPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListQueryResultsForSubscriptionLevelPolicyAssignmentPager) {
+		p.newListQueryResultsForSubscriptionLevelPolicyAssignmentPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchSummarizeForManagementGroup(req *http.Request) (*http.Response, error) {
+	if p.srv.SummarizeForManagementGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SummarizeForManagementGroup not implemented")}
+	}
+	const regexStr = `/providers/(?P<managementGroupsNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesSummaryResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/summarize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	policyStatesSummaryResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesSummaryResource")], func(v string) (armpolicyinsights.PolicyStatesSummaryResourceType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpolicyinsights.PolicyStatesSummaryResourceType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	managementGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+	if err != nil {
+		return nil, err
+	}
+	fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+	if err != nil {
+		return nil, err
+	}
+	toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armpolicyinsights.PolicyStatesClientSummarizeForManagementGroupOptions
+	if topParam != nil || fromParam != nil || toParam != nil || filterParam != nil {
+		options = &armpolicyinsights.PolicyStatesClientSummarizeForManagementGroupOptions{
+			Top:    topParam,
+			From:   fromParam,
+			To:     toParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.SummarizeForManagementGroup(req.Context(), policyStatesSummaryResourceParam, managementGroupNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummarizeResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchSummarizeForPolicyDefinition(req *http.Request) (*http.Response, error) {
+	if p.srv.SummarizeForPolicyDefinition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SummarizeForPolicyDefinition not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyDefinitions/(?P<policyDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesSummaryResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/summarize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	policyStatesSummaryResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesSummaryResource")], func(v string) (armpolicyinsights.PolicyStatesSummaryResourceType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpolicyinsights.PolicyStatesSummaryResourceType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	policyDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyDefinitionName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+	if err != nil {
+		return nil, err
+	}
+	fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+	if err != nil {
+		return nil, err
+	}
+	toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armpolicyinsights.PolicyStatesClientSummarizeForPolicyDefinitionOptions
+	if topParam != nil || fromParam != nil || toParam != nil || filterParam != nil {
+		options = &armpolicyinsights.PolicyStatesClientSummarizeForPolicyDefinitionOptions{
+			Top:    topParam,
+			From:   fromParam,
+			To:     toParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.SummarizeForPolicyDefinition(req.Context(), policyStatesSummaryResourceParam, policyDefinitionNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummarizeResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchSummarizeForPolicySetDefinition(req *http.Request) (*http.Response, error) {
+	if p.srv.SummarizeForPolicySetDefinition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SummarizeForPolicySetDefinition not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesSummaryResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/summarize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	policyStatesSummaryResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesSummaryResource")], func(v string) (armpolicyinsights.PolicyStatesSummaryResourceType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpolicyinsights.PolicyStatesSummaryResourceType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	policySetDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policySetDefinitionName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+	if err != nil {
+		return nil, err
+	}
+	fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+	if err != nil {
+		return nil, err
+	}
+	toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armpolicyinsights.PolicyStatesClientSummarizeForPolicySetDefinitionOptions
+	if topParam != nil || fromParam != nil || toParam != nil || filterParam != nil {
+		options = &armpolicyinsights.PolicyStatesClientSummarizeForPolicySetDefinitionOptions{
+			Top:    topParam,
+			From:   fromParam,
+			To:     toParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.SummarizeForPolicySetDefinition(req.Context(), policyStatesSummaryResourceParam, policySetDefinitionNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummarizeResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchSummarizeForResource(req *http.Request) (*http.Response, error) {
+	if p.srv.SummarizeForResource == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SummarizeForResource not implemented")}
+	}
+	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesSummaryResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/summarize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	policyStatesSummaryResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesSummaryResource")], func(v string) (armpolicyinsights.PolicyStatesSummaryResourceType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpolicyinsights.PolicyStatesSummaryResourceType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+	if err != nil {
+		return nil, err
+	}
+	fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+	if err != nil {
+		return nil, err
+	}
+	toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armpolicyinsights.PolicyStatesClientSummarizeForResourceOptions
+	if topParam != nil || fromParam != nil || toParam != nil || filterParam != nil {
+		options = &armpolicyinsights.PolicyStatesClientSummarizeForResourceOptions{
+			Top:    topParam,
+			From:   fromParam,
+			To:     toParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.SummarizeForResource(req.Context(), policyStatesSummaryResourceParam, resourceIDParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummarizeResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchSummarizeForResourceGroup(req *http.Request) (*http.Response, error) {
+	if p.srv.SummarizeForResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SummarizeForResourceGroup not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesSummaryResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/summarize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	policyStatesSummaryResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesSummaryResource")], func(v string) (armpolicyinsights.PolicyStatesSummaryResourceType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpolicyinsights.PolicyStatesSummaryResourceType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+	if err != nil {
+		return nil, err
+	}
+	fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+	if err != nil {
+		return nil, err
+	}
+	toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armpolicyinsights.PolicyStatesClientSummarizeForResourceGroupOptions
+	if topParam != nil || fromParam != nil || toParam != nil || filterParam != nil {
+		options = &armpolicyinsights.PolicyStatesClientSummarizeForResourceGroupOptions{
+			Top:    topParam,
+			From:   fromParam,
+			To:     toParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.SummarizeForResourceGroup(req.Context(), resourceGroupNameParam, policyStatesSummaryResourceParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummarizeResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchSummarizeForResourceGroupLevelPolicyAssignment(req *http.Request) (*http.Response, error) {
+	if p.srv.SummarizeForResourceGroupLevelPolicyAssignment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SummarizeForResourceGroupLevelPolicyAssignment not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesSummaryResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/summarize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	policyStatesSummaryResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesSummaryResource")], func(v string) (armpolicyinsights.PolicyStatesSummaryResourceType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpolicyinsights.PolicyStatesSummaryResourceType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	policyAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+	if err != nil {
+		return nil, err
+	}
+	fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+	if err != nil {
+		return nil, err
+	}
+	toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armpolicyinsights.PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentOptions
+	if topParam != nil || fromParam != nil || toParam != nil || filterParam != nil {
+		options = &armpolicyinsights.PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentOptions{
+			Top:    topParam,
+			From:   fromParam,
+			To:     toParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.SummarizeForResourceGroupLevelPolicyAssignment(req.Context(), resourceGroupNameParam, policyStatesSummaryResourceParam, policyAssignmentNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummarizeResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchSummarizeForSubscription(req *http.Request) (*http.Response, error) {
+	if p.srv.SummarizeForSubscription == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SummarizeForSubscription not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesSummaryResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/summarize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	policyStatesSummaryResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesSummaryResource")], func(v string) (armpolicyinsights.PolicyStatesSummaryResourceType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpolicyinsights.PolicyStatesSummaryResourceType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+	if err != nil {
+		return nil, err
+	}
+	fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+	if err != nil {
+		return nil, err
+	}
+	toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionOptions
+	if topParam != nil || fromParam != nil || toParam != nil || filterParam != nil {
+		options = &armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionOptions{
+			Top:    topParam,
+			From:   fromParam,
+			To:     toParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.SummarizeForSubscription(req.Context(), policyStatesSummaryResourceParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummarizeResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PolicyStatesServerTransport) dispatchSummarizeForSubscriptionLevelPolicyAssignment(req *http.Request) (*http.Response, error) {
+	if p.srv.SummarizeForSubscriptionLevelPolicyAssignment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SummarizeForSubscriptionLevelPolicyAssignment not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<authorizationNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/policyStates/(?P<policyStatesSummaryResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/summarize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	qp := req.URL.Query()
+	policyStatesSummaryResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyStatesSummaryResource")], func(v string) (armpolicyinsights.PolicyStatesSummaryResourceType, error) {
+		p, unescapeErr := url.PathUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpolicyinsights.PolicyStatesSummaryResourceType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	policyAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentName")])
+	if err != nil {
+		return nil, err
+	}
+	topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+	if err != nil {
+		return nil, err
+	}
+	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		p, parseErr := strconv.ParseInt(v, 10, 32)
+		if parseErr != nil {
+			return 0, parseErr
+		}
+		return int32(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	fromUnescaped, err := url.QueryUnescape(qp.Get("$from"))
+	if err != nil {
+		return nil, err
+	}
+	fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	toUnescaped, err := url.QueryUnescape(qp.Get("$to"))
+	if err != nil {
+		return nil, err
+	}
+	toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+	if err != nil {
+		return nil, err
+	}
+	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+	if err != nil {
+		return nil, err
+	}
+	filterParam := getOptional(filterUnescaped)
+	var options *armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions
+	if topParam != nil || fromParam != nil || toParam != nil || filterParam != nil {
+		options = &armpolicyinsights.PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions{
+			Top:    topParam,
+			From:   fromParam,
+			To:     toParam,
+			Filter: filterParam,
+		}
+	}
+	respr, errRespr := p.srv.SummarizeForSubscriptionLevelPolicyAssignment(req.Context(), policyStatesSummaryResourceParam, policyAssignmentNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SummarizeResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+>>>>>>> Stashed changes
 func (p *PolicyStatesServerTransport) dispatchBeginTriggerResourceGroupEvaluation(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginTriggerResourceGroupEvaluation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginTriggerResourceGroupEvaluation not implemented")}

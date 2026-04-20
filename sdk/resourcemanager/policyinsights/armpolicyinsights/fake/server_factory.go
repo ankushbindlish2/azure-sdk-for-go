@@ -72,9 +72,23 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AttestationsClient":
 		initServer(&s.trMu, &s.trAttestationsServer, func() *AttestationsServerTransport { return NewAttestationsServerTransport(&s.srv.AttestationsServer) })
 		resp, err = s.trAttestationsServer.Do(req)
+<<<<<<< Updated upstream
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+=======
+	case "ComponentPolicyStatesClient":
+		initServer(&s.trMu, &s.trComponentPolicyStatesServer, func() *ComponentPolicyStatesServerTransport {
+			return NewComponentPolicyStatesServerTransport(&s.srv.ComponentPolicyStatesServer)
+		})
+		resp, err = s.trComponentPolicyStatesServer.Do(req)
+	case "OperationsClient":
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		resp, err = s.trOperationsServer.Do(req)
+	case "PolicyEventsClient":
+		initServer(&s.trMu, &s.trPolicyEventsServer, func() *PolicyEventsServerTransport { return NewPolicyEventsServerTransport(&s.srv.PolicyEventsServer) })
+		resp, err = s.trPolicyEventsServer.Do(req)
+>>>>>>> Stashed changes
 	case "PolicyMetadataClient":
 		initServer(&s.trMu, &s.trPolicyMetadataServer, func() *PolicyMetadataServerTransport {
 			return NewPolicyMetadataServerTransport(&s.srv.PolicyMetadataServer)
@@ -88,6 +102,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PolicyStatesClient":
 		initServer(&s.trMu, &s.trPolicyStatesServer, func() *PolicyStatesServerTransport { return NewPolicyStatesServerTransport(&s.srv.PolicyStatesServer) })
 		resp, err = s.trPolicyStatesServer.Do(req)
+<<<<<<< Updated upstream
+=======
+	case "PolicyTrackedResourcesClient":
+		initServer(&s.trMu, &s.trPolicyTrackedResourcesServer, func() *PolicyTrackedResourcesServerTransport {
+			return NewPolicyTrackedResourcesServerTransport(&s.srv.PolicyTrackedResourcesServer)
+		})
+		resp, err = s.trPolicyTrackedResourcesServer.Do(req)
+>>>>>>> Stashed changes
 	case "RemediationsClient":
 		initServer(&s.trMu, &s.trRemediationsServer, func() *RemediationsServerTransport { return NewRemediationsServerTransport(&s.srv.RemediationsServer) })
 		resp, err = s.trRemediationsServer.Do(req)

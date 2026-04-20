@@ -54,6 +54,21 @@ type AttestationsServer struct {
 	// GetAtSubscription is the fake for method AttestationsClient.GetAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAtSubscription func(ctx context.Context, attestationName string, options *armpolicyinsights.AttestationsClientGetAtSubscriptionOptions) (resp azfake.Responder[armpolicyinsights.AttestationsClientGetAtSubscriptionResponse], errResp azfake.ErrorResponder)
+<<<<<<< Updated upstream
+=======
+
+	// NewListForResourcePager is the fake for method AttestationsClient.NewListForResourcePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForResourcePager func(resourceID string, options *armpolicyinsights.AttestationsClientListForResourceOptions) (resp azfake.PagerResponder[armpolicyinsights.AttestationsClientListForResourceResponse])
+
+	// NewListForResourceGroupPager is the fake for method AttestationsClient.NewListForResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForResourceGroupPager func(resourceGroupName string, options *armpolicyinsights.AttestationsClientListForResourceGroupOptions) (resp azfake.PagerResponder[armpolicyinsights.AttestationsClientListForResourceGroupResponse])
+
+	// NewListForSubscriptionPager is the fake for method AttestationsClient.NewListForSubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForSubscriptionPager func(options *armpolicyinsights.AttestationsClientListForSubscriptionOptions) (resp azfake.PagerResponder[armpolicyinsights.AttestationsClientListForSubscriptionResponse])
+>>>>>>> Stashed changes
 }
 
 // NewAttestationsServerTransport creates a new instance of AttestationsServerTransport with the provided implementation.
@@ -467,6 +482,197 @@ func (a *AttestationsServerTransport) dispatchGetAtSubscription(req *http.Reques
 	return resp, nil
 }
 
+<<<<<<< Updated upstream
+=======
+func (a *AttestationsServerTransport) dispatchNewListForResourcePager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListForResourcePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForResourcePager not implemented")}
+	}
+	newListForResourcePager := a.newListForResourcePager.get(req)
+	if newListForResourcePager == nil {
+		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/attestations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armpolicyinsights.AttestationsClientListForResourceOptions
+		if topParam != nil || filterParam != nil {
+			options = &armpolicyinsights.AttestationsClientListForResourceOptions{
+				Top:    topParam,
+				Filter: filterParam,
+			}
+		}
+		resp := a.srv.NewListForResourcePager(resourceIDParam, options)
+		newListForResourcePager = &resp
+		a.newListForResourcePager.add(req, newListForResourcePager)
+		server.PagerResponderInjectNextLinks(newListForResourcePager, req, func(page *armpolicyinsights.AttestationsClientListForResourceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForResourcePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListForResourcePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForResourcePager) {
+		a.newListForResourcePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AttestationsServerTransport) dispatchNewListForResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListForResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForResourceGroupPager not implemented")}
+	}
+	newListForResourceGroupPager := a.newListForResourceGroupPager.get(req)
+	if newListForResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/attestations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armpolicyinsights.AttestationsClientListForResourceGroupOptions
+		if topParam != nil || filterParam != nil {
+			options = &armpolicyinsights.AttestationsClientListForResourceGroupOptions{
+				Top:    topParam,
+				Filter: filterParam,
+			}
+		}
+		resp := a.srv.NewListForResourceGroupPager(resourceGroupNameParam, options)
+		newListForResourceGroupPager = &resp
+		a.newListForResourceGroupPager.add(req, newListForResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListForResourceGroupPager, req, func(page *armpolicyinsights.AttestationsClientListForResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListForResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForResourceGroupPager) {
+		a.newListForResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AttestationsServerTransport) dispatchNewListForSubscriptionPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListForSubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForSubscriptionPager not implemented")}
+	}
+	newListForSubscriptionPager := a.newListForSubscriptionPager.get(req)
+	if newListForSubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/attestations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armpolicyinsights.AttestationsClientListForSubscriptionOptions
+		if topParam != nil || filterParam != nil {
+			options = &armpolicyinsights.AttestationsClientListForSubscriptionOptions{
+				Top:    topParam,
+				Filter: filterParam,
+			}
+		}
+		resp := a.srv.NewListForSubscriptionPager(options)
+		newListForSubscriptionPager = &resp
+		a.newListForSubscriptionPager.add(req, newListForSubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListForSubscriptionPager, req, func(page *armpolicyinsights.AttestationsClientListForSubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForSubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListForSubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForSubscriptionPager) {
+		a.newListForSubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+>>>>>>> Stashed changes
 // set this to conditionally intercept incoming requests to AttestationsServerTransport
 var attestationsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error

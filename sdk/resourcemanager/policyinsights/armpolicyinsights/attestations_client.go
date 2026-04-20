@@ -611,3 +611,194 @@ func (client *AttestationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 	}
 	return result, nil
 }
+<<<<<<< Updated upstream
+=======
+
+// NewListForResourcePager - Gets all attestations for a resource.
+//
+// Generated from API version 2024-10-01
+//   - options - AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.NewListForResourcePager
+//     method.
+func (client *AttestationsClient) NewListForResourcePager(resourceID string, options *AttestationsClientListForResourceOptions) *runtime.Pager[AttestationsClientListForResourceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForResourceResponse]{
+		More: func(page AttestationsClientListForResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AttestationsClientListForResourceResponse) (AttestationsClientListForResourceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AttestationsClient.NewListForResourcePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForResourceCreateRequest(ctx, resourceID, options)
+			}, nil)
+			if err != nil {
+				return AttestationsClientListForResourceResponse{}, err
+			}
+			return client.listForResourceHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listForResourceCreateRequest creates the ListForResource request.
+func (client *AttestationsClient) listForResourceCreateRequest(ctx context.Context, resourceID string, options *AttestationsClientListForResourceOptions) (*policy.Request, error) {
+	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/attestations"
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listForResourceHandleResponse handles the ListForResource response.
+func (client *AttestationsClient) listForResourceHandleResponse(resp *http.Response) (AttestationsClientListForResourceResponse, error) {
+	result := AttestationsClientListForResourceResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AttestationListResult); err != nil {
+		return AttestationsClientListForResourceResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListForResourceGroupPager - Gets all attestations for the resource group.
+//
+// Generated from API version 2024-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.NewListForResourceGroupPager
+//     method.
+func (client *AttestationsClient) NewListForResourceGroupPager(resourceGroupName string, options *AttestationsClientListForResourceGroupOptions) *runtime.Pager[AttestationsClientListForResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForResourceGroupResponse]{
+		More: func(page AttestationsClientListForResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AttestationsClientListForResourceGroupResponse) (AttestationsClientListForResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AttestationsClient.NewListForResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
+			if err != nil {
+				return AttestationsClientListForResourceGroupResponse{}, err
+			}
+			return client.listForResourceGroupHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listForResourceGroupCreateRequest creates the ListForResourceGroup request.
+func (client *AttestationsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AttestationsClientListForResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/attestations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listForResourceGroupHandleResponse handles the ListForResourceGroup response.
+func (client *AttestationsClient) listForResourceGroupHandleResponse(resp *http.Response) (AttestationsClientListForResourceGroupResponse, error) {
+	result := AttestationsClientListForResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AttestationListResult); err != nil {
+		return AttestationsClientListForResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListForSubscriptionPager - Gets all attestations for the subscription.
+//
+// Generated from API version 2024-10-01
+//   - options - AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.NewListForSubscriptionPager
+//     method.
+func (client *AttestationsClient) NewListForSubscriptionPager(options *AttestationsClientListForSubscriptionOptions) *runtime.Pager[AttestationsClientListForSubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AttestationsClientListForSubscriptionResponse]{
+		More: func(page AttestationsClientListForSubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AttestationsClientListForSubscriptionResponse) (AttestationsClientListForSubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AttestationsClient.NewListForSubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listForSubscriptionCreateRequest(ctx, options)
+			}, nil)
+			if err != nil {
+				return AttestationsClientListForSubscriptionResponse{}, err
+			}
+			return client.listForSubscriptionHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listForSubscriptionCreateRequest creates the ListForSubscription request.
+func (client *AttestationsClient) listForSubscriptionCreateRequest(ctx context.Context, options *AttestationsClientListForSubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/attestations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listForSubscriptionHandleResponse handles the ListForSubscription response.
+func (client *AttestationsClient) listForSubscriptionHandleResponse(resp *http.Response) (AttestationsClientListForSubscriptionResponse, error) {
+	result := AttestationsClientListForSubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AttestationListResult); err != nil {
+		return AttestationsClientListForSubscriptionResponse{}, err
+	}
+	return result, nil
+}
+>>>>>>> Stashed changes

@@ -37,7 +37,38 @@ func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
 	if *dst == nil {
 		*dst = src()
 	}
+<<<<<<< Updated upstream
 	mu.Unlock()
+=======
+	return &v
+}
+
+func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
+	mu.Lock()
+	if *dst == nil {
+		*dst = src()
+	}
+	mu.Unlock()
+}
+
+func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error) {
+	if v == "" {
+		return nil, nil
+	}
+	t, err := parse(v)
+	if err != nil {
+		return nil, err
+	}
+	return &t, err
+}
+
+func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {
+	t, err := parse(v)
+	if err != nil {
+		return *new(T), err
+	}
+	return t, err
+>>>>>>> Stashed changes
 }
 
 func newTracker[T any]() *tracker[T] {

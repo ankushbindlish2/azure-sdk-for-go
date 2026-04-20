@@ -60,16 +60,441 @@ type AttestationsClientGetAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+<<<<<<< Updated upstream
+=======
+// AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.NewListForResourceGroupPager
+// method.
+type AttestationsClientListForResourceGroupOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.NewListForResourcePager
+// method.
+type AttestationsClientListForResourceOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.NewListForSubscriptionPager
+// method.
+type AttestationsClientListForSubscriptionOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// ComponentPolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the ComponentPolicyStatesClient.ListQueryResultsForPolicyDefinition
+// method.
+type ComponentPolicyStatesClientListQueryResultsForPolicyDefinitionOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// ComponentPolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters
+// for the ComponentPolicyStatesClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
+type ComponentPolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// ComponentPolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the ComponentPolicyStatesClient.ListQueryResultsForResourceGroup
+// method.
+type ComponentPolicyStatesClientListQueryResultsForResourceGroupOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// ComponentPolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the ComponentPolicyStatesClient.ListQueryResultsForResource
+// method.
+type ComponentPolicyStatesClientListQueryResultsForResourceOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// The $expand query parameter. For example, to expand components use $expand=components
+	Expand *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// ComponentPolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters
+// for the ComponentPolicyStatesClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
+type ComponentPolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// ComponentPolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the ComponentPolicyStatesClient.ListQueryResultsForSubscription
+// method.
+type ComponentPolicyStatesClientListQueryResultsForSubscriptionOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+>>>>>>> Stashed changes
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+<<<<<<< Updated upstream
+=======
+// PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForManagementGroupPager
+// method.
+type PolicyEventsClientListQueryResultsForManagementGroupOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyEventsClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForPolicyDefinitionPager
+// method.
+type PolicyEventsClientListQueryResultsForPolicyDefinitionOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForPolicySetDefinitionPager
+// method.
+type PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters for the
+// PolicyEventsClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager method.
+type PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyEventsClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForResourceGroupPager
+// method.
+type PolicyEventsClientListQueryResultsForResourceGroupOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyEventsClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForResourcePager
+// method.
+type PolicyEventsClientListQueryResultsForResourceOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// The $expand query parameter. For example, to expand components use $expand=components
+	Expand *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters for the
+// PolicyEventsClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager method.
+type PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForSubscriptionPager
+// method.
+type PolicyEventsClientListQueryResultsForSubscriptionOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+>>>>>>> Stashed changes
 // PolicyMetadataClientGetResourceOptions contains the optional parameters for the PolicyMetadataClient.GetResource method.
 type PolicyMetadataClientGetResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
+<<<<<<< Updated upstream
+=======
+// PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.NewListPager method.
+type PolicyMetadataClientListOptions struct {
+	// Maximum number of records to return.
+	Top *int32
+}
+
+>>>>>>> Stashed changes
 // PolicyRestrictionsClientCheckAtManagementGroupScopeOptions contains the optional parameters for the PolicyRestrictionsClient.CheckAtManagementGroupScope
 // method.
 type PolicyRestrictionsClientCheckAtManagementGroupScopeOptions struct {
@@ -102,6 +527,404 @@ type PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions struct {
 	ResumeToken string
 }
 
+<<<<<<< Updated upstream
+=======
+// PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForManagementGroupPager
+// method.
+type PolicyStatesClientListQueryResultsForManagementGroupOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager
+// method.
+type PolicyStatesClientListQueryResultsForPolicyDefinitionOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager
+// method.
+type PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters for the
+// PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager method.
+type PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForResourceGroupPager
+// method.
+type PolicyStatesClientListQueryResultsForResourceGroupOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForResourcePager
+// method.
+type PolicyStatesClientListQueryResultsForResourceOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// The $expand query parameter. For example, to expand components use $expand=components
+	Expand *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters for the
+// PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager method.
+type PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForSubscriptionPager
+// method.
+type PolicyStatesClientListQueryResultsForSubscriptionOptions struct {
+	// OData apply expression for aggregations.
+	Apply *string
+
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// Ordering expression using OData notation.
+	OrderBy *string
+
+	// Select expression using OData notation.
+	Select *string
+
+	// Skiptoken provided if a previous response returned a partial result.
+	SkipToken *string
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientSummarizeForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.SummarizeForManagementGroup
+// method.
+type PolicyStatesClientSummarizeForManagementGroupOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientSummarizeForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.SummarizeForPolicyDefinition
+// method.
+type PolicyStatesClientSummarizeForPolicyDefinitionOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientSummarizeForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.SummarizeForPolicySetDefinition
+// method.
+type PolicyStatesClientSummarizeForPolicySetDefinitionOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters for the PolicyStatesClient.SummarizeForResourceGroupLevelPolicyAssignment
+// method.
+type PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientSummarizeForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.SummarizeForResourceGroup
+// method.
+type PolicyStatesClientSummarizeForResourceGroupOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientSummarizeForResourceOptions contains the optional parameters for the PolicyStatesClient.SummarizeForResource
+// method.
+type PolicyStatesClientSummarizeForResourceOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters for the PolicyStatesClient.SummarizeForSubscriptionLevelPolicyAssignment
+// method.
+type PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyStatesClientSummarizeForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.SummarizeForSubscription
+// method.
+type PolicyStatesClientSummarizeForSubscriptionOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// ISO 8601 formatted timestamp specifying the start time of the interval to query.
+	From *time.Time
+
+	// ISO 8601 formatted timestamp specifying the end time of the interval to query.
+	To *time.Time
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForManagementGroupPager
+// method.
+type PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForResourceGroupPager
+// method.
+type PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForResourcePager
+// method.
+type PolicyTrackedResourcesClientListQueryResultsForResourceOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForSubscriptionPager
+// method.
+type PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+>>>>>>> Stashed changes
 // RemediationsClientCancelAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CancelAtManagementGroup
 // method.
 type RemediationsClientCancelAtManagementGroupOptions struct {
@@ -196,3 +1019,74 @@ type RemediationsClientGetAtResourceOptions struct {
 type RemediationsClientGetAtSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
+<<<<<<< Updated upstream
+=======
+
+// RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtManagementGroupPager
+// method.
+type RemediationsClientListDeploymentsAtManagementGroupOptions struct {
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtResourceGroupPager
+// method.
+type RemediationsClientListDeploymentsAtResourceGroupOptions struct {
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtResourcePager
+// method.
+type RemediationsClientListDeploymentsAtResourceOptions struct {
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.NewListDeploymentsAtSubscriptionPager
+// method.
+type RemediationsClientListDeploymentsAtSubscriptionOptions struct {
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.NewListForManagementGroupPager
+// method.
+type RemediationsClientListForManagementGroupOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.NewListForResourceGroupPager
+// method.
+type RemediationsClientListForResourceGroupOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.NewListForResourcePager
+// method.
+type RemediationsClientListForResourceOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.NewListForSubscriptionPager
+// method.
+type RemediationsClientListForSubscriptionOptions struct {
+	// OData filter expression.
+	Filter *string
+
+	// Maximum number of records to return.
+	Top *int32
+}
+>>>>>>> Stashed changes

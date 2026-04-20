@@ -22,6 +22,13 @@ type PolicyMetadataServer struct {
 	// GetResource is the fake for method PolicyMetadataClient.GetResource
 	// HTTP status codes to indicate success: http.StatusOK
 	GetResource func(ctx context.Context, resourceName string, options *armpolicyinsights.PolicyMetadataClientGetResourceOptions) (resp azfake.Responder[armpolicyinsights.PolicyMetadataClientGetResourceResponse], errResp azfake.ErrorResponder)
+<<<<<<< Updated upstream
+=======
+
+	// NewListPager is the fake for method PolicyMetadataClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armpolicyinsights.PolicyMetadataClientListOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyMetadataClientListResponse])
+>>>>>>> Stashed changes
 }
 
 // NewPolicyMetadataServerTransport creates a new instance of PolicyMetadataServerTransport with the provided implementation.
@@ -110,6 +117,57 @@ func (p *PolicyMetadataServerTransport) dispatchGetResource(req *http.Request) (
 	return resp, nil
 }
 
+<<<<<<< Updated upstream
+=======
+func (p *PolicyMetadataServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		qp := req.URL.Query()
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armpolicyinsights.PolicyMetadataClientListOptions
+		if topParam != nil {
+			options = &armpolicyinsights.PolicyMetadataClientListOptions{
+				Top: topParam,
+			}
+		}
+		resp := p.srv.NewListPager(options)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpolicyinsights.PolicyMetadataClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+>>>>>>> Stashed changes
 // set this to conditionally intercept incoming requests to PolicyMetadataServerTransport
 var policyMetadataServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error

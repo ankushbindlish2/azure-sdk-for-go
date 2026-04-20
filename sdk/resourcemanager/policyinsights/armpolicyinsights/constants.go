@@ -25,6 +25,23 @@ func PossibleComplianceStateValues() []ComplianceState {
 	}
 }
 
+<<<<<<< Updated upstream
+=======
+type ComponentPolicyStatesResource string
+
+const (
+	// ComponentPolicyStatesResourceLatest - latest
+	ComponentPolicyStatesResourceLatest ComponentPolicyStatesResource = "latest"
+)
+
+// PossibleComponentPolicyStatesResourceValues returns the possible values for the ComponentPolicyStatesResource const type.
+func PossibleComponentPolicyStatesResourceValues() []ComponentPolicyStatesResource {
+	return []ComponentPolicyStatesResource{
+		ComponentPolicyStatesResourceLatest,
+	}
+}
+
+>>>>>>> Stashed changes
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -73,6 +90,68 @@ func PossibleFieldRestrictionResultValues() []FieldRestrictionResult {
 	}
 }
 
+<<<<<<< Updated upstream
+=======
+type PolicyEventsResourceType string
+
+const (
+	// PolicyEventsResourceTypeDefault - default
+	PolicyEventsResourceTypeDefault PolicyEventsResourceType = "default"
+)
+
+// PossiblePolicyEventsResourceTypeValues returns the possible values for the PolicyEventsResourceType const type.
+func PossiblePolicyEventsResourceTypeValues() []PolicyEventsResourceType {
+	return []PolicyEventsResourceType{
+		PolicyEventsResourceTypeDefault,
+	}
+}
+
+type PolicyStatesResource string
+
+const (
+	// PolicyStatesResourceDefault - default
+	PolicyStatesResourceDefault PolicyStatesResource = "default"
+	// PolicyStatesResourceLatest - latest
+	PolicyStatesResourceLatest PolicyStatesResource = "latest"
+)
+
+// PossiblePolicyStatesResourceValues returns the possible values for the PolicyStatesResource const type.
+func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
+	return []PolicyStatesResource{
+		PolicyStatesResourceDefault,
+		PolicyStatesResourceLatest,
+	}
+}
+
+type PolicyStatesSummaryResourceType string
+
+const (
+	// PolicyStatesSummaryResourceTypeLatest - latest
+	PolicyStatesSummaryResourceTypeLatest PolicyStatesSummaryResourceType = "latest"
+)
+
+// PossiblePolicyStatesSummaryResourceTypeValues returns the possible values for the PolicyStatesSummaryResourceType const type.
+func PossiblePolicyStatesSummaryResourceTypeValues() []PolicyStatesSummaryResourceType {
+	return []PolicyStatesSummaryResourceType{
+		PolicyStatesSummaryResourceTypeLatest,
+	}
+}
+
+type PolicyTrackedResourcesResourceType string
+
+const (
+	// PolicyTrackedResourcesResourceTypeDefault - default
+	PolicyTrackedResourcesResourceTypeDefault PolicyTrackedResourcesResourceType = "default"
+)
+
+// PossiblePolicyTrackedResourcesResourceTypeValues returns the possible values for the PolicyTrackedResourcesResourceType const type.
+func PossiblePolicyTrackedResourcesResourceTypeValues() []PolicyTrackedResourcesResourceType {
+	return []PolicyTrackedResourcesResourceType{
+		PolicyTrackedResourcesResourceTypeDefault,
+	}
+}
+
+>>>>>>> Stashed changes
 // ResourceDiscoveryMode - The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
 type ResourceDiscoveryMode string
 

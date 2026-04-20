@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -39,6 +40,1306 @@ func NewPolicyStatesClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
+<<<<<<< Updated upstream
+=======
+// NewListQueryResultsForManagementGroupPager - Queries policy states for the resources under the management group.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForManagementGroupPager
+//     method.
+func (client *PolicyStatesClient) NewListQueryResultsForManagementGroupPager(policyStatesResource PolicyStatesResource, managementGroupName string, options *PolicyStatesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForManagementGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForManagementGroupResponse]{
+		More: func(page PolicyStatesClientListQueryResultsForManagementGroupResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyStatesClientListQueryResultsForManagementGroupResponse) (PolicyStatesClientListQueryResultsForManagementGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyStatesClient.NewListQueryResultsForManagementGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listQueryResultsForManagementGroupCreateRequest(ctx, policyStatesResource, managementGroupName, options)
+			}, nil)
+			if err != nil {
+				return PolicyStatesClientListQueryResultsForManagementGroupResponse{}, err
+			}
+			return client.listQueryResultsForManagementGroupHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listQueryResultsForManagementGroupCreateRequest creates the ListQueryResultsForManagementGroup request.
+func (client *PolicyStatesClient) listQueryResultsForManagementGroupCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, managementGroupName string, options *PolicyStatesClientListQueryResultsForManagementGroupOptions) (*policy.Request, error) {
+	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
+	if policyStatesResource == "" {
+		return nil, errors.New("parameter policyStatesResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
+	if managementGroupName == "" {
+		return nil, errors.New("parameter managementGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupName}", url.PathEscape(managementGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Apply != nil {
+		reqQP.Set("$apply", *options.Apply)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("$orderby", *options.OrderBy)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", *options.Select)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skiptoken", *options.SkipToken)
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listQueryResultsForManagementGroupHandleResponse handles the ListQueryResultsForManagementGroup response.
+func (client *PolicyStatesClient) listQueryResultsForManagementGroupHandleResponse(resp *http.Response) (PolicyStatesClientListQueryResultsForManagementGroupResponse, error) {
+	result := PolicyStatesClientListQueryResultsForManagementGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyStatesQueryResults); err != nil {
+		return PolicyStatesClientListQueryResultsForManagementGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListQueryResultsForPolicyDefinitionPager - Queries policy states for the subscription level policy definition.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager
+//     method.
+func (client *PolicyStatesClient) NewListQueryResultsForPolicyDefinitionPager(policyStatesResource PolicyStatesResource, policyDefinitionName string, options *PolicyStatesClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse]{
+		More: func(page PolicyStatesClientListQueryResultsForPolicyDefinitionResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyStatesClientListQueryResultsForPolicyDefinitionResponse) (PolicyStatesClientListQueryResultsForPolicyDefinitionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listQueryResultsForPolicyDefinitionCreateRequest(ctx, policyStatesResource, policyDefinitionName, options)
+			}, nil)
+			if err != nil {
+				return PolicyStatesClientListQueryResultsForPolicyDefinitionResponse{}, err
+			}
+			return client.listQueryResultsForPolicyDefinitionHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listQueryResultsForPolicyDefinitionCreateRequest creates the ListQueryResultsForPolicyDefinition request.
+func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, policyDefinitionName string, options *PolicyStatesClientListQueryResultsForPolicyDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyDefinitions/{policyDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if policyStatesResource == "" {
+		return nil, errors.New("parameter policyStatesResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
+	if policyDefinitionName == "" {
+		return nil, errors.New("parameter policyDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Apply != nil {
+		reqQP.Set("$apply", *options.Apply)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("$orderby", *options.OrderBy)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", *options.Select)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skiptoken", *options.SkipToken)
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listQueryResultsForPolicyDefinitionHandleResponse handles the ListQueryResultsForPolicyDefinition response.
+func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionHandleResponse(resp *http.Response) (PolicyStatesClientListQueryResultsForPolicyDefinitionResponse, error) {
+	result := PolicyStatesClientListQueryResultsForPolicyDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyStatesQueryResults); err != nil {
+		return PolicyStatesClientListQueryResultsForPolicyDefinitionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListQueryResultsForPolicySetDefinitionPager - Queries policy states for the subscription level policy set definition.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager
+//     method.
+func (client *PolicyStatesClient) NewListQueryResultsForPolicySetDefinitionPager(policyStatesResource PolicyStatesResource, policySetDefinitionName string, options *PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse]{
+		More: func(page PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse) (PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listQueryResultsForPolicySetDefinitionCreateRequest(ctx, policyStatesResource, policySetDefinitionName, options)
+			}, nil)
+			if err != nil {
+				return PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse{}, err
+			}
+			return client.listQueryResultsForPolicySetDefinitionHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listQueryResultsForPolicySetDefinitionCreateRequest creates the ListQueryResultsForPolicySetDefinition request.
+func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, policySetDefinitionName string, options *PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policySetDefinitions/{policySetDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if policyStatesResource == "" {
+		return nil, errors.New("parameter policyStatesResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
+	if policySetDefinitionName == "" {
+		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policySetDefinitionName}", url.PathEscape(policySetDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Apply != nil {
+		reqQP.Set("$apply", *options.Apply)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("$orderby", *options.OrderBy)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", *options.Select)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skiptoken", *options.SkipToken)
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listQueryResultsForPolicySetDefinitionHandleResponse handles the ListQueryResultsForPolicySetDefinition response.
+func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionHandleResponse(resp *http.Response) (PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse, error) {
+	result := PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyStatesQueryResults); err != nil {
+		return PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListQueryResultsForResourcePager - Queries policy states for the resource.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForResourcePager
+//     method.
+func (client *PolicyStatesClient) NewListQueryResultsForResourcePager(policyStatesResource PolicyStatesResource, resourceID string, options *PolicyStatesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForResourceResponse]{
+		More: func(page PolicyStatesClientListQueryResultsForResourceResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyStatesClientListQueryResultsForResourceResponse) (PolicyStatesClientListQueryResultsForResourceResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyStatesClient.NewListQueryResultsForResourcePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listQueryResultsForResourceCreateRequest(ctx, policyStatesResource, resourceID, options)
+			}, nil)
+			if err != nil {
+				return PolicyStatesClientListQueryResultsForResourceResponse{}, err
+			}
+			return client.listQueryResultsForResourceHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listQueryResultsForResourceCreateRequest creates the ListQueryResultsForResource request.
+func (client *PolicyStatesClient) listQueryResultsForResourceCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, resourceID string, options *PolicyStatesClientListQueryResultsForResourceOptions) (*policy.Request, error) {
+	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
+	if policyStatesResource == "" {
+		return nil, errors.New("parameter policyStatesResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Apply != nil {
+		reqQP.Set("$apply", *options.Apply)
+	}
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("$orderby", *options.OrderBy)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", *options.Select)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skiptoken", *options.SkipToken)
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listQueryResultsForResourceHandleResponse handles the ListQueryResultsForResource response.
+func (client *PolicyStatesClient) listQueryResultsForResourceHandleResponse(resp *http.Response) (PolicyStatesClientListQueryResultsForResourceResponse, error) {
+	result := PolicyStatesClientListQueryResultsForResourceResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyStatesQueryResults); err != nil {
+		return PolicyStatesClientListQueryResultsForResourceResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListQueryResultsForResourceGroupPager - Queries policy states for the resources under the resource group.
+//
+// Generated from API version 2024-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - PolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForResourceGroupPager
+//     method.
+func (client *PolicyStatesClient) NewListQueryResultsForResourceGroupPager(resourceGroupName string, policyStatesResource PolicyStatesResource, options *PolicyStatesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForResourceGroupResponse]{
+		More: func(page PolicyStatesClientListQueryResultsForResourceGroupResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyStatesClientListQueryResultsForResourceGroupResponse) (PolicyStatesClientListQueryResultsForResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyStatesClient.NewListQueryResultsForResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listQueryResultsForResourceGroupCreateRequest(ctx, resourceGroupName, policyStatesResource, options)
+			}, nil)
+			if err != nil {
+				return PolicyStatesClientListQueryResultsForResourceGroupResponse{}, err
+			}
+			return client.listQueryResultsForResourceGroupHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listQueryResultsForResourceGroupCreateRequest creates the ListQueryResultsForResourceGroup request.
+func (client *PolicyStatesClient) listQueryResultsForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, policyStatesResource PolicyStatesResource, options *PolicyStatesClientListQueryResultsForResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if policyStatesResource == "" {
+		return nil, errors.New("parameter policyStatesResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Apply != nil {
+		reqQP.Set("$apply", *options.Apply)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("$orderby", *options.OrderBy)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", *options.Select)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skiptoken", *options.SkipToken)
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listQueryResultsForResourceGroupHandleResponse handles the ListQueryResultsForResourceGroup response.
+func (client *PolicyStatesClient) listQueryResultsForResourceGroupHandleResponse(resp *http.Response) (PolicyStatesClientListQueryResultsForResourceGroupResponse, error) {
+	result := PolicyStatesClientListQueryResultsForResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyStatesQueryResults); err != nil {
+		return PolicyStatesClientListQueryResultsForResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager - Queries policy states for the resource group level policy
+// assignment.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters
+//     for the PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager method.
+func (client *PolicyStatesClient) NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(resourceGroupName string, policyStatesResource PolicyStatesResource, policyAssignmentName string, options *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]{
+		More: func(page PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) (PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, resourceGroupName, policyStatesResource, policyAssignmentName, options)
+			}, nil)
+			if err != nil {
+				return PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{}, err
+			}
+			return client.listQueryResultsForResourceGroupLevelPolicyAssignmentHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest creates the ListQueryResultsForResourceGroupLevelPolicyAssignment request.
+func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, resourceGroupName string, policyStatesResource PolicyStatesResource, policyAssignmentName string, options *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if policyStatesResource == "" {
+		return nil, errors.New("parameter policyStatesResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
+	if policyAssignmentName == "" {
+		return nil, errors.New("parameter policyAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentName}", url.PathEscape(policyAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Apply != nil {
+		reqQP.Set("$apply", *options.Apply)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("$orderby", *options.OrderBy)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", *options.Select)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skiptoken", *options.SkipToken)
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listQueryResultsForResourceGroupLevelPolicyAssignmentHandleResponse handles the ListQueryResultsForResourceGroupLevelPolicyAssignment response.
+func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAssignmentHandleResponse(resp *http.Response) (PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse, error) {
+	result := PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyStatesQueryResults); err != nil {
+		return PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListQueryResultsForSubscriptionPager - Queries policy states for the resources under the subscription.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.NewListQueryResultsForSubscriptionPager
+//     method.
+func (client *PolicyStatesClient) NewListQueryResultsForSubscriptionPager(policyStatesResource PolicyStatesResource, options *PolicyStatesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForSubscriptionResponse]{
+		More: func(page PolicyStatesClientListQueryResultsForSubscriptionResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyStatesClientListQueryResultsForSubscriptionResponse) (PolicyStatesClientListQueryResultsForSubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyStatesClient.NewListQueryResultsForSubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listQueryResultsForSubscriptionCreateRequest(ctx, policyStatesResource, options)
+			}, nil)
+			if err != nil {
+				return PolicyStatesClientListQueryResultsForSubscriptionResponse{}, err
+			}
+			return client.listQueryResultsForSubscriptionHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listQueryResultsForSubscriptionCreateRequest creates the ListQueryResultsForSubscription request.
+func (client *PolicyStatesClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, options *PolicyStatesClientListQueryResultsForSubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if policyStatesResource == "" {
+		return nil, errors.New("parameter policyStatesResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Apply != nil {
+		reqQP.Set("$apply", *options.Apply)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("$orderby", *options.OrderBy)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", *options.Select)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skiptoken", *options.SkipToken)
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listQueryResultsForSubscriptionHandleResponse handles the ListQueryResultsForSubscription response.
+func (client *PolicyStatesClient) listQueryResultsForSubscriptionHandleResponse(resp *http.Response) (PolicyStatesClientListQueryResultsForSubscriptionResponse, error) {
+	result := PolicyStatesClientListQueryResultsForSubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyStatesQueryResults); err != nil {
+		return PolicyStatesClientListQueryResultsForSubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager - Queries policy states for the subscription level policy
+// assignment.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters
+//     for the PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager method.
+func (client *PolicyStatesClient) NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(policyStatesResource PolicyStatesResource, policyAssignmentName string, options *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]{
+		More: func(page PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) (PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.ODataNextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyStatesResource, policyAssignmentName, options)
+			}, nil)
+			if err != nil {
+				return PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{}, err
+			}
+			return client.listQueryResultsForSubscriptionLevelPolicyAssignmentHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest creates the ListQueryResultsForSubscriptionLevelPolicyAssignment request.
+func (client *PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesResource PolicyStatesResource, policyAssignmentName string, options *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if policyStatesResource == "" {
+		return nil, errors.New("parameter policyStatesResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesResource}", url.PathEscape(string(policyStatesResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
+	if policyAssignmentName == "" {
+		return nil, errors.New("parameter policyAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentName}", url.PathEscape(policyAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Apply != nil {
+		reqQP.Set("$apply", *options.Apply)
+	}
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.OrderBy != nil {
+		reqQP.Set("$orderby", *options.OrderBy)
+	}
+	if options != nil && options.Select != nil {
+		reqQP.Set("$select", *options.Select)
+	}
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skiptoken", *options.SkipToken)
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listQueryResultsForSubscriptionLevelPolicyAssignmentHandleResponse handles the ListQueryResultsForSubscriptionLevelPolicyAssignment response.
+func (client *PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssignmentHandleResponse(resp *http.Response) (PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse, error) {
+	result := PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyStatesQueryResults); err != nil {
+		return PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse{}, err
+	}
+	return result, nil
+}
+
+// SummarizeForManagementGroup - Summarizes policy states for the resources under the management group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientSummarizeForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.SummarizeForManagementGroup
+//     method.
+func (client *PolicyStatesClient) SummarizeForManagementGroup(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, managementGroupName string, options *PolicyStatesClientSummarizeForManagementGroupOptions) (PolicyStatesClientSummarizeForManagementGroupResponse, error) {
+	var err error
+	const operationName = "PolicyStatesClient.SummarizeForManagementGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.summarizeForManagementGroupCreateRequest(ctx, policyStatesSummaryResource, managementGroupName, options)
+	if err != nil {
+		return PolicyStatesClientSummarizeForManagementGroupResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PolicyStatesClientSummarizeForManagementGroupResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PolicyStatesClientSummarizeForManagementGroupResponse{}, err
+	}
+	resp, err := client.summarizeForManagementGroupHandleResponse(httpResp)
+	return resp, err
+}
+
+// summarizeForManagementGroupCreateRequest creates the SummarizeForManagementGroup request.
+func (client *PolicyStatesClient) summarizeForManagementGroupCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, managementGroupName string, options *PolicyStatesClientSummarizeForManagementGroupOptions) (*policy.Request, error) {
+	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
+	if policyStatesSummaryResource == "" {
+		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
+	if managementGroupName == "" {
+		return nil, errors.New("parameter managementGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupName}", url.PathEscape(managementGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// summarizeForManagementGroupHandleResponse handles the SummarizeForManagementGroup response.
+func (client *PolicyStatesClient) summarizeForManagementGroupHandleResponse(resp *http.Response) (PolicyStatesClientSummarizeForManagementGroupResponse, error) {
+	result := PolicyStatesClientSummarizeForManagementGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SummarizeResults); err != nil {
+		return PolicyStatesClientSummarizeForManagementGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// SummarizeForPolicyDefinition - Summarizes policy states for the subscription level policy definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientSummarizeForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.SummarizeForPolicyDefinition
+//     method.
+func (client *PolicyStatesClient) SummarizeForPolicyDefinition(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, policyDefinitionName string, options *PolicyStatesClientSummarizeForPolicyDefinitionOptions) (PolicyStatesClientSummarizeForPolicyDefinitionResponse, error) {
+	var err error
+	const operationName = "PolicyStatesClient.SummarizeForPolicyDefinition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.summarizeForPolicyDefinitionCreateRequest(ctx, policyStatesSummaryResource, policyDefinitionName, options)
+	if err != nil {
+		return PolicyStatesClientSummarizeForPolicyDefinitionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PolicyStatesClientSummarizeForPolicyDefinitionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PolicyStatesClientSummarizeForPolicyDefinitionResponse{}, err
+	}
+	resp, err := client.summarizeForPolicyDefinitionHandleResponse(httpResp)
+	return resp, err
+}
+
+// summarizeForPolicyDefinitionCreateRequest creates the SummarizeForPolicyDefinition request.
+func (client *PolicyStatesClient) summarizeForPolicyDefinitionCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, policyDefinitionName string, options *PolicyStatesClientSummarizeForPolicyDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyDefinitions/{policyDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if policyStatesSummaryResource == "" {
+		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
+	if policyDefinitionName == "" {
+		return nil, errors.New("parameter policyDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyDefinitionName}", url.PathEscape(policyDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// summarizeForPolicyDefinitionHandleResponse handles the SummarizeForPolicyDefinition response.
+func (client *PolicyStatesClient) summarizeForPolicyDefinitionHandleResponse(resp *http.Response) (PolicyStatesClientSummarizeForPolicyDefinitionResponse, error) {
+	result := PolicyStatesClientSummarizeForPolicyDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SummarizeResults); err != nil {
+		return PolicyStatesClientSummarizeForPolicyDefinitionResponse{}, err
+	}
+	return result, nil
+}
+
+// SummarizeForPolicySetDefinition - Summarizes policy states for the subscription level policy set definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientSummarizeForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.SummarizeForPolicySetDefinition
+//     method.
+func (client *PolicyStatesClient) SummarizeForPolicySetDefinition(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, policySetDefinitionName string, options *PolicyStatesClientSummarizeForPolicySetDefinitionOptions) (PolicyStatesClientSummarizeForPolicySetDefinitionResponse, error) {
+	var err error
+	const operationName = "PolicyStatesClient.SummarizeForPolicySetDefinition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.summarizeForPolicySetDefinitionCreateRequest(ctx, policyStatesSummaryResource, policySetDefinitionName, options)
+	if err != nil {
+		return PolicyStatesClientSummarizeForPolicySetDefinitionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PolicyStatesClientSummarizeForPolicySetDefinitionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PolicyStatesClientSummarizeForPolicySetDefinitionResponse{}, err
+	}
+	resp, err := client.summarizeForPolicySetDefinitionHandleResponse(httpResp)
+	return resp, err
+}
+
+// summarizeForPolicySetDefinitionCreateRequest creates the SummarizeForPolicySetDefinition request.
+func (client *PolicyStatesClient) summarizeForPolicySetDefinitionCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, policySetDefinitionName string, options *PolicyStatesClientSummarizeForPolicySetDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policySetDefinitions/{policySetDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if policyStatesSummaryResource == "" {
+		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
+	if policySetDefinitionName == "" {
+		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policySetDefinitionName}", url.PathEscape(policySetDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// summarizeForPolicySetDefinitionHandleResponse handles the SummarizeForPolicySetDefinition response.
+func (client *PolicyStatesClient) summarizeForPolicySetDefinitionHandleResponse(resp *http.Response) (PolicyStatesClientSummarizeForPolicySetDefinitionResponse, error) {
+	result := PolicyStatesClientSummarizeForPolicySetDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SummarizeResults); err != nil {
+		return PolicyStatesClientSummarizeForPolicySetDefinitionResponse{}, err
+	}
+	return result, nil
+}
+
+// SummarizeForResource - Summarizes policy states for the resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientSummarizeForResourceOptions contains the optional parameters for the PolicyStatesClient.SummarizeForResource
+//     method.
+func (client *PolicyStatesClient) SummarizeForResource(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, resourceID string, options *PolicyStatesClientSummarizeForResourceOptions) (PolicyStatesClientSummarizeForResourceResponse, error) {
+	var err error
+	const operationName = "PolicyStatesClient.SummarizeForResource"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.summarizeForResourceCreateRequest(ctx, policyStatesSummaryResource, resourceID, options)
+	if err != nil {
+		return PolicyStatesClientSummarizeForResourceResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PolicyStatesClientSummarizeForResourceResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PolicyStatesClientSummarizeForResourceResponse{}, err
+	}
+	resp, err := client.summarizeForResourceHandleResponse(httpResp)
+	return resp, err
+}
+
+// summarizeForResourceCreateRequest creates the SummarizeForResource request.
+func (client *PolicyStatesClient) summarizeForResourceCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, resourceID string, options *PolicyStatesClientSummarizeForResourceOptions) (*policy.Request, error) {
+	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
+	if policyStatesSummaryResource == "" {
+		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// summarizeForResourceHandleResponse handles the SummarizeForResource response.
+func (client *PolicyStatesClient) summarizeForResourceHandleResponse(resp *http.Response) (PolicyStatesClientSummarizeForResourceResponse, error) {
+	result := PolicyStatesClientSummarizeForResourceResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SummarizeResults); err != nil {
+		return PolicyStatesClientSummarizeForResourceResponse{}, err
+	}
+	return result, nil
+}
+
+// SummarizeForResourceGroup - Summarizes policy states for the resources under the resource group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - PolicyStatesClientSummarizeForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.SummarizeForResourceGroup
+//     method.
+func (client *PolicyStatesClient) SummarizeForResourceGroup(ctx context.Context, resourceGroupName string, policyStatesSummaryResource PolicyStatesSummaryResourceType, options *PolicyStatesClientSummarizeForResourceGroupOptions) (PolicyStatesClientSummarizeForResourceGroupResponse, error) {
+	var err error
+	const operationName = "PolicyStatesClient.SummarizeForResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.summarizeForResourceGroupCreateRequest(ctx, resourceGroupName, policyStatesSummaryResource, options)
+	if err != nil {
+		return PolicyStatesClientSummarizeForResourceGroupResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PolicyStatesClientSummarizeForResourceGroupResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PolicyStatesClientSummarizeForResourceGroupResponse{}, err
+	}
+	resp, err := client.summarizeForResourceGroupHandleResponse(httpResp)
+	return resp, err
+}
+
+// summarizeForResourceGroupCreateRequest creates the SummarizeForResourceGroup request.
+func (client *PolicyStatesClient) summarizeForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, policyStatesSummaryResource PolicyStatesSummaryResourceType, options *PolicyStatesClientSummarizeForResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if policyStatesSummaryResource == "" {
+		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// summarizeForResourceGroupHandleResponse handles the SummarizeForResourceGroup response.
+func (client *PolicyStatesClient) summarizeForResourceGroupHandleResponse(resp *http.Response) (PolicyStatesClientSummarizeForResourceGroupResponse, error) {
+	result := PolicyStatesClientSummarizeForResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SummarizeResults); err != nil {
+		return PolicyStatesClientSummarizeForResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// SummarizeForResourceGroupLevelPolicyAssignment - Summarizes policy states for the resource group level policy assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters for
+//     the PolicyStatesClient.SummarizeForResourceGroupLevelPolicyAssignment method.
+func (client *PolicyStatesClient) SummarizeForResourceGroupLevelPolicyAssignment(ctx context.Context, resourceGroupName string, policyStatesSummaryResource PolicyStatesSummaryResourceType, policyAssignmentName string, options *PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentOptions) (PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse, error) {
+	var err error
+	const operationName = "PolicyStatesClient.SummarizeForResourceGroupLevelPolicyAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.summarizeForResourceGroupLevelPolicyAssignmentCreateRequest(ctx, resourceGroupName, policyStatesSummaryResource, policyAssignmentName, options)
+	if err != nil {
+		return PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse{}, err
+	}
+	resp, err := client.summarizeForResourceGroupLevelPolicyAssignmentHandleResponse(httpResp)
+	return resp, err
+}
+
+// summarizeForResourceGroupLevelPolicyAssignmentCreateRequest creates the SummarizeForResourceGroupLevelPolicyAssignment request.
+func (client *PolicyStatesClient) summarizeForResourceGroupLevelPolicyAssignmentCreateRequest(ctx context.Context, resourceGroupName string, policyStatesSummaryResource PolicyStatesSummaryResourceType, policyAssignmentName string, options *PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if policyStatesSummaryResource == "" {
+		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
+	if policyAssignmentName == "" {
+		return nil, errors.New("parameter policyAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentName}", url.PathEscape(policyAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// summarizeForResourceGroupLevelPolicyAssignmentHandleResponse handles the SummarizeForResourceGroupLevelPolicyAssignment response.
+func (client *PolicyStatesClient) summarizeForResourceGroupLevelPolicyAssignmentHandleResponse(resp *http.Response) (PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse, error) {
+	result := PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SummarizeResults); err != nil {
+		return PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResponse{}, err
+	}
+	return result, nil
+}
+
+// SummarizeForSubscription - Summarizes policy states for the resources under the subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientSummarizeForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.SummarizeForSubscription
+//     method.
+func (client *PolicyStatesClient) SummarizeForSubscription(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, options *PolicyStatesClientSummarizeForSubscriptionOptions) (PolicyStatesClientSummarizeForSubscriptionResponse, error) {
+	var err error
+	const operationName = "PolicyStatesClient.SummarizeForSubscription"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.summarizeForSubscriptionCreateRequest(ctx, policyStatesSummaryResource, options)
+	if err != nil {
+		return PolicyStatesClientSummarizeForSubscriptionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PolicyStatesClientSummarizeForSubscriptionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PolicyStatesClientSummarizeForSubscriptionResponse{}, err
+	}
+	resp, err := client.summarizeForSubscriptionHandleResponse(httpResp)
+	return resp, err
+}
+
+// summarizeForSubscriptionCreateRequest creates the SummarizeForSubscription request.
+func (client *PolicyStatesClient) summarizeForSubscriptionCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, options *PolicyStatesClientSummarizeForSubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if policyStatesSummaryResource == "" {
+		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// summarizeForSubscriptionHandleResponse handles the SummarizeForSubscription response.
+func (client *PolicyStatesClient) summarizeForSubscriptionHandleResponse(resp *http.Response) (PolicyStatesClientSummarizeForSubscriptionResponse, error) {
+	result := PolicyStatesClientSummarizeForSubscriptionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SummarizeResults); err != nil {
+		return PolicyStatesClientSummarizeForSubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// SummarizeForSubscriptionLevelPolicyAssignment - Summarizes policy states for the subscription level policy assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-10-01
+//   - options - PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters for the
+//     PolicyStatesClient.SummarizeForSubscriptionLevelPolicyAssignment method.
+func (client *PolicyStatesClient) SummarizeForSubscriptionLevelPolicyAssignment(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, policyAssignmentName string, options *PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions) (PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse, error) {
+	var err error
+	const operationName = "PolicyStatesClient.SummarizeForSubscriptionLevelPolicyAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.summarizeForSubscriptionLevelPolicyAssignmentCreateRequest(ctx, policyStatesSummaryResource, policyAssignmentName, options)
+	if err != nil {
+		return PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse{}, err
+	}
+	resp, err := client.summarizeForSubscriptionLevelPolicyAssignmentHandleResponse(httpResp)
+	return resp, err
+}
+
+// summarizeForSubscriptionLevelPolicyAssignmentCreateRequest creates the SummarizeForSubscriptionLevelPolicyAssignment request.
+func (client *PolicyStatesClient) summarizeForSubscriptionLevelPolicyAssignmentCreateRequest(ctx context.Context, policyStatesSummaryResource PolicyStatesSummaryResourceType, policyAssignmentName string, options *PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policyAssignments/{policyAssignmentName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if policyStatesSummaryResource == "" {
+		return nil, errors.New("parameter policyStatesSummaryResource cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyStatesSummaryResource}", url.PathEscape(string(policyStatesSummaryResource)))
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationNamespace}", url.PathEscape("Microsoft.Authorization"))
+	if policyAssignmentName == "" {
+		return nil, errors.New("parameter policyAssignmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentName}", url.PathEscape(policyAssignmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Filter != nil {
+		reqQP.Set("$filter", *options.Filter)
+	}
+	if options != nil && options.From != nil {
+		reqQP.Set("$from", datetime.RFC3339(*options.From).String())
+	}
+	if options != nil && options.To != nil {
+		reqQP.Set("$to", datetime.RFC3339(*options.To).String())
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", "2024-10-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// summarizeForSubscriptionLevelPolicyAssignmentHandleResponse handles the SummarizeForSubscriptionLevelPolicyAssignment response.
+func (client *PolicyStatesClient) summarizeForSubscriptionLevelPolicyAssignmentHandleResponse(resp *http.Response) (PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse, error) {
+	result := PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SummarizeResults); err != nil {
+		return PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResponse{}, err
+	}
+	return result, nil
+}
+
+>>>>>>> Stashed changes
 // BeginTriggerResourceGroupEvaluation - Triggers a policy evaluation scan for all the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //

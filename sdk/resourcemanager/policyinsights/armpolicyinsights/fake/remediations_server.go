@@ -82,6 +82,41 @@ type RemediationsServer struct {
 	// GetAtSubscription is the fake for method RemediationsClient.GetAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK
 	GetAtSubscription func(ctx context.Context, remediationName string, options *armpolicyinsights.RemediationsClientGetAtSubscriptionOptions) (resp azfake.Responder[armpolicyinsights.RemediationsClientGetAtSubscriptionResponse], errResp azfake.ErrorResponder)
+<<<<<<< Updated upstream
+=======
+
+	// NewListDeploymentsAtManagementGroupPager is the fake for method RemediationsClient.NewListDeploymentsAtManagementGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListDeploymentsAtManagementGroupPager func(managementGroupID string, remediationName string, options *armpolicyinsights.RemediationsClientListDeploymentsAtManagementGroupOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtManagementGroupResponse])
+
+	// NewListDeploymentsAtResourcePager is the fake for method RemediationsClient.NewListDeploymentsAtResourcePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListDeploymentsAtResourcePager func(resourceID string, remediationName string, options *armpolicyinsights.RemediationsClientListDeploymentsAtResourceOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtResourceResponse])
+
+	// NewListDeploymentsAtResourceGroupPager is the fake for method RemediationsClient.NewListDeploymentsAtResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListDeploymentsAtResourceGroupPager func(resourceGroupName string, remediationName string, options *armpolicyinsights.RemediationsClientListDeploymentsAtResourceGroupOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtResourceGroupResponse])
+
+	// NewListDeploymentsAtSubscriptionPager is the fake for method RemediationsClient.NewListDeploymentsAtSubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListDeploymentsAtSubscriptionPager func(remediationName string, options *armpolicyinsights.RemediationsClientListDeploymentsAtSubscriptionOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListDeploymentsAtSubscriptionResponse])
+
+	// NewListForManagementGroupPager is the fake for method RemediationsClient.NewListForManagementGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForManagementGroupPager func(managementGroupID string, options *armpolicyinsights.RemediationsClientListForManagementGroupOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListForManagementGroupResponse])
+
+	// NewListForResourcePager is the fake for method RemediationsClient.NewListForResourcePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForResourcePager func(resourceID string, options *armpolicyinsights.RemediationsClientListForResourceOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListForResourceResponse])
+
+	// NewListForResourceGroupPager is the fake for method RemediationsClient.NewListForResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForResourceGroupPager func(resourceGroupName string, options *armpolicyinsights.RemediationsClientListForResourceGroupOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListForResourceGroupResponse])
+
+	// NewListForSubscriptionPager is the fake for method RemediationsClient.NewListForSubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListForSubscriptionPager func(options *armpolicyinsights.RemediationsClientListForSubscriptionOptions) (resp azfake.PagerResponder[armpolicyinsights.RemediationsClientListForSubscriptionResponse])
+>>>>>>> Stashed changes
 }
 
 // NewRemediationsServerTransport creates a new instance of RemediationsServerTransport with the provided implementation.
@@ -699,6 +734,505 @@ func (r *RemediationsServerTransport) dispatchGetAtSubscription(req *http.Reques
 	return resp, nil
 }
 
+<<<<<<< Updated upstream
+=======
+func (r *RemediationsServerTransport) dispatchNewListDeploymentsAtManagementGroupPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListDeploymentsAtManagementGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListDeploymentsAtManagementGroupPager not implemented")}
+	}
+	newListDeploymentsAtManagementGroupPager := r.newListDeploymentsAtManagementGroupPager.get(req)
+	if newListDeploymentsAtManagementGroupPager == nil {
+		const regexStr = `/providers/(?P<managementGroupsNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/remediations/(?P<remediationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDeployments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+		if err != nil {
+			return nil, err
+		}
+		remediationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("remediationName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armpolicyinsights.RemediationsClientListDeploymentsAtManagementGroupOptions
+		if topParam != nil {
+			options = &armpolicyinsights.RemediationsClientListDeploymentsAtManagementGroupOptions{
+				Top: topParam,
+			}
+		}
+		resp := r.srv.NewListDeploymentsAtManagementGroupPager(managementGroupIDParam, remediationNameParam, options)
+		newListDeploymentsAtManagementGroupPager = &resp
+		r.newListDeploymentsAtManagementGroupPager.add(req, newListDeploymentsAtManagementGroupPager)
+		server.PagerResponderInjectNextLinks(newListDeploymentsAtManagementGroupPager, req, func(page *armpolicyinsights.RemediationsClientListDeploymentsAtManagementGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListDeploymentsAtManagementGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListDeploymentsAtManagementGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListDeploymentsAtManagementGroupPager) {
+		r.newListDeploymentsAtManagementGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RemediationsServerTransport) dispatchNewListDeploymentsAtResourcePager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListDeploymentsAtResourcePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListDeploymentsAtResourcePager not implemented")}
+	}
+	newListDeploymentsAtResourcePager := r.newListDeploymentsAtResourcePager.get(req)
+	if newListDeploymentsAtResourcePager == nil {
+		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/remediations/(?P<remediationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDeployments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
+		if err != nil {
+			return nil, err
+		}
+		remediationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("remediationName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armpolicyinsights.RemediationsClientListDeploymentsAtResourceOptions
+		if topParam != nil {
+			options = &armpolicyinsights.RemediationsClientListDeploymentsAtResourceOptions{
+				Top: topParam,
+			}
+		}
+		resp := r.srv.NewListDeploymentsAtResourcePager(resourceIDParam, remediationNameParam, options)
+		newListDeploymentsAtResourcePager = &resp
+		r.newListDeploymentsAtResourcePager.add(req, newListDeploymentsAtResourcePager)
+		server.PagerResponderInjectNextLinks(newListDeploymentsAtResourcePager, req, func(page *armpolicyinsights.RemediationsClientListDeploymentsAtResourceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListDeploymentsAtResourcePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListDeploymentsAtResourcePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListDeploymentsAtResourcePager) {
+		r.newListDeploymentsAtResourcePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RemediationsServerTransport) dispatchNewListDeploymentsAtResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListDeploymentsAtResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListDeploymentsAtResourceGroupPager not implemented")}
+	}
+	newListDeploymentsAtResourceGroupPager := r.newListDeploymentsAtResourceGroupPager.get(req)
+	if newListDeploymentsAtResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/remediations/(?P<remediationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDeployments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		remediationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("remediationName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armpolicyinsights.RemediationsClientListDeploymentsAtResourceGroupOptions
+		if topParam != nil {
+			options = &armpolicyinsights.RemediationsClientListDeploymentsAtResourceGroupOptions{
+				Top: topParam,
+			}
+		}
+		resp := r.srv.NewListDeploymentsAtResourceGroupPager(resourceGroupNameParam, remediationNameParam, options)
+		newListDeploymentsAtResourceGroupPager = &resp
+		r.newListDeploymentsAtResourceGroupPager.add(req, newListDeploymentsAtResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListDeploymentsAtResourceGroupPager, req, func(page *armpolicyinsights.RemediationsClientListDeploymentsAtResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListDeploymentsAtResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListDeploymentsAtResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListDeploymentsAtResourceGroupPager) {
+		r.newListDeploymentsAtResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RemediationsServerTransport) dispatchNewListDeploymentsAtSubscriptionPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListDeploymentsAtSubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListDeploymentsAtSubscriptionPager not implemented")}
+	}
+	newListDeploymentsAtSubscriptionPager := r.newListDeploymentsAtSubscriptionPager.get(req)
+	if newListDeploymentsAtSubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/remediations/(?P<remediationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDeployments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		remediationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("remediationName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armpolicyinsights.RemediationsClientListDeploymentsAtSubscriptionOptions
+		if topParam != nil {
+			options = &armpolicyinsights.RemediationsClientListDeploymentsAtSubscriptionOptions{
+				Top: topParam,
+			}
+		}
+		resp := r.srv.NewListDeploymentsAtSubscriptionPager(remediationNameParam, options)
+		newListDeploymentsAtSubscriptionPager = &resp
+		r.newListDeploymentsAtSubscriptionPager.add(req, newListDeploymentsAtSubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListDeploymentsAtSubscriptionPager, req, func(page *armpolicyinsights.RemediationsClientListDeploymentsAtSubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListDeploymentsAtSubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListDeploymentsAtSubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListDeploymentsAtSubscriptionPager) {
+		r.newListDeploymentsAtSubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RemediationsServerTransport) dispatchNewListForManagementGroupPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListForManagementGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForManagementGroupPager not implemented")}
+	}
+	newListForManagementGroupPager := r.newListForManagementGroupPager.get(req)
+	if newListForManagementGroupPager == nil {
+		const regexStr = `/providers/(?P<managementGroupsNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/remediations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armpolicyinsights.RemediationsClientListForManagementGroupOptions
+		if topParam != nil || filterParam != nil {
+			options = &armpolicyinsights.RemediationsClientListForManagementGroupOptions{
+				Top:    topParam,
+				Filter: filterParam,
+			}
+		}
+		resp := r.srv.NewListForManagementGroupPager(managementGroupIDParam, options)
+		newListForManagementGroupPager = &resp
+		r.newListForManagementGroupPager.add(req, newListForManagementGroupPager)
+		server.PagerResponderInjectNextLinks(newListForManagementGroupPager, req, func(page *armpolicyinsights.RemediationsClientListForManagementGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForManagementGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListForManagementGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForManagementGroupPager) {
+		r.newListForManagementGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RemediationsServerTransport) dispatchNewListForResourcePager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListForResourcePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForResourcePager not implemented")}
+	}
+	newListForResourcePager := r.newListForResourcePager.get(req)
+	if newListForResourcePager == nil {
+		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/remediations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armpolicyinsights.RemediationsClientListForResourceOptions
+		if topParam != nil || filterParam != nil {
+			options = &armpolicyinsights.RemediationsClientListForResourceOptions{
+				Top:    topParam,
+				Filter: filterParam,
+			}
+		}
+		resp := r.srv.NewListForResourcePager(resourceIDParam, options)
+		newListForResourcePager = &resp
+		r.newListForResourcePager.add(req, newListForResourcePager)
+		server.PagerResponderInjectNextLinks(newListForResourcePager, req, func(page *armpolicyinsights.RemediationsClientListForResourceResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForResourcePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListForResourcePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForResourcePager) {
+		r.newListForResourcePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RemediationsServerTransport) dispatchNewListForResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListForResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForResourceGroupPager not implemented")}
+	}
+	newListForResourceGroupPager := r.newListForResourceGroupPager.get(req)
+	if newListForResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/remediations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armpolicyinsights.RemediationsClientListForResourceGroupOptions
+		if topParam != nil || filterParam != nil {
+			options = &armpolicyinsights.RemediationsClientListForResourceGroupOptions{
+				Top:    topParam,
+				Filter: filterParam,
+			}
+		}
+		resp := r.srv.NewListForResourceGroupPager(resourceGroupNameParam, options)
+		newListForResourceGroupPager = &resp
+		r.newListForResourceGroupPager.add(req, newListForResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListForResourceGroupPager, req, func(page *armpolicyinsights.RemediationsClientListForResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListForResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForResourceGroupPager) {
+		r.newListForResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *RemediationsServerTransport) dispatchNewListForSubscriptionPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListForSubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListForSubscriptionPager not implemented")}
+	}
+	newListForSubscriptionPager := r.newListForSubscriptionPager.get(req)
+	if newListForSubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PolicyInsights/remediations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armpolicyinsights.RemediationsClientListForSubscriptionOptions
+		if topParam != nil || filterParam != nil {
+			options = &armpolicyinsights.RemediationsClientListForSubscriptionOptions{
+				Top:    topParam,
+				Filter: filterParam,
+			}
+		}
+		resp := r.srv.NewListForSubscriptionPager(options)
+		newListForSubscriptionPager = &resp
+		r.newListForSubscriptionPager.add(req, newListForSubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListForSubscriptionPager, req, func(page *armpolicyinsights.RemediationsClientListForSubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListForSubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListForSubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListForSubscriptionPager) {
+		r.newListForSubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+>>>>>>> Stashed changes
 // set this to conditionally intercept incoming requests to RemediationsServerTransport
 var remediationsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error

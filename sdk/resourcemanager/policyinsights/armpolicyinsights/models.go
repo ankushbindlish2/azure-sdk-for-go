@@ -33,6 +33,18 @@ type AttestationEvidence struct {
 	SourceURI *string
 }
 
+<<<<<<< Updated upstream
+=======
+// AttestationListResult - List of attestations.
+type AttestationListResult struct {
+	// READ-ONLY; The Attestation items on this page
+	Value []*Attestation
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+>>>>>>> Stashed changes
 // AttestationProperties - The properties of an attestation resource.
 type AttestationProperties struct {
 	// REQUIRED; The resource ID of the policy assignment that the attestation is setting the state for.
@@ -136,6 +148,228 @@ type CheckRestrictionsResultContentEvaluationResult struct {
 	PolicyEvaluations []*PolicyEvaluationResult
 }
 
+<<<<<<< Updated upstream
+=======
+// ComplianceDetail - The compliance state rollup.
+type ComplianceDetail struct {
+	// The compliance state.
+	ComplianceState *string
+
+	// Summarized count value for this compliance state.
+	Count *int32
+}
+
+// ComponentEventDetails - Component event details.
+type ComponentEventDetails struct {
+	AdditionalProperties map[string]any
+
+	// Component Id.
+	ID *string
+
+	// Component name.
+	Name *string
+
+	// Policy definition action, i.e. effect.
+	PolicyDefinitionAction *string
+
+	// Principal object ID for the user who initiated the resource component operation that triggered the policy event.
+	PrincipalOid *string
+
+	// Tenant ID for the policy event record.
+	TenantID *string
+
+	// Timestamp for component policy event record.
+	Timestamp *time.Time
+
+	// Component type.
+	Type *string
+}
+
+// ComponentExpressionEvaluationDetails - Evaluation details of policy language expressions.
+type ComponentExpressionEvaluationDetails struct {
+	// Evaluation result.
+	Result *string
+
+	// READ-ONLY; Expression evaluated.
+	Expression *string
+
+	// READ-ONLY; The kind of expression that was evaluated.
+	ExpressionKind *string
+
+	// READ-ONLY; Value of the expression.
+	ExpressionValue any
+
+	// READ-ONLY; Operator to compare the expression value and the target value.
+	Operator *string
+
+	// READ-ONLY; Property path if the expression is a field or an alias.
+	Path *string
+
+	// READ-ONLY; Target value to be compared with the expression value.
+	TargetValue any
+}
+
+// ComponentPolicyEvaluationDetails - Policy evaluation details.
+type ComponentPolicyEvaluationDetails struct {
+	// Additional textual reason for the evaluation outcome.
+	Reason *string
+
+	// READ-ONLY; Details of the evaluated expressions.
+	EvaluatedExpressions []*ComponentExpressionEvaluationDetails
+}
+
+// ComponentPolicyState - Component Policy State record.
+type ComponentPolicyState struct {
+	AdditionalProperties map[string]any
+
+	// Policy evaluation details. This is only included in the response if the request contains $expand=PolicyEvaluationDetails.
+	PolicyEvaluationDetails *ComponentPolicyEvaluationDetails
+
+	// READ-ONLY; Compliance state of the resource.
+	ComplianceState *string
+
+	// READ-ONLY; Component Id.
+	ComponentID *string
+
+	// READ-ONLY; Component name.
+	ComponentName *string
+
+	// READ-ONLY; Component type.
+	ComponentType *string
+
+	// READ-ONLY; OData context string; used by OData clients to resolve type information based on metadata.
+	ODataContext *string
+
+	// READ-ONLY; OData entity ID; always set to null since component policy state records do not have an entity ID.
+	ODataID *string
+
+	// READ-ONLY; Policy assignment ID.
+	PolicyAssignmentID *string
+
+	// READ-ONLY; Policy assignment name.
+	PolicyAssignmentName *string
+
+	// READ-ONLY; Policy assignment owner.
+	PolicyAssignmentOwner *string
+
+	// READ-ONLY; Policy assignment parameters.
+	PolicyAssignmentParameters *string
+
+	// READ-ONLY; Policy assignment scope.
+	PolicyAssignmentScope *string
+
+	// READ-ONLY; Evaluated policy assignment version.
+	PolicyAssignmentVersion *string
+
+	// READ-ONLY; Policy definition action, i.e. effect.
+	PolicyDefinitionAction *string
+
+	// READ-ONLY; Policy definition category.
+	PolicyDefinitionCategory *string
+
+	// READ-ONLY; Policy definition group names.
+	PolicyDefinitionGroupNames []*string
+
+	// READ-ONLY; Policy definition ID.
+	PolicyDefinitionID *string
+
+	// READ-ONLY; Policy definition name.
+	PolicyDefinitionName *string
+
+	// READ-ONLY; Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
+	PolicyDefinitionReferenceID *string
+
+	// READ-ONLY; Evaluated policy definition version.
+	PolicyDefinitionVersion *string
+
+	// READ-ONLY; Policy set definition category, if the policy assignment is for a policy set.
+	PolicySetDefinitionCategory *string
+
+	// READ-ONLY; Policy set definition ID, if the policy assignment is for a policy set.
+	PolicySetDefinitionID *string
+
+	// READ-ONLY; Policy set definition name, if the policy assignment is for a policy set.
+	PolicySetDefinitionName *string
+
+	// READ-ONLY; Policy set definition owner, if the policy assignment is for a policy set.
+	PolicySetDefinitionOwner *string
+
+	// READ-ONLY; Policy set definition parameters, if the policy assignment is for a policy set.
+	PolicySetDefinitionParameters *string
+
+	// READ-ONLY; Evaluated policy set definition version.
+	PolicySetDefinitionVersion *string
+
+	// READ-ONLY; Resource group name.
+	ResourceGroup *string
+
+	// READ-ONLY; Resource ID.
+	ResourceID *string
+
+	// READ-ONLY; Resource location.
+	ResourceLocation *string
+
+	// READ-ONLY; Resource type.
+	ResourceType *string
+
+	// READ-ONLY; Subscription ID.
+	SubscriptionID *string
+
+	// READ-ONLY; Timestamp for the component policy state record.
+	Timestamp *time.Time
+}
+
+// ComponentPolicyStatesQueryResults - Query results.
+type ComponentPolicyStatesQueryResults struct {
+	// OData context string; used by OData clients to resolve type information based on metadata.
+	ODataContext *string
+
+	// OData entity count; represents the number of policy state records returned.
+	ODataCount *int32
+
+	// Query results.
+	Value []*ComponentPolicyState
+}
+
+// ComponentStateDetails - Component state details.
+type ComponentStateDetails struct {
+	AdditionalProperties map[string]any
+
+	// Component compliance state.
+	ComplianceState *string
+
+	// Component Id.
+	ID *string
+
+	// Component name.
+	Name *string
+
+	// Component compliance evaluation timestamp.
+	Timestamp *time.Time
+
+	// Component type.
+	Type *string
+}
+
+// ErrorDefinition - Error definition.
+type ErrorDefinition struct {
+	// READ-ONLY; Additional scenario specific error details.
+	AdditionalInfo []*TypedErrorInfo
+
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+	Code *string
+
+	// READ-ONLY; Internal error details.
+	Details []*ErrorDefinition
+
+	// READ-ONLY; Description of the error.
+	Message *string
+
+	// READ-ONLY; The target of the error.
+	Target *string
+}
+
+>>>>>>> Stashed changes
 // ExpressionEvaluationDetails - Evaluation details of policy language expressions.
 type ExpressionEvaluationDetails struct {
 	// Expression evaluated.
@@ -266,6 +500,131 @@ type PolicyEvaluationResult struct {
 	PolicyInfo *PolicyReference
 }
 
+<<<<<<< Updated upstream
+=======
+// PolicyEvent - Policy event record.
+type PolicyEvent struct {
+	AdditionalProperties map[string]any
+
+	// Compliance state of the resource.
+	ComplianceState *string
+
+	// Components events records populated only when URL contains $expand=components clause.
+	Components []*ComponentEventDetails
+
+	// Effective parameters for the policy assignment.
+	EffectiveParameters *string
+
+	// Flag which states whether the resource is compliant against the policy assignment it was evaluated against.
+	IsCompliant *bool
+
+	// Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
+	ManagementGroupIDs *string
+
+	// OData context string; used by OData clients to resolve type information based on metadata.
+	ODataContext *string
+
+	// OData entity ID; always set to null since policy event records do not have an entity ID.
+	ODataID *string
+
+	// Policy assignment ID.
+	PolicyAssignmentID *string
+
+	// Policy assignment name.
+	PolicyAssignmentName *string
+
+	// Policy assignment owner.
+	PolicyAssignmentOwner *string
+
+	// Policy assignment parameters.
+	PolicyAssignmentParameters *string
+
+	// Policy assignment scope.
+	PolicyAssignmentScope *string
+
+	// Policy definition action, i.e. effect.
+	PolicyDefinitionAction *string
+
+	// Policy definition category.
+	PolicyDefinitionCategory *string
+
+	// Policy definition ID.
+	PolicyDefinitionID *string
+
+	// Policy definition name.
+	PolicyDefinitionName *string
+
+	// Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
+	PolicyDefinitionReferenceID *string
+
+	// Policy set definition category, if the policy assignment is for a policy set.
+	PolicySetDefinitionCategory *string
+
+	// Policy set definition ID, if the policy assignment is for a policy set.
+	PolicySetDefinitionID *string
+
+	// Policy set definition name, if the policy assignment is for a policy set.
+	PolicySetDefinitionName *string
+
+	// Policy set definition owner, if the policy assignment is for a policy set.
+	PolicySetDefinitionOwner *string
+
+	// Policy set definition parameters, if the policy assignment is for a policy set.
+	PolicySetDefinitionParameters *string
+
+	// Principal object ID for the user who initiated the resource operation that triggered the policy event.
+	PrincipalOid *string
+
+	// Resource group name.
+	ResourceGroup *string
+
+	// Resource ID.
+	ResourceID *string
+
+	// Resource location.
+	ResourceLocation *string
+
+	// List of resource tags.
+	ResourceTags *string
+
+	// Resource type.
+	ResourceType *string
+
+	// Subscription ID.
+	SubscriptionID *string
+
+	// Tenant ID for the policy event record.
+	TenantID *string
+
+	// Timestamp for the policy event record.
+	Timestamp *time.Time
+}
+
+// PolicyEventsQueryResults - Query results.
+type PolicyEventsQueryResults struct {
+	// OData context string; used by OData clients to resolve type information based on metadata.
+	ODataContext *string
+
+	// OData entity count; represents the number of policy event records returned.
+	ODataCount *int32
+
+	// Odata next link; URL to get the next set of results.
+	ODataNextLink *string
+
+	// Query results.
+	Value []*PolicyEvent
+}
+
+// PolicyGroupSummary - Policy definition group summary.
+type PolicyGroupSummary struct {
+	// Policy group name.
+	PolicyGroupName *string
+
+	// Compliance summary for the policy definition group.
+	Results *SummaryResults
+}
+
+>>>>>>> Stashed changes
 // PolicyMetadata - Policy metadata resource definition.
 type PolicyMetadata struct {
 	// Properties of the policy metadata.
@@ -284,6 +643,18 @@ type PolicyMetadata struct {
 	Type *string
 }
 
+<<<<<<< Updated upstream
+=======
+// PolicyMetadataCollection - Collection of policy metadata resources.
+type PolicyMetadataCollection struct {
+	// READ-ONLY; The SlimPolicyMetadata items on this page
+	Value []*SlimPolicyMetadata
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+>>>>>>> Stashed changes
 // PolicyMetadataProperties - The properties of the policy metadata.
 type PolicyMetadataProperties struct {
 	// READ-ONLY; Url for getting additional content about the resource metadata.
@@ -326,6 +697,159 @@ type PolicyReference struct {
 	PolicySetDefinitionID *string
 }
 
+<<<<<<< Updated upstream
+=======
+// PolicyState - Policy state record.
+type PolicyState struct {
+	AdditionalProperties map[string]any
+
+	// Compliance state of the resource.
+	ComplianceState *string
+
+	// Components state compliance records populated only when URL contains $expand=components clause.
+	Components []*ComponentStateDetails
+
+	// Effective parameters for the policy assignment.
+	EffectiveParameters *string
+
+	// Flag which states whether the resource is compliant against the policy assignment it was evaluated against. This property
+	// is deprecated; please use ComplianceState instead.
+	IsCompliant *bool
+
+	// Comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
+	ManagementGroupIDs *string
+
+	// OData context string; used by OData clients to resolve type information based on metadata.
+	ODataContext *string
+
+	// OData entity ID; always set to null since policy state records do not have an entity ID.
+	ODataID *string
+
+	// Policy assignment ID.
+	PolicyAssignmentID *string
+
+	// Policy assignment name.
+	PolicyAssignmentName *string
+
+	// Policy assignment owner.
+	PolicyAssignmentOwner *string
+
+	// Policy assignment parameters.
+	PolicyAssignmentParameters *string
+
+	// Policy assignment scope.
+	PolicyAssignmentScope *string
+
+	// Policy definition action, i.e. effect.
+	PolicyDefinitionAction *string
+
+	// Policy definition category.
+	PolicyDefinitionCategory *string
+
+	// Policy definition group names.
+	PolicyDefinitionGroupNames []*string
+
+	// Policy definition ID.
+	PolicyDefinitionID *string
+
+	// Policy definition name.
+	PolicyDefinitionName *string
+
+	// Reference ID for the policy definition inside the policy set, if the policy assignment is for a policy set.
+	PolicyDefinitionReferenceID *string
+
+	// Policy evaluation details.
+	PolicyEvaluationDetails *PolicyEvaluationDetails
+
+	// Policy set definition category, if the policy assignment is for a policy set.
+	PolicySetDefinitionCategory *string
+
+	// Policy set definition ID, if the policy assignment is for a policy set.
+	PolicySetDefinitionID *string
+
+	// Policy set definition name, if the policy assignment is for a policy set.
+	PolicySetDefinitionName *string
+
+	// Policy set definition owner, if the policy assignment is for a policy set.
+	PolicySetDefinitionOwner *string
+
+	// Policy set definition parameters, if the policy assignment is for a policy set.
+	PolicySetDefinitionParameters *string
+
+	// Resource group name.
+	ResourceGroup *string
+
+	// Resource ID.
+	ResourceID *string
+
+	// Resource location.
+	ResourceLocation *string
+
+	// List of resource tags.
+	ResourceTags *string
+
+	// Resource type.
+	ResourceType *string
+
+	// Subscription ID.
+	SubscriptionID *string
+
+	// Timestamp for the policy state record.
+	Timestamp *time.Time
+
+	// READ-ONLY; Evaluated policy assignment version.
+	PolicyAssignmentVersion *string
+
+	// READ-ONLY; Evaluated policy definition version.
+	PolicyDefinitionVersion *string
+
+	// READ-ONLY; Evaluated policy set definition version.
+	PolicySetDefinitionVersion *string
+}
+
+// PolicyStatesQueryResults - Query results.
+type PolicyStatesQueryResults struct {
+	// OData context string; used by OData clients to resolve type information based on metadata.
+	ODataContext *string
+
+	// OData entity count; represents the number of policy state records returned.
+	ODataCount *int32
+
+	// Odata next link; URL to get the next set of results.
+	ODataNextLink *string
+
+	// Query results.
+	Value []*PolicyState
+}
+
+// PolicyTrackedResource - Policy tracked resource record.
+type PolicyTrackedResource struct {
+	// READ-ONLY; The details of the policy triggered deployment that created the tracked resource.
+	CreatedBy *TrackedResourceModificationDetails
+
+	// READ-ONLY; The details of the policy triggered deployment that modified the tracked resource.
+	LastModifiedBy *TrackedResourceModificationDetails
+
+	// READ-ONLY; Timestamp of the last update to the tracked resource.
+	LastUpdateUTC *time.Time
+
+	// READ-ONLY; The details of the policy that require the tracked resource.
+	PolicyDetails *PolicyDetails
+
+	// READ-ONLY; The ID of the policy tracked resource.
+	TrackedResourceID *string
+}
+
+// PolicyTrackedResourcesQueryResults - Query results.
+type PolicyTrackedResourcesQueryResults struct {
+	// The link to the next page of items
+	NextLink *string
+
+	// READ-ONLY; The PolicyTrackedResource items on this page
+	Value []*PolicyTrackedResource
+}
+
+>>>>>>> Stashed changes
 // Remediation - The remediation definition.
 type Remediation struct {
 	// Properties for the remediation.
@@ -356,6 +880,18 @@ type RemediationDeploymentSummary struct {
 	TotalDeployments *int32
 }
 
+<<<<<<< Updated upstream
+=======
+// RemediationDeploymentsListResult - List of deployments for a remediation.
+type RemediationDeploymentsListResult struct {
+	// READ-ONLY; The RemediationDeployment items on this page
+	Value []*RemediationDeployment
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+>>>>>>> Stashed changes
 // RemediationFilters - The filters that will be applied to determine which resources to remediate.
 type RemediationFilters struct {
 	// The resource locations that will be remediated.
@@ -366,6 +902,18 @@ type RemediationFilters struct {
 	ResourceIDs []*string
 }
 
+<<<<<<< Updated upstream
+=======
+// RemediationListResult - List of remediations.
+type RemediationListResult struct {
+	// READ-ONLY; The Remediation items on this page
+	Value []*Remediation
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+>>>>>>> Stashed changes
 // RemediationProperties - The remediation properties.
 type RemediationProperties struct {
 	// The remediation failure threshold settings
@@ -419,6 +967,74 @@ type RemediationPropertiesFailureThreshold struct {
 	Percentage *float32
 }
 
+<<<<<<< Updated upstream
+=======
+// SlimPolicyMetadata - Slim version of policy metadata resource definition, excluding properties with large strings
+type SlimPolicyMetadata struct {
+	// Properties of the policy metadata.
+	Properties *PolicyMetadataSlimProperties
+
+	// READ-ONLY; The ID of the policy metadata.
+	ID *string
+
+	// READ-ONLY; The name of the policy metadata.
+	Name *string
+
+	// READ-ONLY; The type of the policy metadata.
+	Type *string
+}
+
+// SummarizeResults - Summarize action results.
+type SummarizeResults struct {
+	// OData context string; used by OData clients to resolve type information based on metadata.
+	ODataContext *string
+
+	// OData entity count; represents the number of summaries returned; always set to 1.
+	ODataCount *int32
+
+	// Summarize action results.
+	Value []*Summary
+}
+
+// Summary results.
+type Summary struct {
+	// OData context string; used by OData clients to resolve type information based on metadata.
+	ODataContext *string
+
+	// OData entity ID; always set to null since summaries do not have an entity ID.
+	ODataID *string
+
+	// Policy assignments summary.
+	PolicyAssignments []*PolicyAssignmentSummary
+
+	// Compliance summary for all policy assignments.
+	Results *SummaryResults
+}
+
+// SummaryResults - Compliance summary on a particular summary level.
+type SummaryResults struct {
+	// Number of non-compliant policies.
+	NonCompliantPolicies *int32
+
+	// Number of non-compliant resources.
+	NonCompliantResources *int32
+
+	// The policy artifact summary at this level. For query scope level, it represents policy assignment summary. For policy assignment
+	// level, it represents policy definitions summary.
+	PolicyDetails []*ComplianceDetail
+
+	// The policy definition group summary at this level.
+	PolicyGroupDetails []*ComplianceDetail
+
+	// HTTP POST URI for queryResults action on Microsoft.PolicyInsights to retrieve raw results for the compliance summary. This
+	// property will not be available by default in future API versions, but could be queried explicitly.
+	QueryResultsURI *string
+
+	// The resources summary at this level.
+	ResourceDetails []*ComplianceDetail
+}
+
+>>>>>>> Stashed changes
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
