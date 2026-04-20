@@ -36,9 +36,4 @@ func (c *ClientFactory) NewClient() *Client {
 	}
 }
 
-// NewSloViewClient creates a new instance of SloViewClient.
-func (c *ClientFactory) NewSloViewClient() *SloViewClient {
-	return &SloViewClient{
-		internal: c.internal,
-	}
-}
+

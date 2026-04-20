@@ -27,8 +27,4 @@ type ClientListByParentResponse struct {
 	SliListResult
 }
 
-// sloViewClientsliSignalPreviewResponse contains the response from method SloViewClient.sliSignalPreview.
-type sloViewClientsliSignalPreviewResponse struct {
-	// Represents the result of a KQL-M query.
-	kqlmQueryResult
-}
+

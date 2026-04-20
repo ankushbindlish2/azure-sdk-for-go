@@ -24,7 +24,4 @@ type ClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// sloViewClientsliSignalPreviewOptions contains the optional parameters for the SloViewClient.sliSignalPreview method.
-type sloViewClientsliSignalPreviewOptions struct {
-	// placeholder for future optional parameters
-}
+
