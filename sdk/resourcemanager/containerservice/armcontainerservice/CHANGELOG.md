@@ -1,5 +1,32 @@
 # Release History
 
+## 10.0.0-beta.1 (2026-04-20)
+### Breaking Changes
+
+- Type of `ScaleProfile.Autoscale` has been changed from `*AutoScaleProfile` to `[]*AutoScaleProfile`
+- Struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogs` has been removed
+- Struct `NodeCustomizationProfile` has been removed
+- Field `NodeCustomizationProfile` of struct `ManagedClusterAgentPoolProfile` has been removed
+- Field `NodeCustomizationProfile` of struct `ManagedClusterAgentPoolProfileProperties` has been removed
+- Field `OpenTelemetryLogs` of struct `ManagedClusterAzureMonitorProfileAppMonitoring` has been removed
+- Field `Port` of struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics` has been removed
+
+### Features Added
+
+- New enum type `ControlPlaneScalingSize` with values `ControlPlaneScalingSizeH2`, `ControlPlaneScalingSizeH4`, `ControlPlaneScalingSizeH8`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces`
+- New struct `ManagedClusterAzureMonitorProfileMetricsControlPlane`
+- New struct `ManagedClusterControlPlaneScalingProfile`
+- New struct `PreparedImageSpecificationProfile`
+- New field `PreparedImageSpecificationProfile` in struct `ManagedClusterAgentPoolProfile`
+- New field `PreparedImageSpecificationProfile` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `OpenTelemetryLogsAndTraces` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
+- New field `GrpcPort`, `HTTPPort` in struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
+- New field `ControlPlane` in struct `ManagedClusterAzureMonitorProfileMetrics`
+- New field `NodeSubnetID`, `SystemNodeSubnetID` in struct `ManagedClusterHostedSystemProfile`
+- New field `ControlPlaneScalingProfile` in struct `ManagedClusterProperties`
+
+
 ## 9.1.0-beta.1 (2026-03-30)
 ### Features Added
 
