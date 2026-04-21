@@ -6,5 +6,5 @@ package armoperationalinsights
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
-	moduleVersion = "v2.0.2"
+	moduleVersion = "v0.1.0"
 )
