@@ -1,0 +1,4 @@
+directory: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights
+commit: 54c02a35c690bfec3d2a367d89c17f3ed5377cfe
+repo: i-specs
+additionalDirectories: []
