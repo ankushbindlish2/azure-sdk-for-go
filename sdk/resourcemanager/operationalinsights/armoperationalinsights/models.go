@@ -32,10 +32,11 @@ type AccessRuleProperties struct {
 	PhoneNumbers []*string
 
 	// Subscriptions for inbound rules
-	Subscriptions []*AccessRulePropertiesSubscription
+	Subscriptions *AccessRulePropertiesSubscriptionsItem
 }
 
-type AccessRulePropertiesSubscription struct {
+// AccessRulePropertiesSubscriptionsItem - Subscription identifiers
+type AccessRulePropertiesSubscriptionsItem struct {
 	// The fully qualified Azure resource ID of the subscription e.g. ('/subscriptions/00000000-0000-0000-0000-000000000000')
 	ID *string
 }
@@ -1356,7 +1357,7 @@ type TableProperties struct {
 
 	// READ-ONLY; Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation,
 	// forbidding any update to the table until the ongoing operation is concluded.
-	ProvisioningState *ProvisioningStateEnum
+	ProvisioningState *TableProvisioningState
 
 	// READ-ONLY; Search job execution statistics.
 	ResultStatistics *ResultStatistics

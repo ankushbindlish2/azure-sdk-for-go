@@ -514,8 +514,6 @@ const (
 	ProvisioningStateEnumDeleting ProvisioningStateEnum = "Deleting"
 	// ProvisioningStateEnumFailed - Table state is failed.
 	ProvisioningStateEnumFailed ProvisioningStateEnum = "Failed"
-	// ProvisioningStateEnumInProgress - Table schema is stable and without changes, table data is being updated.
-	ProvisioningStateEnumInProgress ProvisioningStateEnum = "InProgress"
 	// ProvisioningStateEnumSucceeded - Table state is stable and without changes, table is unlocked and open for new updates.
 	ProvisioningStateEnumSucceeded ProvisioningStateEnum = "Succeeded"
 	// ProvisioningStateEnumUpdating - Table schema is still being built and updated, table is currently locked for any changes
@@ -529,7 +527,6 @@ func PossibleProvisioningStateEnumValues() []ProvisioningStateEnum {
 		ProvisioningStateEnumCanceled,
 		ProvisioningStateEnumDeleting,
 		ProvisioningStateEnumFailed,
-		ProvisioningStateEnumInProgress,
 		ProvisioningStateEnumSucceeded,
 		ProvisioningStateEnumUpdating,
 	}
@@ -753,6 +750,32 @@ func PossibleTablePlanEnumValues() []TablePlanEnum {
 		TablePlanEnumAnalytics,
 		TablePlanEnumAuxiliary,
 		TablePlanEnumBasic,
+	}
+}
+
+// TableProvisioningState - Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing
+// operation, forbidding any update to the table until the ongoing operation is concluded.
+type TableProvisioningState string
+
+const (
+	// TableProvisioningStateDeleting - Table state is deleting.
+	TableProvisioningStateDeleting TableProvisioningState = "Deleting"
+	// TableProvisioningStateInProgress - Table schema is stable and without changes, table data is being updated.
+	TableProvisioningStateInProgress TableProvisioningState = "InProgress"
+	// TableProvisioningStateSucceeded - Table state is stable and without changes, table is unlocked and open for new updates.
+	TableProvisioningStateSucceeded TableProvisioningState = "Succeeded"
+	// TableProvisioningStateUpdating - Table schema is still being built and updated, table is currently locked for any changes
+	// till the procedure is done.
+	TableProvisioningStateUpdating TableProvisioningState = "Updating"
+)
+
+// PossibleTableProvisioningStateValues returns the possible values for the TableProvisioningState const type.
+func PossibleTableProvisioningStateValues() []TableProvisioningState {
+	return []TableProvisioningState{
+		TableProvisioningStateDeleting,
+		TableProvisioningStateInProgress,
+		TableProvisioningStateSucceeded,
+		TableProvisioningStateUpdating,
 	}
 }
 

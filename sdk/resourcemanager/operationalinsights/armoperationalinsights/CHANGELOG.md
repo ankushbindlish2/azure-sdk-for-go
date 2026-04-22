@@ -1,18 +1,19 @@
 # Release History
 
-## 3.0.0 (2026-04-21)
+## 3.0.0 (2026-04-22)
 ### Breaking Changes
 
-- Type of `AccessRuleProperties.Subscriptions` has been changed from `[]*AccessRulePropertiesSubscriptionsItem` to `[]*AccessRulePropertiesSubscription`
+- Type of `AccessRuleProperties.Subscriptions` has been changed from `[]*AccessRulePropertiesSubscriptionsItem` to `*AccessRulePropertiesSubscriptionsItem`
+- Type of `TableProperties.ProvisioningState` has been changed from `*ProvisioningStateEnum` to `*TableProvisioningState`
+- `ProvisioningStateEnumInProgress` from enum `ProvisioningStateEnum` has been removed
 - Operation `*SavedSearchesClient.ListByWorkspace` has supported pagination, use `*SavedSearchesClient.NewListByWorkspacePager` instead.
 - Operation `*SchemaClient.Get` has supported pagination, use `*SchemaClient.NewGetPager` instead.
-- Struct `AccessRulePropertiesSubscriptionsItem` has been removed
 - Struct `DataSourceFilter` has been removed
 
 ### Features Added
 
 - New value `ProvisioningStateEnumCanceled`, `ProvisioningStateEnumFailed` added to enum type `ProvisioningStateEnum`
-- New struct `AccessRulePropertiesSubscription`
+- New enum type `TableProvisioningState` with values `TableProvisioningStateDeleting`, `TableProvisioningStateInProgress`, `TableProvisioningStateSucceeded`, `TableProvisioningStateUpdating`
 - New field `SystemData` in struct `Cluster`
 - New field `SystemData` in struct `DataExport`
 - New field `NextLink` in struct `DataExportListResult`
