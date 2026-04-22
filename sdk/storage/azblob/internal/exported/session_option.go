@@ -1,14 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package exported
 
 // SessionMode specifies how session-based authentication is handled.
 type SessionMode string
 
 const ( // SessionModeDefault is the default mode where sessions are disabled.
-	SessionModeDefault SessionMode = SessionModeOff // TODO : I dont think this is idiomatic in Go. Should this be ""?
+	SessionModeDefault SessionMode = SessionModeOff
 	// SessionModeOff explicitly disables session-based authentication.
 	SessionModeOff SessionMode = "off"
-	// SessionModeSingleContainer enables session-based authentication for a single container.
-	SessionModeSingleContainer SessionMode = "singlecontainer"
+	// SessionModeSingleSpecifiedContainer enables session-based authentication for a single container.
+	SessionModeSingleSpecifiedContainer SessionMode = "singlespecifiedcontainer"
 )
 
 // PossibleSessionModeValues returns a slice of possible values for SessionMode.
@@ -16,7 +19,7 @@ func PossibleSessionModeValues() []SessionMode {
 	return []SessionMode{
 		SessionModeDefault,
 		SessionModeOff,
-		SessionModeSingleContainer,
+		SessionModeSingleSpecifiedContainer,
 	}
 }
 
@@ -27,6 +30,6 @@ type SessionOptions struct {
 
 	// AccountName is the storage account name.
 	AccountName string
-	// ContainerName is the container name for SingleContainer mode.
+	// ContainerName is the container name for SingleSpecifiedContainer mode.
 	ContainerName string
 }

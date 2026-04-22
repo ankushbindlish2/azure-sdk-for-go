@@ -10,41 +10,23 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/stretchr/testify/require"
 )
 
-// mockSessionProvider is a mock implementation of the sessionProvider interface for testing.
-type mockSessionProvider struct {
-	getCredsFn   func(ctx context.Context, containerName string) (sessionCredentials, error)
-	expireFn     func(containerName string)
-	getCalls     int
-	expireCalls  int
-	lastGetCtx   context.Context
-	lastGetCName string
-}
-
-func (m *mockSessionProvider) GetSessionCredentials(ctx context.Context, containerName string) (sessionCredentials, error) {
-	m.getCalls++
-	m.lastGetCtx = ctx
-	m.lastGetCName = containerName
-	if m.getCredsFn != nil {
-		return m.getCredsFn(ctx, containerName)
-	}
-	return sessionCredentials{}, nil
-}
-
-func (m *mockSessionProvider) ExpireSessionCredentials(containerName string) {
-	m.expireCalls++
-	if m.expireFn != nil {
-		m.expireFn(containerName)
-	}
+// newTestServiceClient creates a ServiceClient backed by a mock server for testing.
+func newTestServiceClient(t *testing.T, srv *mock.Server) *generated.ServiceClient {
+	azClient, err := azcore.NewClient("test", "v1.0.0", runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	require.NoError(t, err)
+	return generated.NewServiceClient(srv.URL(), azClient)
 }
 
 // mockBearerPolicy is a mock bearer token policy for testing.
@@ -61,11 +43,18 @@ func (m *mockBearerPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return &http.Response{StatusCode: http.StatusOK}, nil
 }
 
-// newTestServiceClient creates a ServiceClient backed by a mock server for testing.
-func newTestServiceClient(t *testing.T, srv *mock.Server) *generated.ServiceClient {
-	azClient, err := azcore.NewClient("test", "v1.0.0", runtime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
-	require.NoError(t, err)
-	return generated.NewServiceClient(srv.URL(), azClient)
+// newTestResource creates a temporal.Resource for testing that returns the given credentials.
+func newTestResource(creds sessionCredentials) *temporal.Resource[sessionCredentials, context.Context] {
+	return temporal.NewResourceWithOptions(func(_ context.Context) (sessionCredentials, time.Time, error) {
+		return creds, time.Now().Add(time.Hour), nil
+	}, temporal.ResourceOptions[sessionCredentials, context.Context]{})
+}
+
+// newTestResourceWithError creates a temporal.Resource for testing that returns an error.
+func newTestResourceWithError(err error) *temporal.Resource[sessionCredentials, context.Context] {
+	return temporal.NewResourceWithOptions(func(_ context.Context) (sessionCredentials, time.Time, error) {
+		return sessionCredentials{}, time.Time{}, err
+	}, temporal.ResourceOptions[sessionCredentials, context.Context]{})
 }
 
 // TestNewSessionPolicy_Success tests successful creation of a session policy.
@@ -77,7 +66,7 @@ func TestNewSessionPolicy_Success(t *testing.T) {
 	bearerPolicy := &mockBearerPolicy{}
 
 	opts := SessionOptions{
-		Mode:          SessionModeSingleContainer,
+		Mode:          SessionModeSingleSpecifiedContainer,
 		AccountName:   "testaccount",
 		ContainerName: "testcontainer",
 	}
@@ -97,7 +86,7 @@ func TestNewSessionPolicy_Errors(t *testing.T) {
 		{
 			name: "MissingAccountName",
 			opts: SessionOptions{
-				Mode:          SessionModeSingleContainer,
+				Mode:          SessionModeSingleSpecifiedContainer,
 				AccountName:   "",
 				ContainerName: "testcontainer",
 			},
@@ -106,7 +95,7 @@ func TestNewSessionPolicy_Errors(t *testing.T) {
 		{
 			name: "MissingContainerName",
 			opts: SessionOptions{
-				Mode:          SessionModeSingleContainer,
+				Mode:          SessionModeSingleSpecifiedContainer,
 				AccountName:   "testaccount",
 				ContainerName: "",
 			},
@@ -142,39 +131,39 @@ func TestNewSessionPolicy_Errors(t *testing.T) {
 // TestSessionPolicy_Do_FallbackToBearer tests scenarios where the session policy falls back to bearer token authentication.
 func TestSessionPolicy_Do_FallbackToBearer(t *testing.T) {
 	tests := []struct {
-		name                  string
-		method                string
-		url                   string
-		providerReturnsError  bool
-		expectedProviderCalls int
+		name               string
+		method             string
+		url                string
+		useFallbackCreds   bool
+		expectedBearerCall int
 	}{
 		{
-			name:                  "NonGetMethod",
-			method:                http.MethodPost,
-			url:                   "https://testaccount.blob.core.windows.net/container/blob",
-			providerReturnsError:  false,
-			expectedProviderCalls: 0,
+			name:               "NonGetMethod",
+			method:             http.MethodPost,
+			url:                "https://testaccount.blob.core.windows.net/container/blob",
+			useFallbackCreds:   false,
+			expectedBearerCall: 1,
 		},
 		{
-			name:                  "CompParam",
-			method:                http.MethodGet,
-			url:                   "https://testaccount.blob.core.windows.net/container/blob?comp=metadata",
-			providerReturnsError:  false,
-			expectedProviderCalls: 0,
+			name:               "CompParam",
+			method:             http.MethodGet,
+			url:                "https://testaccount.blob.core.windows.net/container/blob?comp=metadata",
+			useFallbackCreds:   false,
+			expectedBearerCall: 1,
 		},
 		{
-			name:                  "ContainerOnly",
-			method:                http.MethodGet,
-			url:                   "https://testaccount.blob.core.windows.net/container",
-			providerReturnsError:  false,
-			expectedProviderCalls: 0,
+			name:               "ContainerOnly",
+			method:             http.MethodGet,
+			url:                "https://testaccount.blob.core.windows.net/container",
+			useFallbackCreds:   false,
+			expectedBearerCall: 1,
 		},
 		{
-			name:                  "ProviderError",
-			method:                http.MethodGet,
-			url:                   "https://testaccount.blob.core.windows.net/container/blob",
-			providerReturnsError:  true,
-			expectedProviderCalls: 1,
+			name:               "FallbackCredentials",
+			method:             http.MethodGet,
+			url:                "https://testaccount.blob.core.windows.net/container/blob",
+			useFallbackCreds:   true,
+			expectedBearerCall: 1,
 		},
 	}
 
@@ -186,17 +175,23 @@ func TestSessionPolicy_Do_FallbackToBearer(t *testing.T) {
 				},
 			}
 
-			mockProvider := &mockSessionProvider{}
-			if tt.providerReturnsError {
-				mockProvider.getCredsFn = func(ctx context.Context, containerName string) (sessionCredentials, error) {
-					return sessionCredentials{}, errFallbackToBearer
-				}
+			var resource *temporal.Resource[sessionCredentials, context.Context]
+			if tt.useFallbackCreds {
+				resource = newTestResource(sessionCredentials{fallback: true})
+			} else {
+				resource = newTestResource(sessionCredentials{
+					key:   "dGVzdC1rZXk=",
+					token: "test-token",
+				})
 			}
 
 			pol := &sessionPolicy{
 				bearerTokenPolicy: bearerPolicy,
-				opts:              SessionOptions{AccountName: "testaccount"},
-				provider:          mockProvider,
+				opts: SessionOptions{
+					AccountName:   "testaccount",
+					ContainerName: "container",
+				},
+				resource: resource,
 			}
 
 			req := createTestPolicyRequest(t, tt.method, tt.url)
@@ -204,13 +199,12 @@ func TestSessionPolicy_Do_FallbackToBearer(t *testing.T) {
 			resp, err := pol.Do(req)
 			require.NoError(t, err)
 			require.Equal(t, http.StatusOK, resp.StatusCode)
-			require.Equal(t, 1, bearerPolicy.doCalls)
-			require.Equal(t, tt.expectedProviderCalls, mockProvider.getCalls)
+			require.Equal(t, tt.expectedBearerCall, bearerPolicy.doCalls)
 		})
 	}
 }
 
-// TestCanUseSession tests the canUseSession helper function.
+// TestCanUseSession tests the supportsSession helper function.
 func TestCanUseSession(t *testing.T) {
 	tests := []struct {
 		name              string
@@ -296,7 +290,7 @@ func TestCanUseSession(t *testing.T) {
 			req, err := http.NewRequest(tt.method, tt.urlStr, nil)
 			require.NoError(t, err)
 
-			containerName, ok := canUseSession(req)
+			containerName, ok := supportsSession(req)
 			require.Equal(t, tt.expectedOK, ok)
 			require.Equal(t, tt.expectedContainer, containerName)
 		})
@@ -312,7 +306,7 @@ func TestHandleSessionError_NonResponseError(t *testing.T) {
 	originalErr := errors.New("some random error")
 	resp := &http.Response{StatusCode: http.StatusOK}
 
-	retResp, retErr := pol.handleSessionError(nil, resp, originalErr, "testcontainer")
+	retResp, retErr := pol.handleSessionError(nil, resp, originalErr)
 	require.Equal(t, resp, retResp)
 	require.Equal(t, originalErr, retErr)
 }
@@ -329,7 +323,7 @@ func TestHandleSessionError_ServiceUnavailable(t *testing.T) {
 	}
 	resp := &http.Response{StatusCode: http.StatusServiceUnavailable}
 
-	retResp, retErr := pol.handleSessionError(nil, resp, originalErr, "testcontainer")
+	retResp, retErr := pol.handleSessionError(nil, resp, originalErr)
 	require.Nil(t, retResp)
 	require.ErrorIs(t, retErr, errFallbackToBearer)
 }
@@ -346,55 +340,77 @@ func TestHandleSessionError_OtherError(t *testing.T) {
 	}
 	resp := &http.Response{StatusCode: http.StatusNotFound}
 
-	retResp, retErr := pol.handleSessionError(nil, resp, originalErr, "testcontainer")
+	retResp, retErr := pol.handleSessionError(nil, resp, originalErr)
 	require.Equal(t, resp, retResp)
 	require.Equal(t, originalErr, retErr)
 }
 
-// TestRetryWithNewSession_FallbackError tests retry returns errFallbackToBearer when provider does.
-func TestRetryWithNewSession_FallbackError(t *testing.T) {
-	expireCalled := false
-	mockProvider := &mockSessionProvider{
-		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
-			return sessionCredentials{}, errFallbackToBearer
-		},
-		expireFn: func(containerName string) {
-			expireCalled = true
+// TestHandleSessionError_Unauthorized_TriggersRetry tests that a 401 response triggers retry with a new session.
+func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
+	sessionKey := "dGVzdC1rZXk=" // base64 encoded "test-key"
+	sessionToken := "new-token"
+
+	resource := newTestResource(sessionCredentials{
+		key:   sessionKey,
+		token: sessionToken,
+	})
+
+	transport := &mockTransport{
+		response: &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       io.NopCloser(strings.NewReader("")),
+			Header:     make(http.Header),
 		},
 	}
 
 	pol := &sessionPolicy{
-		opts:     SessionOptions{AccountName: "testaccount"},
-		provider: mockProvider,
+		opts: SessionOptions{
+			AccountName: "testaccount",
+		},
+		resource: resource,
 	}
 
-	req := createTestPolicyRequest(t, http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
+	// Create a helper policy to pass the request through handleSessionError
+	testPolicy := &testRetryPolicy{
+		pol: pol,
+	}
 
-	resp, err := pol.retryWithNewSession(req, "container")
-	require.Nil(t, resp)
-	require.ErrorIs(t, err, errFallbackToBearer)
-	require.True(t, expireCalled)
+	pl := runtime.NewPipeline("test", "v1.0.0", runtime.PipelineOptions{
+		PerCall: []policy.Policy{testPolicy},
+	}, &policy.ClientOptions{
+		Transport: transport,
+	})
+
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
+	require.NoError(t, err)
+
+	originalErr := &azcore.ResponseError{
+		StatusCode: http.StatusUnauthorized,
+		ErrorCode:  "AuthenticationFailed",
+	}
+	unauthorizedResp := &http.Response{
+		StatusCode: http.StatusUnauthorized,
+		Header:     make(http.Header),
+	}
+
+	testPolicy.originalErr = originalErr
+	testPolicy.originalResp = unauthorizedResp
+
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
 }
 
-// TestRetryWithNewSession_OtherError tests retry returns other provider errors.
-func TestRetryWithNewSession_OtherError(t *testing.T) {
-	expectedErr := errors.New("provider error")
-	mockProvider := &mockSessionProvider{
-		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
-			return sessionCredentials{}, expectedErr
-		},
-	}
+// testRetryPolicy is a helper policy for testing handleSessionError with 401.
+type testRetryPolicy struct {
+	pol          *sessionPolicy
+	originalErr  error
+	originalResp *http.Response
+}
 
-	pol := &sessionPolicy{
-		opts:     SessionOptions{AccountName: "testaccount"},
-		provider: mockProvider,
-	}
-
-	req := createTestPolicyRequest(t, http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
-
-	resp, err := pol.retryWithNewSession(req, "container")
-	require.Nil(t, resp)
-	require.Equal(t, expectedErr, err)
+func (p *testRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
+	return p.pol.handleSessionError(req, p.originalResp, p.originalErr)
 }
 
 // createTestPolicyRequest creates a policy.Request for testing with Next() support.
@@ -438,22 +454,20 @@ func TestApplySessionReq_SetsAuthorizationHeader(t *testing.T) {
 
 	transport := &recordingTransport{}
 
+	resource := newTestResource(sessionCredentials{
+		key:   sessionKey,
+		token: sessionToken,
+	})
+
 	pol := &sessionPolicy{
 		opts: SessionOptions{
 			AccountName: "testaccount",
 		},
-	}
-
-	creds := sessionCredentials{
-		key:   sessionKey,
-		token: sessionToken,
+		resource: resource,
 	}
 
 	// Create a pipeline with our policy that will call applySessionReq
-	testPolicy := &testApplyPolicy{
-		pol:   pol,
-		creds: creds,
-	}
+	testPolicy := &testApplyPolicy{pol: pol}
 
 	pl := runtime.NewPipeline("test", "v1.0.0", runtime.PipelineOptions{
 		PerCall: []policy.Policy{testPolicy},
@@ -476,12 +490,11 @@ func TestApplySessionReq_SetsAuthorizationHeader(t *testing.T) {
 
 // testApplyPolicy is a helper policy that calls applySessionReq for testing.
 type testApplyPolicy struct {
-	pol   *sessionPolicy
-	creds sessionCredentials
+	pol *sessionPolicy
 }
 
 func (p *testApplyPolicy) Do(req *policy.Request) (*http.Response, error) {
-	return p.pol.applySessionReq(req, p.creds)
+	return p.pol.applySessionReq(req)
 }
 
 // recordingTransport records the last request for verification.
@@ -498,102 +511,15 @@ func (r *recordingTransport) Do(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
-// TestHandleSessionError_Unauthorized_TriggersRetry tests that a 401 response triggers retry with a new session.
-func TestHandleSessionError_Unauthorized_TriggersRetry(t *testing.T) {
-	sessionKey := "dGVzdC1rZXk=" // base64 encoded "test-key"
-	sessionToken := "new-token"
-	callCount := 0
-	expireCalled := false
-
-	mockProvider := &mockSessionProvider{
-		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
-			callCount++
-			return sessionCredentials{
-				key:   sessionKey,
-				token: sessionToken,
-			}, nil
-		},
-		expireFn: func(containerName string) {
-			expireCalled = true
-		},
-	}
-
-	transport := &mockTransport{
-		response: &http.Response{
-			StatusCode: http.StatusOK,
-			Body:       io.NopCloser(strings.NewReader("")),
-			Header:     make(http.Header),
-		},
-	}
-
-	pol := &sessionPolicy{
-		opts: SessionOptions{
-			AccountName: "testaccount",
-		},
-		provider: mockProvider,
-	}
-
-	// Create a helper policy to pass the request through
-	testPolicy := &testRetryPolicy{
-		pol:           pol,
-		containerName: "container",
-	}
-
-	pl := runtime.NewPipeline("test", "v1.0.0", runtime.PipelineOptions{
-		PerCall: []policy.Policy{testPolicy},
-	}, &policy.ClientOptions{
-		Transport: transport,
-	})
-
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
-	require.NoError(t, err)
-
-	originalErr := &azcore.ResponseError{
-		StatusCode: http.StatusUnauthorized,
-		ErrorCode:  "AuthenticationFailed",
-	}
-	unauthorizedResp := &http.Response{
-		StatusCode: http.StatusUnauthorized,
-		Header:     make(http.Header),
-	}
-
-	testPolicy.originalErr = originalErr
-	testPolicy.originalResp = unauthorizedResp
-
-	resp, err := pl.Do(req)
-	require.NoError(t, err)
-	require.NotNil(t, resp)
-	require.Equal(t, http.StatusOK, resp.StatusCode)
-	require.True(t, expireCalled)
-	require.Equal(t, 1, callCount)
-}
-
-// testRetryPolicy is a helper policy for testing handleSessionError with 401.
-type testRetryPolicy struct {
-	pol           *sessionPolicy
-	containerName string
-	originalErr   error
-	originalResp  *http.Response
-}
-
-func (p *testRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
-	return p.pol.handleSessionError(req, p.originalResp, p.originalErr, p.containerName)
-}
-
 // TestIntegration_SessionPolicy_SuccessfulRequest tests the full flow of a successful session request.
 func TestIntegration_SessionPolicy_SuccessfulRequest(t *testing.T) {
 	sessionKey := "dGVzdC1rZXk=" // base64 encoded "test-key"
 	sessionToken := "test-session-token"
 
-	mockProvider := &mockSessionProvider{
-		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
-			require.Equal(t, "testcontainer", containerName)
-			return sessionCredentials{
-				key:   sessionKey,
-				token: sessionToken,
-			}, nil
-		},
-	}
+	resource := newTestResource(sessionCredentials{
+		key:   sessionKey,
+		token: sessionToken,
+	})
 
 	transport := &recordingTransport{}
 
@@ -605,7 +531,7 @@ func TestIntegration_SessionPolicy_SuccessfulRequest(t *testing.T) {
 			AccountName:   "testaccount",
 			ContainerName: "testcontainer",
 		},
-		provider: mockProvider,
+		resource: resource,
 	}
 
 	// Create request through runtime to get proper Next() support
@@ -623,7 +549,6 @@ func TestIntegration_SessionPolicy_SuccessfulRequest(t *testing.T) {
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 
 	// Verify session credentials were used
-	require.Equal(t, 1, mockProvider.getCalls)
 	require.Equal(t, 0, bearerPolicy.doCalls)
 
 	// Verify Authorization header was set with Session prefix
@@ -633,7 +558,10 @@ func TestIntegration_SessionPolicy_SuccessfulRequest(t *testing.T) {
 
 // TestIntegration_SessionPolicy_FallbackToBearer tests that non-session requests fallback to bearer.
 func TestIntegration_SessionPolicy_FallbackToBearer(t *testing.T) {
-	mockProvider := &mockSessionProvider{}
+	resource := newTestResource(sessionCredentials{
+		key:   "dGVzdC1rZXk=",
+		token: "test-token",
+	})
 
 	bearerPolicy := &mockBearerPolicy{
 		doFn: func(req *policy.Request) (*http.Response, error) {
@@ -651,7 +579,7 @@ func TestIntegration_SessionPolicy_FallbackToBearer(t *testing.T) {
 			AccountName:   "testaccount",
 			ContainerName: "testcontainer",
 		},
-		provider: mockProvider,
+		resource: resource,
 	}
 
 	// POST request should not use session
@@ -662,27 +590,22 @@ func TestIntegration_SessionPolicy_FallbackToBearer(t *testing.T) {
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 
 	// Verify bearer was used, not session
-	require.Equal(t, 0, mockProvider.getCalls)
 	require.Equal(t, 1, bearerPolicy.doCalls)
 }
 
-// TestDoWithSession_ProviderError tests doWithSession when provider returns an error.
-func TestDoWithSession_ProviderError(t *testing.T) {
-	expectedErr := errors.New("provider error")
-	mockProvider := &mockSessionProvider{
-		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
-			return sessionCredentials{}, expectedErr
-		},
-	}
+// TestDoWithSession_ResourceError tests doWithSession when resource returns an error.
+func TestDoWithSession_ResourceError(t *testing.T) {
+	expectedErr := errors.New("resource error")
+	resource := newTestResourceWithError(expectedErr)
 
 	pol := &sessionPolicy{
 		opts:     SessionOptions{AccountName: "testaccount"},
-		provider: mockProvider,
+		resource: resource,
 	}
 
 	req := createTestPolicyRequest(t, http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
 
-	resp, err := pol.doWithSession(req, "container")
+	resp, err := pol.doWithSession(req)
 	require.Nil(t, resp)
 	require.Equal(t, expectedErr, err)
 }
@@ -692,14 +615,10 @@ func TestDoWithSession_Success(t *testing.T) {
 	sessionKey := "dGVzdC1rZXk=" // base64 encoded "test-key"
 	sessionToken := "test-token"
 
-	mockProvider := &mockSessionProvider{
-		getCredsFn: func(ctx context.Context, containerName string) (sessionCredentials, error) {
-			return sessionCredentials{
-				key:   sessionKey,
-				token: sessionToken,
-			}, nil
-		},
-	}
+	resource := newTestResource(sessionCredentials{
+		key:   sessionKey,
+		token: sessionToken,
+	})
 
 	transport := &mockTransport{}
 
@@ -707,14 +626,11 @@ func TestDoWithSession_Success(t *testing.T) {
 		opts: SessionOptions{
 			AccountName: "testaccount",
 		},
-		provider: mockProvider,
+		resource: resource,
 	}
 
 	// Create a helper policy to call doWithSession
-	testPolicy := &testDoWithSessionPolicy{
-		pol:           pol,
-		containerName: "container",
-	}
+	testPolicy := &testDoWithSessionPolicy{pol: pol}
 
 	pl := runtime.NewPipeline("test", "v1.0.0", runtime.PipelineOptions{
 		PerCall: []policy.Policy{testPolicy},
@@ -733,38 +649,60 @@ func TestDoWithSession_Success(t *testing.T) {
 
 // testDoWithSessionPolicy is a helper policy that calls doWithSession for testing.
 type testDoWithSessionPolicy struct {
-	pol           *sessionPolicy
-	containerName string
+	pol *sessionPolicy
 }
 
 func (p *testDoWithSessionPolicy) Do(req *policy.Request) (*http.Response, error) {
-	return p.pol.doWithSession(req, p.containerName)
+	return p.pol.doWithSession(req)
 }
 
-// TestApplySessionReq_NilSessionKey tests applySessionReq with nil session key.
-func TestApplySessionReq_NilSessionKey(t *testing.T) {
+// TestApplySessionReq_EmptySessionKey tests applySessionReq with empty session key.
+func TestApplySessionReq_EmptySessionKey(t *testing.T) {
 	sessionToken := "test-token"
+
+	transport := &recordingTransport{}
+
+	resource := newTestResource(sessionCredentials{
+		token: sessionToken,
+	})
 
 	pol := &sessionPolicy{
 		opts: SessionOptions{
 			AccountName: "testaccount",
 		},
+		resource: resource,
 	}
 
-	req := createTestPolicyRequest(t, http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
+	// Create a pipeline with applySessionReq policy
+	testPolicy := &testApplyPolicy{pol: pol}
 
-	creds := sessionCredentials{
-		token: sessionToken,
-	}
+	pl := runtime.NewPipeline("test", "v1.0.0", runtime.PipelineOptions{
+		PerCall: []policy.Policy{testPolicy},
+	}, &policy.ClientOptions{
+		Transport: transport,
+	})
 
-	// Should fail because session key is empty (invalid base64)
-	_, err := pol.applySessionReq(req, creds)
-	require.Error(t, err)
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
+	require.NoError(t, err)
+
+	// Empty key is valid base64 (decodes to empty bytes), so no error is expected
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	// Verify the Authorization header was set with Session prefix and the token
+	authHeader := transport.lastRequest.Header.Get(shared.HeaderAuthorization)
+	require.True(t, strings.HasPrefix(authHeader, "Session "))
+	require.Contains(t, authHeader, sessionToken)
 }
 
 // TestApplySessionReq_NilSessionToken tests applySessionReq with nil session token.
 func TestApplySessionReq_NilSessionToken(t *testing.T) {
 	sessionKey := "dGVzdC1rZXk=" // base64 encoded "test-key"
+
+	resource := newTestResource(sessionCredentials{
+		key: sessionKey,
+	})
 
 	transport := &mockTransport{}
 
@@ -772,17 +710,11 @@ func TestApplySessionReq_NilSessionToken(t *testing.T) {
 		opts: SessionOptions{
 			AccountName: "testaccount",
 		},
-	}
-
-	creds := sessionCredentials{
-		key: sessionKey,
+		resource: resource,
 	}
 
 	// Create a pipeline with our policy that will call applySessionReq
-	testPolicy := &testApplyPolicy{
-		pol:   pol,
-		creds: creds,
-	}
+	testPolicy := &testApplyPolicy{pol: pol}
 
 	pl := runtime.NewPipeline("test", "v1.0.0", runtime.PipelineOptions{
 		PerCall: []policy.Policy{testPolicy},
@@ -796,4 +728,20 @@ func TestApplySessionReq_NilSessionToken(t *testing.T) {
 	resp, err := pl.Do(req)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
+}
+
+// TestDoWithSession_FallbackCreds tests doWithSession when resource returns fallback credentials.
+func TestDoWithSession_FallbackCreds(t *testing.T) {
+	resource := newTestResource(sessionCredentials{fallback: true})
+
+	pol := &sessionPolicy{
+		opts:     SessionOptions{AccountName: "testaccount"},
+		resource: resource,
+	}
+
+	req := createTestPolicyRequest(t, http.MethodGet, "https://testaccount.blob.core.windows.net/container/blob")
+
+	resp, err := pol.doWithSession(req)
+	require.Nil(t, resp)
+	require.ErrorIs(t, err, errFallbackToBearer)
 }

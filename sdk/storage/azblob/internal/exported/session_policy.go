@@ -4,6 +4,7 @@
 package exported
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -12,111 +13,133 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 const sessionUnavailable = "SessionOperationsTemporarilyUnavailable"
 
+// errFallbackToBearer is a sentinel error indicating that session-based authentication
+// is unavailable and the request should fall back to bearer token authentication.
+var errFallbackToBearer = errors.New("session unavailable, falling back to bearer token authentication")
+
 type sessionPolicy struct {
 	bearerTokenPolicy policy.Policy
 	opts              SessionOptions
-	provider          sessionProvider
+
+	resource *temporal.Resource[sessionCredentials, context.Context]
 }
 
 func NewSessionPolicy(opts SessionOptions, bearerTokenPolicy policy.Policy, oauthServiceClient *generated.ServiceClient) (policy.Policy, error) {
-	var provider sessionProvider
+	if opts.Mode == SessionModeOff {
+		return bearerTokenPolicy, nil
+	}
+
+	sessionPl := &sessionPolicy{
+		bearerTokenPolicy: bearerTokenPolicy,
+		opts:              opts,
+	}
 	switch opts.Mode {
-	case SessionModeSingleContainer:
+	case SessionModeSingleSpecifiedContainer:
 		if opts.AccountName == "" {
 			return nil, errors.New("account name is required for singlecontainer mode")
 		}
 		if opts.ContainerName == "" {
 			return nil, errors.New("container name is required for singlecontainer mode")
 		}
-		provider = newSingleContainerProvider(oauthServiceClient, opts.ContainerName)
+		cc := getContainerClient(oauthServiceClient, opts.ContainerName)
+		sessionPl.resource = temporal.NewResourceWithOptions(acquireSession(cc), temporal.ResourceOptions[sessionCredentials, context.Context]{
+			ShouldRefresh: shouldRefreshSession,
+		})
 	default:
 		return nil, fmt.Errorf("unsupported session mode %v", opts.Mode)
 	}
 
-	return &sessionPolicy{
-		bearerTokenPolicy: bearerTokenPolicy,
-		opts:              opts,
-		provider:          provider,
-	}, nil
+	return sessionPl, nil
 }
 
 func (p *sessionPolicy) Do(req *policy.Request) (*http.Response, error) {
-	containerName, ok := canUseSession(req.Raw())
+	containerName, ok := supportsSession(req.Raw())
 	if !ok {
 		return p.bearerTokenPolicy.Do(req)
 	}
+	if p.opts.Mode == SessionModeSingleSpecifiedContainer && containerName != p.opts.ContainerName {
+		return p.bearerTokenPolicy.Do(req)
+	}
 
-	resp, err := p.doWithSession(req, containerName)
-	if err != nil && errors.Is(err, errFallbackToBearer) {
+	resp, err := p.doWithSession(req)
+	if errors.Is(err, errFallbackToBearer) {
+		// rewind the request body before falling back to bearer token authentication,
+		// as it may have been consumed by a prior call to req.Next().
+		if rwErr := req.RewindBody(); rwErr != nil {
+			return nil, rwErr
+		}
 		return p.bearerTokenPolicy.Do(req)
 	}
 	return resp, err
 }
 
-func (p *sessionPolicy) doWithSession(req *policy.Request, containerName string) (*http.Response, error) {
-	sessionCreds, err := p.provider.GetSessionCredentials(req.Raw().Context(), containerName)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := p.applySessionReq(req, sessionCreds)
+// doWithSession attempts to authenticate the request using session credentials.
+// It applies the session auth header, sends the request, and handles any session-specific errors.
+func (p *sessionPolicy) doWithSession(req *policy.Request) (*http.Response, error) {
+	resp, err := p.applySessionReq(req)
 	if err == nil {
 		return resp, nil
 	}
-
-	return p.handleSessionError(req, resp, err, containerName)
+	return p.handleSessionError(req, resp, err)
 }
 
-func (p *sessionPolicy) handleSessionError(req *policy.Request, resp *http.Response, err error, containerName string) (*http.Response, error) {
+// handleSessionError inspects the error from a session-authenticated request and determines
+// whether to fall back to bearer token auth, retry with a new session, or return the error.
+func (p *sessionPolicy) handleSessionError(req *policy.Request, resp *http.Response, err error) (*http.Response, error) {
 	var respErr *azcore.ResponseError
 	if !errors.As(err, &respErr) {
 		return resp, err
 	}
 
-	if resp == nil {
-		return nil, err
-	}
-
-	if resp.StatusCode == http.StatusServiceUnavailable && respErr.ErrorCode == sessionUnavailable {
+	if respErr.StatusCode == http.StatusServiceUnavailable && respErr.ErrorCode == sessionUnavailable {
+		// drain the failed response to avoid leaking the connection
+		runtime.Drain(resp)
 		return nil, errFallbackToBearer
 	}
 
-	if resp.StatusCode == http.StatusUnauthorized {
-		return p.retryWithNewSession(req, containerName)
+	if respErr.StatusCode == http.StatusUnauthorized {
+		// drain the failed response to avoid leaking the connection
+		runtime.Drain(resp)
+
+		// rewind the request body before retrying
+		if err := req.RewindBody(); err != nil {
+			return nil, err
+		}
+
+		// retry with new session
+		p.resource.Expire()
+		return p.applySessionReq(req)
 	}
 
 	return resp, err
 }
 
-func (p *sessionPolicy) retryWithNewSession(req *policy.Request, containerName string) (*http.Response, error) {
-	p.provider.ExpireSessionCredentials(containerName)
-	sessionCreds, err := p.provider.GetSessionCredentials(req.Raw().Context(), containerName)
+// applySessionReq signs the request with session credentials and sends it.
+func (p *sessionPolicy) applySessionReq(req *policy.Request) (*http.Response, error) {
+	sessionCreds, err := p.resource.Get(req.Raw().Context())
 	if err != nil {
-		if errors.Is(err, errFallbackToBearer) {
-			return nil, errFallbackToBearer
-		}
 		return nil, err
 	}
-	return p.applySessionReq(req, sessionCreds)
-}
+	if sessionCreds.fallback {
+		return nil, errFallbackToBearer
+	}
 
-func (p *sessionPolicy) applySessionReq(req *policy.Request, sessionCreds sessionCredentials) (*http.Response, error) {
-	key := sessionCreds.key
-	token := sessionCreds.token
-	cred, err := NewSharedKeyCredential(p.opts.AccountName, key)
+	cred, err := NewSharedKeyCredential(p.opts.AccountName, sessionCreds.key)
 	if err != nil {
 		return nil, err
 	}
 
-	if d := getHeader(shared.HeaderXmsDate, req.Raw().Header); d == "" {
-		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	}
+	// always set a fresh date so the signature matches the current time, including on retries
+	req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
+
 	stringToSign, err := cred.buildStringToSign(req.Raw())
 	if err != nil {
 		return nil, err
@@ -125,16 +148,16 @@ func (p *sessionPolicy) applySessionReq(req *policy.Request, sessionCreds sessio
 	if err != nil {
 		return nil, err
 	}
-	authHeader := strings.Join([]string{"Session ", token, ":", signature}, "")
+	authHeader := "Session " + sessionCreds.token + ":" + signature
 	req.Raw().Header.Set(shared.HeaderAuthorization, authHeader)
 
 	return req.Next()
 }
 
-// canUseSession checks if the request can use session-based authentication.
+// supportsSession checks if the request can use session-based authentication.
 // Currently limited to Get Blob requests (GET method on blob URLs without comp query param).
 // Returns the container name and true if session can be used, empty string and false otherwise.
-func canUseSession(req *http.Request) (containerName string, ok bool) {
+func supportsSession(req *http.Request) (containerName string, ok bool) {
 	// Only GET requests are supported for sessions
 	if req.Method != http.MethodGet {
 		return "", false
