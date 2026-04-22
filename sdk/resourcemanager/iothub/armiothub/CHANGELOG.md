@@ -1,5 +1,28 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-04-22)
+### Breaking Changes
+
+- Struct `CertificateBodyDescription` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `Resource` has been removed
+- Field `DefaultTTLAsIso8601` of struct `CloudToDeviceProperties` has been removed
+- Field `LockDurationAsIso8601`, `TTLAsIso8601` of struct `FeedbackProperties` has been removed
+- Field `LockDurationAsIso8601`, `TTLAsIso8601` of struct `MessagingEndpointProperties` has been removed
+- Field `SasTTLAsIso8601` of struct `StorageEndpointProperties` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `CertificateDescription`
+- New field `DefaultTTLAsISO8601` in struct `CloudToDeviceProperties`
+- New field `SystemData` in struct `EventHubConsumerGroupInfo`
+- New field `LockDurationAsISO8601`, `TTLAsISO8601` in struct `FeedbackProperties`
+- New field `SystemData` in struct `GroupIDInformation`
+- New field `LockDurationAsISO8601`, `TTLAsISO8601` in struct `MessagingEndpointProperties`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `SasTTLAsISO8601` in struct `StorageEndpointProperties`
+
+
 ## 1.4.0-beta.1 (2025-11-11)
 ### Features Added
 
