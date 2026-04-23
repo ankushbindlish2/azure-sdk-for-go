@@ -35,7 +35,8 @@ type AccessRuleProperties struct {
 	Subscriptions []*AccessRulePropertiesSubscriptionsItem
 }
 
-// AccessRulePropertiesSubscriptionsItem - Subscription identifiers
+// AccessRulePropertiesSubscriptionsItem - we add this model in order to replace subscriptions model in CommonTypes with this
+// model via alternateType decorator
 type AccessRulePropertiesSubscriptionsItem struct {
 	// The fully qualified Azure resource ID of the subscription e.g. ('/subscriptions/00000000-0000-0000-0000-000000000000')
 	ID *string
