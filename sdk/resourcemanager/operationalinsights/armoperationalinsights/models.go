@@ -32,7 +32,7 @@ type AccessRuleProperties struct {
 	PhoneNumbers []*string
 
 	// Subscriptions for inbound rules
-	Subscriptions *AccessRulePropertiesSubscriptionsItem
+	Subscriptions []*AccessRulePropertiesSubscriptionsItem
 }
 
 // AccessRulePropertiesSubscriptionsItem - Subscription identifiers

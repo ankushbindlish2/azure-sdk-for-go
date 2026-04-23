@@ -275,13 +275,13 @@ type SavedSearchesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SavedSearchesClientListByWorkspaceOptions contains the optional parameters for the SavedSearchesClient.NewListByWorkspacePager
+// SavedSearchesClientListByWorkspaceOptions contains the optional parameters for the SavedSearchesClient.ListByWorkspace
 // method.
 type SavedSearchesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SchemaClientGetOptions contains the optional parameters for the SchemaClient.NewGetPager method.
+// SchemaClientGetOptions contains the optional parameters for the SchemaClient.Get method.
 type SchemaClientGetOptions struct {
 	// placeholder for future optional parameters
 }

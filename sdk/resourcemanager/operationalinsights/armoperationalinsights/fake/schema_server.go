@@ -5,12 +5,13 @@
 package fake
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -19,26 +20,22 @@ import (
 
 // SchemaServer is a fake server for instances of the armoperationalinsights.SchemaClient type.
 type SchemaServer struct {
-	// NewGetPager is the fake for method SchemaClient.NewGetPager
+	// Get is the fake for method SchemaClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetPager func(resourceGroupName string, workspaceName string, options *armoperationalinsights.SchemaClientGetOptions) (resp azfake.PagerResponder[armoperationalinsights.SchemaClientGetResponse])
+	Get func(ctx context.Context, resourceGroupName string, workspaceName string, options *armoperationalinsights.SchemaClientGetOptions) (resp azfake.Responder[armoperationalinsights.SchemaClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSchemaServerTransport creates a new instance of SchemaServerTransport with the provided implementation.
 // The returned SchemaServerTransport instance is connected to an instance of armoperationalinsights.SchemaClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSchemaServerTransport(srv *SchemaServer) *SchemaServerTransport {
-	return &SchemaServerTransport{
-		srv:         srv,
-		newGetPager: newTracker[azfake.PagerResponder[armoperationalinsights.SchemaClientGetResponse]](),
-	}
+	return &SchemaServerTransport{srv: srv}
 }
 
 // SchemaServerTransport connects instances of armoperationalinsights.SchemaClient to instances of SchemaServer.
 // Don't use this type directly, use NewSchemaServerTransport instead.
 type SchemaServerTransport struct {
-	srv         *SchemaServer
-	newGetPager *tracker[azfake.PagerResponder[armoperationalinsights.SchemaClientGetResponse]]
+	srv *SchemaServer
 }
 
 // Do implements the policy.Transporter interface for SchemaServerTransport.
@@ -62,8 +59,8 @@ func (s *SchemaServerTransport) dispatchToMethodFake(req *http.Request, method s
 		}
 		if !intercepted {
 			switch method {
-			case "SchemaClient.NewGetPager":
-				res.resp, res.err = s.dispatchNewGetPager(req)
+			case "SchemaClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -80,40 +77,35 @@ func (s *SchemaServerTransport) dispatchToMethodFake(req *http.Request, method s
 	}
 }
 
-func (s *SchemaServerTransport) dispatchNewGetPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewGetPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetPager not implemented")}
+func (s *SchemaServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	newGetPager := s.newGetPager.get(req)
-	if newGetPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/schema`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewGetPager(resourceGroupNameParam, workspaceNameParam, nil)
-		newGetPager = &resp
-		s.newGetPager.add(req, newGetPager)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/schema`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newGetPager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newGetPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newGetPager) {
-		s.newGetPager.remove(req)
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, workspaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SearchGetSchemaResponse, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

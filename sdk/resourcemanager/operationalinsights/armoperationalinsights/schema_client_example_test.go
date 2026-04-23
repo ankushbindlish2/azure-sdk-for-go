@@ -7,12 +7,12 @@ package armoperationalinsights_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
 	"log"
 )
 
 // Generated from example definition: 2025-07-01/SavedSearchesGetSchema.json
-func ExampleSchemaClient_NewGetPager() {
+func ExampleSchemaClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,66 +22,61 @@ func ExampleSchemaClient_NewGetPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSchemaClient().NewGetPager("mms-eus", "atlantisdemo", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoperationalinsights.SchemaClientGetResponse{
-		// 	SearchGetSchemaResponse: armoperationalinsights.SearchGetSchemaResponse{
-		// 		Metadata: &armoperationalinsights.SearchMetadata{
-		// 			Schema: &armoperationalinsights.SearchMetadataSchema{
-		// 				Name: to.Ptr("CloudOps"),
-		// 				Version: to.Ptr[int32](2),
-		// 			},
-		// 			RequestTime: to.Ptr[int64](28),
-		// 			ResultType: to.Ptr("schema"),
-		// 		},
-		// 		Value: []*armoperationalinsights.SearchSchemaValue{
-		// 			{
-		// 				Name: to.Ptr("TenantId"),
-		// 				Type: to.Ptr("Guid"),
-		// 				DisplayName: to.Ptr("TenantId"),
-		// 				Facet: to.Ptr(false),
-		// 				Indexed: to.Ptr(true),
-		// 				OwnerType: []*string{
-		// 					to.Ptr("Alert"),
-		// 					to.Ptr("AzureActivity"),
-		// 					to.Ptr("AzureAudit"),
-		// 					to.Ptr("AzureMetrics"),
-		// 					to.Ptr("ComputerGroup"),
-		// 					to.Ptr("ETWEvent"),
-		// 					to.Ptr("Event"),
-		// 					to.Ptr("ExtraHopDBLogin"),
-		// 					to.Ptr("ExtraHopDBTransaction"),
-		// 					to.Ptr("ExtraHopDNSResponse"),
-		// 					to.Ptr("ExtraHopFTPResponse"),
-		// 					to.Ptr("ExtraHopHTTPTransaction"),
-		// 					to.Ptr("ExtraHopSMTPMessage"),
-		// 					to.Ptr("ExtraHopSYNScanDetect"),
-		// 					to.Ptr("ExtraHopTCPOpen"),
-		// 					to.Ptr("Heartbeat"),
-		// 					to.Ptr("Operation"),
-		// 					to.Ptr("Perf"),
-		// 					to.Ptr("ReservedAzureCommonFields"),
-		// 					to.Ptr("ReservedCommonFields"),
-		// 					to.Ptr("ServiceFabricOperationalEvent"),
-		// 					to.Ptr("ServiceFabricReliableActorEvent"),
-		// 					to.Ptr("ServiceFabricReliableServiceEvent"),
-		// 					to.Ptr("Syslog"),
-		// 					to.Ptr("Usage"),
-		// 					to.Ptr("W3CIISLog"),
-		// 				},
-		// 				Stored: to.Ptr(false),
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewSchemaClient().Get(ctx, "mms-eus", "atlantisdemo", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armoperationalinsights.SchemaClientGetResponse{
+	// 	SearchGetSchemaResponse: armoperationalinsights.SearchGetSchemaResponse{
+	// 		Metadata: &armoperationalinsights.SearchMetadata{
+	// 			Schema: &armoperationalinsights.SearchMetadataSchema{
+	// 				Name: to.Ptr("CloudOps"),
+	// 				Version: to.Ptr[int32](2),
+	// 			},
+	// 			RequestTime: to.Ptr[int64](28),
+	// 			ResultType: to.Ptr("schema"),
+	// 		},
+	// 		Value: []*armoperationalinsights.SearchSchemaValue{
+	// 			{
+	// 				Name: to.Ptr("TenantId"),
+	// 				Type: to.Ptr("Guid"),
+	// 				DisplayName: to.Ptr("TenantId"),
+	// 				Facet: to.Ptr(false),
+	// 				Indexed: to.Ptr(true),
+	// 				OwnerType: []*string{
+	// 					to.Ptr("Alert"),
+	// 					to.Ptr("AzureActivity"),
+	// 					to.Ptr("AzureAudit"),
+	// 					to.Ptr("AzureMetrics"),
+	// 					to.Ptr("ComputerGroup"),
+	// 					to.Ptr("ETWEvent"),
+	// 					to.Ptr("Event"),
+	// 					to.Ptr("ExtraHopDBLogin"),
+	// 					to.Ptr("ExtraHopDBTransaction"),
+	// 					to.Ptr("ExtraHopDNSResponse"),
+	// 					to.Ptr("ExtraHopFTPResponse"),
+	// 					to.Ptr("ExtraHopHTTPTransaction"),
+	// 					to.Ptr("ExtraHopSMTPMessage"),
+	// 					to.Ptr("ExtraHopSYNScanDetect"),
+	// 					to.Ptr("ExtraHopTCPOpen"),
+	// 					to.Ptr("Heartbeat"),
+	// 					to.Ptr("Operation"),
+	// 					to.Ptr("Perf"),
+	// 					to.Ptr("ReservedAzureCommonFields"),
+	// 					to.Ptr("ReservedCommonFields"),
+	// 					to.Ptr("ServiceFabricOperationalEvent"),
+	// 					to.Ptr("ServiceFabricReliableActorEvent"),
+	// 					to.Ptr("ServiceFabricReliableServiceEvent"),
+	// 					to.Ptr("Syslog"),
+	// 					to.Ptr("Usage"),
+	// 					to.Ptr("W3CIISLog"),
+	// 				},
+	// 				Stored: to.Ptr(false),
+	// 			},
+	// 		},
+	// 	},
+	// }
 }

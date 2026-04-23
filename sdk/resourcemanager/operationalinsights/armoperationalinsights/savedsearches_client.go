@@ -241,35 +241,34 @@ func (client *SavedSearchesClient) getHandleResponse(resp *http.Response) (Saved
 	return result, nil
 }
 
-// NewListByWorkspacePager - Gets the saved searches for a given Log Analytics Workspace
+// ListByWorkspace - Gets the saved searches for a given Log Analytics Workspace
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - options - SavedSearchesClientListByWorkspaceOptions contains the optional parameters for the SavedSearchesClient.NewListByWorkspacePager
+//   - options - SavedSearchesClientListByWorkspaceOptions contains the optional parameters for the SavedSearchesClient.ListByWorkspace
 //     method.
-func (client *SavedSearchesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *SavedSearchesClientListByWorkspaceOptions) *runtime.Pager[SavedSearchesClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SavedSearchesClientListByWorkspaceResponse]{
-		More: func(page SavedSearchesClientListByWorkspaceResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *SavedSearchesClientListByWorkspaceResponse) (SavedSearchesClientListByWorkspaceResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SavedSearchesClient.NewListByWorkspacePager")
-			req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			if err != nil {
-				return SavedSearchesClientListByWorkspaceResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SavedSearchesClientListByWorkspaceResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SavedSearchesClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listByWorkspaceHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+func (client *SavedSearchesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, options *SavedSearchesClientListByWorkspaceOptions) (SavedSearchesClientListByWorkspaceResponse, error) {
+	var err error
+	const operationName = "SavedSearchesClient.ListByWorkspace"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return SavedSearchesClientListByWorkspaceResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SavedSearchesClientListByWorkspaceResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SavedSearchesClientListByWorkspaceResponse{}, err
+	}
+	resp, err := client.listByWorkspaceHandleResponse(httpResp)
+	return resp, err
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.

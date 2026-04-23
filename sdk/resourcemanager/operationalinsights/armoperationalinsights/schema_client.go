@@ -39,34 +39,33 @@ func NewSchemaClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// NewGetPager - Gets the schema for a given workspace.
+// Get - Gets the schema for a given workspace.
+// If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - options - SchemaClientGetOptions contains the optional parameters for the SchemaClient.NewGetPager method.
-func (client *SchemaClient) NewGetPager(resourceGroupName string, workspaceName string, options *SchemaClientGetOptions) *runtime.Pager[SchemaClientGetResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SchemaClientGetResponse]{
-		More: func(page SchemaClientGetResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *SchemaClientGetResponse) (SchemaClientGetResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SchemaClient.NewGetPager")
-			req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			if err != nil {
-				return SchemaClientGetResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SchemaClientGetResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return SchemaClientGetResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.getHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+//   - options - SchemaClientGetOptions contains the optional parameters for the SchemaClient.Get method.
+func (client *SchemaClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, options *SchemaClientGetOptions) (SchemaClientGetResponse, error) {
+	var err error
+	const operationName = "SchemaClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return SchemaClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SchemaClientGetResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SchemaClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

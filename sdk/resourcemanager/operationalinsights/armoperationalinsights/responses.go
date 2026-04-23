@@ -283,13 +283,13 @@ type SavedSearchesClientGetResponse struct {
 	SavedSearch
 }
 
-// SavedSearchesClientListByWorkspaceResponse contains the response from method SavedSearchesClient.NewListByWorkspacePager.
+// SavedSearchesClientListByWorkspaceResponse contains the response from method SavedSearchesClient.ListByWorkspace.
 type SavedSearchesClientListByWorkspaceResponse struct {
 	// The saved search list operation response.
 	SavedSearchesListResult
 }
 
-// SchemaClientGetResponse contains the response from method SchemaClient.NewGetPager.
+// SchemaClientGetResponse contains the response from method SchemaClient.Get.
 type SchemaClientGetResponse struct {
 	// The get schema operation response.
 	SearchGetSchemaResponse

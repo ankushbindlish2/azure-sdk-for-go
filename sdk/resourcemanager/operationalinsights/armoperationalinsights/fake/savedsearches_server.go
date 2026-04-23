@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -32,26 +32,22 @@ type SavedSearchesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, options *armoperationalinsights.SavedSearchesClientGetOptions) (resp azfake.Responder[armoperationalinsights.SavedSearchesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByWorkspacePager is the fake for method SavedSearchesClient.NewListByWorkspacePager
+	// ListByWorkspace is the fake for method SavedSearchesClient.ListByWorkspace
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByWorkspacePager func(resourceGroupName string, workspaceName string, options *armoperationalinsights.SavedSearchesClientListByWorkspaceOptions) (resp azfake.PagerResponder[armoperationalinsights.SavedSearchesClientListByWorkspaceResponse])
+	ListByWorkspace func(ctx context.Context, resourceGroupName string, workspaceName string, options *armoperationalinsights.SavedSearchesClientListByWorkspaceOptions) (resp azfake.Responder[armoperationalinsights.SavedSearchesClientListByWorkspaceResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSavedSearchesServerTransport creates a new instance of SavedSearchesServerTransport with the provided implementation.
 // The returned SavedSearchesServerTransport instance is connected to an instance of armoperationalinsights.SavedSearchesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSavedSearchesServerTransport(srv *SavedSearchesServer) *SavedSearchesServerTransport {
-	return &SavedSearchesServerTransport{
-		srv:                     srv,
-		newListByWorkspacePager: newTracker[azfake.PagerResponder[armoperationalinsights.SavedSearchesClientListByWorkspaceResponse]](),
-	}
+	return &SavedSearchesServerTransport{srv: srv}
 }
 
 // SavedSearchesServerTransport connects instances of armoperationalinsights.SavedSearchesClient to instances of SavedSearchesServer.
 // Don't use this type directly, use NewSavedSearchesServerTransport instead.
 type SavedSearchesServerTransport struct {
-	srv                     *SavedSearchesServer
-	newListByWorkspacePager *tracker[azfake.PagerResponder[armoperationalinsights.SavedSearchesClientListByWorkspaceResponse]]
+	srv *SavedSearchesServer
 }
 
 // Do implements the policy.Transporter interface for SavedSearchesServerTransport.
@@ -81,8 +77,8 @@ func (s *SavedSearchesServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = s.dispatchDelete(req)
 			case "SavedSearchesClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "SavedSearchesClient.NewListByWorkspacePager":
-				res.resp, res.err = s.dispatchNewListByWorkspacePager(req)
+			case "SavedSearchesClient.ListByWorkspace":
+				res.resp, res.err = s.dispatchListByWorkspace(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -214,40 +210,35 @@ func (s *SavedSearchesServerTransport) dispatchGet(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (s *SavedSearchesServerTransport) dispatchNewListByWorkspacePager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByWorkspacePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByWorkspacePager not implemented")}
+func (s *SavedSearchesServerTransport) dispatchListByWorkspace(req *http.Request) (*http.Response, error) {
+	if s.srv.ListByWorkspace == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListByWorkspace not implemented")}
 	}
-	newListByWorkspacePager := s.newListByWorkspacePager.get(req)
-	if newListByWorkspacePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savedSearches`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByWorkspacePager(resourceGroupNameParam, workspaceNameParam, nil)
-		newListByWorkspacePager = &resp
-		s.newListByWorkspacePager.add(req, newListByWorkspacePager)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/savedSearches`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resp, err := server.PagerResponderNext(newListByWorkspacePager, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByWorkspacePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PagerResponderMore(newListByWorkspacePager) {
-		s.newListByWorkspacePager.remove(req)
+	respr, errRespr := s.srv.ListByWorkspace(req.Context(), resourceGroupNameParam, workspaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SavedSearchesListResult, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }
