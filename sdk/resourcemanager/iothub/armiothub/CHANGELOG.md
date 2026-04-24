@@ -6,20 +6,12 @@
 - Struct `CertificateBodyDescription` has been removed
 - Struct `ErrorDetails` has been removed
 - Struct `Resource` has been removed
-- Field `DefaultTTLAsIso8601` of struct `CloudToDeviceProperties` has been removed
-- Field `LockDurationAsIso8601`, `TTLAsIso8601` of struct `FeedbackProperties` has been removed
-- Field `LockDurationAsIso8601`, `TTLAsIso8601` of struct `MessagingEndpointProperties` has been removed
-- Field `SasTTLAsIso8601` of struct `StorageEndpointProperties` has been removed
 
 ### Features Added
 
 - New field `SystemData` in struct `CertificateDescription`
-- New field `DefaultTTLAsISO8601` in struct `CloudToDeviceProperties`
 - New field `SystemData` in struct `EventHubConsumerGroupInfo`
-- New field `LockDurationAsISO8601`, `TTLAsISO8601` in struct `FeedbackProperties`
-- New field `LockDurationAsISO8601`, `TTLAsISO8601` in struct `MessagingEndpointProperties`
 - New field `SystemData` in struct `PrivateEndpointConnection`
-- New field `SasTTLAsISO8601` in struct `StorageEndpointProperties`
 
 
 ## 1.4.0-beta.1 (2025-11-11)
@@ -66,7 +58,7 @@
 
 ## 1.0.0 (2022-05-17)
 
-The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub/v2` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.
 
 To migrate the existing applications to the latest version, please refer to [Migration Guide](https://aka.ms/azsdk/go/mgmt/migration).
 

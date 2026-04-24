@@ -92,11 +92,11 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithDeviceRe
 		Location: to.Ptr("centraluseuap"),
 		Properties: &armiothub.Properties{
 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-				DefaultTTLAsISO8601: to.Ptr("PT1H"),
+				DefaultTTLAsIso8601: to.Ptr("PT1H"),
 				Feedback: &armiothub.FeedbackProperties{
-					LockDurationAsISO8601: to.Ptr("PT1M"),
+					LockDurationAsIso8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsISO8601:          to.Ptr("PT1H"),
+					TTLAsIso8601:          to.Ptr("PT1H"),
 				},
 				MaxDeliveryCount: to.Ptr[int32](10),
 			},
@@ -117,9 +117,9 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithDeviceRe
 			IPVersion:     to.Ptr(armiothub.IPVersionIPv4IPv6),
 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 				"fileNotifications": {
-					LockDurationAsISO8601: to.Ptr("PT1M"),
+					LockDurationAsIso8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsISO8601:          to.Ptr("PT1H"),
+					TTLAsIso8601:          to.Ptr("PT1H"),
 				},
 			},
 			MinTLSVersion: to.Ptr("1.2"),
@@ -164,7 +164,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithDeviceRe
 				"$default": {
 					ConnectionString: to.Ptr(""),
 					ContainerName:    to.Ptr(""),
-					SasTTLAsISO8601:  to.Ptr("PT1H"),
+					SasTTLAsIso8601:  to.Ptr("PT1H"),
 				},
 			},
 		},
@@ -193,11 +193,11 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithDeviceRe
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armiothub.Properties{
 	// 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-	// 				DefaultTTLAsISO8601: to.Ptr("PT1H"),
+	// 				DefaultTTLAsIso8601: to.Ptr("PT1H"),
 	// 				Feedback: &armiothub.FeedbackProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 				MaxDeliveryCount: to.Ptr[int32](10),
 	// 			},
@@ -236,9 +236,9 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithDeviceRe
 	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 			MinTLSVersion: to.Ptr("1.2"),
@@ -291,7 +291,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithDeviceRe
 	// 				"$default": &armiothub.StorageEndpointProperties{
 	// 					ConnectionString: to.Ptr(""),
 	// 					ContainerName: to.Ptr(""),
-	// 					SasTTLAsISO8601: to.Ptr("PT1H"),
+	// 					SasTTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 		},
@@ -325,11 +325,11 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 		Location: to.Ptr("centraluseuap"),
 		Properties: &armiothub.Properties{
 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-				DefaultTTLAsISO8601: to.Ptr("PT1H"),
+				DefaultTTLAsIso8601: to.Ptr("PT1H"),
 				Feedback: &armiothub.FeedbackProperties{
-					LockDurationAsISO8601: to.Ptr("PT1M"),
+					LockDurationAsIso8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsISO8601:          to.Ptr("PT1H"),
+					TTLAsIso8601:          to.Ptr("PT1H"),
 				},
 				MaxDeliveryCount: to.Ptr[int32](10),
 			},
@@ -346,9 +346,9 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 			IPVersion:     to.Ptr(armiothub.IPVersionIPv4IPv6),
 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 				"fileNotifications": {
-					LockDurationAsISO8601: to.Ptr("PT1M"),
+					LockDurationAsIso8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsISO8601:          to.Ptr("PT1H"),
+					TTLAsIso8601:          to.Ptr("PT1H"),
 				},
 			},
 			MinTLSVersion: to.Ptr("1.2"),
@@ -393,7 +393,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 				"$default": {
 					ConnectionString: to.Ptr(""),
 					ContainerName:    to.Ptr(""),
-					SasTTLAsISO8601:  to.Ptr("PT1H"),
+					SasTTLAsIso8601:  to.Ptr("PT1H"),
 				},
 			},
 		},
@@ -422,11 +422,11 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armiothub.Properties{
 	// 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-	// 				DefaultTTLAsISO8601: to.Ptr("PT1H"),
+	// 				DefaultTTLAsIso8601: to.Ptr("PT1H"),
 	// 				Feedback: &armiothub.FeedbackProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 				MaxDeliveryCount: to.Ptr[int32](10),
 	// 			},
@@ -461,9 +461,9 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 			MinTLSVersion: to.Ptr("1.2"),
@@ -516,7 +516,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 				"$default": &armiothub.StorageEndpointProperties{
 	// 					ConnectionString: to.Ptr(""),
 	// 					ContainerName: to.Ptr(""),
-	// 					SasTTLAsISO8601: to.Ptr("PT1H"),
+	// 					SasTTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 		},
@@ -565,11 +565,11 @@ func ExampleResourceClient_BeginDelete() {
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armiothub.Properties{
 	// 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-	// 				DefaultTTLAsISO8601: to.Ptr("PT1H"),
+	// 				DefaultTTLAsIso8601: to.Ptr("PT1H"),
 	// 				Feedback: &armiothub.FeedbackProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 				MaxDeliveryCount: to.Ptr[int32](10),
 	// 			},
@@ -602,9 +602,9 @@ func ExampleResourceClient_BeginDelete() {
 	// 			},
 	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 			NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
@@ -651,7 +651,7 @@ func ExampleResourceClient_BeginDelete() {
 	// 				"$default": &armiothub.StorageEndpointProperties{
 	// 					ConnectionString: to.Ptr(""),
 	// 					ContainerName: to.Ptr(""),
-	// 					SasTTLAsISO8601: to.Ptr("PT1H"),
+	// 					SasTTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 		},
@@ -754,11 +754,11 @@ func ExampleResourceClient_Get() {
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armiothub.Properties{
 	// 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-	// 				DefaultTTLAsISO8601: to.Ptr("PT1H"),
+	// 				DefaultTTLAsIso8601: to.Ptr("PT1H"),
 	// 				Feedback: &armiothub.FeedbackProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 				MaxDeliveryCount: to.Ptr[int32](10),
 	// 			},
@@ -807,9 +807,9 @@ func ExampleResourceClient_Get() {
 	// 			},
 	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 			MinTLSVersion: to.Ptr("1.2"),
@@ -857,7 +857,7 @@ func ExampleResourceClient_Get() {
 	// 				"$default": &armiothub.StorageEndpointProperties{
 	// 					ConnectionString: to.Ptr(""),
 	// 					ContainerName: to.Ptr(""),
-	// 					SasTTLAsISO8601: to.Ptr("PT1H"),
+	// 					SasTTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 		},
@@ -1213,11 +1213,11 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 		// 				Location: to.Ptr("centraluseuap"),
 		// 				Properties: &armiothub.Properties{
 		// 					CloudToDevice: &armiothub.CloudToDeviceProperties{
-		// 						DefaultTTLAsISO8601: to.Ptr("PT1H"),
+		// 						DefaultTTLAsIso8601: to.Ptr("PT1H"),
 		// 						Feedback: &armiothub.FeedbackProperties{
-		// 							LockDurationAsISO8601: to.Ptr("PT1M"),
+		// 							LockDurationAsIso8601: to.Ptr("PT1M"),
 		// 							MaxDeliveryCount: to.Ptr[int32](10),
-		// 							TTLAsISO8601: to.Ptr("PT1H"),
+		// 							TTLAsIso8601: to.Ptr("PT1H"),
 		// 						},
 		// 						MaxDeliveryCount: to.Ptr[int32](10),
 		// 					},
@@ -1250,9 +1250,9 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 		// 						"fileNotifications": &armiothub.MessagingEndpointProperties{
-		// 							LockDurationAsISO8601: to.Ptr("PT1M"),
+		// 							LockDurationAsIso8601: to.Ptr("PT1M"),
 		// 							MaxDeliveryCount: to.Ptr[int32](10),
-		// 							TTLAsISO8601: to.Ptr("PT1H"),
+		// 							TTLAsIso8601: to.Ptr("PT1H"),
 		// 						},
 		// 					},
 		// 					NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
@@ -1300,7 +1300,7 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 		// 						"$default": &armiothub.StorageEndpointProperties{
 		// 							ConnectionString: to.Ptr(""),
 		// 							ContainerName: to.Ptr(""),
-		// 							SasTTLAsISO8601: to.Ptr("PT1H"),
+		// 							SasTTLAsIso8601: to.Ptr("PT1H"),
 		// 						},
 		// 					},
 		// 				},
@@ -1354,11 +1354,11 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 		// 				Location: to.Ptr("centraluseuap"),
 		// 				Properties: &armiothub.Properties{
 		// 					CloudToDevice: &armiothub.CloudToDeviceProperties{
-		// 						DefaultTTLAsISO8601: to.Ptr("PT1H"),
+		// 						DefaultTTLAsIso8601: to.Ptr("PT1H"),
 		// 						Feedback: &armiothub.FeedbackProperties{
-		// 							LockDurationAsISO8601: to.Ptr("PT1M"),
+		// 							LockDurationAsIso8601: to.Ptr("PT1M"),
 		// 							MaxDeliveryCount: to.Ptr[int32](10),
-		// 							TTLAsISO8601: to.Ptr("PT1H"),
+		// 							TTLAsIso8601: to.Ptr("PT1H"),
 		// 						},
 		// 						MaxDeliveryCount: to.Ptr[int32](10),
 		// 					},
@@ -1391,9 +1391,9 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 		// 						"fileNotifications": &armiothub.MessagingEndpointProperties{
-		// 							LockDurationAsISO8601: to.Ptr("PT1M"),
+		// 							LockDurationAsIso8601: to.Ptr("PT1M"),
 		// 							MaxDeliveryCount: to.Ptr[int32](10),
-		// 							TTLAsISO8601: to.Ptr("PT1H"),
+		// 							TTLAsIso8601: to.Ptr("PT1H"),
 		// 						},
 		// 					},
 		// 					NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
@@ -1441,7 +1441,7 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 		// 						"$default": &armiothub.StorageEndpointProperties{
 		// 							ConnectionString: to.Ptr(""),
 		// 							ContainerName: to.Ptr(""),
-		// 							SasTTLAsISO8601: to.Ptr("PT1H"),
+		// 							SasTTLAsIso8601: to.Ptr("PT1H"),
 		// 						},
 		// 					},
 		// 				},
@@ -1744,11 +1744,11 @@ func ExampleResourceClient_BeginUpdate() {
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armiothub.Properties{
 	// 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-	// 				DefaultTTLAsISO8601: to.Ptr("PT1H"),
+	// 				DefaultTTLAsIso8601: to.Ptr("PT1H"),
 	// 				Feedback: &armiothub.FeedbackProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 				MaxDeliveryCount: to.Ptr[int32](10),
 	// 			},
@@ -1781,9 +1781,9 @@ func ExampleResourceClient_BeginUpdate() {
 	// 			},
 	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
-	// 					LockDurationAsISO8601: to.Ptr("PT1M"),
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
 	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsISO8601: to.Ptr("PT1H"),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 			NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
@@ -1831,7 +1831,7 @@ func ExampleResourceClient_BeginUpdate() {
 	// 				"$default": &armiothub.StorageEndpointProperties{
 	// 					ConnectionString: to.Ptr(""),
 	// 					ContainerName: to.Ptr(""),
-	// 					SasTTLAsISO8601: to.Ptr("PT1H"),
+	// 					SasTTLAsIso8601: to.Ptr("PT1H"),
 	// 				},
 	// 			},
 	// 		},
