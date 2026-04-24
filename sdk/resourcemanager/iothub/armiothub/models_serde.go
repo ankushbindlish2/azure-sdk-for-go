@@ -1021,7 +1021,6 @@ func (g GroupIDInformation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", g.ID)
 	populate(objectMap, "name", g.Name)
 	populate(objectMap, "properties", g.Properties)
-	populate(objectMap, "systemData", g.SystemData)
 	populate(objectMap, "type", g.Type)
 	return json.Marshal(objectMap)
 }
@@ -1043,9 +1042,6 @@ func (g *GroupIDInformation) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, "Properties", &g.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &g.SystemData)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &g.Type)

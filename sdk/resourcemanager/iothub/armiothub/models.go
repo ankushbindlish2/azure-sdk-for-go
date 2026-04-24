@@ -405,16 +405,13 @@ type GroupIDInformation struct {
 	// REQUIRED; The properties for a group information object
 	Properties *GroupIDInformationProperties
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; The resource identifier.
 	ID *string
 
-	// READ-ONLY; The name of the resource
+	// READ-ONLY; The resource name.
 	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// READ-ONLY; The resource type.
 	Type *string
 }
 

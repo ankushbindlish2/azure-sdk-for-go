@@ -46,7 +46,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IotHubDescriptionLowerCase
+//   - resourceName - The name of the IoT Hub
 //   - groupID - The name of the private link resource
 //   - options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
 //     method.
@@ -118,7 +118,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IotHubDescriptionLowerCase
+//   - resourceName - The name of the IoT Hub
 //   - options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List
 //     method.
 func (client *PrivateLinkResourcesClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) (PrivateLinkResourcesClientListResponse, error) {

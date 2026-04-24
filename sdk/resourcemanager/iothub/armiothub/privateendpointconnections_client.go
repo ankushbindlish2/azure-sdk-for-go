@@ -46,7 +46,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IotHubDescriptionLowerCase
+//   - resourceName - The name of the IoT Hub
 //   - privateEndpointConnectionName - The name of the private endpoint connection
 //   - options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 //     method.
@@ -131,7 +131,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IotHubDescriptionLowerCase
+//   - resourceName - The name of the IoT Hub
 //   - privateEndpointConnectionName - The name of the private endpoint connection
 //   - options - PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
 //     method.
@@ -203,7 +203,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IotHubDescriptionLowerCase
+//   - resourceName - The name of the IoT Hub
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
 //     method.
 func (client *PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsClientListOptions) (PrivateEndpointConnectionsClientListResponse, error) {
@@ -270,7 +270,7 @@ func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Re
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IotHubDescriptionLowerCase
+//   - resourceName - The name of the IoT Hub
 //   - privateEndpointConnectionName - The name of the private endpoint connection
 //   - privateEndpointConnection - The private endpoint connection with updated properties
 //   - options - PrivateEndpointConnectionsClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdate
