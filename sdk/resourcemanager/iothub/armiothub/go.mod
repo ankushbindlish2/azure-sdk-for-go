@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub/v2
 
 go 1.25.0
 

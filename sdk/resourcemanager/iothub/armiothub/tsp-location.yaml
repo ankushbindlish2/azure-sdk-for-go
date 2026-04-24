@@ -1,0 +1,4 @@
+directory: specification/iothub/resource-manager/Microsoft.Devices/IoTHub
+commit: b3fae01f7294689f0d84ff32c7a2703c6b1f6e09
+repo: i-specs
+additionalDirectories: 

@@ -1,5 +1,19 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-04-24)
+### Breaking Changes
+
+- Struct `CertificateBodyDescription` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `Resource` has been removed
+
+### Features Added
+
+- New field `SystemData` in struct `CertificateDescription`
+- New field `SystemData` in struct `EventHubConsumerGroupInfo`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+
+
 ## 1.4.0-beta.1 (2025-11-11)
 ### Features Added
 
