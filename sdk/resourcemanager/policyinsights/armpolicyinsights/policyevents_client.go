@@ -575,7 +575,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - options - PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.NewListQueryResultsForSubscriptionPager
 //     method.
-func (client *PolicyEventsClient) NewListQueryResultsForSubscriptionPager(subscriptionID string, policyEventsResource PolicyEventsResourceType, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForSubscriptionPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PolicyEventsClientListQueryResultsForSubscriptionResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForSubscriptionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -587,7 +587,7 @@ func (client *PolicyEventsClient) NewListQueryResultsForSubscriptionPager(subscr
 				nextLink = *page.ODataNextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listQueryResultsForSubscriptionCreateRequest(ctx, subscriptionID, policyEventsResource, options)
+				return client.listQueryResultsForSubscriptionCreateRequest(ctx, policyEventsResource, subscriptionID, options)
 			}, nil)
 			if err != nil {
 				return PolicyEventsClientListQueryResultsForSubscriptionResponse{}, err
@@ -599,16 +599,16 @@ func (client *PolicyEventsClient) NewListQueryResultsForSubscriptionPager(subscr
 }
 
 // listQueryResultsForSubscriptionCreateRequest creates the ListQueryResultsForSubscription request.
-func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, subscriptionID string, policyEventsResource PolicyEventsResourceType, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) (*policy.Request, error) {
+func (client *PolicyEventsClient) listQueryResultsForSubscriptionCreateRequest(ctx context.Context, policyEventsResource PolicyEventsResourceType, subscriptionID string, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyEvents/{policyEventsResource}/queryResults"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
 	if policyEventsResource == "" {
 		return nil, errors.New("parameter policyEventsResource cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyEventsResource}", url.PathEscape(string(policyEventsResource)))
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

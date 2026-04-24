@@ -48,7 +48,7 @@ type PolicyEventsServer struct {
 
 	// NewListQueryResultsForSubscriptionPager is the fake for method PolicyEventsClient.NewListQueryResultsForSubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListQueryResultsForSubscriptionPager func(subscriptionID string, policyEventsResource armpolicyinsights.PolicyEventsResourceType, options *armpolicyinsights.PolicyEventsClientListQueryResultsForSubscriptionOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyEventsClientListQueryResultsForSubscriptionResponse])
+	NewListQueryResultsForSubscriptionPager func(policyEventsResource armpolicyinsights.PolicyEventsResourceType, subscriptionID string, options *armpolicyinsights.PolicyEventsClientListQueryResultsForSubscriptionOptions) (resp azfake.PagerResponder[armpolicyinsights.PolicyEventsClientListQueryResultsForSubscriptionResponse])
 
 	// NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager is the fake for method PolicyEventsClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -678,10 +678,6 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForSubscription
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
-		if err != nil {
-			return nil, err
-		}
 		policyEventsResourceParam, err := parseWithCast(matches[regex.SubexpIndex("policyEventsResource")], func(v string) (armpolicyinsights.PolicyEventsResourceType, error) {
 			p, unescapeErr := url.PathUnescape(v)
 			if unescapeErr != nil {
@@ -689,6 +685,10 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForSubscription
 			}
 			return armpolicyinsights.PolicyEventsResourceType(p), nil
 		})
+		if err != nil {
+			return nil, err
+		}
+		subscriptionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("subscriptionId")])
 		if err != nil {
 			return nil, err
 		}
@@ -728,7 +728,7 @@ func (p *PolicyEventsServerTransport) dispatchNewListQueryResultsForSubscription
 				SkipToken: skipTokenParam,
 			}
 		}
-		resp := p.srv.NewListQueryResultsForSubscriptionPager(subscriptionIDParam, policyEventsResourceParam, options)
+		resp := p.srv.NewListQueryResultsForSubscriptionPager(policyEventsResourceParam, subscriptionIDParam, options)
 		newListQueryResultsForSubscriptionPager = &resp
 		p.newListQueryResultsForSubscriptionPager.add(req, newListQueryResultsForSubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListQueryResultsForSubscriptionPager, req, func(page *armpolicyinsights.PolicyEventsClientListQueryResultsForSubscriptionResponse, createLink func() string) {
