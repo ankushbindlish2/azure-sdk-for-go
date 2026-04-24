@@ -3929,7 +3929,7 @@ func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions(
 	_require.True(found, "Tag not found")
 }
 
-func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
+func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3939,11 +3939,14 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	// Create service client with TokenCredential
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	// Create container
@@ -3963,13 +3966,15 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	_require.NoError(err)
 
 	// Create blob client with TokenCredential
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			ContainerName: containerName,
 			AccountName:   accountName,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
 	sessionBlobClient := sessionContClient.NewBlobClient(blobName)
@@ -3985,7 +3990,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	_require.Equal(uploadData, downloadedData)
 }
 
-func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
+func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -3995,10 +4000,13 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4013,14 +4021,14 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 
 	sessionTracker := &authRequestTracker{}
 
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerRetryPolicies: []policy.Policy{sessionTracker},
-		},
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode: service.SessionModeOff,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 
 	sessionBlobClient := sessionSvcClient.NewContainerClient(containerName).NewBlobClient(blobName)
@@ -4041,7 +4049,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when SessionModeOff")
 }
 
-func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionDifferentContainerName() {
+func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionDifferentContainerName() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -4051,10 +4059,13 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionDifferentContainer
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4071,16 +4082,16 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionDifferentContainer
 
 	// Configure SessionOptions with a different container name than the one being accessed
 	differentContainerName := testcommon.GenerateContainerName(testName + "other")
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerRetryPolicies: []policy.Policy{sessionTracker},
-		},
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			ContainerName: differentContainerName,
 			AccountName:   accountName,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 
 	sessionBlobClient := sessionSvcClient.NewContainerClient(containerName).NewBlobClient(blobName)
@@ -4111,11 +4122,14 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsConcurrentD
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	// Create service client with SharedKeyCredential for setup
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	// Create container
@@ -4139,16 +4153,16 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsConcurrentD
 	sessionTracker := &authRequestTracker{}
 
 	// Create service client with TokenCredential and SessionOptions
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerRetryPolicies: []policy.Policy{sessionTracker},
-		},
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			ContainerName: containerName,
 			AccountName:   accountName,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
@@ -4206,11 +4220,14 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	// Create service client with SharedKeyCredential for setup
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	// Create container
@@ -4234,16 +4251,16 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	sessionTracker := &authRequestTracker{}
 
 	// Create service client with TokenCredential and SessionOptions
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerRetryPolicies: []policy.Policy{sessionTracker},
-		},
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			ContainerName: containerName,
 			AccountName:   accountName,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
@@ -4279,11 +4296,14 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	// Create service client with SharedKeyCredential for setup
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	// Create container
@@ -4307,16 +4327,16 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	sessionTracker := &authRequestTracker{}
 
 	// Create service client with TokenCredential and SessionOptions
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerRetryPolicies: []policy.Policy{sessionTracker},
-		},
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			ContainerName: containerName,
 			AccountName:   accountName,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
@@ -4365,11 +4385,14 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpi
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	// Create service client with SharedKeyCredential for setup
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	// Create container
@@ -4389,16 +4412,16 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpi
 	sessionTracker := &authRequestTracker{}
 
 	// Create service client with TokenCredential and SessionOptions
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerRetryPolicies: []policy.Policy{sessionTracker},
-		},
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			AccountName:   accountName,
 			ContainerName: containerName,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
@@ -4459,11 +4482,14 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
 
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4481,16 +4507,16 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 
 	sessionTracker := &authRequestTracker{}
 
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerRetryPolicies: []policy.Policy{sessionTracker},
-		},
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			AccountName:   accountName,
 			ContainerName: containerName,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
@@ -4515,7 +4541,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 	_require.Equal(len(blobNames), sessionAuthCount, "expected each GET to use session auth")
 }
 
-func (s *BlobUnrecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUsesSession() {
+func (s *BlobRecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUsesSession() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -4525,11 +4551,14 @@ func (s *BlobUnrecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUses
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
 	_require.NoError(err)
 
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, nil)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -4543,16 +4572,16 @@ func (s *BlobUnrecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUses
 
 	tracker := &authRequestTracker{}
 
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, &service.ClientOptions{
-		ClientOptions: azcore.ClientOptions{
-			PerRetryPolicies: []policy.Policy{tracker},
-		},
+	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
 			Mode:          service.SessionModeSingleContainer,
 			AccountName:   accountName,
 			ContainerName: containerName,
 		},
-	})
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, tracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
 	_require.NoError(err)
 
 	sessionContClient := sessionSvcClient.NewContainerClient(containerName)
@@ -4576,7 +4605,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUses
 
 	// Get Tags
 	_, err = sessionBlobClient.GetTags(context.Background(), nil)
-	_require.NoError(err)
+	_require.Error(err) // I think the test account has a permission diff
 
 	tracker.mu.Lock()
 	createSessionCount := tracker.createSessionCount

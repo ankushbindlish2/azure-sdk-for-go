@@ -1,50 +1,17 @@
-package container
+package container_test
 
 import (
 	"context"
-	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
 )
 
-func Test(t *testing.T) {
-	recordMode := recording.GetRecordMode()
-	t.Logf("Running container Tests in %s mode\n", recordMode)
-	switch recordMode {
-	case recording.LiveMode:
-		suite.Run(t, &ContainerInternalRecordedTestsSuite{})
-	case recording.PlaybackMode:
-		suite.Run(t, &ContainerInternalRecordedTestsSuite{})
-	case recording.RecordingMode:
-		suite.Run(t, &ContainerInternalRecordedTestsSuite{})
-	}
-}
-
-func (s *ContainerInternalRecordedTestsSuite) SetupSuite() {
-	s.proxy = testcommon.SetupSuite(&s.Suite)
-}
-
-func (s *ContainerInternalRecordedTestsSuite) TearDownSuite() {
-	testcommon.TearDownSuite(&s.Suite, s.proxy)
-}
-
-func (s *ContainerInternalRecordedTestsSuite) BeforeTest(suite string, test string) {
-	testcommon.BeforeTest(s.T(), suite, test)
-}
-
-type ContainerInternalRecordedTestsSuite struct {
-	suite.Suite
-	proxy *recording.TestProxyInstance
-}
-
-func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSession() {
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSession() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -54,7 +21,9 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSession() {
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -64,7 +33,7 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSession() {
 	_require.NoError(err)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	resp, err := containerClient.generated().CreateSession(context.Background(), CreateSessionConfiguration{
+	resp, err := containerClient.Generated().CreateSession(context.Background(), generated.CreateSessionConfiguration{
 		AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC),
 	}, nil)
 	_require.NoError(err)
@@ -80,7 +49,7 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSession() {
 	_require.NotEmpty(*resp.Credentials.SessionToken)
 }
 
-func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionNonExistentContainer() {
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionNonExistentContainer() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -90,20 +59,22 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionNonExist
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.GetContainerClient(containerName, svcClient)
 
 	// Attempting to create a session on a non-existent container should fail
-	_, err = containerClient.generated().CreateSession(context.Background(), CreateSessionConfiguration{
+	_, err = containerClient.Generated().CreateSession(context.Background(), generated.CreateSessionConfiguration{
 		AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC),
 	}, nil)
 	_require.Error(err)
 }
 
-func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionMultipleTimes() {
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionMultipleTimes() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -113,7 +84,9 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionMultiple
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)
@@ -124,13 +97,13 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionMultiple
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Create multiple sessions and verify they have different IDs
-	resp1, err := containerClient.generated().CreateSession(context.Background(), CreateSessionConfiguration{
+	resp1, err := containerClient.Generated().CreateSession(context.Background(), generated.CreateSessionConfiguration{
 		AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC),
 	}, nil)
 	_require.NoError(err)
 	_require.NotNil(resp1.ID)
 
-	resp2, err := containerClient.generated().CreateSession(context.Background(), CreateSessionConfiguration{
+	resp2, err := containerClient.Generated().CreateSession(context.Background(), generated.CreateSessionConfiguration{
 		AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC),
 	}, nil)
 	_require.NoError(err)
@@ -140,7 +113,7 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionMultiple
 	_require.NotEqual(*resp1.ID, *resp2.ID)
 }
 
-func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionWithDifferentContainers() {
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionWithDifferentContainers() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -150,7 +123,9 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionWithDiff
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
 
-	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+	svcClient, err := service.NewClient("https://"+accountName+".blob.core.windows.net/", cred, options)
 	_require.NoError(err)
 
 	// Create first container
@@ -168,13 +143,13 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionWithDiff
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient2)
 
 	// Create sessions for each container
-	resp1, err := containerClient1.generated().CreateSession(context.Background(), CreateSessionConfiguration{
+	resp1, err := containerClient1.Generated().CreateSession(context.Background(), generated.CreateSessionConfiguration{
 		AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC),
 	}, nil)
 	_require.NoError(err)
 	_require.NotNil(resp1.ID)
 
-	resp2, err := containerClient2.generated().CreateSession(context.Background(), CreateSessionConfiguration{
+	resp2, err := containerClient2.Generated().CreateSession(context.Background(), generated.CreateSessionConfiguration{
 		AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC),
 	}, nil)
 	_require.NoError(err)
@@ -184,7 +159,7 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionWithDiff
 	_require.NotEqual(*resp1.ID, *resp2.ID)
 }
 
-func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionWithSharedKeyFails() {
+func (s *ContainerRecordedTestsSuite) TestContainerCreateSessionWithSharedKeyFails() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -195,7 +170,7 @@ func (s *ContainerInternalRecordedTestsSuite) TestContainerCreateSessionWithShar
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	_, err = containerClient.generated().CreateSession(context.Background(), CreateSessionConfiguration{
+	_, err = containerClient.Generated().CreateSession(context.Background(), generated.CreateSessionConfiguration{
 		AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC),
 	}, nil)
 	_require.Error(err)

@@ -431,9 +431,3 @@ func (o *FilterBlobsOptions) format() *generated.ContainerClientFilterBlobsOptio
 		Maxresults: o.MaxResults,
 	}
 }
-
-// CreateSessionConfiguration contains the configuration parameters for session-based authentication.
-type CreateSessionConfiguration = generated.CreateSessionConfiguration
-
-// CreateSessionOptions contains the optional parameters for the Client.CreateSession method.
-type CreateSessionOptions = generated.ContainerClientCreateSessionOptions

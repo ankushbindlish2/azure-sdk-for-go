@@ -7,7 +7,7 @@ package exported
 type SessionMode string
 
 const ( // SessionModeDefault is the default mode where sessions are disabled.
-	SessionModeDefault SessionMode = SessionModeOff
+	SessionModeDefault SessionMode = ""
 	// SessionModeOff explicitly disables session-based authentication.
 	SessionModeOff SessionMode = "off"
 	// SessionModeSingleSpecifiedContainer enables session-based authentication for a single container.

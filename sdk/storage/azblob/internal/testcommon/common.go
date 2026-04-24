@@ -208,6 +208,8 @@ func BeforeTest(t *testing.T, suite string, test string) {
 	// we freeze request IDs and timestamps to avoid creating noisy diffs
 	// NOTE: we can't freeze time stamps as that breaks some tests that use if-modified-since etc (maybe it can be fixed?)
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-request-id", "00000000-0000-0000-0000-000000000000", "", nil))
+	//require.NoError(t, recording.AddBodyRegexSanitizer(`<SessionToken>faketoken==</SessionToken>`, `(?i)<SessionToken>.*?</SessionToken>`, nil))
+	//require.NoError(t, recording.AddBodyRegexSanitizer(`<SessionKey>fakekey==</SessionKey>`, `(?i)<SessionKey>.*?</SessionKey>`, nil))
 	// TODO: more freezing
 	require.NoError(t, recording.Start(t, RecordingDirectory, nil))
 }

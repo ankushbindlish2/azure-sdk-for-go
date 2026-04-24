@@ -33,7 +33,7 @@ type sessionPolicy struct {
 }
 
 func NewSessionPolicy(opts SessionOptions, bearerTokenPolicy policy.Policy, oauthServiceClient *generated.ServiceClient) (policy.Policy, error) {
-	if opts.Mode == SessionModeOff {
+	if opts.Mode == SessionModeOff || opts.Mode == SessionModeDefault {
 		return bearerTokenPolicy, nil
 	}
 

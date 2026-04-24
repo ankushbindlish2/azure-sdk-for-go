@@ -92,7 +92,7 @@ func GetAzClient(storageURL string, cred azcore.TokenCredential, options *Client
 	if err != nil {
 		return nil, err
 	}
-	if options == nil || options.SessionOptions.Mode == SessionModeOff {
+	if options == nil || options.SessionOptions.Mode == SessionModeOff || options.SessionOptions.Mode == SessionModeDefault {
 		return oauthAzClient, nil
 	}
 	oAuthServiceClient, err := getServiceClient(storageURL, oauthAzClient, &cred, conOptions)
