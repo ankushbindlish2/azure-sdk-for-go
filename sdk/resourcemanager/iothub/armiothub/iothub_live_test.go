@@ -70,11 +70,11 @@ func (testsuite *IothubTestSuite) Prepare() {
 		Etag:     to.Ptr("AAAAAAFD6M4="),
 		Properties: &armiothub.Properties{
 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-				DefaultTTLAsIso8601: to.Ptr("PT1H"),
+				DefaultTTLAsISO8601: to.Ptr("PT1H"),
 				Feedback: &armiothub.FeedbackProperties{
-					LockDurationAsIso8601: to.Ptr("PT1M"),
+					LockDurationAsISO8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsIso8601:          to.Ptr("PT1H"),
+					TTLAsISO8601:          to.Ptr("PT1H"),
 				},
 				MaxDeliveryCount: to.Ptr[int32](10),
 			},
@@ -90,9 +90,9 @@ func (testsuite *IothubTestSuite) Prepare() {
 			IPFilterRules: []*armiothub.IPFilterRule{},
 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 				"fileNotifications": {
-					LockDurationAsIso8601: to.Ptr("PT1M"),
+					LockDurationAsISO8601: to.Ptr("PT1M"),
 					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsIso8601:          to.Ptr("PT1H"),
+					TTLAsISO8601:          to.Ptr("PT1H"),
 				},
 			},
 			MinTLSVersion: to.Ptr("1.2"),
@@ -132,7 +132,7 @@ func (testsuite *IothubTestSuite) Prepare() {
 				"$default": {
 					ConnectionString: to.Ptr(""),
 					ContainerName:    to.Ptr(""),
-					SasTTLAsIso8601:  to.Ptr("PT1H"),
+					SasTTLAsISO8601:  to.Ptr("PT1H"),
 				},
 			},
 		},
