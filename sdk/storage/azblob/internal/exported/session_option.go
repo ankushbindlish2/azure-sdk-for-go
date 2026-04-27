@@ -6,7 +6,8 @@ package exported
 // SessionMode specifies how session-based authentication is handled.
 type SessionMode string
 
-const ( // SessionModeDefault is the default mode where sessions are disabled.
+const (
+	// SessionModeDefault is the default mode where sessions are disabled.
 	SessionModeDefault SessionMode = ""
 	// SessionModeOff explicitly disables session-based authentication.
 	SessionModeOff SessionMode = "off"

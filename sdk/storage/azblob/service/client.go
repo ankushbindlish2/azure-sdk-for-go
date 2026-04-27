@@ -37,8 +37,8 @@ const (
 	SessionModeDefault SessionMode = base.SessionModeDefault
 	// SessionModeOff explicitly disables session-based authentication.
 	SessionModeOff SessionMode = base.SessionModeOff
-	// SessionModeSingleContainer enables session-based authentication for a single container.
-	SessionModeSingleContainer SessionMode = base.SessionModeSingleContainer
+	// SessionModeSingleSpecifiedContainer enables session-based authentication for a single container.
+	SessionModeSingleSpecifiedContainer SessionMode = base.SessionModeSingleSpecifiedContainer
 )
 
 // PossibleSessionModeValues returns a slice of possible values for SessionMode.

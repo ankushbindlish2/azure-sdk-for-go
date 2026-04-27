@@ -3968,7 +3968,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	// Create blob client with TokenCredential
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleContainer,
+			Mode:          service.SessionModeSingleSpecifiedContainer,
 			ContainerName: containerName,
 			AccountName:   accountName,
 		},
@@ -4084,7 +4084,7 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionDifferentContainerNa
 	differentContainerName := testcommon.GenerateContainerName(testName + "other")
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleContainer,
+			Mode:          service.SessionModeSingleSpecifiedContainer,
 			ContainerName: differentContainerName,
 			AccountName:   accountName,
 		},
@@ -4155,7 +4155,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsConcurrentD
 	// Create service client with TokenCredential and SessionOptions
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleContainer,
+			Mode:          service.SessionModeSingleSpecifiedContainer,
 			ContainerName: containerName,
 			AccountName:   accountName,
 		},
@@ -4253,7 +4253,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	// Create service client with TokenCredential and SessionOptions
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleContainer,
+			Mode:          service.SessionModeSingleSpecifiedContainer,
 			ContainerName: containerName,
 			AccountName:   accountName,
 		},
@@ -4329,7 +4329,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 	// Create service client with TokenCredential and SessionOptions
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleContainer,
+			Mode:          service.SessionModeSingleSpecifiedContainer,
 			ContainerName: containerName,
 			AccountName:   accountName,
 		},
@@ -4376,6 +4376,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 }
 
 func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpiration() {
+	s.T().Skip("Skipping: this test sleeps for ~6 minutes to validate session expiration, which is too slow for standard test runs")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
@@ -4414,7 +4415,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpi
 	// Create service client with TokenCredential and SessionOptions
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleContainer,
+			Mode:          service.SessionModeSingleSpecifiedContainer,
 			AccountName:   accountName,
 			ContainerName: containerName,
 		},
@@ -4509,7 +4510,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleContainer,
+			Mode:          service.SessionModeSingleSpecifiedContainer,
 			AccountName:   accountName,
 			ContainerName: containerName,
 		},
@@ -4574,7 +4575,7 @@ func (s *BlobRecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUsesSe
 
 	sessionOptions := &service.ClientOptions{
 		SessionOptions: service.SessionOptions{
-			Mode:          service.SessionModeSingleContainer,
+			Mode:          service.SessionModeSingleSpecifiedContainer,
 			AccountName:   accountName,
 			ContainerName: containerName,
 		},
