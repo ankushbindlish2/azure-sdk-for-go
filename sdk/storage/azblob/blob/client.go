@@ -8,6 +8,7 @@ package blob
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"os"
 	"sync"
@@ -392,7 +393,16 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 				return err
 			}
 			if computeReadLength {
-				atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				if dr.ContentRange != nil {
+					rangeLen := parseContentRangeLength(*dr.ContentRange)
+					if rangeLen > 0 {
+						atomic.AddInt64(&dataDownloaded, rangeLen)
+					} else {
+						atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+					}
+				} else {
+					atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				}
 			}
 			err = body.Close()
 			return err
@@ -483,4 +493,15 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return 0, nil
 	}
+}
+
+// parseContentRangeLength parses the range length from a Content-Range header value.
+// Format: "bytes start-end/total" → returns end - start + 1.
+// Returns 0 if the header cannot be parsed.
+func parseContentRangeLength(contentRange string) int64 {
+	var start, end int64
+	if _, err := fmt.Sscanf(contentRange, "bytes %d-%d/", &start, &end); err != nil {
+		return 0
+	}
+	return end - start + 1
 }
