@@ -18,9 +18,9 @@ import (
 const featureNotEnabled = "FeatureNotEnabled"
 
 type sessionCredentials struct {
-	token    string
-	key      string
-	expiry   time.Time
+	token  string
+	key    string
+	expiry time.Time
 	// fallback indicates that session creation failed and the caller should use bearer token
 	// authentication instead. This is stored as a field rather than returned as an error because
 	// temporal.Resource only caches successful (non-error) results. Returning a non-error fallback

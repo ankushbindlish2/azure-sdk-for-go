@@ -9,4 +9,3 @@ import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 func (c *Client) Generated() *generated.ContainerClient {
 	return c.generated()
 }
-
