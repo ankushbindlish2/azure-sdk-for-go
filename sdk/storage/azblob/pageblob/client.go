@@ -206,11 +206,11 @@ func (pb *Client) UploadPagesFromURL(ctx context.Context, source string, sourceO
 	o *UploadPagesFromURLOptions) (UploadPagesFromURLResponse, error) {
 
 	uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions,
-		modifiedAccessConditions, sourceModifiedAccessConditions := o.format()
+		modifiedAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo := o.format()
 
 	resp, err := pb.generated().UploadPagesFromURL(ctx, source, shared.RangeToString(sourceOffset, count), 0,
 		shared.RangeToString(destOffset, count), uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions,
-		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, nil)
+		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo
 
 	return resp, err
 }

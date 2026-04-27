@@ -443,7 +443,6 @@ func (client *ContainerClient) createSessionCreateRequest(ctx context.Context, c
 	if err := runtime.MarshalAsXML(req, createSessionConfiguration); err != nil {
 		return nil, err
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	return req, nil
 }
 

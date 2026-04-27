@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/IdentityBindings_Create_Or_Update.json
+// Generated from example definition: 2026-02-02-preview/IdentityBindings_Create_Or_Update.json
 func ExampleIdentityBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +45,7 @@ func ExampleIdentityBindingsClient_BeginCreateOrUpdate() {
 	// 		Name: to.Ptr("identitybinding1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/identityBindings"),
 	// 		ETag: to.Ptr("string"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/identityBindings/identitybinding1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/identityBindings/identitybinding1"),
 	// 		Properties: &armcontainerservice.IdentityBindingProperties{
 	// 			ManagedIdentity: &armcontainerservice.IdentityBindingManagedIdentityProfile{
 	// 				ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -63,7 +62,7 @@ func ExampleIdentityBindingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/IdentityBindings_Delete.json
+// Generated from example definition: 2026-02-02-preview/IdentityBindings_Delete.json
 func ExampleIdentityBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +83,7 @@ func ExampleIdentityBindingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/IdentityBindings_Get.json
+// Generated from example definition: 2026-02-02-preview/IdentityBindings_Get.json
 func ExampleIdentityBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +106,7 @@ func ExampleIdentityBindingsClient_Get() {
 	// 		Name: to.Ptr("identitybinding1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/identityBindings"),
 	// 		ETag: to.Ptr("string"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/identityBindings/identitybinding1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/identityBindings/identitybinding1"),
 	// 		Properties: &armcontainerservice.IdentityBindingProperties{
 	// 			ManagedIdentity: &armcontainerservice.IdentityBindingManagedIdentityProfile{
 	// 				ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -124,7 +123,7 @@ func ExampleIdentityBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/IdentityBindings_List.json
+// Generated from example definition: 2026-02-02-preview/IdentityBindings_List.json
 func ExampleIdentityBindingsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +152,7 @@ func ExampleIdentityBindingsClient_NewListByManagedClusterPager() {
 		// 				Name: to.Ptr("identitybinding1"),
 		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters/identityBindings"),
 		// 				ETag: to.Ptr("string"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/identityBindings/identitybinding1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/identityBindings/identitybinding1"),
 		// 				Properties: &armcontainerservice.IdentityBindingProperties{
 		// 					ManagedIdentity: &armcontainerservice.IdentityBindingManagedIdentityProfile{
 		// 						ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),

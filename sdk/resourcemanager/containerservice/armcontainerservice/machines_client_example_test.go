@@ -6,14 +6,13 @@ package armcontainerservice_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice/v9"
+	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/MachineCreate_Update.json
+// Generated from example definition: 2026-02-02-preview/MachineCreate_Update.json
 func ExampleMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +65,7 @@ func ExampleMachinesClient_BeginCreateOrUpdate() {
 	// 	Machine: &armcontainerservice.Machine{
 	// 		Name: to.Ptr("machine1"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools/machines"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/machines/machine1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/machines/machine1"),
 	// 		Properties: &armcontainerservice.MachineProperties{
 	// 			Hardware: &armcontainerservice.MachineHardwareProfile{
 	// 				VMSize: to.Ptr("Standard_DS1_v2"),
@@ -109,7 +108,7 @@ func ExampleMachinesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/MachineGet.json
+// Generated from example definition: 2026-02-02-preview/MachineGet.json
 func ExampleMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +172,7 @@ func ExampleMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/MachineList.json
+// Generated from example definition: 2026-02-02-preview/MachineList.json
 func ExampleMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

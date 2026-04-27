@@ -7,14 +7,13 @@ package armcontainerservice
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // OperationStatusResultClient contains the methods for the OperationStatusResult group.
@@ -43,7 +42,7 @@ func NewOperationStatusResultClient(subscriptionID string, credential azcore.Tok
 // Get - Get the status of a specific operation in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - operationID - The ID of an ongoing async operation.
@@ -73,7 +72,7 @@ func (client *OperationStatusResultClient) Get(ctx context.Context, resourceGrou
 
 // getCreateRequest creates the Get request.
 func (client *OperationStatusResultClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, operationID string, _ *OperationStatusResultClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.ContainerService/managedClusters/{resourceName}/operations/{operationId}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -95,7 +94,7 @@ func (client *OperationStatusResultClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
+	reqQP.Set("api-version", "2026-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,7 +112,7 @@ func (client *OperationStatusResultClient) getHandleResponse(resp *http.Response
 // GetByAgentPool - Get the status of a specific operation in the specified agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - agentPoolName - The name of the agent pool.
@@ -144,7 +143,7 @@ func (client *OperationStatusResultClient) GetByAgentPool(ctx context.Context, r
 
 // getByAgentPoolCreateRequest creates the GetByAgentPool request.
 func (client *OperationStatusResultClient) getByAgentPoolCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, operationID string, _ *OperationStatusResultClientGetByAgentPoolOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/operations/{operationId}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/operations/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -170,7 +169,7 @@ func (client *OperationStatusResultClient) getByAgentPoolCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
+	reqQP.Set("api-version", "2026-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -187,7 +186,7 @@ func (client *OperationStatusResultClient) getByAgentPoolHandleResponse(resp *ht
 
 // NewListPager - Gets a list of operations in the specified managedCluster
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - OperationStatusResultClientListOptions contains the optional parameters for the OperationStatusResultClient.NewListPager
@@ -235,7 +234,7 @@ func (client *OperationStatusResultClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
+	reqQP.Set("api-version", "2026-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

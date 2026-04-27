@@ -7,14 +7,13 @@ package armcontainerservice
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // MeshMembershipsClient contains the methods for the MeshMemberships group.
@@ -43,7 +42,7 @@ func NewMeshMembershipsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Creates or updates the mesh membership of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - meshMembershipName - The name of the mesh membership.
@@ -70,7 +69,7 @@ func (client *MeshMembershipsClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Creates or updates the mesh membership of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 func (client *MeshMembershipsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, meshMembershipName string, parameters MeshMembership, options *MeshMembershipsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MeshMembershipsClient.BeginCreateOrUpdate"
@@ -116,7 +115,7 @@ func (client *MeshMembershipsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
+	reqQP.Set("api-version", "2026-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,7 +128,7 @@ func (client *MeshMembershipsClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Deletes the mesh membership of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - meshMembershipName - The name of the mesh membership.
@@ -155,7 +154,7 @@ func (client *MeshMembershipsClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Deletes the mesh membership of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 func (client *MeshMembershipsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, meshMembershipName string, options *MeshMembershipsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MeshMembershipsClient.BeginDelete"
@@ -201,7 +200,7 @@ func (client *MeshMembershipsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
+	reqQP.Set("api-version", "2026-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -209,7 +208,7 @@ func (client *MeshMembershipsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Gets the mesh membership of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - meshMembershipName - The name of the mesh membership.
@@ -260,7 +259,7 @@ func (client *MeshMembershipsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
+	reqQP.Set("api-version", "2026-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +276,7 @@ func (client *MeshMembershipsClient) getHandleResponse(resp *http.Response) (Mes
 
 // NewListByManagedClusterPager - Lists mesh memberships in a managed cluster.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-02-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - MeshMembershipsClientListByManagedClusterOptions contains the optional parameters for the MeshMembershipsClient.NewListByManagedClusterPager
@@ -325,7 +324,7 @@ func (client *MeshMembershipsClient) listByManagedClusterCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-02-preview")
+	reqQP.Set("api-version", "2026-02-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
