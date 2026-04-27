@@ -438,8 +438,15 @@ func (client *ContainerClient) createSessionCreateRequest(ctx context.Context, c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("comp", "session")
 	reqQP.Set("restype", "container")
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
 	req.Raw().URL.RawQuery = strings.Replace(reqQP.Encode(), "+", "%20", -1)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
 	if err := runtime.MarshalAsXML(req, createSessionConfiguration); err != nil {
 		return nil, err
 	}
