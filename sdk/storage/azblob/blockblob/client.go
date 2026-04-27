@@ -240,7 +240,7 @@ func (bb *Client) StageBlockFromURL(ctx context.Context, base64BlockID string, s
 
 	stageBlockFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo := options.format()
 
-	resp, err := bb.generated().StageBlockFromURL(ctx, base64BlockID, 0, sourceURL, stageBlockFromURLOptions
+	resp, err := bb.generated().StageBlockFromURL(ctx, base64BlockID, 0, sourceURL, stageBlockFromURLOptions,
 		cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo)
 
 	return resp, err
