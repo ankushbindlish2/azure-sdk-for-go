@@ -55,8 +55,8 @@ Fetch the PR details. If the PR is in **draft** state, mark it as ready for revi
 
 For a brand-new service, CI pipelines do not exist yet. They must be created before pipeline results can be checked.
 
-1. Comment `/azp run prepare-pipelines` on the PR using `add_comment` to trigger pipeline creation. This comment does **not** count toward the final Step 6 comment limit — it is a CI trigger, not a review comment.
-2. Wait for the `prepare-pipelines` check run to appear on the PR head commit. Poll check runs periodically (e.g., every 30 seconds) until a check whose name contains `prepare-pipelines` appears and reaches a **completed** status.
+1. Comment `/azp run prepare-pipelines` on the PR using `add_comment` to trigger pipeline creation.
+2. Wait for the `prepare-pipelines` check run to appear on the PR head commit. Poll check runs periodically (e.g., every 30 seconds) until a check whose name contains `prepare-pipelines` appears and reaches a **completed** status. If the check has not appeared or completed within **10 minutes**, stop waiting and record a timeout — it will be reported in the Step 6 comment.
 3. If `prepare-pipelines` fails, record the failure — it will be reported in the Step 6 comment.
 4. After `prepare-pipelines` completes successfully, the CI validation pipeline (`go - pullrequest`) will be triggered automatically. Proceed to Step 3.
 
@@ -65,7 +65,7 @@ For a brand-new service, CI pipelines do not exist yet. They must be created bef
 Before analyzing CI results, ensure all pipeline checks have finished running.
 
 1. Fetch **check runs** for the PR head commit. Find the `go - pullrequest` parent check and its child jobs (`go - pullrequest (Build <job_name>)`). These are **Azure DevOps pipeline** results — do NOT call `get_job_logs` (returns 404).
-2. If the `go - pullrequest` parent check or any of its child jobs have a `status` of `queued` or `in_progress`, poll check runs periodically (e.g., every 60 seconds) until **all** pipeline checks reach a **completed** status.
+2. If the `go - pullrequest` parent check or any of its child jobs have a `status` of `queued` or `in_progress`, poll check runs periodically (e.g., every 60 seconds) until **all** pipeline checks reach a **completed** status. If checks have not completed within **20 minutes**, stop waiting and analyze whatever results are available — note incomplete checks in the Step 6 comment.
 3. Once all checks are completed, read success/failure from the `conclusion` field and extract the `target_url` for ADO log links. NEVER fabricate ADO URLs.
 
 ### Step 4 — Check for manual edits to auto-generated files
