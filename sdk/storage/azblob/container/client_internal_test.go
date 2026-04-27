@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package container_test
 
 import (
@@ -5,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
@@ -40,7 +44,9 @@ func (s *ContainerRecordedTestsSuite) TestContainerCreateSession() {
 	_require.NotNil(resp.ID)
 	_require.NotEmpty(*resp.ID)
 	_require.NotNil(resp.Expiration)
-	_require.True(resp.Expiration.After(time.Now().Add(-time.Minute)), "Expiration should be in the future or very recent")
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		_require.True(resp.Expiration.After(time.Now().Add(-time.Minute)), "Expiration should be in the future or very recent")
+	}
 	_require.NotNil(resp.AuthenticationType)
 	_require.NotNil(resp.Credentials)
 	_require.NotNil(resp.Credentials.SessionKey)
