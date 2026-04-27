@@ -20,6 +20,11 @@ type ClientOptions struct {
 	// Only has an effect when credential is of type TokenCredential. The value could be
 	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
 	Audience string
+
+	// ExpectContinue configures the "Expect: 100-continue" header behavior on PUT
+	// requests. When nil, the default Auto mode is used with no content-length
+	// threshold (all PUT requests with a body qualify). See [shared.ExpectContinueOptions].
+	ExpectContinue *shared.ExpectContinueOptions
 }
 
 type Client[T any] struct {
