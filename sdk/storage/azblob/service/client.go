@@ -57,11 +57,12 @@ type Client base.Client[generated.ServiceClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	azClient, err := base.GetAzClient(serviceURL, cred, (*base.ClientOptions)(options))
+	conOptions := shared.GetClientOptions(options)
+	azClient, err := base.GetAzClient(serviceURL, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewServiceClient(serviceURL, azClient, &cred, (*base.ClientOptions)(options))), nil
+	return (*Client)(base.NewServiceClient(serviceURL, azClient, &cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.

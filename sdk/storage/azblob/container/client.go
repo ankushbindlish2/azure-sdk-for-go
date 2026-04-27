@@ -59,11 +59,12 @@ type Client base.Client[generated.ContainerClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	azClient, err := base.GetAzClient(containerURL, cred, (*base.ClientOptions)(options))
+	conOptions := shared.GetClientOptions(options)
+	azClient, err := base.GetAzClient(containerURL, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
-	return (*Client)(base.NewContainerClient(containerURL, azClient, &cred, (*base.ClientOptions)(options))), nil
+	return (*Client)(base.NewContainerClient(containerURL, azClient, &cred, (*base.ClientOptions)(conOptions))), nil
 }
 
 // NewClientWithNoCredential creates an instance of Client with the specified values.
