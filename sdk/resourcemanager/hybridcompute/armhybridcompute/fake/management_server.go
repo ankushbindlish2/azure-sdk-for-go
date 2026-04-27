@@ -16,72 +16,10 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
-	"strings"
-	"sync"
 )
 
 // ManagementServer is a fake server for instances of the armhybridcompute.ManagementClient type.
 type ManagementServer struct {
-	// AgentVersionServer contains the fakes for client AgentVersionClient
-	AgentVersionServer AgentVersionServer
-
-	// ExtensionMetadataServer contains the fakes for client ExtensionMetadataClient
-	ExtensionMetadataServer ExtensionMetadataServer
-
-	// ExtensionMetadataV2Server contains the fakes for client ExtensionMetadataV2Client
-	ExtensionMetadataV2Server ExtensionMetadataV2Server
-
-	// ExtensionPublisherServer contains the fakes for client ExtensionPublisherClient
-	ExtensionPublisherServer ExtensionPublisherServer
-
-	// ExtensionTypeServer contains the fakes for client ExtensionTypeClient
-	ExtensionTypeServer ExtensionTypeServer
-
-	// GatewaysServer contains the fakes for client GatewaysClient
-	GatewaysServer GatewaysServer
-
-	// HybridIdentityMetadataServer contains the fakes for client HybridIdentityMetadataClient
-	HybridIdentityMetadataServer HybridIdentityMetadataServer
-
-	// LicenseProfilesServer contains the fakes for client LicenseProfilesClient
-	LicenseProfilesServer LicenseProfilesServer
-
-	// LicensesServer contains the fakes for client LicensesClient
-	LicensesServer LicensesServer
-
-	// MachineExtensionsServer contains the fakes for client MachineExtensionsClient
-	MachineExtensionsServer MachineExtensionsServer
-
-	// MachineRunCommandsServer contains the fakes for client MachineRunCommandsClient
-	MachineRunCommandsServer MachineRunCommandsServer
-
-	// MachinesServer contains the fakes for client MachinesClient
-	MachinesServer MachinesServer
-
-	// NetworkConfigurationsServer contains the fakes for client NetworkConfigurationsClient
-	NetworkConfigurationsServer NetworkConfigurationsServer
-
-	// NetworkProfileServer contains the fakes for client NetworkProfileClient
-	NetworkProfileServer NetworkProfileServer
-
-	// NetworkSecurityPerimeterConfigurationsServer contains the fakes for client NetworkSecurityPerimeterConfigurationsClient
-	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
-
-	// OperationsServer contains the fakes for client OperationsClient
-	OperationsServer OperationsServer
-
-	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
-	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-
-	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
-	PrivateLinkResourcesServer PrivateLinkResourcesServer
-
-	// PrivateLinkScopesServer contains the fakes for client PrivateLinkScopesClient
-	PrivateLinkScopesServer PrivateLinkScopesServer
-
-	// SettingsServer contains the fakes for client SettingsClient
-	SettingsServer SettingsServer
-
 	// BeginSetupExtensions is the fake for method ManagementClient.BeginSetupExtensions
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginSetupExtensions func(ctx context.Context, resourceGroupName string, machineName string, extensions armhybridcompute.SetupExtensionRequest, options *armhybridcompute.ManagementClientBeginSetupExtensionsOptions) (resp azfake.PollerResponder[armhybridcompute.ManagementClientSetupExtensionsResponse], errResp azfake.ErrorResponder)
@@ -105,30 +43,9 @@ func NewManagementServerTransport(srv *ManagementServer) *ManagementServerTransp
 // ManagementServerTransport connects instances of armhybridcompute.ManagementClient to instances of ManagementServer.
 // Don't use this type directly, use NewManagementServerTransport instead.
 type ManagementServerTransport struct {
-	srv                                            *ManagementServer
-	trMu                                           sync.Mutex
-	trAgentVersionServer                           *AgentVersionServerTransport
-	trExtensionMetadataServer                      *ExtensionMetadataServerTransport
-	trExtensionMetadataV2Server                    *ExtensionMetadataV2ServerTransport
-	trExtensionPublisherServer                     *ExtensionPublisherServerTransport
-	trExtensionTypeServer                          *ExtensionTypeServerTransport
-	trGatewaysServer                               *GatewaysServerTransport
-	trHybridIdentityMetadataServer                 *HybridIdentityMetadataServerTransport
-	trLicenseProfilesServer                        *LicenseProfilesServerTransport
-	trLicensesServer                               *LicensesServerTransport
-	trMachineExtensionsServer                      *MachineExtensionsServerTransport
-	trMachineRunCommandsServer                     *MachineRunCommandsServerTransport
-	trMachinesServer                               *MachinesServerTransport
-	trNetworkConfigurationsServer                  *NetworkConfigurationsServerTransport
-	trNetworkProfileServer                         *NetworkProfileServerTransport
-	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
-	trOperationsServer                             *OperationsServerTransport
-	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
-	trPrivateLinkScopesServer                      *PrivateLinkScopesServerTransport
-	trSettingsServer                               *SettingsServerTransport
-	beginSetupExtensions                           *tracker[azfake.PollerResponder[armhybridcompute.ManagementClientSetupExtensionsResponse]]
-	beginUpgradeExtensions                         *tracker[azfake.PollerResponder[armhybridcompute.ManagementClientUpgradeExtensionsResponse]]
+	srv                    *ManagementServer
+	beginSetupExtensions   *tracker[azfake.PollerResponder[armhybridcompute.ManagementClientSetupExtensionsResponse]]
+	beginUpgradeExtensions *tracker[azfake.PollerResponder[armhybridcompute.ManagementClientUpgradeExtensionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagementServerTransport.
@@ -139,122 +56,7 @@ func (m *ManagementServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	if client := method[:strings.Index(method, ".")]; client != "ManagementClient" {
-		return m.dispatchToClientFake(req, client)
-	}
 	return m.dispatchToMethodFake(req, method)
-}
-
-func (m *ManagementServerTransport) dispatchToClientFake(req *http.Request, client string) (*http.Response, error) {
-	var resp *http.Response
-	var err error
-
-	switch client {
-	case "AgentVersionClient":
-		initServer(&m.trMu, &m.trAgentVersionServer, func() *AgentVersionServerTransport {
-			return NewAgentVersionServerTransport(&m.srv.AgentVersionServer)
-		})
-		resp, err = m.trAgentVersionServer.Do(req)
-	case "ExtensionMetadataClient":
-		initServer(&m.trMu, &m.trExtensionMetadataServer, func() *ExtensionMetadataServerTransport {
-			return NewExtensionMetadataServerTransport(&m.srv.ExtensionMetadataServer)
-		})
-		resp, err = m.trExtensionMetadataServer.Do(req)
-	case "ExtensionMetadataV2Client":
-		initServer(&m.trMu, &m.trExtensionMetadataV2Server, func() *ExtensionMetadataV2ServerTransport {
-			return NewExtensionMetadataV2ServerTransport(&m.srv.ExtensionMetadataV2Server)
-		})
-		resp, err = m.trExtensionMetadataV2Server.Do(req)
-	case "ExtensionPublisherClient":
-		initServer(&m.trMu, &m.trExtensionPublisherServer, func() *ExtensionPublisherServerTransport {
-			return NewExtensionPublisherServerTransport(&m.srv.ExtensionPublisherServer)
-		})
-		resp, err = m.trExtensionPublisherServer.Do(req)
-	case "ExtensionTypeClient":
-		initServer(&m.trMu, &m.trExtensionTypeServer, func() *ExtensionTypeServerTransport {
-			return NewExtensionTypeServerTransport(&m.srv.ExtensionTypeServer)
-		})
-		resp, err = m.trExtensionTypeServer.Do(req)
-	case "GatewaysClient":
-		initServer(&m.trMu, &m.trGatewaysServer, func() *GatewaysServerTransport {
-			return NewGatewaysServerTransport(&m.srv.GatewaysServer)
-		})
-		resp, err = m.trGatewaysServer.Do(req)
-	case "HybridIdentityMetadataClient":
-		initServer(&m.trMu, &m.trHybridIdentityMetadataServer, func() *HybridIdentityMetadataServerTransport {
-			return NewHybridIdentityMetadataServerTransport(&m.srv.HybridIdentityMetadataServer)
-		})
-		resp, err = m.trHybridIdentityMetadataServer.Do(req)
-	case "LicenseProfilesClient":
-		initServer(&m.trMu, &m.trLicenseProfilesServer, func() *LicenseProfilesServerTransport {
-			return NewLicenseProfilesServerTransport(&m.srv.LicenseProfilesServer)
-		})
-		resp, err = m.trLicenseProfilesServer.Do(req)
-	case "LicensesClient":
-		initServer(&m.trMu, &m.trLicensesServer, func() *LicensesServerTransport {
-			return NewLicensesServerTransport(&m.srv.LicensesServer)
-		})
-		resp, err = m.trLicensesServer.Do(req)
-	case "MachineExtensionsClient":
-		initServer(&m.trMu, &m.trMachineExtensionsServer, func() *MachineExtensionsServerTransport {
-			return NewMachineExtensionsServerTransport(&m.srv.MachineExtensionsServer)
-		})
-		resp, err = m.trMachineExtensionsServer.Do(req)
-	case "MachineRunCommandsClient":
-		initServer(&m.trMu, &m.trMachineRunCommandsServer, func() *MachineRunCommandsServerTransport {
-			return NewMachineRunCommandsServerTransport(&m.srv.MachineRunCommandsServer)
-		})
-		resp, err = m.trMachineRunCommandsServer.Do(req)
-	case "MachinesClient":
-		initServer(&m.trMu, &m.trMachinesServer, func() *MachinesServerTransport {
-			return NewMachinesServerTransport(&m.srv.MachinesServer)
-		})
-		resp, err = m.trMachinesServer.Do(req)
-	case "NetworkConfigurationsClient":
-		initServer(&m.trMu, &m.trNetworkConfigurationsServer, func() *NetworkConfigurationsServerTransport {
-			return NewNetworkConfigurationsServerTransport(&m.srv.NetworkConfigurationsServer)
-		})
-		resp, err = m.trNetworkConfigurationsServer.Do(req)
-	case "NetworkProfileClient":
-		initServer(&m.trMu, &m.trNetworkProfileServer, func() *NetworkProfileServerTransport {
-			return NewNetworkProfileServerTransport(&m.srv.NetworkProfileServer)
-		})
-		resp, err = m.trNetworkProfileServer.Do(req)
-	case "NetworkSecurityPerimeterConfigurationsClient":
-		initServer(&m.trMu, &m.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
-			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&m.srv.NetworkSecurityPerimeterConfigurationsServer)
-		})
-		resp, err = m.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
-	case "OperationsClient":
-		initServer(&m.trMu, &m.trOperationsServer, func() *OperationsServerTransport {
-			return NewOperationsServerTransport(&m.srv.OperationsServer)
-		})
-		resp, err = m.trOperationsServer.Do(req)
-	case "PrivateEndpointConnectionsClient":
-		initServer(&m.trMu, &m.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
-			return NewPrivateEndpointConnectionsServerTransport(&m.srv.PrivateEndpointConnectionsServer)
-		})
-		resp, err = m.trPrivateEndpointConnectionsServer.Do(req)
-	case "PrivateLinkResourcesClient":
-		initServer(&m.trMu, &m.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
-			return NewPrivateLinkResourcesServerTransport(&m.srv.PrivateLinkResourcesServer)
-		})
-		resp, err = m.trPrivateLinkResourcesServer.Do(req)
-	case "PrivateLinkScopesClient":
-		initServer(&m.trMu, &m.trPrivateLinkScopesServer, func() *PrivateLinkScopesServerTransport {
-			return NewPrivateLinkScopesServerTransport(&m.srv.PrivateLinkScopesServer)
-		})
-		resp, err = m.trPrivateLinkScopesServer.Do(req)
-	case "SettingsClient":
-		initServer(&m.trMu, &m.trSettingsServer, func() *SettingsServerTransport {
-			return NewSettingsServerTransport(&m.srv.SettingsServer)
-		})
-		resp, err = m.trSettingsServer.Do(req)
-	default:
-		err = fmt.Errorf("unhandled client %s", client)
-	}
-
-	return resp, err
 }
 
 func (m *ManagementServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
