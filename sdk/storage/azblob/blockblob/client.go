@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -181,6 +178,11 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 		if err != nil {
 			return UploadResponse{}, err
 		}
+		// Re-compute count since Apply() may have changed the body size (e.g., structured message encoding).
+		count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+		if err != nil {
+			return UploadResponse{}, err
+		}
 	}
 
 	resp, err := bb.generated().Upload(ctx, count, body, opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
@@ -214,7 +216,11 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, opts)
 		if err != nil {
-			return StageBlockResponse{}, nil
+			return StageBlockResponse{}, err
+		}
+		count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+		if err != nil {
+			return StageBlockResponse{}, err
 		}
 	}
 

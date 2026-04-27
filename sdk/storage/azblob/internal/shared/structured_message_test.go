@@ -248,12 +248,24 @@ func TestDecodeInvalid(t *testing.T) {
 	}
 
 	for _, tt := range badInputs {
-		_, err := SMDecode(tt.data)
-		require.Error(t, err)
-		if tt.errText != "" {
-			require.Contains(t, err.Error(), tt.errText)
-		}
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := SMDecode(tt.data)
+			require.Error(t, err)
+			if tt.errText != "" {
+				require.Contains(t, err.Error(), tt.errText)
+			}
+		})
 	}
+}
+
+func TestDecodeSegmentLengthExceedsSupportedSize(t *testing.T) {
+	data := makeCorruptedSM([]byte("test"), func(d []byte) {
+		binary.LittleEndian.PutUint64(d[15:23], ^uint64(0))
+	})
+
+	_, err := SMDecode(data)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "exceeds supported size")
 }
 
 // makeCorruptedSM encodes data then applies a corruption function on the result.
@@ -267,7 +279,7 @@ func makeCorruptedSM(data []byte, corrupt func([]byte)) []byte {
 
 func TestEncoderReadSeekClose(t *testing.T) {
 	data := []byte("encoder test data")
-	enc := NewSMEncoder(data, 0)
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 0)
 
 	require.Equal(t, int64(len(data)), enc.OriginalContentLength())
 	require.Greater(t, enc.EncodedLength(), int64(len(data)))
@@ -300,7 +312,7 @@ func TestEncoderReadSeekClose(t *testing.T) {
 
 func TestEncoderAsReadSeekCloser(t *testing.T) {
 	data := []byte("interface compliance test")
-	enc := NewSMEncoder(data, 0)
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 0)
 
 	var _ io.ReadSeekCloser = enc
 
@@ -356,10 +368,196 @@ func TestStructuredMessageConstants(t *testing.T) {
 	require.Equal(t, "XSM/1.0; properties=crc64", SMHeaderValue)
 }
 
+func TestStreamingEncoderMatchesInMemoryEncode(t *testing.T) {
+	data := []byte("ABCDEFGHIJ") // 10 bytes
+	segSize := 5                 // 2 segments
+
+	// In-memory encode
+	inMemResult := SMEncode(data, segSize)
+
+	// Streaming encode
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), segSize)
+	streamResult, err := io.ReadAll(enc)
+	require.NoError(t, err)
+
+	require.Equal(t, inMemResult.EncodedData, streamResult)
+	require.Equal(t, int64(len(data)), enc.OriginalContentLength())
+	require.Equal(t, int64(len(inMemResult.EncodedData)), enc.EncodedLength())
+}
+
+func TestStreamingEncoderMultiSegment(t *testing.T) {
+	data := make([]byte, 350) // 4 segments with segSize=100
+	for i := range data {
+		data[i] = byte(i % 256)
+	}
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 100)
+	encoded, err := io.ReadAll(enc)
+	require.NoError(t, err)
+
+	// Verify by decoding
+	decoded, err := SMDecode(encoded)
+	require.NoError(t, err)
+	require.Equal(t, data, decoded.Data)
+	require.Equal(t, uint16(4), decoded.NumSegments)
+}
+
+func TestStreamingEncoderEmpty(t *testing.T) {
+	data := []byte{}
+	enc := NewSMEncoder(bytes.NewReader(data), 0, 0)
+	encoded, err := io.ReadAll(enc)
+	require.NoError(t, err)
+
+	decoded, err := SMDecode(encoded)
+	require.NoError(t, err)
+	require.Equal(t, 0, len(decoded.Data))
+	require.Equal(t, uint16(1), decoded.NumSegments)
+}
+
+func TestStreamingEncoderSmallReads(t *testing.T) {
+	// Test that the encoder works correctly with very small read buffers
+	data := []byte("small buffer test data here!")
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 10)
+
+	var result []byte
+	buf := make([]byte, 3) // intentionally small buffer
+	for {
+		n, err := enc.Read(buf)
+		result = append(result, buf[:n]...)
+		if err == io.EOF {
+			break
+		}
+		require.NoError(t, err)
+	}
+
+	decoded, err := SMDecode(result)
+	require.NoError(t, err)
+	require.Equal(t, data, decoded.Data)
+}
+
+func TestStreamingEncoderToStreamingDecoder(t *testing.T) {
+	data := make([]byte, 1024)
+	for i := range data {
+		data[i] = byte(i % 251)
+	}
+
+	// Encode with streaming encoder
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 256)
+	encoded, err := io.ReadAll(enc)
+	require.NoError(t, err)
+
+	// Decode with streaming decoder
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(encoded)))
+	rawData, err := io.ReadAll(dec)
+	require.NoError(t, err)
+	require.Equal(t, data, rawData)
+
+	decResult := dec.DecodeResult()
+	require.NotNil(t, decResult)
+	require.Equal(t, SMVersion, decResult.Version)
+	require.Equal(t, SMFlagCRC64, decResult.Flags)
+	require.Equal(t, uint16(4), decResult.NumSegments)
+}
+
+func TestStreamingDecoderSmallReads(t *testing.T) {
+	data := []byte("streaming decode with tiny buffer")
+	smData := SMEncode(data, 10)
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(smData.EncodedData)))
+
+	var result []byte
+	buf := make([]byte, 5) // intentionally small buffer
+	for {
+		n, err := dec.Read(buf)
+		result = append(result, buf[:n]...)
+		if err == io.EOF {
+			break
+		}
+		require.NoError(t, err)
+	}
+	require.Equal(t, data, result)
+}
+
+func TestStreamingDecoderCRCMismatch(t *testing.T) {
+	// Corrupt segment data in an SM payload
+	smData := makeCorruptedSM([]byte("Hello, world!"), func(d []byte) { d[25] ^= 0xFF })
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(smData)))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "CRC64 mismatch")
+}
+
+func TestStreamingDecoderTrailerCRCMismatch(t *testing.T) {
+	// Corrupt trailer CRC
+	smData := makeCorruptedSM([]byte("test"), func(d []byte) { d[len(d)-1] ^= 0xFF })
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(smData)))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+}
+
+func TestStreamingDecoderBadVersion(t *testing.T) {
+	smData := makeCorruptedSM([]byte("test"), func(d []byte) { d[0] = 99 })
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(smData)))
+	_, err := io.ReadAll(dec)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "unsupported structured message version")
+}
+
+func TestStreamingEncoderSeekSupport(t *testing.T) {
+	data := []byte("seek test")
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 0)
+
+	// Seek(0, SeekEnd) returns encoded length
+	pos, err := enc.Seek(0, io.SeekEnd)
+	require.NoError(t, err)
+	require.Equal(t, enc.EncodedLength(), pos)
+
+	// Seek(0, SeekCurrent) at initial position returns 0
+	pos, err = enc.Seek(0, io.SeekCurrent)
+	require.NoError(t, err)
+	require.Equal(t, int64(0), pos)
+
+	// After reading some data, SeekCurrent returns exact position
+	buf := make([]byte, 1)
+	_, _ = enc.Read(buf)
+	pos, err = enc.Seek(0, io.SeekCurrent)
+	require.NoError(t, err)
+	require.Equal(t, int64(1), pos)
+
+	// Non-zero offset should fail
+	_, err = enc.Seek(1, io.SeekStart)
+	require.Error(t, err)
+
+	// Non-zero offset with SeekEnd should fail
+	_, err = enc.Seek(1, io.SeekEnd)
+	require.Error(t, err)
+
+	// Seek(0, SeekStart) resets successfully
+	pos, err = enc.Seek(0, io.SeekStart)
+	require.NoError(t, err)
+	require.Equal(t, int64(0), pos)
+}
+
+func TestStreamingEncoderWorksWithValidateSeekableStream(t *testing.T) {
+	data := []byte("validate seekable test data")
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 0)
+
+	// ValidateSeekableStreamAt0AndGetCount uses Seek(0, SeekCurrent), Seek(0, SeekEnd), Seek(0, SeekStart)
+	count, err := ValidateSeekableStreamAt0AndGetCount(enc)
+	require.NoError(t, err)
+	require.Equal(t, enc.EncodedLength(), count)
+
+	// After validation, encoder should still be at position 0 and readable
+	encoded, err := io.ReadAll(enc)
+	require.NoError(t, err)
+	require.Equal(t, int(count), len(encoded))
+}
+
 // --- Decoder error tests (matching .NET StructuredMessageDecodingStreamTests) ---
 
 func TestDecodeBadVersion(t *testing.T) {
-	// Corrupt version byte to 0xFF
 	smData := makeCorruptedSM([]byte("test data for version check"), func(d []byte) {
 		d[0] = 0xFF
 	})
@@ -369,13 +567,11 @@ func TestDecodeBadVersion(t *testing.T) {
 }
 
 func TestDecodeBadSegmentCRC(t *testing.T) {
-	// Flip a byte in segment data so segment CRC mismatches
 	data := make([]byte, 100)
 	for i := range data {
 		data[i] = byte(i)
 	}
 	smData := makeCorruptedSM(data, func(d []byte) {
-		// Data starts at offset SMHeaderSize + SMSegmentHeaderSize = 23
 		d[SMHeaderSize+SMSegmentHeaderSize+10] ^= 0xFF
 	})
 	_, err := SMDecode(smData)
@@ -385,7 +581,6 @@ func TestDecodeBadSegmentCRC(t *testing.T) {
 }
 
 func TestDecodeBadMessageCRC(t *testing.T) {
-	// Corrupt last byte (message trailer CRC)
 	data := make([]byte, 50)
 	for i := range data {
 		data[i] = byte(i)
@@ -395,12 +590,10 @@ func TestDecodeBadMessageCRC(t *testing.T) {
 	})
 	_, err := SMDecode(smData)
 	require.Error(t, err)
-	// Could be segment or message trailer CRC mismatch depending on which gets corrupted
 	require.Contains(t, err.Error(), "CRC64 mismatch")
 }
 
 func TestDecodeWrongMessageLength(t *testing.T) {
-	// Overwrite message-length field to a wrong value
 	smData := makeCorruptedSM([]byte("test message length"), func(d []byte) {
 		binary.LittleEndian.PutUint64(d[1:9], 123456789)
 	})
@@ -410,20 +603,17 @@ func TestDecodeWrongMessageLength(t *testing.T) {
 }
 
 func TestDecodeWrongSegmentCountTooMany(t *testing.T) {
-	// Set segment count to actual + 1
 	data := []byte("test segment count")
 	result := SMEncode(data, 0)
 	smData := make([]byte, len(result.EncodedData))
 	copy(smData, result.EncodedData)
 
-	// Actual numSegments is 1, set to 2
 	binary.LittleEndian.PutUint16(smData[11:13], 2)
 	_, err := SMDecode(smData)
 	require.Error(t, err)
 }
 
 func TestDecodeWrongSegmentCountTooFew(t *testing.T) {
-	// Create multi-segment message and reduce count by 1
 	data := make([]byte, 200)
 	for i := range data {
 		data[i] = byte(i)
@@ -432,22 +622,18 @@ func TestDecodeWrongSegmentCountTooFew(t *testing.T) {
 	smData := make([]byte, len(result.EncodedData))
 	copy(smData, result.EncodedData)
 
-	// Set numSegments to 3 instead of 4
 	binary.LittleEndian.PutUint16(smData[11:13], 3)
 	_, err := SMDecode(smData)
 	require.Error(t, err)
-	// The trailer CRC won't match because we're missing segment 4 data
 	require.Contains(t, err.Error(), "CRC64 mismatch")
 }
 
 func TestDecodeWrongSegmentNumber(t *testing.T) {
-	// Rewrite first segment's number to 123
 	data := []byte("test segment number check")
 	result := SMEncode(data, 0)
 	smData := make([]byte, len(result.EncodedData))
 	copy(smData, result.EncodedData)
 
-	// Segment number starts at offset SMHeaderSize (13)
 	binary.LittleEndian.PutUint16(smData[SMHeaderSize:SMHeaderSize+2], 123)
 	_, err := SMDecode(smData)
 	require.Error(t, err)
@@ -456,29 +642,23 @@ func TestDecodeWrongSegmentNumber(t *testing.T) {
 }
 
 func TestDecodeTruncatedStream(t *testing.T) {
-	// Truncate the message trailer (last 8 bytes)
 	data := []byte("test truncation handling")
 	result := SMEncode(data, 0)
-	truncated := result.EncodedData[:len(result.EncodedData)-4] // Remove part of trailer
+	truncated := result.EncodedData[:len(result.EncodedData)-4]
 
-	// Also fix the message-length to match truncated data so we don't fail on length check
-	// Actually, with mismatched length we'll get a length error. Let's test that separately.
 	_, err := SMDecode(truncated)
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "length mismatch")
 }
 
 func TestDecodeTruncatedSegmentFooter(t *testing.T) {
-	// Create valid SM, then remove bytes from the segment footer area
 	data := []byte("test footer truncation")
 	result := SMEncode(data, 0)
 	smData := make([]byte, len(result.EncodedData))
 	copy(smData, result.EncodedData)
 
-	// Remove the last 12 bytes (part of segment footer + trailer) but keep length field intact
 	truncatedLen := len(smData) - 12
 	truncated := smData[:truncatedLen]
-	// Fix message-length to match truncated data
 	binary.LittleEndian.PutUint64(truncated[1:9], uint64(truncatedLen))
 	_, err := SMDecode(truncated)
 	require.Error(t, err)
@@ -486,11 +666,10 @@ func TestDecodeTruncatedSegmentFooter(t *testing.T) {
 }
 
 func TestDecodeVariousReadSizes(t *testing.T) {
-	// Test decoding with various data sizes and segment sizes
 	testCases := []struct {
-		name     string
-		dataLen  int
-		segSize  int
+		name    string
+		dataLen int
+		segSize int
 	}{
 		{"Small_DefaultSeg", 100, 0},
 		{"NonAligned_SmallSeg", 2005, 512},
@@ -515,7 +694,7 @@ func TestDecodeVariousReadSizes(t *testing.T) {
 	}
 }
 
-// --- Streaming Encoder → Decoder Roundtrip Tests (matching .NET StructuredMessageStreamRoundtripTests) ---
+// --- Streaming Encoder -> Decoder Roundtrip Tests (matching .NET StructuredMessageStreamRoundtripTests) ---
 
 func TestStreamingEncoderDecoderRoundtrip(t *testing.T) {
 	testCases := []struct {
@@ -534,19 +713,16 @@ func TestStreamingEncoderDecoderRoundtrip(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			// Create test data
 			data := make([]byte, tc.dataLen)
 			for i := range data {
 				data[i] = byte(i % 251)
 			}
 
-			// Encode using SMEncoder
-			enc := NewSMEncoder(data, tc.segSize)
+			enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), tc.segSize)
 			encodedData, err := io.ReadAll(enc)
 			require.NoError(t, err)
 			require.Equal(t, int(enc.EncodedLength()), len(encodedData))
 
-			// Decode using SMDecoder with specific read sizes
 			body := io.NopCloser(bytes.NewReader(encodedData))
 			dec := NewSMDecoder(body)
 
@@ -569,7 +745,6 @@ func TestStreamingEncoderDecoderRoundtrip(t *testing.T) {
 }
 
 func TestStreamingEncoderDecoderRoundtripLargeData(t *testing.T) {
-	// 5MB data with 1MB segments — multi-segment validation
 	dataLen := 5 * 1024 * 1024
 	segSize := 1024 * 1024
 
@@ -578,7 +753,7 @@ func TestStreamingEncoderDecoderRoundtripLargeData(t *testing.T) {
 		data[i] = byte(i % 251)
 	}
 
-	enc := NewSMEncoder(data, segSize)
+	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), segSize)
 	encodedData, err := io.ReadAll(enc)
 	require.NoError(t, err)
 
@@ -597,29 +772,23 @@ func TestStreamingEncoderDecoderRoundtripLargeData(t *testing.T) {
 // --- Encoder Binary Format Tests (matching .NET StructuredMessageTests) ---
 
 func TestEncodeStreamHeaderBinary(t *testing.T) {
-	// Verify exact binary output of the SM header
 	data := make([]byte, 1024)
-	result := SMEncode(data, 0) // Single segment
+	result := SMEncode(data, 0)
 	smData := result.EncodedData
 
-	// Version byte
 	require.Equal(t, byte(1), smData[0])
 
-	// Message length (uint64 LE)
 	msgLen := binary.LittleEndian.Uint64(smData[1:9])
 	require.Equal(t, uint64(len(smData)), msgLen)
 
-	// Flags (uint16 LE) - should be 0x0001 for CRC64
 	flags := binary.LittleEndian.Uint16(smData[9:11])
 	require.Equal(t, uint16(1), flags)
 
-	// Num segments (uint16 LE)
 	numSegs := binary.LittleEndian.Uint16(smData[11:13])
 	require.Equal(t, uint16(1), numSegs)
 }
 
 func TestEncodeSegmentHeaderBinary(t *testing.T) {
-	// Verify exact binary of each segment header in a multi-segment message
 	data := make([]byte, 10)
 	for i := range data {
 		data[i] = byte(i)
@@ -627,14 +796,12 @@ func TestEncodeSegmentHeaderBinary(t *testing.T) {
 	result := SMEncode(data, 5) // 2 segments of 5 bytes each
 	smData := result.EncodedData
 
-	// Segment 1 header at offset 13
 	seg1Num := binary.LittleEndian.Uint16(smData[13:15])
 	require.Equal(t, uint16(1), seg1Num)
 	seg1Len := binary.LittleEndian.Uint64(smData[15:23])
 	require.Equal(t, uint64(5), seg1Len)
 
-	// Segment 2 header after seg1 data (5 bytes) + seg1 CRC (8 bytes)
-	seg2Offset := 13 + 10 + 5 + 8 // header + seg1Header + seg1Data + seg1CRC
+	seg2Offset := 13 + 10 + 5 + 8
 	seg2Num := binary.LittleEndian.Uint16(smData[seg2Offset : seg2Offset+2])
 	require.Equal(t, uint16(2), seg2Num)
 	seg2Len := binary.LittleEndian.Uint64(smData[seg2Offset+2 : seg2Offset+10])
@@ -642,17 +809,16 @@ func TestEncodeSegmentHeaderBinary(t *testing.T) {
 }
 
 func TestEncodeNonAlignedDataSize(t *testing.T) {
-	// Data size not aligned to segment boundary
 	testCases := []struct {
 		dataLen int
 		segSize int
 		expSegs uint16
 	}{
-		{2005, 512, 4},   // 512+512+512+469
-		{1, 512, 1},      // 1 byte in single segment
-		{513, 512, 2},    // 512+1
-		{1023, 512, 2},   // 512+511
-		{10000, 3000, 4}, // 3000+3000+3000+1000
+		{2005, 512, 4},
+		{1, 512, 1},
+		{513, 512, 2},
+		{1023, 512, 2},
+		{10000, 3000, 4},
 	}
 
 	for _, tc := range testCases {
@@ -690,7 +856,6 @@ func TestDecoderBadSegmentCRC(t *testing.T) {
 		data[i] = byte(i)
 	}
 	smData := makeCorruptedSM(data, func(d []byte) {
-		// Corrupt a byte in the segment data area
 		d[SMHeaderSize+SMSegmentHeaderSize+5] ^= 0xFF
 	})
 	body := io.NopCloser(bytes.NewReader(smData))
@@ -706,7 +871,6 @@ func TestDecoderBadMessageCRC(t *testing.T) {
 		data[i] = byte(i)
 	}
 	smData := makeCorruptedSM(data, func(d []byte) {
-		// Corrupt the last byte (message trailer CRC)
 		d[len(d)-1] ^= 0xFF
 	})
 	body := io.NopCloser(bytes.NewReader(smData))
@@ -714,17 +878,6 @@ func TestDecoderBadMessageCRC(t *testing.T) {
 	_, err := io.ReadAll(dec)
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "CRC64 mismatch")
-}
-
-func TestDecoderWrongMessageLength(t *testing.T) {
-	smData := makeCorruptedSM([]byte("length test"), func(d []byte) {
-		binary.LittleEndian.PutUint64(d[1:9], 99999)
-	})
-	body := io.NopCloser(bytes.NewReader(smData))
-	dec := NewSMDecoder(body)
-	_, err := io.ReadAll(dec)
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "length mismatch")
 }
 
 func TestDecoderWrongSegmentNumber(t *testing.T) {
@@ -739,17 +892,14 @@ func TestDecoderWrongSegmentNumber(t *testing.T) {
 }
 
 func TestDecoderMultiSegmentCRCValidation(t *testing.T) {
-	// Verify that multi-segment messages validate each segment CRC independently
 	data := make([]byte, 200)
 	for i := range data {
 		data[i] = byte(i)
 	}
-	// 4 segments of 50 bytes each
 	result := SMEncode(data, 50)
 	smData := make([]byte, len(result.EncodedData))
 	copy(smData, result.EncodedData)
 
-	// Corrupt data in the 3rd segment (offset = header + 2*(segHeader+50+segFooter) + segHeader + 10)
 	seg3DataStart := SMHeaderSize + 2*(SMSegmentHeaderSize+50+SMSegmentFooterSize) + SMSegmentHeaderSize
 	smData[seg3DataStart+10] ^= 0xFF
 

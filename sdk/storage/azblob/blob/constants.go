@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -202,6 +199,13 @@ func TransferValidationTypeComputeCRC64() TransferValidationType {
 
 // TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
 type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
+
+// TransferValidationTypeComputeStructuredMessageCRC64 is a TransferValidationType that computes
+// per-segment CRC64 checksums using the structured message binary format.
+// segmentSize specifies the maximum segment size in bytes (use 0 for default 4MB).
+func TransferValidationTypeComputeStructuredMessageCRC64(segmentSize int) TransferValidationType {
+	return exported.TransferValidationTypeComputeStructuredMessageCRC64(segmentSize)
+}
 
 // SourceContentValidationType abstracts the various mechanisms used to validate source content.
 // This interface is not publicly implementable.
