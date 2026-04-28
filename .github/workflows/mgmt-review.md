@@ -127,7 +127,7 @@ Post **exactly one** PR comment via `add_comment`. Include the marker `<!-- gh-a
 ```markdown
 ## ⚠️ First On-Board Service — Pipeline Setup Required
 
-This PR adds a new service. CI pipelines have not been created yet, so CI checks may be missing or incomplete.
+This PR adds a new service. Release pipelines have not been created yet.
 
 **Action required:** Comment `/azp run prepare-pipelines` on this PR to create the CI pipelines. After the `prepare-pipelines` check completes successfully, the CI validation pipeline (`go - pullrequest`) will be triggered automatically.
 ```
