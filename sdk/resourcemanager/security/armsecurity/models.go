@@ -5021,6 +5021,12 @@ type HealthReportsList struct {
 type Identity struct {
 	// FLAG; CONSTANT; The identity type.
 	Type *string
+
+	// READ-ONLY; The principal ID of resource identity. The value must be an UUID.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of resource. The value must be an UUID.
+	TenantID *string
 }
 
 // InfoType - Custom user-defined information type
@@ -6256,6 +6262,9 @@ type OperationStatusResult struct {
 
 	// The start time of the operation.
 	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
 }
 
 // OperatorList - List of SecurityOperator response.
@@ -6451,6 +6460,9 @@ type PrivateEndpointConnectionProperties struct {
 
 	// The private endpoint resource.
 	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState
