@@ -1,5 +1,89 @@
 # Release History
 
+## 0.7.0 (2026-04-28)
+### Breaking Changes
+
+- Type of `GitHubWorkflowProfile.DeploymentProperties` has been changed from `*DeploymentProperties` to `*Deployment`
+- `QuickStartTemplateTypeALL` from enum `QuickStartTemplateType` has been removed
+- Function `*ClientFactory.NewDeveloperHubServiceClient` has been removed
+- Function `NewDeveloperHubServiceClient` has been removed
+- Function `*DeveloperHubServiceClient.GeneratePreviewArtifacts` has been removed
+- Function `*DeveloperHubServiceClient.GitHubOAuth` has been removed
+- Function `*DeveloperHubServiceClient.GitHubOAuthCallback` has been removed
+- Function `*DeveloperHubServiceClient.ListGitHubOAuth` has been removed
+- Struct `DeploymentProperties` has been removed
+- Field `NumberOfStores` of struct `ScaleProperty` has been removed
+- Field `ScaleProperties` of struct `ScaleTemplateRequest` has been removed
+
+### Features Added
+
+- New value `ManifestTypeKustomize` added to enum type `ManifestType`
+- New enum type `ParameterKind` with values `ParameterKindAzureContainerRegistry`, `ParameterKindAzureKeyvaultURI`, `ParameterKindAzureManagedCluster`, `ParameterKindAzureResourceGroup`, `ParameterKindAzureServiceConnection`, `ParameterKindClusterResourceType`, `ParameterKindContainerImageName`, `ParameterKindContainerImageVersion`, `ParameterKindDirPath`, `ParameterKindDockerFileName`, `ParameterKindEnvVarMap`, `ParameterKindFilePath`, `ParameterKindFlag`, `ParameterKindHelmChartOverrides`, `ParameterKindImagePullPolicy`, `ParameterKindIngressHostName`, `ParameterKindKubernetesNamespace`, `ParameterKindKubernetesProbeDelay`, `ParameterKindKubernetesProbeHTTPPath`, `ParameterKindKubernetesProbePeriod`, `ParameterKindKubernetesProbeThreshold`, `ParameterKindKubernetesProbeTimeout`, `ParameterKindKubernetesProbeType`, `ParameterKindKubernetesResourceLimit`, `ParameterKindKubernetesResourceName`, `ParameterKindKubernetesResourceRequest`, `ParameterKindLabel`, `ParameterKindPort`, `ParameterKindReplicaCount`, `ParameterKindRepositoryBranch`, `ParameterKindResourceLimit`, `ParameterKindScalingResourceType`, `ParameterKindScalingResourceUtilization`, `ParameterKindWorkflowAuthType`, `ParameterKindWorkflowName`
+- New enum type `ParameterType` with values `ParameterTypeBool`, `ParameterTypeFloat`, `ParameterTypeInt`, `ParameterTypeObject`, `ParameterTypeString`
+- New enum type `RepositoryProviderType` with values `RepositoryProviderTypeAdo`, `RepositoryProviderTypeGithub`
+- New enum type `TemplateType` with values `TemplateTypeDeployment`, `TemplateTypeDockerfile`, `TemplateTypeManifest`, `TemplateTypeWorkflow`
+- New function `NewADOOAuthClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ADOOAuthClient, error)`
+- New function `*ADOOAuthClient.Get(ctx context.Context, location string, options *ADOOAuthClientGetOptions) (ADOOAuthClientGetResponse, error)`
+- New function `*ADOOAuthClient.NewListPager(location string, options *ADOOAuthClientListOptions) *runtime.Pager[ADOOAuthClientListResponse]`
+- New function `NewAdooAuthResponsesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdooAuthResponsesClient, error)`
+- New function `*AdooAuthResponsesClient.GetADOOAuthInfo(ctx context.Context, location string, options *AdooAuthResponsesClientGetADOOAuthInfoOptions) (AdooAuthResponsesClientGetADOOAuthInfoResponse, error)`
+- New function `NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error)`
+- New function `*Client.GeneratePreviewArtifacts(ctx context.Context, location string, parameters ArtifactGenerationProperties, options *ClientGeneratePreviewArtifactsOptions) (ClientGeneratePreviewArtifactsResponse, error)`
+- New function `*Client.NewADOOAuthClient() *ADOOAuthClient`
+- New function `*Client.NewAdooAuthResponsesClient() *AdooAuthResponsesClient`
+- New function `*Client.NewGitHubOAuthResponsesClient() *GitHubOAuthResponsesClient`
+- New function `*Client.NewIacProfilesClient() *IacProfilesClient`
+- New function `*Client.NewOperationsClient() *OperationsClient`
+- New function `*Client.NewTemplateClient() *TemplateClient`
+- New function `*Client.NewVersionedTemplateClient() *VersionedTemplateClient`
+- New function `*Client.NewWorkflowClient() *WorkflowClient`
+- New function `*ClientFactory.NewADOOAuthClient() *ADOOAuthClient`
+- New function `*ClientFactory.NewAdooAuthResponsesClient() *AdooAuthResponsesClient`
+- New function `*ClientFactory.NewClient() *Client`
+- New function `*ClientFactory.NewGitHubOAuthResponsesClient() *GitHubOAuthResponsesClient`
+- New function `*ClientFactory.NewTemplateClient() *TemplateClient`
+- New function `*ClientFactory.NewVersionedTemplateClient() *VersionedTemplateClient`
+- New function `NewGitHubOAuthResponsesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitHubOAuthResponsesClient, error)`
+- New function `*GitHubOAuthResponsesClient.GitHubOAuth(ctx context.Context, location string, options *GitHubOAuthResponsesClientGitHubOAuthOptions) (GitHubOAuthResponsesClientGitHubOAuthResponse, error)`
+- New function `*GitHubOAuthResponsesClient.GitHubOAuthCallback(ctx context.Context, location string, code string, state string, options *GitHubOAuthResponsesClientGitHubOAuthCallbackOptions) (GitHubOAuthResponsesClientGitHubOAuthCallbackResponse, error)`
+- New function `*GitHubOAuthResponsesClient.ListGitHubOAuth(ctx context.Context, location string, options *GitHubOAuthResponsesClientListGitHubOAuthOptions) (GitHubOAuthResponsesClientListGitHubOAuthResponse, error)`
+- New function `NewTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TemplateClient, error)`
+- New function `*TemplateClient.Get(ctx context.Context, templateName string, options *TemplateClientGetOptions) (TemplateClientGetResponse, error)`
+- New function `*TemplateClient.NewListPager(options *TemplateClientListOptions) *runtime.Pager[TemplateClientListResponse]`
+- New function `NewVersionedTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VersionedTemplateClient, error)`
+- New function `*VersionedTemplateClient.Generate(ctx context.Context, templateName string, templateVersion string, parameters map[string]*string, options *VersionedTemplateClientGenerateOptions) (VersionedTemplateClientGenerateResponse, error)`
+- New function `*VersionedTemplateClient.Get(ctx context.Context, templateName string, templateVersion string, options *VersionedTemplateClientGetOptions) (VersionedTemplateClientGetResponse, error)`
+- New function `*VersionedTemplateClient.NewListPager(templateName string, options *VersionedTemplateClientListOptions) *runtime.Pager[VersionedTemplateClientListResponse]`
+- New struct `ADOOAuth`
+- New struct `ADOOAuthCallRequest`
+- New struct `ADOOAuthInfoResponse`
+- New struct `ADOOAuthListResponse`
+- New struct `ADOOAuthResponse`
+- New struct `ADOProviderProfile`
+- New struct `ADORepository`
+- New struct `AzurePipelineProfile`
+- New struct `Build`
+- New struct `Deployment`
+- New struct `GenerateVersionedTemplateResponse`
+- New struct `GitHubProviderProfile`
+- New struct `GitHubRepository`
+- New struct `OidcCredentials`
+- New struct `Parameter`
+- New struct `ParameterDefault`
+- New struct `PullRequest`
+- New struct `Template`
+- New struct `TemplateListResult`
+- New struct `TemplateProperties`
+- New struct `TemplateReference`
+- New struct `TemplateWorkflowProfile`
+- New struct `VersionedTemplate`
+- New struct `VersionedTemplateListResult`
+- New struct `VersionedTemplateProperties`
+- New field `NumberOfStore` in struct `ScaleProperty`
+- New field `ScaleRequirement` in struct `ScaleTemplateRequest`
+- New field `AzurePipelineProfile`, `TemplateWorkflowProfile` in struct `WorkflowProperties`
+
+
 ## 0.6.0 (2024-09-26)
 ### Features Added
 
