@@ -53,7 +53,7 @@ Fetch the PR details. If the PR is in **draft** state, mark it as ready for revi
 
 > **This step only applies when Step 1 identified a first on-board service.** Skip this step entirely otherwise.
 
-For a brand-new service, CI pipelines do not exist yet. The service team must create them by commenting `/azp run prepare-pipelines` on the PR. Record that this is a first on-board service so that the Step 6 comment includes instructions for the service team. This does **not** block the remaining steps — proceed to Step 3 immediately.
+For a brand-new service, release pipelines do not exist yet. The service team must create them by commenting `/azp run prepare-pipelines` on the PR. Record that this is a first on-board service so that the Step 6 comment includes instructions for the service team. This does **not** block the remaining steps — proceed to Step 3 immediately.
 
 ### Step 3 — Wait for all pipeline checks to complete
 
