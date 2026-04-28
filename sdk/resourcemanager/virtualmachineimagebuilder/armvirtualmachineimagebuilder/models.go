@@ -7,6 +7,12 @@ package armvirtualmachineimagebuilder
 
 import "time"
 
+// DataDisk - Data disk properties.
+type DataDisk struct {
+	// Size of the data disk in GB.
+	SizeGB *int32
+}
+
 // DistributeVersioner - Describes how to generate new x.y.z version number for distribution.
 type DistributeVersioner struct {
 	// REQUIRED; Version numbering scheme to be used.
@@ -241,13 +247,13 @@ type ImageTemplateLastRunStatus struct {
 	StartTime *time.Time
 }
 
-// ImageTemplateListResult - The result of List image templates operation
+// ImageTemplateListResult - The response of a ImageTemplate list operation.
 type ImageTemplateListResult struct {
-	// The continuation token.
-	NextLink *string
-
-	// An array of image templates
+	// REQUIRED; The ImageTemplate items on this page
 	Value []*ImageTemplate
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ImageTemplateManagedImageDistributor - Distribute as a Managed Disk Image.
@@ -411,6 +417,9 @@ type ImageTemplateProperties struct {
 	// REQUIRED; Specifies the properties used to describe the source image.
 	Source ImageTemplateSourceClassification
 
+	// Optional array of additional data disks to be added to the image.
+	AdditionalDataDisks []*DataDisk
+
 	// Indicates whether or not to automatically run the image template build on template creation or update.
 	AutoRun *ImageTemplateAutoRun
 
@@ -477,12 +486,27 @@ type ImageTemplatePropertiesErrorHandling struct {
 type ImageTemplatePropertiesOptimize struct {
 	// Optimization is applied on the image for a faster VM boot.
 	VMBoot *ImageTemplatePropertiesOptimizeVMBoot
+
+	// Optimization is applied on the image for specific workloads.
+	Workload *ImageTemplatePropertiesOptimizeWorkload
 }
 
 // ImageTemplatePropertiesOptimizeVMBoot - Optimization is applied on the image for a faster VM boot.
 type ImageTemplatePropertiesOptimizeVMBoot struct {
 	// Enabling this field will improve VM boot time by optimizing the final customized image output.
 	State *VMBootOptimizationState
+}
+
+// ImageTemplatePropertiesOptimizeWorkload - Optimization is applied on the image for specific workloads.
+type ImageTemplatePropertiesOptimizeWorkload struct {
+	// SHA256 checksum of the script provided in the scriptUri field
+	SHA256Checksum *string
+
+	// URI of the script to be run for workload optimization. It can be a github link, SAS URI for Azure Storage, etc
+	ScriptURI *string
+
+	// Enabling this field will optimize vm images for specific workloads.
+	State *WorkloadOptimizationState
 }
 
 // ImageTemplatePropertiesValidate - Configuration options and list of validations to be performed on the resulting image.
@@ -545,6 +569,9 @@ type ImageTemplateSharedImageDistributor struct {
 
 	// Flag that indicates whether created image version should be excluded from latest. Omit to use the default (false).
 	ExcludeFromLatest *bool
+
+	// Describes replication mode for distribution in Azure Compute Gallery. Omit to use the default (Full).
+	ReplicationMode *ReplicationMode
 
 	// [Deprecated] A list of regions that the image will be replicated to. This list can be specified only if targetRegions is
 	// not specified. This field is deprecated - use targetRegions instead.
@@ -785,11 +812,11 @@ type OperationDisplay struct {
 // OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
 // to get the next set of results.
 type OperationListResult struct {
+	// REQUIRED; The list of operations supported by the resource provider.
+	Value []*Operation
+
 	// The URL to get the next set of operation list results if there are any.
 	NextLink *string
-
-	// The list of operations supported by the resource provider.
-	Value []*Operation
 }
 
 // PlatformImagePurchasePlan - Purchase plan configuration for platform image.
@@ -864,11 +891,11 @@ type RunOutput struct {
 
 // RunOutputCollection - The result of List run outputs operation
 type RunOutputCollection struct {
-	// The continuation token.
-	NextLink *string
-
-	// An array of run outputs
+	// REQUIRED; The RunOutput items on this page
 	Value []*RunOutput
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // RunOutputProperties - Describes the properties of a run output
@@ -979,10 +1006,10 @@ type Trigger struct {
 
 // TriggerCollection - The result of List triggers operation
 type TriggerCollection struct {
-	// REQUIRED; An array of triggers
+	// REQUIRED; The Trigger items on this page
 	Value []*Trigger
 
-	// The continuation token.
+	// The link to the next page of items
 	NextLink *string
 }
 

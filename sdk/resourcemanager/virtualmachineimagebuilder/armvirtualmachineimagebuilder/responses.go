@@ -65,13 +65,13 @@ type VirtualMachineImageTemplatesClientGetRunOutputResponse struct {
 
 // VirtualMachineImageTemplatesClientListByResourceGroupResponse contains the response from method VirtualMachineImageTemplatesClient.NewListByResourceGroupPager.
 type VirtualMachineImageTemplatesClientListByResourceGroupResponse struct {
-	// The result of List image templates operation
+	// The response of a ImageTemplate list operation.
 	ImageTemplateListResult
 }
 
 // VirtualMachineImageTemplatesClientListResponse contains the response from method VirtualMachineImageTemplatesClient.NewListPager.
 type VirtualMachineImageTemplatesClientListResponse struct {
-	// The result of List image templates operation
+	// The response of a ImageTemplate list operation.
 	ImageTemplateListResult
 }
 
