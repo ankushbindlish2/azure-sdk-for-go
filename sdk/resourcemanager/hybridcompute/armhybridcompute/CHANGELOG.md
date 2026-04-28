@@ -1,33 +1,9 @@
 # Release History
 
-## 2.1.0-beta.3 (2026-04-27)
+## 2.1.0-beta.3 (2026-04-28)
 ### Features Added
 
 - New enum type `ServiceExtensionPublicNetworkAccess` with values `ServiceExtensionPublicNetworkAccessDisabled`, `ServiceExtensionPublicNetworkAccessEnabled`
-- New function `NewAgentVersionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentVersionClient, error)`
-- New function `*AgentVersionClient.Get(ctx context.Context, osType string, version string, options *AgentVersionClientGetOptions) (AgentVersionClientGetResponse, error)`
-- New function `*AgentVersionClient.NewListPager(osType string, options *AgentVersionClientListOptions) *runtime.Pager[AgentVersionClientListResponse]`
-- New function `*ClientFactory.NewAgentVersionClient() *AgentVersionClient`
-- New function `*ClientFactory.NewHybridIdentityMetadataClient() *HybridIdentityMetadataClient`
-- New function `*ClientFactory.NewNetworkConfigurationsClient() *NetworkConfigurationsClient`
-- New function `NewHybridIdentityMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HybridIdentityMetadataClient, error)`
-- New function `*HybridIdentityMetadataClient.Get(ctx context.Context, resourceGroupName string, machineName string, metadataName string, options *HybridIdentityMetadataClientGetOptions) (HybridIdentityMetadataClientGetResponse, error)`
-- New function `*HybridIdentityMetadataClient.NewListByMachinesPager(resourceGroupName string, machineName string, options *HybridIdentityMetadataClientListByMachinesOptions) *runtime.Pager[HybridIdentityMetadataClientListByMachinesResponse]`
-- New function `*MachineRunCommandsClient.BeginUpdate(ctx context.Context, resourceGroupName string, machineName string, runCommandName string, runCommandProperties MachineRunCommandUpdate, options *MachineRunCommandsClientBeginUpdateOptions) (*runtime.Poller[MachineRunCommandsClientUpdateResponse], error)`
-- New function `NewNetworkConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkConfigurationsClient, error)`
-- New function `*NetworkConfigurationsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, parameters NetworkConfiguration, options *NetworkConfigurationsClientCreateOrUpdateOptions) (NetworkConfigurationsClientCreateOrUpdateResponse, error)`
-- New function `*NetworkConfigurationsClient.Get(ctx context.Context, resourceGroupName string, machineName string, options *NetworkConfigurationsClientGetOptions) (NetworkConfigurationsClientGetResponse, error)`
-- New function `*NetworkConfigurationsClient.Update(ctx context.Context, resourceGroupName string, machineName string, parameters NetworkConfiguration, options *NetworkConfigurationsClientUpdateOptions) (NetworkConfigurationsClientUpdateResponse, error)`
-- New struct `AgentVersion`
-- New struct `AgentVersionsList`
-- New struct `HybridIdentityMetadata`
-- New struct `HybridIdentityMetadataList`
-- New struct `HybridIdentityMetadataProperties`
-- New struct `KeyDetails`
-- New struct `KeyProperties`
-- New struct `MachineRunCommandUpdate`
-- New struct `NetworkConfiguration`
-- New struct `NetworkConfigurationProperties`
 - New struct `ServiceExtension`
 - New field `NextLink` in struct `ExtensionValueListResult`
 - New field `SystemData` in struct `NetworkSecurityPerimeterConfiguration`

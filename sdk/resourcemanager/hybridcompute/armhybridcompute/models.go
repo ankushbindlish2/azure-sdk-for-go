@@ -1374,12 +1374,6 @@ type MachineRunCommandScriptSource struct {
 	ScriptURIManagedIdentity *RunCommandManagedIdentity
 }
 
-// MachineRunCommandUpdate - Describes a Machine Extension Update.
-type MachineRunCommandUpdate struct {
-	// Resource tags
-	Tags map[string]*string
-}
-
 // MachineRunCommandsListResult - Paged collection of MachineRunCommand items
 type MachineRunCommandsListResult struct {
 	// REQUIRED; The MachineRunCommand items on this page
