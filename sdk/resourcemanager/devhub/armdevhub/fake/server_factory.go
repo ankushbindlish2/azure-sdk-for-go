@@ -18,14 +18,8 @@ type ServerFactory struct {
 	// ADOOAuthServer contains the fakes for client ADOOAuthClient
 	ADOOAuthServer ADOOAuthServer
 
-	// AdooAuthResponsesServer contains the fakes for client AdooAuthResponsesClient
-	AdooAuthResponsesServer AdooAuthResponsesServer
-
-	// Server contains the fakes for client Client
-	Server Server
-
-	// GitHubOAuthResponsesServer contains the fakes for client GitHubOAuthResponsesClient
-	GitHubOAuthResponsesServer GitHubOAuthResponsesServer
+	// DeveloperHubServiceServer contains the fakes for client DeveloperHubServiceClient
+	DeveloperHubServiceServer DeveloperHubServiceServer
 
 	// IacProfilesServer contains the fakes for client IacProfilesClient
 	IacProfilesServer IacProfilesServer
@@ -55,17 +49,15 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdevhub.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                          *ServerFactory
-	trMu                         sync.Mutex
-	trADOOAuthServer             *ADOOAuthServerTransport
-	trAdooAuthResponsesServer    *AdooAuthResponsesServerTransport
-	trServer                     *ServerTransport
-	trGitHubOAuthResponsesServer *GitHubOAuthResponsesServerTransport
-	trIacProfilesServer          *IacProfilesServerTransport
-	trOperationsServer           *OperationsServerTransport
-	trTemplateServer             *TemplateServerTransport
-	trVersionedTemplateServer    *VersionedTemplateServerTransport
-	trWorkflowServer             *WorkflowServerTransport
+	srv                         *ServerFactory
+	trMu                        sync.Mutex
+	trADOOAuthServer            *ADOOAuthServerTransport
+	trDeveloperHubServiceServer *DeveloperHubServiceServerTransport
+	trIacProfilesServer         *IacProfilesServerTransport
+	trOperationsServer          *OperationsServerTransport
+	trTemplateServer            *TemplateServerTransport
+	trVersionedTemplateServer   *VersionedTemplateServerTransport
+	trWorkflowServer            *WorkflowServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -84,19 +76,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ADOOAuthClient":
 		initServer(&s.trMu, &s.trADOOAuthServer, func() *ADOOAuthServerTransport { return NewADOOAuthServerTransport(&s.srv.ADOOAuthServer) })
 		resp, err = s.trADOOAuthServer.Do(req)
-	case "AdooAuthResponsesClient":
-		initServer(&s.trMu, &s.trAdooAuthResponsesServer, func() *AdooAuthResponsesServerTransport {
-			return NewAdooAuthResponsesServerTransport(&s.srv.AdooAuthResponsesServer)
+	case "DeveloperHubServiceClient":
+		initServer(&s.trMu, &s.trDeveloperHubServiceServer, func() *DeveloperHubServiceServerTransport {
+			return NewDeveloperHubServiceServerTransport(&s.srv.DeveloperHubServiceServer)
 		})
-		resp, err = s.trAdooAuthResponsesServer.Do(req)
-	case "Client":
-		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
-		resp, err = s.trServer.Do(req)
-	case "GitHubOAuthResponsesClient":
-		initServer(&s.trMu, &s.trGitHubOAuthResponsesServer, func() *GitHubOAuthResponsesServerTransport {
-			return NewGitHubOAuthResponsesServerTransport(&s.srv.GitHubOAuthResponsesServer)
-		})
-		resp, err = s.trGitHubOAuthResponsesServer.Do(req)
+		resp, err = s.trDeveloperHubServiceServer.Do(req)
 	case "IacProfilesClient":
 		initServer(&s.trMu, &s.trIacProfilesServer, func() *IacProfilesServerTransport { return NewIacProfilesServerTransport(&s.srv.IacProfilesServer) })
 		resp, err = s.trIacProfilesServer.Do(req)

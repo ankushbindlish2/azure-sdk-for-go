@@ -14,33 +14,34 @@ type ADOOAuthClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AdooAuthResponsesClientGetADOOAuthInfoOptions contains the optional parameters for the AdooAuthResponsesClient.GetADOOAuthInfo
+// DeveloperHubServiceClientGeneratePreviewArtifactsOptions contains the optional parameters for the DeveloperHubServiceClient.GeneratePreviewArtifacts
 // method.
-type AdooAuthResponsesClientGetADOOAuthInfoOptions struct {
+type DeveloperHubServiceClientGeneratePreviewArtifactsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeveloperHubServiceClientGetADOOAuthInfoOptions contains the optional parameters for the DeveloperHubServiceClient.GetADOOAuthInfo
+// method.
+type DeveloperHubServiceClientGetADOOAuthInfoOptions struct {
 	// The fields required in ADO OAuth call request.
 	Parameters *ADOOAuthCallRequest
 }
 
-// ClientGeneratePreviewArtifactsOptions contains the optional parameters for the Client.GeneratePreviewArtifacts method.
-type ClientGeneratePreviewArtifactsOptions struct {
+// DeveloperHubServiceClientGitHubOAuthCallbackOptions contains the optional parameters for the DeveloperHubServiceClient.GitHubOAuthCallback
+// method.
+type DeveloperHubServiceClientGitHubOAuthCallbackOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GitHubOAuthResponsesClientGitHubOAuthCallbackOptions contains the optional parameters for the GitHubOAuthResponsesClient.GitHubOAuthCallback
+// DeveloperHubServiceClientGitHubOAuthOptions contains the optional parameters for the DeveloperHubServiceClient.GitHubOAuth
 // method.
-type GitHubOAuthResponsesClientGitHubOAuthCallbackOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GitHubOAuthResponsesClientGitHubOAuthOptions contains the optional parameters for the GitHubOAuthResponsesClient.GitHubOAuth
-// method.
-type GitHubOAuthResponsesClientGitHubOAuthOptions struct {
+type DeveloperHubServiceClientGitHubOAuthOptions struct {
 	Parameters *GitHubOAuthCallRequest
 }
 
-// GitHubOAuthResponsesClientListGitHubOAuthOptions contains the optional parameters for the GitHubOAuthResponsesClient.ListGitHubOAuth
+// DeveloperHubServiceClientListGitHubOAuthOptions contains the optional parameters for the DeveloperHubServiceClient.ListGitHubOAuth
 // method.
-type GitHubOAuthResponsesClientListGitHubOAuthOptions struct {
+type DeveloperHubServiceClientListGitHubOAuthOptions struct {
 	// placeholder for future optional parameters
 }
 

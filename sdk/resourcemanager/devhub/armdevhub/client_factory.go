@@ -40,25 +40,9 @@ func (c *ClientFactory) NewADOOAuthClient() *ADOOAuthClient {
 	}
 }
 
-// NewAdooAuthResponsesClient creates a new instance of AdooAuthResponsesClient.
-func (c *ClientFactory) NewAdooAuthResponsesClient() *AdooAuthResponsesClient {
-	return &AdooAuthResponsesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewClient creates a new instance of Client.
-func (c *ClientFactory) NewClient() *Client {
-	return &Client{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewGitHubOAuthResponsesClient creates a new instance of GitHubOAuthResponsesClient.
-func (c *ClientFactory) NewGitHubOAuthResponsesClient() *GitHubOAuthResponsesClient {
-	return &GitHubOAuthResponsesClient{
+// NewDeveloperHubServiceClient creates a new instance of DeveloperHubServiceClient.
+func (c *ClientFactory) NewDeveloperHubServiceClient() *DeveloperHubServiceClient {
+	return &DeveloperHubServiceClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

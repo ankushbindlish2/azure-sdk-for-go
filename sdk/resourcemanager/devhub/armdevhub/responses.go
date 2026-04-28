@@ -16,31 +16,31 @@ type ADOOAuthClientListResponse struct {
 	ADOOAuthListResponse
 }
 
-// AdooAuthResponsesClientGetADOOAuthInfoResponse contains the response from method AdooAuthResponsesClient.GetADOOAuthInfo.
-type AdooAuthResponsesClientGetADOOAuthInfoResponse struct {
+// DeveloperHubServiceClientGeneratePreviewArtifactsResponse contains the response from method DeveloperHubServiceClient.GeneratePreviewArtifacts.
+type DeveloperHubServiceClientGeneratePreviewArtifactsResponse struct {
+	Value map[string]*string
+}
+
+// DeveloperHubServiceClientGetADOOAuthInfoResponse contains the response from method DeveloperHubServiceClient.GetADOOAuthInfo.
+type DeveloperHubServiceClientGetADOOAuthInfoResponse struct {
 	// Response containing ADO OAuth information
 	ADOOAuthInfoResponse
 }
 
-// ClientGeneratePreviewArtifactsResponse contains the response from method Client.GeneratePreviewArtifacts.
-type ClientGeneratePreviewArtifactsResponse struct {
-	Value map[string]*string
-}
-
-// GitHubOAuthResponsesClientGitHubOAuthCallbackResponse contains the response from method GitHubOAuthResponsesClient.GitHubOAuthCallback.
-type GitHubOAuthResponsesClientGitHubOAuthCallbackResponse struct {
+// DeveloperHubServiceClientGitHubOAuthCallbackResponse contains the response from method DeveloperHubServiceClient.GitHubOAuthCallback.
+type DeveloperHubServiceClientGitHubOAuthCallbackResponse struct {
 	// Singleton response of GitHubOAuth containing
 	GitHubOAuthResponse
 }
 
-// GitHubOAuthResponsesClientGitHubOAuthResponse contains the response from method GitHubOAuthResponsesClient.GitHubOAuth.
-type GitHubOAuthResponsesClientGitHubOAuthResponse struct {
+// DeveloperHubServiceClientGitHubOAuthResponse contains the response from method DeveloperHubServiceClient.GitHubOAuth.
+type DeveloperHubServiceClientGitHubOAuthResponse struct {
 	// URL used to authorize the Developer Hub GitHub App
 	GitHubOAuthInfoResponse
 }
 
-// GitHubOAuthResponsesClientListGitHubOAuthResponse contains the response from method GitHubOAuthResponsesClient.ListGitHubOAuth.
-type GitHubOAuthResponsesClientListGitHubOAuthResponse struct {
+// DeveloperHubServiceClientListGitHubOAuthResponse contains the response from method DeveloperHubServiceClient.ListGitHubOAuth.
+type DeveloperHubServiceClientListGitHubOAuthResponse struct {
 	// The response from List GitHubOAuth operation.
 	GitHubOAuthListResponse
 }
