@@ -26,26 +26,22 @@ type SensitivitySettingsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, options *armsecurity.SensitivitySettingsClientGetOptions) (resp azfake.Responder[armsecurity.SensitivitySettingsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method SensitivitySettingsClient.NewListPager
+	// List is the fake for method SensitivitySettingsClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.SensitivitySettingsClientListOptions) (resp azfake.PagerResponder[armsecurity.SensitivitySettingsClientListResponse])
+	List func(ctx context.Context, options *armsecurity.SensitivitySettingsClientListOptions) (resp azfake.Responder[armsecurity.SensitivitySettingsClientListResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSensitivitySettingsServerTransport creates a new instance of SensitivitySettingsServerTransport with the provided implementation.
 // The returned SensitivitySettingsServerTransport instance is connected to an instance of armsecurity.SensitivitySettingsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSensitivitySettingsServerTransport(srv *SensitivitySettingsServer) *SensitivitySettingsServerTransport {
-	return &SensitivitySettingsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armsecurity.SensitivitySettingsClientListResponse]](),
-	}
+	return &SensitivitySettingsServerTransport{srv: srv}
 }
 
 // SensitivitySettingsServerTransport connects instances of armsecurity.SensitivitySettingsClient to instances of SensitivitySettingsServer.
 // Don't use this type directly, use NewSensitivitySettingsServerTransport instead.
 type SensitivitySettingsServerTransport struct {
-	srv          *SensitivitySettingsServer
-	newListPager *tracker[azfake.PagerResponder[armsecurity.SensitivitySettingsClientListResponse]]
+	srv *SensitivitySettingsServer
 }
 
 // Do implements the policy.Transporter interface for SensitivitySettingsServerTransport.
@@ -73,8 +69,8 @@ func (s *SensitivitySettingsServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = s.dispatchCreateOrUpdate(req)
 			case "SensitivitySettingsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "SensitivitySettingsClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
+			case "SensitivitySettingsClient.List":
+				res.resp, res.err = s.dispatchList(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -133,26 +129,21 @@ func (s *SensitivitySettingsServerTransport) dispatchGet(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (s *SensitivitySettingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+func (s *SensitivitySettingsServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
+	if s.srv.List == nil {
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
+	respr, errRespr := s.srv.List(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
 	}
-	resp, err := server.PagerResponderNext(newListPager, req)
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GetSensitivitySettingsListResponse, req)
 	if err != nil {
 		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
 	}
 	return resp, nil
 }
