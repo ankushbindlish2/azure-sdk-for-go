@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.2 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
 ### Features Added
 * Added support for service version 2026-06-06.
