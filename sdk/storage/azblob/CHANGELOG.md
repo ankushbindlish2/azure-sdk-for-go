@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.5-beta.2 (Unreleased)
+## 1.7.0-beta.2 (Unreleased)
 
 ### Features Added
 * Added support for service version 2026-06-06.
@@ -12,7 +12,7 @@
 
 ### Other Changes
 
-## 1.6.5-beta.1 (Unreleased)
+## 1.7.0-beta.1 (2026-04-23)
 
 ### Features Added
 * Added support for service version 2026-04-06.
@@ -21,13 +21,9 @@
 * Added cross-tenant support for Principal-Bound User Delegation SAS.
 * Added support for Dynamic User Delegation SAS.
 
-### Breaking Changes
-
 ### Bugs Fixed
-* Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`.This replaces `IncrementalCopyOfEralierVersionSnapshotNotAllowed` which has been deprecated.
+* Added support for error code `IncrementalCopyOfEarlierSnapshotNotAllowed`. This replaces `IncrementalCopyOfEralierVersionSnapshotNotAllowed` which has been deprecated.
 * Added support for missing SKU name values.
-
-### Other Changes
 
 ## 1.6.4 (2026-01-12)
 
