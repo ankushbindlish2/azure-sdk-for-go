@@ -2303,8 +2303,8 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadFileSMCRC64() {
 	tmpFile, err := os.CreateTemp("", "sm-download-*.bin")
 	_require.NoError(err)
 	defer func() {
-		tmpFile.Close()
-		os.Remove(tmpFile.Name())
+		_ = tmpFile.Close()
+		_ = os.Remove(tmpFile.Name())
 	}()
 
 	smHeader := "XSM/1.0; properties=crc64"
@@ -2350,7 +2350,7 @@ func (s *BlobRecordedTestsSuite) TestDownloadStreamSMCRC64WithRetryReader() {
 	retryReader := downloadResp.NewRetryReader(context.Background(), &blob.RetryReaderOptions{
 		MaxRetries: 3,
 	})
-	defer retryReader.Close()
+	defer func() { _ = retryReader.Close() }()
 
 	downloadedData, err := io.ReadAll(retryReader)
 	_require.NoError(err)
