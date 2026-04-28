@@ -16,7 +16,7 @@ tools:
     toolsets: [context, repos, pull_requests, actions]
 safe-outputs:
   add-comment:
-    max: 2
+    max: 1
     target: "${{ github.event.pull_request.number }}"
     hide-older-comments: true
     issues: false
@@ -49,16 +49,11 @@ Fetch the PR details. If the PR is in **draft** state, mark it as ready for revi
 2. Identify the module path from the changed files (e.g., `sdk/resourcemanager/<service>/arm<package>/`).
 3. Determine if this is a **first on-board service** (first beta version): check whether the PR adds a new `ci.yml` file under the module path (i.e., `ci.yml` appears in the changed files with status `added`). If so, mark this PR as a first on-board service for Step 2.
 
-### Step 2 — Prepare pipelines for first on-board service
+### Step 2 — Note first on-board service
 
 > **This step only applies when Step 1 identified a first on-board service.** Skip this step entirely otherwise.
 
-For a brand-new service, CI pipelines do not exist yet. They must be created before pipeline results can be checked.
-
-1. Comment `/azp run prepare-pipelines` on the PR using `add_comment` to trigger pipeline creation.
-2. Wait for the `prepare-pipelines` check run to appear on the PR head commit. Poll check runs periodically (e.g., every 30 seconds) until a check whose name contains `prepare-pipelines` appears and reaches a **completed** status. If the check has not appeared or completed within **20 minutes**, stop waiting and record a timeout — it will be reported in the Step 6 comment.
-3. If `prepare-pipelines` fails, record the failure — it will be reported in the Step 6 comment.
-4. After `prepare-pipelines` completes successfully, the CI validation pipeline (`go - pullrequest`) will be triggered automatically. Proceed to Step 3.
+For a brand-new service, CI pipelines do not exist yet. The service team must create them by commenting `/azp run prepare-pipelines` on the PR. Record that this is a first on-board service so that the Step 6 comment includes instructions for the service team. This does **not** block the remaining steps — proceed to Step 3 immediately.
 
 ### Step 3 — Wait for all pipeline checks to complete
 
@@ -127,11 +122,14 @@ Post **exactly one** PR comment via `add_comment`. Include the marker `<!-- gh-a
 ## PR is ready to merge
 ```
 
-**If `prepare-pipelines` failed** (detected in Step 2), include this block in the comment:
+**If this is a first on-board service** (detected in Step 2), include this block in the comment:
 
 ```markdown
-- ❌ `prepare-pipelines`: Pipeline creation failed. [Logs](<target_url>)
-  - Fix: Retry by commenting `/azp run prepare-pipelines` on the PR, or investigate the pipeline creation logs.
+## ⚠️ First On-Board Service — Pipeline Setup Required
+
+This PR adds a new service. CI pipelines have not been created yet, so CI checks may be missing or incomplete.
+
+**Action required:** Comment `/azp run prepare-pipelines` on this PR to create the CI pipelines. After the `prepare-pipelines` check completes successfully, the CI validation pipeline (`go - pullrequest`) will be triggered automatically.
 ```
 
 **If there are failures** → use this template:
