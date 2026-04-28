@@ -4166,7 +4166,8 @@ func (s *BlobUnrecordedTestsSuite) TestDirectorySASAllPermissionsFail() {
 
 	sasToken := sasQueryParams.Encode()
 
-	// Try to access "foo/bar" which is NOT a prefix of "foo/bar/hello" — it should fail
+	// Try to access the parent path "foo/bar" using a SAS scoped to the child directory
+	// "foo/bar/hello" — it should fail because the target is outside the SAS directory scope.
 	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	failBlobURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/foo/bar?%s", accountName, containerName, sasToken)
 	abClient, err := appendblob.NewClientWithNoCredential(failBlobURL, nil)

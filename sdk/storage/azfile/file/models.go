@@ -88,7 +88,7 @@ type CreateOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]*string
-	// SMB only. How attributes and permissions should be set on the directory.
+	// SMB only. How attributes and permissions should be set on the file.
 	// New: automatically adds the ARCHIVE file attribute flag and uses Windows create file permissions semantics (ex: inherit from parent).
 	// Restore: does not modify file attribute flag and uses Windows update file permissions semantics.
 	// If Restore is specified, the file permission must also be provided, otherwise PropertySemantics will default to New.
@@ -116,7 +116,6 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			Owner:             o.NFSProperties.Owner,
 			Metadata:          o.Metadata,
 			Optionalbody:      o.OptionalBody,
-			ContentMD5:        o.ContentMD5,
 		}
 
 	} else {
@@ -132,7 +131,6 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			FilePermissionKey: permissionKey,
 			Metadata:          o.Metadata,
 			Optionalbody:      o.OptionalBody,
-			ContentMD5:        o.ContentMD5,
 		}
 		// Refer the documentation for details - https://learn.microsoft.com/en-us/rest/api/storageservices/create-file#smb-only-request-headers
 		if permissionKey != nil {
@@ -148,6 +146,10 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 		if o.FilePropertySemantics != nil {
 			createOptions.FilePropertySemantics = o.FilePropertySemantics
 		}
+	}
+
+	if len(o.ContentMD5) > 0 {
+		createOptions.ContentMD5 = o.ContentMD5
 	}
 
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
