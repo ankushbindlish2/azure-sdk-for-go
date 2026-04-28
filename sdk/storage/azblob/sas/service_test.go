@@ -413,6 +413,7 @@ func TestFormatSignedRequestQueryParameters(t *testing.T) {
 }
 
 func TestBlobSignatureValues_SignWithSharedKey_DirectorySAS(t *testing.T) {
+	cred, err := exported.NewSharedKeyCredential("fakeaccountname", "AKIAIOSFODNN7EXAMPLE")
 	require.Nil(t, err, "error creating valid shared key credentials.")
 
 	expiryDate, err := time.Parse("2006-01-02", "2023-07-20")
