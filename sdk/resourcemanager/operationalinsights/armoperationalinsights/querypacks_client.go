@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -170,6 +171,14 @@ func (client *QueryPacksClient) createOrUpdateWithoutNameCreateRequest(ctx conte
 // createOrUpdateWithoutNameHandleResponse handles the CreateOrUpdateWithoutName response.
 func (client *QueryPacksClient) createOrUpdateWithoutNameHandleResponse(resp *http.Response) (QueryPacksClientCreateOrUpdateWithoutNameResponse, error) {
 	result := QueryPacksClientCreateOrUpdateWithoutNameResponse{}
+	if val := resp.Header.Get("Retry-After"); val != "" {
+		retryAfter32, err := strconv.ParseInt(val, 10, 32)
+		retryAfter := int32(retryAfter32)
+		if err != nil {
+			return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, err
+		}
+		result.RetryAfter = &retryAfter
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPack); err != nil {
 		return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, err
 	}

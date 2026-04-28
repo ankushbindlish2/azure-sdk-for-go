@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2026-04-28)
+## 3.0.0 (2026-04-23)
 ### Breaking Changes
 
 - Type of `TableProperties.ProvisioningState` has been changed from `*ProvisioningStateEnum` to `*TableProvisioningState`
@@ -19,6 +19,7 @@
 - New field `NextLink` in struct `LinkedServiceListResult`
 - New field `NextLink` in struct `LinkedStorageAccountsListResult`
 - New field `SystemData` in struct `LinkedStorageAccountsResource`
+- New field `RetryAfter` in struct `QueryPacksClientCreateOrUpdateWithoutNameResponse`
 - New field `SystemData` in struct `SavedSearch`
 - New field `SystemData` in struct `StorageInsight`
 - New field `NextLink` in struct `TablesListResult`

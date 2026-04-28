@@ -232,6 +232,9 @@ type QueryPacksClientCreateOrUpdateResponse struct {
 type QueryPacksClientCreateOrUpdateWithoutNameResponse struct {
 	// An Log Analytics QueryPack definition.
 	LogAnalyticsQueryPack
+
+	// The Retry-After header can indicate how long the client should wait before polling the operation status.
+	RetryAfter *int32
 }
 
 // QueryPacksClientDeleteResponse contains the response from method QueryPacksClient.Delete.

@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // QueryPacksServer is a fake server for instances of the armoperationalinsights.QueryPacksClient type.
@@ -186,6 +187,9 @@ func (q *QueryPacksServerTransport) dispatchCreateOrUpdateWithoutName(req *http.
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LogAnalyticsQueryPack, req)
 	if err != nil {
 		return nil, err
+	}
+	if val := server.GetResponse(respr).RetryAfter; val != nil {
+		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
 	}
 	return resp, nil
 }
