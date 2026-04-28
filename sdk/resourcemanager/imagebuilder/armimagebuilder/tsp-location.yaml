@@ -1,0 +1,4 @@
+directory: specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/ImageBuilder
+commit: f750283a31ff40376faa0149619b58839516d4e4
+repo: i-specs
+additionalDirectories: 
