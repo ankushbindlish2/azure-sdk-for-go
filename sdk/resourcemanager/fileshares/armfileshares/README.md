@@ -6,7 +6,7 @@ Azure File Shares Management client library for Go (`armfileshares`) provides ma
 
 ### Prerequisites
 
-* Go 1.24 or later
+* Go 1.25 or later
 * An Azure subscription
 * Azure Storage account
 
